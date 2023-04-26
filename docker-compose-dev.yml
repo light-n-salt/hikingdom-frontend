@@ -4,6 +4,7 @@ services:
     container_name: server-dev
     build:
       context: ./backend
+      dockerfile: Dockerfile
       args:
         SERVER_MODE: dev
     ports:
@@ -14,7 +15,7 @@ services:
     container_name: client-dev
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - 3001:3000
     depends_on:
