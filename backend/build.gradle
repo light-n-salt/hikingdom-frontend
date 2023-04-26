@@ -32,21 +32,36 @@ bootJar {
 }
 
 dependencies {
+	// jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	// database
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	// mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// swagger
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
+
 }
 
 tasks.named('test') {
