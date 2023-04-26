@@ -15,4 +15,9 @@
         android:text="마이페이지"
         android:textSize="40sp" />
 
+    <WebView
+        android:id="@+id/mypage_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

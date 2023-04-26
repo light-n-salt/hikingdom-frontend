@@ -15,4 +15,9 @@
         android:text="그룹"
         android:textSize="40sp"/>
 
+    <WebView
+        android:id="@+id/group_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
