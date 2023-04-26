@@ -5,7 +5,7 @@ import axios, {
     AxiosResponse,
 } from 'axios'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { accessTokenState, refreshTokenState } from '../recoil/token/atoms'
+import { accessTokenState, refreshTokenState } from '../recoil/atoms'
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
