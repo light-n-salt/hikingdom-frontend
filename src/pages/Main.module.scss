@@ -1,0 +1,21 @@
+.flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 80%;
+    height: 80%;
+}
+
+.dark {
+    div {
+        background-color: orange;
+    }
+}
+
+.light {
+    div {
+        background-color: blue;
+    }
+}
