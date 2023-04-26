@@ -1,0 +1,36 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activity_navgraph"
+    app:startDestination="@id/menu_homeFragment">
+
+    <fragment
+        android:id="@+id/menu_homeFragment"
+        android:name="com.example.hikingdom.ui.main.home.HomeFragment"
+        android:label="homeFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_rankingFragment"
+        android:name="com.example.hikingdom.ui.main.ranking.RankingFragment"
+        android:label="rankingFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_hikingFragment"
+        android:name="com.example.hikingdom.ui.main.hiking.HikingFragment"
+        android:label="hikingFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_groupFragment"
+        android:name="com.example.hikingdom.ui.main.group.GroupFragment"
+        android:label="groupFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_myPageFragment"
+        android:name="com.example.hikingdom.ui.main.mypage.MypageFragment"
+        android:label="mypageFragment">
+    </fragment>
+</navigation>
