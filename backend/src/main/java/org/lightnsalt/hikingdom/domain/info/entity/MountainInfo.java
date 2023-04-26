@@ -32,7 +32,7 @@ public class MountainInfo {
 	private double topLat;
 	@Column(name = "top_lng", nullable = false)
 	private double topLng;
-	@Column(name = "total_duration", columnDefinition = "unsigned int", nullable = false)
+	@Column(name = "total_duration", columnDefinition = "int unsigned", nullable = false)
 	private int totalDuration;
 	@Column(name = "img_url", length = 512)
 	private String imgUrl;
