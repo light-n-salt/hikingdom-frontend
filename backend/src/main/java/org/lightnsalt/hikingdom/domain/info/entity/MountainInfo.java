@@ -18,6 +18,7 @@ public class MountainInfo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
 	private Long id;
 	// TODO: add Asset
 	@Column(length = 20, nullable = false)

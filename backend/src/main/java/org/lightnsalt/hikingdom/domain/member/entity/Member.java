@@ -11,8 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.lightnsalt.hikingdom.domain.info.entity.LevelInfo;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,11 +45,11 @@ public class Member {
 	@Column(name = "withdraw_at")
 	private LocalDateTime modifiedAt;
 
-	@Column(name = "is_withdraw", columnDefinition = "TINYINT", length = 1)
+	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN")
 	private int isWithdraw;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "level_id")
-	private LevelInfo level;
+	private MemberLevelInfo level;
 
 }

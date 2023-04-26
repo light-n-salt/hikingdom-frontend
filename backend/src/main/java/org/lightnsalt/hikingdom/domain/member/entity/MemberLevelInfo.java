@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.domain.info.entity;
+package org.lightnsalt.hikingdom.domain.member.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +19,8 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "level_info")
-public class LevelInfo {
+@Table(name = "member_level_info")
+public class MemberLevelInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "TINYINT")
