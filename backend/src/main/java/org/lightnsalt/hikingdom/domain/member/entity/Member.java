@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.lightnsalt.hikingdom.domain.info.entity.LevelInfo;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,6 +52,6 @@ public class Member {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "level_id")
-	private MemberLevel level;
+	private LevelInfo level;
 
 }
