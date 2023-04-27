@@ -46,8 +46,8 @@ public class Member {
 	@Column(name = "withdraw_at")
 	private LocalDateTime modifiedAt;
 
-	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN")
-	private int isWithdraw;
+	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private boolean isWithdraw;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "level_id")

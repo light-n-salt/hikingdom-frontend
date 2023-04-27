@@ -34,19 +34,19 @@ public class MemberHiking {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "member_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+	@JoinColumn(name = "member_id",columnDefinition = "BIGINT UNSIGNED")
 	private Member member;
 
 	@ManyToOne
-	@JoinColumn(name = "mountain_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+	@JoinColumn(name = "mountain_id", columnDefinition = "BIGINT UNSIGNED")
 	private MountainInfo mountain;
 
 	// TODO: 일정 JoinColumn 추가
 	// @ManyToOne
-	// @JoinColumn(name="schedule_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-	// private Schedule schedule;
+	// @JoinColumn(name="meetup_id", columnDefinition = "BIGINT UNSIGNED")
+	// private Meetup meetup;
 
-	@Column(name = "is_group", nullable = false, columnDefinition = "BOOLEAN")
+	@Column(name = "is_club", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
 	private Boolean isGroup;
 
 	@Column(name = "start_at", nullable = false)
