@@ -89,7 +89,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		response.setStatus(ErrorCode.INVALID_LOGIN.getStatus());
+		response.setStatus(errorCode.getStatus());
 		response.getWriter().write(objectMapper.writeValueAsString(ErrorResponseBody.of(errorCode)));
 	}
 }
