@@ -1,4 +1,4 @@
-@import 'styles/colors';
+@use 'styles/colors' as *;
 
 div {
     display: flex;
@@ -6,9 +6,9 @@ div {
 
     &.sm {
         img {
-            width: 1.3rem;
+            width: 1rem;
         }
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     &.md {

@@ -1,0 +1,6 @@
+@mixin flexbox($js: center, $ai: center, $gap: 0) {
+    display: flex;
+    align-items: _get-flex-value($ai);
+    justify-content: _get-flex-value($js);
+    gap: _get-flex-value($gap);
+}

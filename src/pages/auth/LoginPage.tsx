@@ -1,7 +1,30 @@
+import RankList from 'components/common/RankList'
 import React from 'react'
 
+const clubInfoArray = [
+    {
+        clubId: 1,
+        clubName: '산타마리아',
+        location: '서울시 노원구',
+        totalMember: 23,
+        totalDuration: '12:02',
+        totalDistance: 123,
+        participationRate: 87,
+        ranking: 2,
+    },
+    {
+        clubId: 1,
+        clubName: '산타마리아',
+        location: '서울시 노원구',
+        totalMember: 23,
+        totalDuration: '12:02',
+        totalDistance: 123,
+        participationRate: 87,
+        ranking: 2,
+    },
+]
 function LoginPage() {
-    return <div>LoginPage</div>
+    return <RankList clubInfoArray={clubInfoArray} size="sm" />
 }
 
 export default LoginPage
