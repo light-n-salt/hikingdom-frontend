@@ -2,15 +2,15 @@ import React from 'react'
 import styles from './IconButton.module.scss'
 
 type IconButtonProps = {
-    icon: string
+    imgSrc: string
     size?: 'sm' | 'md' | 'lg'
     onClick: () => void
 }
 
-function IconButton({ icon, size = 'sm', onClick }: IconButtonProps) {
+function IconButton({ imgSrc, size = 'sm', onClick }: IconButtonProps) {
     return (
         <img
-            src={icon}
+            src={imgSrc}
             className={`${styles.iconButton} ${styles[size]}`}
             onClick={onClick}
         />
