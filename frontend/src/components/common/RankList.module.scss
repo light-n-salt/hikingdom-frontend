@@ -1,0 +1,11 @@
+.ranklist {
+    display: flex;
+
+    &.sm {
+        flex-direction: row;
+    }
+
+    &.lg {
+        flex-direction: column;
+    }
+}
