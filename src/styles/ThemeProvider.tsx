@@ -20,7 +20,7 @@ export default function ThemeProvider({ children }: Props) {
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
-            <div className={`bg-${theme} flex`}>{children}</div>
+            {children}
         </ThemeContext.Provider>
     )
 }
