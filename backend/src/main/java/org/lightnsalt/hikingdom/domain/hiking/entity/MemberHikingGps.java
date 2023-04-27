@@ -1,18 +1,22 @@
-package org.lightnsalt.hikingdom.domain.member.entity;
+package org.lightnsalt.hikingdom.domain.hiking.entity;
+
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,22 +24,28 @@ import lombok.ToString;
 
 @Entity
 @Getter
-@Builder
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 @Table(name = "member_hiking_gps")
 public class MemberHikingGps {
 	@Id
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	@MapsId
 	@ToString.Exclude
 	@JsonIgnore
-	@JoinColumn(name = "id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+	@JoinColumn(name = "id", columnDefinition = "BIGINT UNSIGNED")
 	private MemberHiking hiking;
 
+	@Type(type = "json")
 	@Column(name = "gps_route", nullable = false, columnDefinition = "JSON")
-	private String gpsRoute;
+	private Map<String, Object> gpsRoute;
+
+	@Builder
+	public MemberHikingGps(MemberHiking hiking, Map<String, Object> gpsRoute) {
+		this.hiking = hiking;
+		this.gpsRoute = gpsRoute;
+	}
 }
