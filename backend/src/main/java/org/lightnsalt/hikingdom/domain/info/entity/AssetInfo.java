@@ -1,8 +1,10 @@
 package org.lightnsalt.hikingdom.domain.info.entity;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +40,7 @@ public class AssetInfo {
 	private String rule;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "mountain_id")
+	@JoinColumn(name = "mountain_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	@ToString.Exclude
 	private MountainInfo mountainInfo;
 
