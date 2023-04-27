@@ -7,12 +7,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
 @Getter
 @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "mountain_info")
 public class MountainInfo {
 
@@ -20,7 +24,7 @@ public class MountainInfo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
 	private Long id;
-	// TODO: add Asset
+
 	@Column(length = 20, nullable = false)
 	private String name;
 	@Column(nullable = false)
@@ -37,4 +41,17 @@ public class MountainInfo {
 	private int totalDuration;
 	@Column(name = "img_url", length = 512)
 	private String imgUrl;
+
+	@Builder
+	public MountainInfo(String name, String description, String address, double maxAlt, double topLat, double topLng,
+		int totalDuration, String imgUrl) {
+		this.name = name;
+		this.description = description;
+		this.address = address;
+		this.maxAlt = maxAlt;
+		this.topLat = topLat;
+		this.topLng = topLng;
+		this.totalDuration = totalDuration;
+		this.imgUrl = imgUrl;
+	}
 }
