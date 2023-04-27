@@ -43,14 +43,14 @@ public class AssetInfo {
 	@Column(name = "asset_url", nullable = false, length = 512)
 	private String assetUrl;
 
-	@Column(nullable = false, length = 512)
-	private String rule;
+	@Column(name = "get_condition", nullable = false, length = 512)
+	private String getCondition;
 
 	@Builder
-	public AssetInfo(String name, String assetUrl, String rule, MountainInfo mountain) {
+	public AssetInfo(String name, String assetUrl, String getCondition, MountainInfo mountain) {
 		this.name = name;
 		this.assetUrl = assetUrl;
-		this.rule = rule;
+		this.getCondition = getCondition;
 		this.mountain = mountain;
 	}
 }
