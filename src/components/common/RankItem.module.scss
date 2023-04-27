@@ -1,0 +1,47 @@
+@use 'styles/colors' as *;
+
+.rankitem {
+    display: flex;
+
+    &.sm {
+        flex-direction: row;
+    }
+    &.lg {
+        flex-direction: column;
+    }
+
+    > h1 {
+        color: $primary-light;
+    }
+
+    > div {
+        display: flex;
+        gap: 1rem;
+    }
+}
+
+.icontext {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+
+    > img {
+        object-fit: contain;
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+.mtrating {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+
+    .green {
+        color: $primary-light;
+    }
+
+    .gray {
+        color: $gray;
+    }
+}

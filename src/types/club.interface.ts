@@ -1,3 +1,10 @@
+// 소모임 정보 조회
+export interface ClubSimpleInfo {
+    hostId: number
+    clubId: number
+    clubName: string
+}
+
 // 소모임 랭킹 조회
 // 소모임 검색
 // 소모임 가입 신청 조회
@@ -12,13 +19,6 @@ export interface ClubInfo {
     ranking: number
 }
 
-// 소모임 정보 조회
-export interface ClubInfo {
-    hostId: number
-    clubId: number
-    clubName: string
-}
-
 // 에셋 정보
 // 소모임 산 조회
 // 오늘의 모임 산 (메인페이지)
@@ -31,7 +31,7 @@ export interface AssetInfo {
 }
 
 // 소모임 상세 조회
-export interface ClubInfoDetail {
+export interface ClubDetailInfo {
     participationRate: string
     totalDuration: string
     totalDistance: number

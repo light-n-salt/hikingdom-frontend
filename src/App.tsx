@@ -3,6 +3,7 @@ import React from 'react'
 import { RecoilRoot } from 'recoil'
 import { Routes, Route } from 'react-router-dom'
 import Main from 'pages/Main'
+import LoginPage from 'pages/auth/LoginPage'
 import ThemeProvider from 'styles/ThemeProvider'
 
 function App() {
@@ -11,8 +12,8 @@ function App() {
             <ThemeProvider>
                 <Routes>
                     <Route path="/" element={<Main />} />
-                    {/* <Route path="/login" element={<LoginPage />} />
-                    <Route path="/agreement" element={<AgreementPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    {/* <Route path="/agreement" element={<AgreementPage />} />
                     <Route path="/password" element={<FindPwdPage />} />
                     <Route path="/signup" element={<SignupPage />} />
 
