@@ -7,14 +7,20 @@ type IconTextProps = {
     text: string
     bold?: boolean // font-weight : bold 설정
     size?: 'sm' | 'md' | 'lg'
-    flex?: 'right' // 아이콘 위치
+    iconPosition?: 'right' // 아이콘 위치
 }
 
-function IconText({ imgSrc, text, bold, size = 'sm', flex }: IconTextProps) {
+function IconText({
+    imgSrc,
+    text,
+    bold,
+    size = 'sm',
+    iconPosition,
+}: IconTextProps) {
     const { theme } = useContext(ThemeContext)
 
     const textStyle = bold && styles.bold
-    const flexStyle = flex && styles[flex]
+    const flexStyle = iconPosition && styles[iconPosition]
 
     return (
         <div
