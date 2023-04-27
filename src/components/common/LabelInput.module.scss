@@ -1,0 +1,30 @@
+@import 'styles/colors';
+
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    label {
+        font-size: 1.3rem;
+        font-weight: 470;
+        color: $black;
+    }
+
+    input {
+        // width: 100%;
+        padding: 0.7rem;
+        border: 2px solid $secondary-light;
+        border-radius: 0.5rem;
+        font-size: 1.3rem;
+        color: $gray;
+        background: $white;
+    }
+
+    input:focus {
+        outline: none; /* 기본 focus 스타일 제거 */
+        border-color: $primary-light;
+        box-shadow: 0 0 0 2px $secondary-light; /* 선택된 요소 주변에 블러 효과 적용 */
+    }
+}
