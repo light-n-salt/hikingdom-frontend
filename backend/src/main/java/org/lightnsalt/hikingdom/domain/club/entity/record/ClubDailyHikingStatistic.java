@@ -1,12 +1,21 @@
-package org.lightnsalt.hikingdom.domain.member.entity;
+package org.lightnsalt.hikingdom.domain.club.entity.record;
+
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.lightnsalt.hikingdom.domain.club.entity.Club;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,17 +29,19 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member_hiking_statistic")
-public class MemberHikingStatistic {
+@Table(name = "club_daily_hiking_statistic")
+public class ClubDailyHikingStatistic {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(columnDefinition = "BIGINT UNSIGNED")
 	private Long id;
 
 	@ToString.Exclude
 	@JsonIgnore
 	@MapsId
-	@OneToOne
-	@JoinColumn(name = "id", columnDefinition = "BIGINT UNSIGNED")
-	private Member member;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "club_id", nullable = false, columnDefinition = "BIGINT UNSIGNED", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Club club;
 
 	@Column(name = "total_hiking_count", nullable = false, columnDefinition = "INT UNSIGNED")
 	private Long totalHikingCount;
@@ -45,16 +56,24 @@ public class MemberHikingStatistic {
 	private Long totalDistance; // in metres
 
 	@Column(name = "total_alt", nullable = false, columnDefinition = "INT UNSIGNED")
-	private double totalAlt; // in metres
+	private Long totalAlt; // in metres
+
+	@Column(name = "participation_rate", nullable = false, columnDefinition = "DOUBLE")
+	private double participationRate;
+
+	@Column(name = "date", nullable = false)
+	private LocalDateTime date;
 
 	@Builder
-	public MemberHikingStatistic(Member member, Long totalHikingCount, Long totalMountainCount, Long totalDuration,
-		Long totalDistance, double totalAlt) {
-		this.member = member;
+	public ClubDailyHikingStatistic(Club club, Long totalHikingCount, Long totalMountainCount, Long totalDuration,
+		Long totalDistance, Long totalAlt, double participationRate, LocalDateTime date) {
+		this.club = club;
 		this.totalHikingCount = totalHikingCount;
 		this.totalMountainCount = totalMountainCount;
 		this.totalDuration = totalDuration;
 		this.totalDistance = totalDistance;
 		this.totalAlt = totalAlt;
+		this.participationRate = participationRate;
+		this.date = date;
 	}
 }

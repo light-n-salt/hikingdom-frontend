@@ -13,7 +13,6 @@ import org.lightnsalt.hikingdom.domain.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,19 +20,22 @@ import lombok.ToString;
 
 @Entity
 @Getter
-@Builder
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member_setting")
 public class MemberSetting extends BaseTimeEntity {
 	@Id
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
 	@ToString.Exclude
 	@JsonIgnore
-	@JoinColumn(name = "id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+	@MapsId
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id", columnDefinition = "BIGINT UNSIGNED")
 	private Member member;
+
+	@Builder
+	public MemberSetting(Member member) {
+		this.member = member;
+	}
 }
