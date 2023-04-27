@@ -1,23 +1,37 @@
 @use 'styles/colors' as *;
 
-.bg-light {
-    background-color: #dddddd;
-    color: $black;
+.page {
+    width: 100%;
+    height: 100%;
+
+    &.light {
+        background-color: $bg-light;
+        color: $black;
+    }
+
+    &.dark {
+        background-color: $black;
+        color: $white;
+    }
 }
 
-.bg-dark {
-    background-color: $black;
-    color: $white;
+.mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // justify-content: center;
 }
 
-.box-light {
-    background-color: $white;
-    color: $black;
-}
+.box {
+    &.light {
+        background-color: $white;
+        color: $black;
+    }
 
-.box-dark {
-    background-color: #555555;
-    color: $white;
+    &.dark {
+        background-color: $black;
+        color: $white;
+    }
 }
 
 .flex {
