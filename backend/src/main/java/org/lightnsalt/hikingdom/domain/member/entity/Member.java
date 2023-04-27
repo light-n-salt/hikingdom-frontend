@@ -34,6 +34,7 @@ public class Member extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "BIGINT UNSIGNED")
 	private Long id;
+
 	@ToString.Exclude
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -32,10 +32,10 @@ public class MemberHikingGps {
 	@Id
 	private Long id;
 
-	@OneToOne
-	@MapsId
 	@ToString.Exclude
 	@JsonIgnore
+	@MapsId
+	@OneToOne
 	@JoinColumn(name = "id", columnDefinition = "BIGINT UNSIGNED")
 	private MemberHiking hiking;
 

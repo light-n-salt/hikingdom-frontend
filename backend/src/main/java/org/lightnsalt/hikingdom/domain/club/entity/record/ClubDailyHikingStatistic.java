@@ -36,10 +36,10 @@ public class ClubDailyHikingStatistic {
 	@Column(columnDefinition = "BIGINT UNSIGNED")
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
 	@ToString.Exclude
 	@JsonIgnore
+	@MapsId
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "club_id", nullable = false, columnDefinition = "BIGINT UNSIGNED", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Club club;
 

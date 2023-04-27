@@ -27,10 +27,10 @@ public class MemberSetting extends BaseTimeEntity {
 	@Id
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
 	@ToString.Exclude
 	@JsonIgnore
+	@MapsId
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id", columnDefinition = "BIGINT UNSIGNED")
 	private Member member;
 

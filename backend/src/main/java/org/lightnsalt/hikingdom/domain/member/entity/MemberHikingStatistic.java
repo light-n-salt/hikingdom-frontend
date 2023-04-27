@@ -25,10 +25,10 @@ public class MemberHikingStatistic {
 	@Id
 	private Long id;
 
-	@OneToOne
-	@MapsId
 	@ToString.Exclude
 	@JsonIgnore
+	@MapsId
+	@OneToOne
 	@JoinColumn(name = "id", columnDefinition = "BIGINT UNSIGNED")
 	private Member member;
 
