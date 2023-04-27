@@ -6,5 +6,9 @@ export default function Main() {
     const [isModal, setIsModal] = useState(false)
     const { theme, toggleTheme } = useContext(ThemeContext)
 
-    return <div className={`page ${theme} mobile`}></div>
+    return (
+        <div className={`page ${theme} mobile`}>
+            <button onClick={toggleTheme}>다크모드</button>
+        </div>
+    )
 }
