@@ -24,11 +24,15 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "asset_info")
 public class AssetInfo {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
+	@Column(columnDefinition = "BIGINT UNSIGNED")
 	private Long id;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "mountain_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@ToString.Exclude
+	private MountainInfo mountain;
 
 	@Column(nullable = false, length = 50)
 	private String name;
@@ -39,16 +43,11 @@ public class AssetInfo {
 	@Column(nullable = false, length = 512)
 	private String rule;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "mountain_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	@ToString.Exclude
-	private MountainInfo mountainInfo;
-
 	@Builder
-	public AssetInfo(String name, String assetUrl, String rule, MountainInfo mountainInfo) {
+	public AssetInfo(String name, String assetUrl, String rule, MountainInfo mountain) {
 		this.name = name;
 		this.assetUrl = assetUrl;
 		this.rule = rule;
-		this.mountainInfo = mountainInfo;
+		this.mountain = mountain;
 	}
 }

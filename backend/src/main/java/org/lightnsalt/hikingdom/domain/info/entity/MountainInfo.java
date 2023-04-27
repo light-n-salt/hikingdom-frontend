@@ -19,26 +19,32 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "mountain_info")
 public class MountainInfo {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
+	@Column(columnDefinition = "BIGINT UNSIGNED")
 	private Long id;
 
 	@Column(length = 20, nullable = false)
 	private String name;
+
 	@Column(nullable = false)
 	private String description;
+
 	@Column(length = 200, nullable = false)
 	private String address;
+
 	@Column(name = "max_alt", nullable = false)
 	private double maxAlt;
+
 	@Column(name = "top_lat", nullable = false)
 	private double topLat;
+
 	@Column(name = "top_lng", nullable = false)
 	private double topLng;
+
 	@Column(name = "total_duration", columnDefinition = "int unsigned", nullable = false)
 	private int totalDuration;
+
 	@Column(name = "img_url", length = 512)
 	private String imgUrl;
 

@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.domain.club.entity;
+package org.lightnsalt.hikingdom.domain.info.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +20,10 @@ public class BaseAddressInfo {
 	@Id
 	@Column(name = "dong_code", length = 10)
 	private String dongCode;
+
 	@Column(name = "sido_name", length = 20)
 	private String sidoName;
+
 	@Column(name = "sigungu_name", length = 20)
 	private String sigunguName;
 
