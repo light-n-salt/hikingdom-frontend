@@ -1,21 +1,15 @@
-.flex {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+@use 'styles/colors' as *;
 
-    width: 80%;
-    height: 80%;
-}
-
-.dark {
-    div {
-        background-color: orange;
+.Main {
+    &.dark {
+        div {
+            background-color: $primary;
+        }
     }
-}
 
-.light {
-    div {
-        background-color: blue;
+    &.light {
+        div {
+            background-color: blue;
+        }
     }
 }

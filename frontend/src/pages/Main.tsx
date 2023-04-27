@@ -1,14 +1,29 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './Main.module.scss'
+import Logo from 'components/common/Logo'
+import Modal from 'components/common/Modal'
 
 export default function Main() {
+    const [isModal, setIsModal] = useState(false)
     const { theme, toggleTheme } = useContext(ThemeContext)
 
     return (
-        <div className={`box-${theme} ${styles[theme]} ${styles.flex}`}>
-            <div>안녕하세요</div>
-            <button onClick={toggleTheme}>다크모드</button>
-        </div>
+        <>
+            <button
+                onClick={() => {
+                    setIsModal(true)
+                }}
+            ></button>
+            {isModal && (
+                <Modal
+                    closeModal={() => {
+                        setIsModal(false)
+                    }}
+                >
+                    <Logo />
+                </Modal>
+            )}
+        </>
     )
 }
