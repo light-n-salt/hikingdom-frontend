@@ -7,7 +7,7 @@ const clubInfoArray = [
         clubName: '산타마리아',
         location: '서울시 노원구',
         totalMember: 23,
-        totalDuration: 123,
+        totalDuration: '12:02',
         totalDistance: 123,
         participationRate: 87,
         ranking: 2,
@@ -17,14 +17,14 @@ const clubInfoArray = [
         clubName: '산타마리아',
         location: '서울시 노원구',
         totalMember: 23,
-        totalDuration: 123,
+        totalDuration: '12:02',
         totalDistance: 123,
         participationRate: 87,
         ranking: 2,
     },
 ]
 function LoginPage() {
-    return <RankList clubInfoArray={clubInfoArray} />
+    return <RankList clubInfoArray={clubInfoArray} size="sm" />
 }
 
 export default LoginPage

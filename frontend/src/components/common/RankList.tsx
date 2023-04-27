@@ -1,6 +1,7 @@
 import React from 'react'
 import { ClubInfo } from 'types/club.interface'
 import RankItem from './RankItem'
+import styles from './RankList.module.scss'
 
 type RankListProps = {
     clubInfoArray: ClubInfo[]
@@ -9,7 +10,7 @@ type RankListProps = {
 
 function RankList({ clubInfoArray, size = 'lg' }: RankListProps) {
     return (
-        <div>
+        <div className={`${styles.ranklist} ${styles[size]}`}>
             {clubInfoArray.map((clubInfo, index) => (
                 <RankItem
                     key={`rank-item-${index}`}

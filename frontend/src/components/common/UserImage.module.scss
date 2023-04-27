@@ -1,0 +1,16 @@
+@use 'styles/colors' as *;
+
+img {
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.sm {
+    width: 3rem;
+    height: 3rem;
+}
+
+.lg {
+    width: 8rem;
+    height: 8rem;
+}

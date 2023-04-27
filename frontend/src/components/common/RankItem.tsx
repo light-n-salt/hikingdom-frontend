@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { ClubInfo } from 'types/club.interface'
 import { FaMountain } from 'react-icons/fa'
 import person from 'assets/images/person.png'
@@ -6,6 +6,8 @@ import hourglass from 'assets/images/hourglass.png'
 import shoe from 'assets/images/shoe.png'
 import marker from 'assets/images/marker.png'
 import styles from './RankItem.module.scss'
+import IconText from './IconText'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 type RankItemProps = {
     clubInfo: ClubInfo
@@ -13,16 +15,23 @@ type RankItemProps = {
 }
 
 function RankItem({ clubInfo, size }: RankItemProps) {
+    const { theme } = useContext(ThemeContext)
+
+    const totalMemeber = clubInfo.totalMember.toString()
+    const totalDistance = clubInfo.totalDistance.toString() + 'km'
+
     return (
-        <div className={`${styles.rankitem} ${styles[size]}`}>
-            <h1>{clubInfo.clubName}</h1>
+        <div className={`box ${theme} ${styles.rankitem} ${styles[size]}`}>
+            <h3>{clubInfo.clubName}</h3>
             <div>
-                <IconText type="person" text={clubInfo.totalMember} />
-                <IconText type="duration" text={clubInfo.totalDuration} />
-                <IconText type="distance" text={clubInfo.totalDistance} />
+                <IconText imgSrc={person} text={totalMemeber} />
+                <IconText imgSrc={hourglass} text={clubInfo.totalDuration} />
+                <IconText imgSrc={shoe} text={totalDistance} />
             </div>
             <div>
-                <IconText type="location" text={clubInfo.location} />
+                {size === 'lg' && (
+                    <IconText imgSrc={marker} text={clubInfo.location} />
+                )}
                 <MtRating participationRate={clubInfo.participationRate} />
             </div>
         </div>
@@ -30,27 +39,6 @@ function RankItem({ clubInfo, size }: RankItemProps) {
 }
 
 export default RankItem
-
-type IconTextProps = {
-    type: 'person' | 'duration' | 'distance' | 'location'
-    text: string | number
-}
-
-function IconText({ type, text }: IconTextProps) {
-    const icon = {
-        person: person,
-        duration: hourglass,
-        distance: shoe,
-        location: marker,
-    }[type]
-
-    return (
-        <div className={styles.icontext}>
-            <img src={icon} alt="Logo" />
-            <p>{text}</p>
-        </div>
-    )
-}
 
 type MtRatingProps = {
     participationRate: number
@@ -75,12 +63,3 @@ function MtRating({ participationRate }: MtRatingProps) {
         </div>
     )
 }
-// function Icon
-// clubId: number
-// clubName: string
-// location: string
-// totalMember: number
-// totalDuration: number
-// totalDistance: number
-// participationRate: number
-// ranking: number
