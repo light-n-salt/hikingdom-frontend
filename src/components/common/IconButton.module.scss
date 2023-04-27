@@ -1,4 +1,4 @@
-@import 'styles/colors';
+@use 'src/styles/colors' as *;
 
 .sm {
     width: 2rem;

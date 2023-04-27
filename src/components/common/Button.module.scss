@@ -1,8 +1,8 @@
-@import 'styles/colors';
+@use 'src/styles/colors' as *;
 
 button {
-    box-shadow: -1px 3px 5px 0px $shadow-light;
     width: 100%;
+    box-shadow: -1px 3px 5px 0px $shadow-light;
 }
 
 .sm {
