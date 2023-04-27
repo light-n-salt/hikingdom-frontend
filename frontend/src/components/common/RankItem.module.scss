@@ -1,0 +1,33 @@
+@use 'styles/colors' as *;
+
+.rankitem {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.2rem;
+
+    padding: 1rem;
+
+    > h3 {
+        color: $primary-light;
+    }
+
+    > div {
+        display: flex;
+        gap: 1rem;
+    }
+}
+
+.mtrating {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+
+    .green {
+        color: $primary-light;
+    }
+
+    .gray {
+        color: $gray;
+    }
+}

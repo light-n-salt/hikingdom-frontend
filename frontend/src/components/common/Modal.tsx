@@ -7,7 +7,7 @@ interface ModalProps {
     children: React.ReactNode
 }
 
-export default function Modal({ closeModal, children }: ModalProps) {
+function Modal({ closeModal, children }: ModalProps) {
     const { theme } = useContext(ThemeContext)
 
     return (
@@ -21,3 +21,5 @@ export default function Modal({ closeModal, children }: ModalProps) {
         </div>
     )
 }
+
+export default Modal
