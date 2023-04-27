@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +15,7 @@ import lombok.ToString;
 
 @Entity
 @Getter
-@Builder
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member_level_info")
 public class MemberLevelInfo {
@@ -33,4 +30,9 @@ public class MemberLevelInfo {
 	@Column(name = "description", nullable = false, length = 50)
 	private String description;
 
+	@Builder
+	public MemberLevelInfo(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
 }
