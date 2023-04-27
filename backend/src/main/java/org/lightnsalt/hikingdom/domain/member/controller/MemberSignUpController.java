@@ -5,7 +5,7 @@ import javax.validation.Valid;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
-import org.lightnsalt.hikingdom.domain.member.dto.request.MemberNicknameCheckReq;
+import org.lightnsalt.hikingdom.domain.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberSignUpReq;
 import org.lightnsalt.hikingdom.domain.member.service.MemberSignUpService;
 import org.springframework.http.HttpStatus;
@@ -43,7 +43,7 @@ public class MemberSignUpController {
 	}
 
 	@GetMapping("/nickname-check")
-	public ResponseEntity<?> nicknameCheck(@RequestBody @Valid MemberNicknameCheckReq memberNicknameCheckReq,
+	public ResponseEntity<?> nicknameCheck(@RequestBody @Valid MemberNicknameReq memberNicknameReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
@@ -51,7 +51,7 @@ public class MemberSignUpController {
 				HttpStatus.BAD_REQUEST);
 		}
 
-		memberSignUpService.checkDuplicateNickname(memberNicknameCheckReq.getNickname());
+		memberSignUpService.checkDuplicateNickname(memberNicknameReq.getNickname());
 
 		return new ResponseEntity<>(BaseResponseBody.of("사용할 수 있는 닉네임입니다"), HttpStatus.OK);
 	}
