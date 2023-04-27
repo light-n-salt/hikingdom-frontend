@@ -1,15 +1,15 @@
-import { Album } from './group.interface'
+import { Album } from './club.interface'
 
 // 일정 전체 조회
-export interface SchedInfoList {
+export interface MeetupInfoList {
     startAt: number[]
 }
 
 //모임 일정 조회
-export interface SchedInfo {
-    scheduleHostId: number
-    scheduleId: number
-    scheduleName: string
+export interface MeetupInfo {
+    meetupHostId: number
+    meetupId: number
+    meetupName: string
     mountainName: string
     startDate: string
     startTime: string
@@ -18,20 +18,20 @@ export interface SchedInfo {
 }
 
 // 일정 멤버
-export interface SchedMember {
+export interface MeetupMember {
     memberId: number
     profileUrl: string
 }
 
 // 일정 멤버 조회
-export interface SchedMemberInfo {
+export interface MeetupMemberInfo {
     totalMmember: number
     isJoin: boolean
-    memberInfo: SchedMember[]
+    memberInfo: MeetupMember[]
 }
 
 // 일정 후기 조회
-export interface SchedReview {
+export interface MeetupReview {
     memberId: number
     nickname: string
     profileUrl: string
@@ -40,15 +40,15 @@ export interface SchedReview {
 }
 
 // 상세 일정 조회
-export interface SchedInfoDetail extends SchedInfo {
+export interface meetupInfoDetail extends MeetupInfo {
     isJoin: boolean
-    memberInfo: SchedMember[]
+    memberInfo: MeetupMember[]
     photoInfo: Album[]
-    reviewInfo: SchedReview[]
+    reviewInfo: MeetupReview[]
 }
 
 // 일정 생성
-export interface CreateSched {
+export interface Createmeetup {
     name: string
     mountainName: string
     startDate: string
