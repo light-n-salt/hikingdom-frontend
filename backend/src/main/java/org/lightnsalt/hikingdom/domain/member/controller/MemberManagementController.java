@@ -6,6 +6,7 @@ import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberChangePasswordReq;
+import org.lightnsalt.hikingdom.domain.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.domain.member.service.MemberManagementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,5 +50,20 @@ public class MemberManagementController {
 		memberManagementService.changePassword(authentication.getName(), memberChangePasswordReq);
 
 		return new ResponseEntity<>(BaseResponseBody.of("비밀번호 변경에 성공했습니다"), HttpStatus.OK);
+	}
+
+	@PutMapping("/nickname-change")
+	public ResponseEntity<?> nicknameChange(Authentication authentication,
+		@RequestBody @Valid MemberNicknameReq memberNicknameReq,
+		BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
+				bindingResult.getAllErrors().get(0).getDefaultMessage()),
+				HttpStatus.BAD_REQUEST);
+		}
+
+		memberManagementService.changeNickname(authentication.getName(), memberNicknameReq);
+
+		return new ResponseEntity<>(BaseResponseBody.of("닉네임 변경에 성공했습니다"), HttpStatus.OK);
 	}
 }

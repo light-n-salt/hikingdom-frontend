@@ -5,6 +5,7 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.JwtTokenUtil;
 import org.lightnsalt.hikingdom.common.util.RedisUtil;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberChangePasswordReq;
+import org.lightnsalt.hikingdom.domain.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,5 +54,23 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		}
 
 		memberRepository.setPasswordById(memberChangePasswordReq.getNewPassword(), member.getId());
+	}
+
+	@Override
+	public void changeNickname(String email, MemberNicknameReq memberNicknameReq) {
+		Member member = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+
+		String newNickname = memberNicknameReq.getNickname();
+
+		if (member.getNickname().equals(newNickname)) {
+			return;
+		}
+
+		if (!memberRepository.existsByNickname(newNickname)) {
+			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
+		}
+
+		memberRepository.setNicknameById(newNickname, member.getId());
 	}
 }
