@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class MemberRefreshTokenReq {
-	private String refreshToken;
+	private String refreshToken; // includes "Bearer " prefix
 }

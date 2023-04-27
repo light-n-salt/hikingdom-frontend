@@ -5,6 +5,7 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.JwtTokenUtil;
 import org.lightnsalt.hikingdom.common.util.RedisUtil;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberLoginReq;
+import org.lightnsalt.hikingdom.domain.member.dto.request.MemberRefreshTokenReq;
 import org.lightnsalt.hikingdom.domain.member.dto.response.MemberTokenRes;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
@@ -51,8 +52,8 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 	}
 
 	@Override
-	public MemberTokenRes refreshToken(String bearerRefreshToken) {
-		String oldRefreshToken = jwtTokenUtil.resolveToken(bearerRefreshToken);
+	public MemberTokenRes refreshToken(MemberRefreshTokenReq memberRefreshTokenReq) {
+		String oldRefreshToken = jwtTokenUtil.resolveToken(memberRefreshTokenReq.getRefreshToken());
 		String email = jwtTokenUtil.getEmailFromToken(oldRefreshToken);
 
 		if (!oldRefreshToken.equals(redisUtil.getValue("RT" + email))) {

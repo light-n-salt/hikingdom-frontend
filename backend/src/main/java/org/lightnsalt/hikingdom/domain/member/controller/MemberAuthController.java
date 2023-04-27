@@ -44,7 +44,7 @@ public class MemberAuthController {
 
 	@PostMapping("/refresh-token")
 	public ResponseEntity<?> tokenRefresh(@RequestBody MemberRefreshTokenReq memberRefreshTokenReq) {
-		MemberTokenRes memberTokenRes = memberAuthService.refreshToken(memberRefreshTokenReq.getRefreshToken());
+		MemberTokenRes memberTokenRes = memberAuthService.refreshToken(memberRefreshTokenReq);
 
 		return new ResponseEntity<>(BaseResponseBody.of("토큰 재발급에 성공했습니다", memberTokenRes), HttpStatus.OK);
 	}
