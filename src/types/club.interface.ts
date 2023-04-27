@@ -13,7 +13,7 @@ export interface ClubInfo {
     clubName: string
     location: string
     totalMember: number
-    totalDuration: number
+    totalDuration: string
     totalDistance: number
     participationRate: number
     ranking: number
