@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.domain.club.entity;
+package org.lightnsalt.hikingdom.domain.club.entity.record;
 
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.lightnsalt.hikingdom.domain.club.entity.Club;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +26,6 @@ import lombok.ToString;
 @ToString
 @Table(name = "club_ranking")
 public class ClubRanking {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "BIGINT UNSIGNED")

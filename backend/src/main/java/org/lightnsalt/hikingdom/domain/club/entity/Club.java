@@ -1,8 +1,12 @@
 package org.lightnsalt.hikingdom.domain.club.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.lightnsalt.hikingdom.domain.BaseTimeEntity;
+import org.lightnsalt.hikingdom.domain.info.entity.BaseAddressInfo;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 
 import lombok.AccessLevel;
@@ -25,31 +30,41 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "club")
 public class Club extends BaseTimeEntity {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "BIGINT UNSIGNED")
 	private Long id;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "host_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@ToString.Exclude
+	private Member host;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dong_code", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@ToString.Exclude
+	private BaseAddressInfo baseAddress;
+
 	@Column(nullable = false, length = 20)
 	private String name;
+
 	@Column(length = 512)
 	private String description;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "host_id")
-	@ToString.Exclude
-	private Member host;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "dong_code")
-	@ToString.Exclude
-	private BaseAddressInfo baseAddressInfo;
+	@Column(name = "deleted_at")
+	private LocalDateTime deletedAt;
+
+	@Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+	private boolean isDeleted;
 
 	@Builder
-	public Club(String name, String description, Member host, BaseAddressInfo baseAddressInfo) {
+	public Club(Member host, BaseAddressInfo baseAddress, String name, String description, LocalDateTime deletedAt,
+		boolean isDeleted) {
+		this.host = host;
+		this.baseAddress = baseAddress;
 		this.name = name;
 		this.description = description;
-		this.host = host;
-		this.baseAddressInfo = baseAddressInfo;
+		this.deletedAt = deletedAt;
+		this.isDeleted = isDeleted;
 	}
 }

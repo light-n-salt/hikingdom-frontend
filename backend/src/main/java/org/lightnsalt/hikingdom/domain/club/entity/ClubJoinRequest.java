@@ -30,7 +30,6 @@ import lombok.ToString;
 @ToString
 @Table(name = "club_join_request")
 public class ClubJoinRequest extends BaseTimeEntity {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "BIGINT UNSIGNED")
@@ -47,7 +46,7 @@ public class ClubJoinRequest extends BaseTimeEntity {
 	private Club club;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(nullable = false, length = 10)
 	private JoinRequestStatusType status;
 
 	@Builder

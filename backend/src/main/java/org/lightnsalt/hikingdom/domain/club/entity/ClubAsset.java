@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.lightnsalt.hikingdom.domain.BaseTimeEntity;
+import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.info.entity.AssetInfo;
 
 import lombok.AccessLevel;
@@ -27,7 +28,6 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "club_asset")
 public class ClubAsset extends BaseTimeEntity {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "BIGINT UNSIGNED")
