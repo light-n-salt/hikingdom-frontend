@@ -5,22 +5,22 @@ import styles from './IconText.module.scss'
 type IconTextProps = {
     imgSrc: string
     text: string
-    bold?: boolean // font-weight : bold 설정
     size?: 'sm' | 'md' | 'lg'
-    iconPosition?: 'right' // 아이콘 위치
+    isBold?: boolean // font-weight : bold 설정
+    isRight?: boolean // 아이콘 위치
 }
 
 function IconText({
     imgSrc,
     text,
-    bold,
     size = 'sm',
-    iconPosition,
+    isBold = false,
+    isRight = false,
 }: IconTextProps) {
     const { theme } = useContext(ThemeContext)
 
-    const textStyle = bold && styles.bold
-    const flexStyle = iconPosition && styles[iconPosition]
+    const textStyle = isBold ? styles.bold : ''
+    const flexStyle = isRight ? styles['right'] : ''
 
     return (
         <div
