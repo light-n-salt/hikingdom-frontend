@@ -14,6 +14,7 @@ public enum ErrorCode {
 	INTERNAL_SERVER_ERROR(500, "C003", "서버에서 예상치 못한 오류가 발생했습니다"),
 	INVALID_LOGIN(401, "C004", "인증 자격 증명이 유효하지 않습니다"),
 	INVALID_TOKEN(401, "C005", "토큰이 유효하지 않습니다"),
+	EXPIRED_TOKEN(401, "C006", "토큰이 만료되었습니다"),
 
 	// business error codes
 
