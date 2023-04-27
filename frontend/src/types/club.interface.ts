@@ -1,9 +1,9 @@
 // 소모임 랭킹 조회
 // 소모임 검색
 // 소모임 가입 신청 조회
-export interface GroupInfo {
-    groupId: number
-    groupName: string
+export interface ClubInfo {
+    clubId: number
+    clubName: string
     location: string
     totalMember: number
     totalDuration: number
@@ -13,10 +13,10 @@ export interface GroupInfo {
 }
 
 // 소모임 정보 조회
-export interface GroupInfo {
+export interface ClubInfo {
     hostId: number
-    groupId: number
-    groupName: string
+    clubId: number
+    clubName: string
 }
 
 // 에셋 정보
@@ -31,7 +31,7 @@ export interface AssetInfo {
 }
 
 // 소모임 상세 조회
-export interface GroupInfoDetail {
+export interface ClubInfoDetail {
     participationRate: string
     totalDuration: string
     totalDistance: number
@@ -42,7 +42,7 @@ export interface GroupInfoDetail {
 
 // 소모임 멤버
 // 일정 멤버 상세 조회
-export interface GroupMember {
+export interface ClubMember {
     memberId: number
     nickname: string
     profileUrl: string
@@ -53,9 +53,9 @@ export interface GroupMember {
 }
 
 // 소모임 멤버 리스트 조회
-export interface GroupMemberList {
-    request: GroupMember[] | undefined
-    member: GroupMember[]
+export interface ClubMemberList {
+    request: ClubMember[] | undefined
+    member: ClubMember[]
 }
 
 // 소모임 사진 앨범 조회
@@ -75,7 +75,7 @@ export interface SearchCode {
 }
 
 // 소모임 생성
-export interface Creategroup {
+export interface CreateClub {
     name: string
     description: string
     dongCode: number
