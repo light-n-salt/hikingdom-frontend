@@ -31,17 +31,17 @@ function App() {
                     <Route path="/club/chat" element={<ClubChatPage />} />
                     <Route path="/club" element={<ClubPage />}>
                         <Route path="main" element={<ClubMainPage />} />
-                        <Route path="sched" element={<ClubSchedPage />} />
+                        <Route path="meetup" element={<ClubMeetupPage />} />
                         <Route path="member" element={<ClubMemberPage />} />
                         <Route path="album" element={<ClubAlbumPage />} />
                     </Route>
                     <Route
-                        path="/club/sched/create"
-                        element={<SchedCreatePage />}
+                        path="/club/meetup/create"
+                        element={<MeetupCreatePage />}
                     />
                     <Route
-                        path="/club/sched/detail/:id"
-                        element={<SchedDetailPage />}
+                        path="/club/meetup/detail/:id"
+                        element={<MeetupDetailPage />}
                     />
 
                     // 마이페이지
