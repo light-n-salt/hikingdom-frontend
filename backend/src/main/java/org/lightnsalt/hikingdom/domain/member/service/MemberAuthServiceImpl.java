@@ -1,18 +1,15 @@
 package org.lightnsalt.hikingdom.domain.member.service;
 
-import static org.lightnsalt.hikingdom.common.error.ErrorCode.*;
-
-import java.security.SecureRandom;
-
+import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.domain.member.common.enumtype.MemberRoleType;
-import org.lightnsalt.hikingdom.domain.member.dto.request.MemberSignUpReq;
+import org.lightnsalt.hikingdom.common.util.JwtTokenUtil;
+import org.lightnsalt.hikingdom.common.util.RedisUtil;
+import org.lightnsalt.hikingdom.domain.member.dto.request.MemberLoginReq;
+import org.lightnsalt.hikingdom.domain.member.dto.response.MemberTokenRes;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
-import org.lightnsalt.hikingdom.domain.member.repository.MemberLevelInfoRepository;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,32 +18,59 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberAuthServiceImpl implements MemberAuthService {
-
-	private static final SecureRandom secureRandom = new SecureRandom();
 	private final PasswordEncoder passwordEncoder;
 
-	private final MemberRepository memberRepository;
-	private final MemberLevelInfoRepository memberLevelInfoRepository;
+	private final RedisUtil redisUtil;
+	private final JwtTokenUtil jwtTokenUtil;
 
-	@Transactional
+	private final MemberRepository memberRepository;
+
 	@Override
-	public Long signUp(MemberSignUpReq memberSignUpReq) {
-		if (!memberSignUpReq.getPassword().equals(memberSignUpReq.getCheckPassword()) ||
-			memberRepository.existsByEmail(memberSignUpReq.getEmail())
-			|| memberRepository.existsByNickname(memberSignUpReq.getNickname())) {
-			throw new GlobalException(INVALID_INPUT_VALUE);
+	public MemberTokenRes login(MemberLoginReq memberLoginReq) {
+		String email = memberLoginReq.getEmail();
+
+		Member member = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+
+		if (!passwordEncoder.matches(memberLoginReq.getPassword(), member.getPassword())) {
+			throw new GlobalException(ErrorCode.INVALID_LOGIN);
 		}
 
-		Member member = Member.builder()
-			.email(memberSignUpReq.getEmail())
-			.nickname(memberSignUpReq.getNickname())
-			.password(passwordEncoder.encode(memberSignUpReq.getPassword()))
-			.role(MemberRoleType.ROLE_USER)
-			.level(memberLevelInfoRepository.findById(1L).orElseThrow(() -> new GlobalException(INTERNAL_SERVER_ERROR)))
+		String accessToken = jwtTokenUtil.createAccessToken(email, member.getRole());
+		String refreshToken = jwtTokenUtil.createRefreshToken(email, member.getRole());
+
+		redisUtil.deleteValue("RT" + email);
+		redisUtil.setValueWithExpiration("RT" + email, refreshToken, jwtTokenUtil.refreshExpiration);
+
+		log.info("Successful Login: " + email);
+
+		return MemberTokenRes.builder()
+			.accessToken(accessToken)
+			.refreshToken(refreshToken)
 			.build();
+	}
 
-		memberRepository.save(member);
+	@Override
+	public MemberTokenRes refreshToken(String bearerRefreshToken) {
+		String oldRefreshToken = jwtTokenUtil.resolveToken(bearerRefreshToken);
+		String email = jwtTokenUtil.getEmailFromToken(oldRefreshToken);
 
-		return member.getId();
+		if (!oldRefreshToken.equals(redisUtil.getValue("RT" + email))) {
+			throw new GlobalException(ErrorCode.INVALID_TOKEN);
+		}
+
+		Member member = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+
+		String accessToken = jwtTokenUtil.createAccessToken(email, member.getRole());
+		String refreshToken = jwtTokenUtil.createRefreshToken(email, member.getRole());
+
+		redisUtil.deleteValue("RT" + email);
+		redisUtil.setValueWithExpiration("RT" + email, refreshToken, jwtTokenUtil.refreshExpiration);
+
+		return MemberTokenRes.builder()
+			.accessToken(accessToken)
+			.refreshToken(refreshToken)
+			.build();
 	}
 }
