@@ -1,11 +1,17 @@
 package com.example.hikingdom.ui.main.hiking
 
+import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.IBinder
+import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.databinding.FragmentHikingBinding
@@ -57,18 +63,25 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         val hikingStartBtn = binding.hikingStartBtn
         val hikingFinishBtn = binding.hikingFinishBtn
         hikingStartBtn.setOnClickListener {
-            val startServiceIntent = Intent(activity, LocationService::class.java)
-            activity?.startService(startServiceIntent)
-            Intent(activity, LocationService::class.java).also{
-                intent ->
-                activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            if (!checkPermission()) {
+                requestPermission()
+                if(checkPermission()){
+                    startHikingService()
+                    showToast("등산 기록을 시작합니다.")
+                    hikingFinishBtn.visibility = View.VISIBLE
+                    hikingStartBtn.visibility = View.GONE
+                }else{
+                    showToast("위치 권한을 허용하지 않으면 시작할 수 없습니다.")
+                }
+            }
+            else {
+                startHikingService()
+                showToast("등산 기록을 시작합니다.")
+                hikingFinishBtn.visibility = View.VISIBLE
+                hikingStartBtn.visibility = View.GONE
             }
 
-            showToast("등산 기록을 시작합니다.")
-            hikingFinishBtn.visibility = View.VISIBLE
-            hikingStartBtn.visibility = View.GONE
 
-            startTime = LocalDateTime.now()     // 시작시간 세팅
         }
 
         hikingFinishBtn.setOnClickListener {
@@ -91,6 +104,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
     fun loadLocationInfo() {
 
         locationService.totalDistance.observe(this) {
+            Log.d("HikingFragment", it.toString())
             hikingViewModel.setTotalDistance(it)
         }
 
@@ -98,9 +112,51 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             hikingViewModel.setDuration(it)
         }
 
+        locationService.lastLocation.observe(this){
+            hikingViewModel.setLastLocation(it)
+        }
+
 //        locationService.lastLocation.observe(this){
 //            hikingViewModel.setTotalAltitude(it.altitude)
 //        }
     }
+
+    private fun checkPermission(): Boolean {
+        val result = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        val result1 = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 1)
+    }
+
+    fun startHikingService(){
+        val startServiceIntent = Intent(activity, LocationService::class.java)
+//            ContextCompat.startForegroundService(this.requireContext(), Intent(this.requireContext(), LocationService::class.java))
+        activity?.startService(startServiceIntent)
+        Intent(activity, LocationService::class.java).also{
+                intent ->
+            activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
+        startTime = LocalDateTime.now()     // 시작시간 세팅
+    }
+
+//    fun checkPermission(){
+//        // check for permissions
+//        if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//            && ContextCompat.checkSelfPermission(this.requireContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME.toLong(),LOCATION_REFRESH_DISTANCE.toFloat(), mLocationListener)
+//        } else {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+//                || ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//                // permission is denined by user, you can show your alert dialog here to send user to App settings to enable permission
+//            } else {
+//                ActivityCompat.requestPermissions(context,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),MY_PERMISSIONS_REQUEST_LOCATION)
+//            }
+//        }
+//    }
 
 }

@@ -78,7 +78,7 @@ class LocationService : Service() {
                 override fun onLocationChanged(location: Location) {
                     // Here you got user location :)
                     Log.d("Location","" + location.latitude + "," + location.longitude + ","+location.altitude)
-                    if (lastLocation != null){  // 처음 위치정보를 가져왔다면 pass
+                    if (lastLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
                         val distance = location.distanceTo(lastLocation.value)
                         totalDistance.value = totalDistance.value?.plus(distance)
                     }
@@ -88,6 +88,8 @@ class LocationService : Service() {
                     longitudeList.value?.add(location.longitude)
                     altitudeList.value?.add(location.altitude)
                 }
+
+
             })
         }
 

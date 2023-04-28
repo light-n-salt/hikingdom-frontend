@@ -22,6 +22,7 @@
             android:textSize="20sp"/>
 
         <LinearLayout
+            android:id="@+id/hiking_ll1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"
@@ -54,6 +55,49 @@
 <!--                android:layout_weight="1"-->
 <!--                android:gravity="center"-->
 <!--                android:text="@{hikingFragmentViewModel.totalAltitude}" />-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/hiking_ll1"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/hiking_latitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{hikingFragmentViewModel.latitude}"/>
+
+            <TextView
+                android:id="@+id/hiking_longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{hikingFragmentViewModel.longitude}"/>
+
+            <TextView
+                android:id="@+id/hiking_altitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{hikingFragmentViewModel.altitude}" />
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/button3"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="@{hikingFragmentViewModel.totalAltitude}" />-->
         </LinearLayout>
 
         <Button

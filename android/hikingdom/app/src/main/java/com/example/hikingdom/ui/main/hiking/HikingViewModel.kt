@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.round
 import kotlin.math.roundToInt
 
 class HikingViewModel : ViewModel() {
@@ -12,6 +13,9 @@ class HikingViewModel : ViewModel() {
     var totalDistance = MutableLiveData<String>()
     var totalAltitude = MutableLiveData<String>()
     var altitudeList = MutableLiveData<Double>()
+    var latitude = MutableLiveData<String>()
+    var longitude = MutableLiveData<String>()
+    var altitude = MutableLiveData<String>()
 
 
     // 위도, 경도, 고도 list
@@ -21,14 +25,26 @@ class HikingViewModel : ViewModel() {
         duration.value = "00:00:00"
         totalDistance.value = "0.00km"
         locations.value = ArrayList()
+        latitude.value = "위도"
+        longitude.value = "경도"
+        altitude.value = "고도"
     }
 
     fun setDuration(d: Int){
-        totalDistance.value = timeToStr(d)
+        duration.value = timeToStr(d)
     }
 
     fun setTotalDistance(td : Float){
         totalDistance.value = ((td / 1000f * 100f).roundToInt() / 100f).toString() + "km"
+    }
+
+    fun setLastLocation(l : Location){
+        var rLat = round(l.latitude*10000) / 10000
+        var rLong = round(l.longitude*10000) / 10000
+        var rAlt = round(l.altitude*10000) / 10000
+        latitude.value = rLat.toString()
+        longitude.value = rLong.toString()
+        altitude.value = rAlt.toString()
     }
 
 //    fun setTotalAltitude(){
