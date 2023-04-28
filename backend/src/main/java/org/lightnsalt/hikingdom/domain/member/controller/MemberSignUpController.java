@@ -57,7 +57,7 @@ public class MemberSignUpController {
 				HttpStatus.BAD_REQUEST);
 		}
 
-		memberSignUpService.checkDuplicateNickname(memberNicknameReq.getNickname());
+		memberSignUpService.checkDuplicateNickname(memberNicknameReq);
 
 		return new ResponseEntity<>(BaseResponseBody.of("사용할 수 있는 닉네임입니다"), HttpStatus.OK);
 	}
