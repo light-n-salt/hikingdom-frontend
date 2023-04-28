@@ -8,6 +8,9 @@ import marker from 'assets/images/marker.png'
 import styles from './RankItem.module.scss'
 import IconText from './IconText'
 import { ThemeContext } from 'styles/ThemeProvider'
+import bronzeMedal from 'assets/images/bronze_medal.png'
+import silverMedal from 'assets/images/silver_medal.png'
+import goldMedal from 'assets/images/gold_medal.png'
 
 type RankItemProps = {
     clubInfo: ClubInfo
@@ -17,23 +20,46 @@ type RankItemProps = {
 function RankItem({ clubInfo, size }: RankItemProps) {
     const { theme } = useContext(ThemeContext)
 
-    const totalMemeber = clubInfo.totalMember.toString()
+    const totalMemeber = clubInfo.totalMember.toString() + '명'
     const totalDistance = clubInfo.totalDistance.toString() + 'km'
+
+    let rankingIcon = null
+    switch (clubInfo.ranking) {
+        case 1:
+            rankingIcon = goldMedal
+            break
+        case 2:
+            rankingIcon = silverMedal
+            break
+        case 3:
+            rankingIcon = bronzeMedal
+            break
+    }
 
     return (
         <div className={`box ${theme} ${styles['rank-item']} ${styles[size]}`}>
             <h3>{clubInfo.clubName}</h3>
-            <div>
+            <div className={`${styles['icon-info-box']} ${styles[size]}`}>
                 <IconText imgSrc={person} text={totalMemeber} />
-                <IconText imgSrc={hourglass} text={clubInfo.totalDuration} />
-                <IconText imgSrc={shoe} text={totalDistance} />
+                <div className={styles['flex-box']}>
+                    <IconText
+                        imgSrc={hourglass}
+                        text={clubInfo.totalDuration}
+                    />
+                    <IconText imgSrc={shoe} text={totalDistance} />
+                </div>
             </div>
-            <div>
+            <div className={styles['flex-box']}>
                 {size === 'lg' && (
                     <IconText imgSrc={marker} text={clubInfo.location} />
                 )}
                 <MtRating participationRate={clubInfo.participationRate} />
             </div>
+            {rankingIcon ? (
+                <img className={styles['medal']} src={rankingIcon} />
+            ) : (
+                <div className={styles['rank-box']}>{clubInfo.ranking}</div>
+            )}
         </div>
     )
 }
