@@ -18,4 +18,3 @@ RUN echo "$SERVER_MODE"
 ENV SERVER_MODE=$SERVER_MODE
 
 ENTRYPOINT ["java", "-Dspring.profiles.active=${SERVER_MODE}","-Duser.timezone=Asia/Seoul", "-jar", "/app.jar"]
-
