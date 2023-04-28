@@ -12,7 +12,7 @@
     }
 
     &.dark {
-        background-color: $black;
+        background-color: $bg-dark;
         color: $white;
     }
 }
@@ -25,6 +25,8 @@
 }
 
 .box {
+    border-radius: 1rem;
+
     &.light {
         border-radius: 0.5rem;
 
@@ -39,6 +41,7 @@
 
         background-color: $black;
         color: $white;
+        background-color: $box-dark;
     }
 }
 

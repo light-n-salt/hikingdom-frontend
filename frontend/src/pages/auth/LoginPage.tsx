@@ -38,7 +38,7 @@ const clubInfoArray = [
         totalDuration: '12:02',
         totalDistance: 123,
         participationRate: 87,
-        ranking: 2,
+        ranking: 5,
     },
 ]
 
