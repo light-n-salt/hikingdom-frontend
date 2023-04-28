@@ -37,6 +37,12 @@
             width: 100%;
         }
 
+        .username {
+            color: $primary-light;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
         > span {
             margin-bottom: 1rem;
             color: $gray;

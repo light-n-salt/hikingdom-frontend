@@ -1,11 +1,18 @@
-.sm {
-    width: 2rem;
-}
+@use 'src/styles/colors' as *;
 
-.md {
-    width: 3rem;
-}
+.icon-btn {
+    &:hover {
+        cursor: pointer;
+    }
+    &.sm {
+        width: 2rem;
+    }
 
-.lg {
-    width: 4rem;
+    &.md {
+        width: 3rem;
+    }
+
+    &.lg {
+        width: 4rem;
+    }
 }

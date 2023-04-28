@@ -1,0 +1,22 @@
+@use 'src/styles/colors' as *;
+
+.level-modal {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    gap: 1.5rem;
+
+    .level {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        align-items: center;
+
+        font-size: 1.2rem;
+        font-weight: bold;
+
+        > img {
+            width: 2rem;
+        }
+    }
+}
