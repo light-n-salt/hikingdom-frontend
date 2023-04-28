@@ -11,7 +11,7 @@ function IconButton({ imgSrc, size = 'sm', onClick }: IconButtonProps) {
     return (
         <img
             src={imgSrc}
-            className={`${styles.iconButton} ${styles[size]}`}
+            className={`${styles['icon-btn']} ${styles[size]}`}
             onClick={onClick}
         />
     )

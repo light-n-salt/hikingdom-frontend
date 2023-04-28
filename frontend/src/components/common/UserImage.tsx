@@ -8,10 +8,7 @@ type UserImageProps = {
 
 function UserImage({ size, imgUrl }: UserImageProps) {
     return (
-        <img
-            className={`${styles['user-image']} ${styles[size]}`}
-            src={imgUrl}
-        />
+        <img className={`${styles['user-img']} ${styles[size]}`} src={imgUrl} />
     )
 }
 
