@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.lightnsalt.hikingdom.domain.BaseTimeEntity;
 import org.lightnsalt.hikingdom.domain.member.common.enumtype.MemberRoleType;
 
@@ -30,6 +32,8 @@ import lombok.ToString;
 @Entity
 @Getter
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member")
 public class Member extends BaseTimeEntity {
@@ -59,7 +63,7 @@ public class Member extends BaseTimeEntity {
 	@Column(name = "withdraw_at")
 	private LocalDateTime withdrawAt;
 
-	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT false")
+	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT 0")
 	private Boolean isWithdraw;
 
 	@Enumerated(EnumType.STRING)
