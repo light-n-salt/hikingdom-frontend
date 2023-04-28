@@ -23,9 +23,7 @@ function IconText({
     const flexStyle = isRight ? styles['right'] : ''
 
     return (
-        <div
-            className={`${styles[theme]} ${styles[size]} ${textStyle} ${flexStyle}`}
-        >
+        <div className={`${theme} ${styles[size]} ${textStyle} ${flexStyle}`}>
             <img src={imgSrc} />
             {text}
         </div>

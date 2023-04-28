@@ -7,7 +7,9 @@ type UserImageProps = {
     imgUrl: string
 }
 
-export default function UserImage({ size, imgUrl }: UserImageProps) {
+function UserImage({ size, imgUrl }: UserImageProps) {
     const { theme } = useContext(ThemeContext)
     return <img className={`${styles[theme]} ${styles[size]}`} src={imgUrl} />
 }
+
+export default UserImage
