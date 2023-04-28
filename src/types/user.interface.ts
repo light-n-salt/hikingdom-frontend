@@ -50,4 +50,5 @@ export interface UserAlarm {
     title: string
     content: string
     createdAt: string
+    isRead: boolean
 }
