@@ -1,5 +1,23 @@
+import MtItem from 'components/common/MtItem'
 import RankList from 'components/common/RankList'
-import React from 'react'
+import React, { useContext } from 'react'
+import { ThemeContext } from 'styles/ThemeProvider'
+
+function LoginPage() {
+    const { theme, toggleTheme } = useContext(ThemeContext)
+
+    return (
+        <div className={`page ${theme}`}>
+            <button onClick={toggleTheme}>다크모드</button>
+            <RankList clubInfoArray={clubInfoArray} size="sm" />
+            {mtInfoArray.map((mtInfo, index) => (
+                <MtItem key={`mt-info-${index}`} mtInfo={mtInfo} />
+            ))}
+        </div>
+    )
+}
+
+export default LoginPage
 
 const clubInfoArray = [
     {
@@ -23,8 +41,20 @@ const clubInfoArray = [
         ranking: 2,
     },
 ]
-function LoginPage() {
-    return <RankList clubInfoArray={clubInfoArray} size="sm" />
-}
 
-export default LoginPage
+const mtInfoArray = [
+    {
+        mountainId: 1,
+        name: '도봉산',
+        maxAlt: 123,
+        address: '서울시 노원구',
+        imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+    },
+    {
+        mountainId: 1,
+        name: '도봉산',
+        maxAlt: 123,
+        address: '서울시 노원구',
+        imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+    },
+]
