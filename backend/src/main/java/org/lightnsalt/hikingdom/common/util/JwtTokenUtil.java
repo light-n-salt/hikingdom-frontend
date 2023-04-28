@@ -2,6 +2,7 @@ package org.lightnsalt.hikingdom.common.util;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
@@ -32,7 +33,7 @@ public class JwtTokenUtil {
 		Date now = new Date();
 
 		Claims claims = Jwts.claims().setSubject(email);
-		claims.put("roles", role);
+		claims.put("roles", List.of(role));
 		claims.put("type", tokenType);
 
 		return Jwts.builder()
