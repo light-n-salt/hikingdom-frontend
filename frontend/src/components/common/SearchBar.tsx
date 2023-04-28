@@ -1,15 +1,21 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './SearchBar.module.scss'
+import { BsSearch } from 'react-icons/bs'
 
 type SearchBarProps = {
-    label: string
     value: string
     placeholder: string
-    onChangeText: (value: string) => void
+    setSeleted?: (value: string) => void // selectbox 값 변경 함수
+    onChangeText: (value: string) => void // 검색값
 }
 
-function SearchBar({ value, placeholder, onChangeText }: SearchBarProps) {
+function SearchBar({
+    value,
+    placeholder,
+    setSeleted,
+    onChangeText,
+}: SearchBarProps) {
     const { theme } = useContext(ThemeContext)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,6 +24,12 @@ function SearchBar({ value, placeholder, onChangeText }: SearchBarProps) {
 
     return (
         <div className={`${styles[theme]} ${styles.searchbar}`}>
+            {setSeleted ? (
+                <>toggle</>
+            ) : (
+                <BsSearch className={`${styles.icon}`} />
+            )}
+            <label htmlFor="input"> I </label>
             <input
                 id="input"
                 value={value}
