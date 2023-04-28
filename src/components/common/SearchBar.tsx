@@ -17,7 +17,7 @@ function SearchBar({ value, placeholder, onChangeText }: SearchBarProps) {
     }
 
     return (
-        <div className={`${styles[theme]}`}>
+        <div className={`${styles[theme]} ${styles.searchbar}`}>
             <input
                 id="input"
                 value={value}

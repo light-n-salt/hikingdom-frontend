@@ -6,6 +6,7 @@ type LabelInputProps = {
     label: string
     value: string
     placeholder: string
+    isError: boolean
     onChangeText: (value: string) => void
 }
 
@@ -14,21 +15,25 @@ function LabelInput({
     value,
     placeholder,
     onChangeText,
+    isError,
 }: LabelInputProps) {
     const { theme } = useContext(ThemeContext)
+
+    const error = isError ? styles.error : ''
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         onChangeText(event.target.value)
     }
 
     return (
-        <div className={`${styles[theme]}`}>
+        <div className={`${styles[theme]} ${styles.labelinput}`}>
             <label htmlFor="input">{label}</label>
             <input
                 id="input"
                 value={value}
                 onChange={handleChange}
                 placeholder={placeholder}
+                className={`${error}`}
             />
         </div>
     )
