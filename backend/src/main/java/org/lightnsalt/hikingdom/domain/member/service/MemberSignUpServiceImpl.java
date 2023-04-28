@@ -40,7 +40,7 @@ public class MemberSignUpServiceImpl implements MemberSignUpService {
 			.nickname(nickname)
 			.password(passwordEncoder.encode(memberSignUpReq.getPassword()))
 			.role(MemberRoleType.ROLE_USER)
-			.level(memberLevelInfoRepository.findById(1L)
+			.level(memberLevelInfoRepository.findById(1)
 				.orElseThrow(() -> new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR)))
 			.build();
 
