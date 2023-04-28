@@ -1,5 +1,6 @@
 package org.lightnsalt.hikingdom.common.security.jwt;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,20 +14,22 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
-	private final byte[] secretKeyBytes;
+	private final Key secretKey;
 
-	public JwtAuthenticationProvider(@Value("${security.jwt.token.secret-key}") String secretKey) {
-		this.secretKeyBytes = secretKey.getBytes();
+	public JwtAuthenticationProvider(@Value("${security.jwt.token.secret-key}") String secretKeyString) {
+		this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKeyString));
 	}
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		Claims claims = Jwts.parserBuilder()
-			.setSigningKey(secretKeyBytes)
+			.setSigningKey(secretKey)
 			.build()
 			.parseClaimsJws(((JwtAuthToken)authentication).getJwtAuthToken())
 			.getBody();
