@@ -17,6 +17,7 @@ import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.ui.main.group.GroupFragment
+import net.daum.mf.map.api.MapView
 import java.time.LocalDateTime
 
 class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBinding::inflate) {
@@ -32,6 +33,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         binding.hikingFragmentViewModel = hikingViewModel
 
         setHikingService()
+        setMapView()
     }
 
     companion object {
@@ -143,20 +145,10 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         startTime = LocalDateTime.now()     // 시작시간 세팅
     }
 
-//    fun checkPermission(){
-//        // check for permissions
-//        if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-//            && ContextCompat.checkSelfPermission(this.requireContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME.toLong(),LOCATION_REFRESH_DISTANCE.toFloat(), mLocationListener)
-//        } else {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)
-//                || ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-//                // permission is denined by user, you can show your alert dialog here to send user to App settings to enable permission
-//            } else {
-//                ActivityCompat.requestPermissions(context,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),MY_PERMISSIONS_REQUEST_LOCATION)
-//            }
-//        }
-//    }
+    private fun setMapView(){
+        val mapView = MapView(activity)
+        val mapViewContainer = binding.hikingMapview
+        mapViewContainer.addView(mapView)
+    }
 
 }

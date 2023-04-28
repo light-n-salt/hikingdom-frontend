@@ -8,6 +8,7 @@
             type="com.example.hikingdom.ui.main.hiking.HikingViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/hiking_mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

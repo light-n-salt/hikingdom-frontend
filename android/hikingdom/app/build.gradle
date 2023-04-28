@@ -2,11 +2,12 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
-def Properties properties = new Properties()
+Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
+def KAKAOMAP_NATIVE_APP_KEY = properties.getProperty('KAKAOMAP_NATIVE_APP_KEY')
 android {
     compileSdk 31
 
@@ -26,7 +27,9 @@ android {
         buildConfigField("String", "RANKING_URL", properties.getProperty("RANKING_URL"))
         buildConfigField("String", "GROUP_URL", properties.getProperty("GROUP_URL"))
         buildConfigField("String", "MYPAGE_URL", properties.getProperty("MYPAGE_URL"))
+        buildConfigField("String", "KAKAOMAP_NATIVE_APP_KEY", properties.getProperty("KAKAOMAP_NATIVE_APP_KEY"))
 
+        manifestPlaceholders["KAKAOMAP_NATIVE_APP_KEY"] = KAKAOMAP_NATIVE_APP_KEY
     }
 
     buildTypes {
@@ -86,4 +89,8 @@ dependencies {
     //Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+
+    //KakaoMap SDK
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/libDaumMapAndroid.jar')
 }
