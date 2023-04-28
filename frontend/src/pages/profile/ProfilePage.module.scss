@@ -1,0 +1,11 @@
+@use 'src/styles/colors' as *;
+
+.profile-page {
+    gap: 1rem;
+
+    > img:first-child {
+        position: absolute;
+        right: 1.5rem;
+        top: 1.5rem;
+    }
+}
