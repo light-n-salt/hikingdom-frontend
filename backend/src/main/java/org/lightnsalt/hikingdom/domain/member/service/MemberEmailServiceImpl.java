@@ -33,7 +33,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 		("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()+|=").toCharArray();
 
 	@Value("{mail.setFrom}")
-	private final String fromEmail;
+	private String fromEmail;
 
 	private final JavaMailSender javaMailSender;
 	private final PasswordEncoder passwordEncoder;
