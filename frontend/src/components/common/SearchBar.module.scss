@@ -1,0 +1,33 @@
+@use 'src/styles/colors' as *;
+
+.searchbar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background: $white;
+    border: 2px solid $secondary-light;
+    border-radius: 0.5rem;
+    // gap: 2rem;
+
+    .icon {
+        margin: 0.7rem;
+        height: 1.6rem;
+        width: 1.6rem;
+        color: $primary-light;
+    }
+
+    label {
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: $primary-light;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.7rem;
+        font-size: 1.3rem;
+        border-radius: 0.5rem;
+        color: $gray;
+        // background: $white;
+    }
+}
