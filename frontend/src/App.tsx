@@ -4,6 +4,7 @@ import { RecoilRoot } from 'recoil'
 import { Routes, Route } from 'react-router-dom'
 import Main from 'pages/Main'
 import LoginPage from 'pages/auth/LoginPage'
+import SignupPage from 'pages/auth/SignupPage'
 import ThemeProvider from 'styles/ThemeProvider'
 
 function App() {
@@ -13,9 +14,9 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Main />} />
                     <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
                     {/* <Route path="/agreement" element={<AgreementPage />} />
                     <Route path="/password" element={<FindPwdPage />} />
-                    <Route path="/signup" element={<SignupPage />} />
 
                     // 메인
                     <Route path="/main" element={<MainPage />} />
