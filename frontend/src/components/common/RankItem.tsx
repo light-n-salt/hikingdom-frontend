@@ -21,7 +21,7 @@ function RankItem({ clubInfo, size }: RankItemProps) {
     const totalDistance = clubInfo.totalDistance.toString() + 'km'
 
     return (
-        <div className={`box ${theme} ${styles.rankitem} ${styles[size]}`}>
+        <div className={`box ${theme} ${styles['rank-item']} ${styles[size]}`}>
             <h3>{clubInfo.clubName}</h3>
             <div>
                 <IconText imgSrc={person} text={totalMemeber} />
@@ -48,7 +48,7 @@ function MtRating({ participationRate }: MtRatingProps) {
     const score = Math.round(participationRate / 20)
 
     return (
-        <div className={styles.mtrating}>
+        <div className={styles['mt-rating']}>
             <p>참여도</p>
             <div>
                 {[...Array(5)].map((_, index) => (
