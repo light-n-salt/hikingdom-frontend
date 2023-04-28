@@ -1,6 +1,8 @@
 @use 'styles/colors' as *;
 
 .page {
+    position: relative;
+    z-index: 5;
     min-width: 100vw;
     min-height: 100vh;
 

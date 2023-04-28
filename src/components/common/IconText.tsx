@@ -24,7 +24,7 @@ function IconText({
 
     return (
         <div
-            className={`${styles[theme]} ${styles[size]} ${textStyle} ${flexStyle}`}
+            className={`${styles['icon-text']} ${styles[theme]} ${styles[size]} ${textStyle} ${flexStyle}`}
         >
             <img src={imgSrc} />
             {text}
