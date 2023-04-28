@@ -1,0 +1,53 @@
+@use 'src/styles/colors' as *;
+
+button {
+    box-shadow: -1px 3px 5px 0px $shadow-light;
+}
+
+.sm {
+    padding: 0.25rem;
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+}
+
+.md {
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+}
+
+.lg {
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+    font-size: 1.4rem;
+    width: 100%;
+}
+
+.red {
+    background-color: $red;
+    color: $white;
+}
+
+.light {
+    &.primary {
+        background-color: $primary-light;
+        color: $white;
+    }
+
+    &.secondary {
+        background-color: $secondary-light;
+        color: $primary-light;
+    }
+
+    &.white {
+        background-color: $white;
+        color: $primary-light;
+    }
+}
+
+.dark {
+    &.primary {
+        background-color: $primary-light;
+        color: $white;
+    }
+}

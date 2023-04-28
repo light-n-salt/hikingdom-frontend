@@ -1,0 +1,13 @@
+.logo {
+    height: auto;
+
+    &.sm {
+        width: 10rem;
+    }
+    &.md {
+        width: 15rem;
+    }
+    &.lg {
+        width: 20rem;
+    }
+}

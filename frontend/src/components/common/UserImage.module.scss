@@ -1,0 +1,16 @@
+@use 'src/styles/colors' as *;
+
+.user-img {
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.sm {
+    width: 3rem;
+    height: 3rem;
+}
+
+.lg {
+    width: 6rem;
+    height: 6rem;
+}

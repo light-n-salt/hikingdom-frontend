@@ -1,0 +1,35 @@
+@use 'src/styles/colors' as *;
+
+.icon-text {
+    display: flex;
+    align-items: center;
+
+    &.sm {
+        img {
+            width: 1.3rem;
+        }
+        font-size: 0.9rem;
+    }
+
+    &.md {
+        img {
+            width: 1.6rem;
+        }
+        font-size: 1.2rem;
+    }
+
+    &.lg {
+        img {
+            width: 1.9em;
+        }
+        font-size: 1.5rem;
+    }
+
+    &.bold {
+        font-weight: bold;
+    }
+
+    &.right {
+        flex-direction: row-reverse;
+    }
+}
