@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  backend_dev:
+    container_name: backend_main
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: main
+    ports:
+      - 8080:8080
+    environment:
+      - TZ=Asia/Seoul
+
+  frontend_dev:
+    container_name: frontend_main
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
