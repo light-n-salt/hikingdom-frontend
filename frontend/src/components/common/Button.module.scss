@@ -1,14 +1,13 @@
 @use 'src/styles/colors' as *;
 
 button {
-    width: 100%;
     box-shadow: -1px 3px 5px 0px $shadow-light;
 }
 
 .sm {
     padding: 0.25rem;
     border-radius: 0.3rem;
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 .md {
@@ -21,6 +20,7 @@ button {
     padding: 0.7rem;
     border-radius: 0.5rem;
     font-size: 1.4rem;
+    width: 100%;
 }
 
 .red {

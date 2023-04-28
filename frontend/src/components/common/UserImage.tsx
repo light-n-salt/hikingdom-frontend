@@ -7,7 +7,12 @@ type UserImageProps = {
 }
 
 function UserImage({ size, imgUrl }: UserImageProps) {
-    return <img className={`${styles[size]}`} src={imgUrl} />
+    return (
+        <img
+            className={`${styles['user-image']} ${styles[size]}`}
+            src={imgUrl}
+        />
+    )
 }
 
 export default UserImage

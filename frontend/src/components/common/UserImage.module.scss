@@ -1,4 +1,6 @@
-img {
+@use 'src/styles/colors' as *;
+
+.user-img {
     object-fit: cover;
     border-radius: 50%;
 }
@@ -9,6 +11,6 @@ img {
 }
 
 .lg {
-    width: 8rem;
-    height: 8rem;
+    width: 6rem;
+    height: 6rem;
 }
