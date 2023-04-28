@@ -6,7 +6,7 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 RUN chmod +x ./gradlew
-RUN ./gradlew bootJar --no-tests
+RUN ./gradlew bootJar
 
 FROM openjdk:11-jdk
 COPY --from=builder build/libs/*.jar app.jar
