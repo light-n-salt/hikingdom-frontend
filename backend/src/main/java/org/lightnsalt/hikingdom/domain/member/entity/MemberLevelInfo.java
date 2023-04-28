@@ -22,7 +22,7 @@ public class MemberLevelInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "TINYINT")
-	private Long id;
+	private Integer id;
 
 	@Column(name = "name", nullable = false, length = 10)
 	private String name;

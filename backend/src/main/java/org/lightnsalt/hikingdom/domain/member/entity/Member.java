@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.lightnsalt.hikingdom.domain.BaseTimeEntity;
+import org.lightnsalt.hikingdom.domain.member.common.enumtype.MemberRoleType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,6 +32,8 @@ import lombok.ToString;
 @Entity
 @Getter
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member")
 public class Member extends BaseTimeEntity {
@@ -56,12 +63,16 @@ public class Member extends BaseTimeEntity {
 	@Column(name = "withdraw_at")
 	private LocalDateTime withdrawAt;
 
-	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT false")
+	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT 0")
 	private Boolean isWithdraw;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 10)
+	private MemberRoleType role;
 
 	@Builder
 	public Member(MemberLevelInfo level, String email, String password, String nickname, String profileUrl,
-		LocalDateTime withdrawAt, Boolean isWithdraw) {
+		LocalDateTime withdrawAt, Boolean isWithdraw, MemberRoleType role) {
 		this.level = level;
 		this.email = email;
 		this.password = password;
@@ -69,5 +80,6 @@ public class Member extends BaseTimeEntity {
 		this.profileUrl = profileUrl;
 		this.withdrawAt = withdrawAt;
 		this.isWithdraw = isWithdraw;
+		this.role = role;
 	}
 }
