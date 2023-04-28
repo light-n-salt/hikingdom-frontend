@@ -14,7 +14,7 @@ function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
     const maxAlt = mtInfo.maxAlt.toString() + 'm'
 
     return (
-        <div className={styles['mt-item']}>
+        <div className={`${styles['mt-item']} ${styles[size]}`}>
             <h3>{mtInfo.name}</h3>
             <div>
                 <IconText imgSrc={hotAirBalloon} text="높이" />
