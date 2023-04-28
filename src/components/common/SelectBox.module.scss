@@ -1,0 +1,51 @@
+@use 'styles/colors' as *;
+
+.selectBox {
+    width: 100%;
+    &.light {
+        .selected {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0.5rem;
+
+            border: solid 0.2rem $secondary-light;
+            border-radius: 0.3rem;
+
+            background-color: $white;
+            color: $black;
+
+            font-weight: 600;
+
+            svg {
+                color: $primary-light;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .options {
+            border-radius: 0.3rem;
+            background-color: $white;
+
+            box-shadow: -1px 3px 5px 0px $shadow-light;
+            list-style: none;
+            li {
+                padding: 0.5rem;
+                border-radius: 0.1rem;
+
+                &:active {
+                    background-color: $secondary-light;
+                    color: $primary-light;
+                }
+            }
+        }
+    }
+
+    &.dark {
+        background-color: $black;
+    }
+}
