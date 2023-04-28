@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+import React from 'react'
 import styles from './IconText.module.scss'
 
 type IconTextProps = {
@@ -17,13 +16,13 @@ function IconText({
     isBold = false,
     isRight = false,
 }: IconTextProps) {
-    const { theme } = useContext(ThemeContext)
-
     const textStyle = isBold ? styles.bold : ''
     const flexStyle = isRight ? styles['right'] : ''
 
     return (
-        <div className={`${theme} ${styles[size]} ${textStyle} ${flexStyle}`}>
+        <div
+            className={`${styles['icon-text']} ${styles[size]} ${textStyle} ${flexStyle}`}
+        >
             <img src={imgSrc} />
             {text}
         </div>

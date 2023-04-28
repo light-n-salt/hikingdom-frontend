@@ -10,7 +10,7 @@ type RankListProps = {
 
 function RankList({ clubInfoArray, size = 'lg' }: RankListProps) {
     return (
-        <div className={`${styles.ranklist} ${styles[size]}`}>
+        <div className={`${styles['rank-list']} ${styles[size]}`}>
             {clubInfoArray.map((clubInfo, index) => (
                 <RankItem
                     key={`rank-item-${index}`}
