@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styles from './UserImage.module.scss'
-import { ThemeContext } from 'styles/ThemeProvider'
 
 type UserImageProps = {
     size: 'sm' | 'lg'
@@ -8,8 +7,12 @@ type UserImageProps = {
 }
 
 function UserImage({ size, imgUrl }: UserImageProps) {
-    const { theme } = useContext(ThemeContext)
-    return <img className={`${styles[theme]} ${styles[size]}`} src={imgUrl} />
+    return (
+        <img
+            className={`${styles['user-image']} ${styles[size]}`}
+            src={imgUrl}
+        />
+    )
 }
 
 export default UserImage

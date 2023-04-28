@@ -1,28 +1,28 @@
 @use 'src/styles/colors' as *;
 
-div {
+.icon-text {
     display: flex;
     align-items: center;
 
     &.sm {
         img {
-            width: 1rem;
+            width: 1.3rem;
         }
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     &.md {
         img {
-            width: 1.8rem;
+            width: 1.6rem;
         }
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     &.lg {
         img {
-            width: 2.2rem;
+            width: 1.9em;
         }
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 
     &.bold {

@@ -1,6 +1,6 @@
 @use 'src/styles/colors' as *;
 
-img {
+.user-img {
     object-fit: cover;
     border-radius: 50%;
 }
