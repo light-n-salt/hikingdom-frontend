@@ -10,6 +10,7 @@ import org.lightnsalt.hikingdom.domain.member.entity.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		redisUtil.setValueWithExpiration(accessToken, "logout", expiration);
 	}
 
+	@Transactional
 	@Override
 	public void changePassword(String email, MemberChangePasswordReq memberChangePasswordReq) {
 		if (!memberChangePasswordReq.getCheckPassword().equals(memberChangePasswordReq.getNewPassword())) {
@@ -47,15 +49,17 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
 
-		boolean isValidPassword = passwordEncoder.matches(member.getPassword(), memberChangePasswordReq.getPassword());
+		boolean isValidPassword = passwordEncoder.matches(memberChangePasswordReq.getPassword(), member.getPassword());
 
 		if (!isValidPassword) {
 			throw new GlobalException(ErrorCode.INVALID_LOGIN);
 		}
 
-		memberRepository.setPasswordById(memberChangePasswordReq.getNewPassword(), member.getId());
+		memberRepository.setPasswordById(passwordEncoder.encode(memberChangePasswordReq.getNewPassword()),
+			member.getId());
 	}
 
+	@Transactional
 	@Override
 	public void changeNickname(String email, MemberNicknameReq memberNicknameReq) {
 		Member member = memberRepository.findByEmail(email)
