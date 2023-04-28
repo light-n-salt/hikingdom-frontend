@@ -53,11 +53,11 @@ public class JwtTokenUtil {
 	}
 
 	public String createAccessToken(String email, MemberRoleType role) {
-		return createToken(email, role, "access", expiration);
+		return "Bearer " + createToken(email, role, "access", expiration);
 	}
 
 	public String createRefreshToken(String email, MemberRoleType role) {
-		return createToken(email, role, "refresh", refreshExpiration);
+		return "Bearer " + createToken(email, role, "refresh", refreshExpiration);
 	}
 
 	public String resolveToken(String bearerToken) {
