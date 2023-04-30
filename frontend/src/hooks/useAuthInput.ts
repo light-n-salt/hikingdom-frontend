@@ -13,7 +13,7 @@ type AuthInputReturns = {
     isError: boolean
 }
 
-export default function useAuthInput({
+function useAuthInput({
     type,
     initialValue = '',
 }: AuthInputProps): AuthInputReturns {
@@ -31,3 +31,5 @@ export default function useAuthInput({
 
     return { value, onChange, isError }
 }
+
+export default useAuthInput

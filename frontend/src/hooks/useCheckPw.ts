@@ -11,7 +11,7 @@ type CheckPwReturns = {
     isError: boolean
 }
 
-export default function useCheckPw({ password }: CheckPwProps): CheckPwReturns {
+function useCheckPw({ password }: CheckPwProps): CheckPwReturns {
     const [value, setValue] = useState<string>('')
     const [isError, setIsError] = useState(false)
     const debouncedValue = useDebounce(value)
@@ -26,3 +26,5 @@ export default function useCheckPw({ password }: CheckPwProps): CheckPwReturns {
 
     return { value, onChange, isError }
 }
+
+export default useCheckPw

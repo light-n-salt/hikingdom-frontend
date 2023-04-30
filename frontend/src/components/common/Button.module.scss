@@ -1,7 +1,7 @@
 @use 'src/styles/colors' as *;
 
 button {
-    box-shadow: -1px 3px 5px 0px $shadow-light;
+    box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
 }
 
 .sm {
@@ -24,30 +24,30 @@ button {
 }
 
 .red {
-    background-color: $red;
-    color: $white;
+    background-color: clr(red-clr);
+    color: clr(white-clr);
 }
 
 .light {
     &.primary {
-        background-color: $primary-light;
-        color: $white;
+        background-color: clr(primary-clr);
+        color: clr(white-clr);
     }
 
     &.secondary {
-        background-color: $secondary-light;
-        color: $primary-light;
+        background-color: clr(secondary-clr);
+        color: clr(primary-clr);
     }
 
     &.white {
-        background-color: $white;
-        color: $primary-light;
+        background-color: clr(white-clr);
+        color: clr(primary-clr);
     }
 }
 
 .dark {
     &.primary {
-        background-color: $primary-light;
-        color: $white;
+        background-color: clr(primary-clr);
+        color: clr(white-clr);
     }
 }

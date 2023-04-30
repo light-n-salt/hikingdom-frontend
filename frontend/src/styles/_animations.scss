@@ -1,0 +1,185 @@
+@function func-animation-speed($speed) {
+    @if $speed == 'slow' {
+        @return 1s;
+    } @else if $speed == 'normal' {
+        @return 0.5s;
+    } @else if $speed == 'fast' {
+        @return 0.2s;
+    } @else {
+        @return 0;
+    }
+}
+
+@mixin animation(
+    $delay,
+    $duration,
+    $animation,
+    $direction: forward,
+    $fillmode: fowards
+) {
+    animation-delay: $delay;
+    animation-duration: $duration;
+    animation-name: $animation;
+    animation-fill-mode: $fillmode;
+    animation-direction: $direction;
+}
+
+@mixin animation-slide-in-down($speed: 'normal') {
+    @include animation(
+        0,
+        func-animation-speed($speed),
+        animation-slide-in-down,
+        ease-in
+    );
+
+    @keyframes animation-slide-in-down {
+        0% {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+@mixin animation-slide-in-up($speed: 'normal') {
+    @include animation(
+        0,
+        func-animation-speed($speed),
+        animation-slide-in-up,
+        ease-in
+    );
+
+    @keyframes animation-slide-in-up {
+        0% {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+@mixin animation-slide-in-left($speed: 'normal') {
+    @include animation(
+        0,
+        func-animation-speed($speed),
+        animation-slide-in-left,
+        ease-in
+    );
+
+    @keyframes animation-slide-in-left {
+        0% {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+}
+
+@mixin animation-slide-in-right($speed: 'normal') {
+    @include animation(
+        0,
+        func-animation-speed($speed),
+        animation-slide-in-right,
+        ease-in
+    );
+
+    @keyframes animation-slide-in-right {
+        0% {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+}
+
+@mixin animation-slide-out-down($speed: 'normal') {
+    @include animation(
+        0,
+        func-animation-speed($speed),
+        animation-slide-out-down,
+        ease-out
+    );
+
+    @keyframes animation-slide-out-down {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+    }
+}
+
+@mixin animation-slide-out-up($speed: 'normal') {
+    @include animation(
+        0,
+        func-animation-speed($speed),
+        animation-slide-out-up,
+        ease-out
+    );
+
+    @keyframes animation-slide-out-up {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+    }
+}
+
+@mixin animation-slide-out-left($speed: 'normal') {
+    @include animation(
+        0,
+        func-animation-speed($speed),
+        animation-slide-out-left,
+        ease-out
+    );
+
+    @keyframes animation-slide-out-left {
+        0% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+    }
+}
+
+@mixin animation-slide-out-right($speed: 'normal') {
+    @include animation(
+        0,
+        func-animation-speed($speed),
+        animation-slide-out-right,
+        ease-out
+    );
+
+    @keyframes animation-slide-out-right {
+        0% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+    }
+}
