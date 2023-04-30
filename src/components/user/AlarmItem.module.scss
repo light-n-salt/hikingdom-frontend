@@ -1,0 +1,54 @@
+@use 'src/styles/colors' as *;
+
+.alarm-box {
+    padding: 1rem;
+
+    &.read {
+        background-color: $shadow-light;
+    }
+
+    .alarm-title-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+
+        .alarm-title {
+            display: flex;
+            align-items: center;
+
+            > span {
+                font-size: 1.1rem;
+                font-weight: bold;
+            }
+
+            &.unread {
+                .dot {
+                    color: $red;
+                    font-size: 1.5rem;
+                }
+            }
+
+            &.read {
+                .dot {
+                    color: $shadow-light;
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        > span {
+            color: $gray;
+            font-size: 0.8rem;
+        }
+    }
+
+    .alarm-content {
+        white-space: nowrap;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        padding-left: 1.5rem;
+    }
+}

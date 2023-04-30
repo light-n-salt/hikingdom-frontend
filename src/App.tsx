@@ -1,9 +1,13 @@
 import './App.scss'
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
+import ThemeProvider from 'styles/ThemeProvider'
+
 import Main from 'pages/Main'
 import LoginPage from 'pages/auth/LoginPage'
 import SignupPage from 'pages/auth/SignupPage'
+import ProfilePage from 'pages/profile/ProfilePage '
+import AlarmPage from 'pages/profile/AlarmPage'
 import WebMargin from 'components/common/WebMargin'
 
 function App() {
@@ -42,12 +46,11 @@ function App() {
                     <Route
                         path="/club/meetup/detail/:id"
                         element={<MeetupDetailPage />}
-                        />
-                        
-                        // 마이페이지
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="/profile/update" element={<ProfileUpdatePage />} />
-                    <Route path="/alarm" element={<AlarmPage />} /> */}
+                    /> */}
+
+                <Route path="/profile" element={<ProfilePage />} />
+                {/* <Route path="/profile/update" element={<ProfileUpdatePage />} /> */}
+                <Route path="/alarm" element={<AlarmPage />} />
             </Route>
         </Routes>
     )
