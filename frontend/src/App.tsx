@@ -2,10 +2,17 @@ import './App.scss'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
 import { Routes, Route } from 'react-router-dom'
+import ThemeProvider from 'styles/ThemeProvider'
+
 import Main from 'pages/Main'
 import LoginPage from 'pages/auth/LoginPage'
 import SignupPage from 'pages/auth/SignupPage'
-import ThemeProvider from 'styles/ThemeProvider'
+
+import ProfilePage from 'pages/profile/ProfilePage '
+import AlarmPage from 'pages/profile/AlarmPage'
+
+
+
 
 function App() {
     return (
@@ -13,9 +20,12 @@ function App() {
             <ThemeProvider>
                 <Routes>
                     <Route path="/" element={<Main />} />
+                    {/* <Route path="/login" element={<LoginPage />} />
+                    <Route path="/agreement" element={<AgreementPage />} />
+
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
-                    {/* <Route path="/agreement" element={<AgreementPage />} />
+
                     <Route path="/password" element={<FindPwdPage />} />
 
                     // 메인
@@ -44,12 +54,11 @@ function App() {
                     <Route
                         path="/club/meetup/detail/:id"
                         element={<MeetupDetailPage />}
-                    />
+                    /> */}
 
-                    // 마이페이지
                     <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/profile/update" element={<ProfileUpdatePage />} />
-                    <Route path="/alarm" element={<AlarmPage />} /> */}
+                    {/* <Route path="/profile/update" element={<ProfileUpdatePage />} /> */}
+                    <Route path="/alarm" element={<AlarmPage />} />
                 </Routes>
             </ThemeProvider>
         </RecoilRoot>
