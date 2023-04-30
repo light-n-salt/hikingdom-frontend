@@ -2,12 +2,9 @@
 
 .alarm-box {
     padding: 1rem;
-    // Todo 알람 읽고 안읽고 CSS 나누기
-    &.alarm-unread {
-        .dot {
-            color: $red;
-            font-size: 1.5rem;
-        }
+
+    &.read {
+        background-color: $shadow-light;
     }
 
     .alarm-title-box {
@@ -20,14 +17,23 @@
             display: flex;
             align-items: center;
 
-            > .dot {
-                color: $shadow-light;
-                font-size: 1.5rem;
-            }
-
             > span {
                 font-size: 1.1rem;
                 font-weight: bold;
+            }
+
+            &.unread {
+                .dot {
+                    color: $red;
+                    font-size: 1.5rem;
+                }
+            }
+
+            &.read {
+                .dot {
+                    color: $shadow-light;
+                    font-size: 1.5rem;
+                }
             }
         }
 
@@ -38,6 +44,11 @@
     }
 
     .alarm-content {
+        white-space: nowrap;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+
         padding-left: 1.5rem;
     }
 }
