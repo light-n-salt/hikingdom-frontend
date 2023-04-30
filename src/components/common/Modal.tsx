@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import styles from './Modal.module.scss'
 import { ThemeContext } from 'styles/ThemeProvider'
 
-interface ModalProps {
+type ModalProps = {
     onClick: () => void
     children: React.ReactNode
 }
