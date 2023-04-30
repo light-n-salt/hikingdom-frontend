@@ -6,9 +6,13 @@ import ThemeProvider from 'styles/ThemeProvider'
 
 import Main from 'pages/Main'
 import LoginPage from 'pages/auth/LoginPage'
+import SignupPage from 'pages/auth/SignupPage'
 
 import ProfilePage from 'pages/profile/ProfilePage '
 import AlarmPage from 'pages/profile/AlarmPage'
+
+
+
 
 function App() {
     return (
@@ -18,8 +22,11 @@ function App() {
                     <Route path="/" element={<Main />} />
                     {/* <Route path="/login" element={<LoginPage />} />
                     <Route path="/agreement" element={<AgreementPage />} />
-                    <Route path="/password" element={<FindPwdPage />} />
+
+                    <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
+
+                    <Route path="/password" element={<FindPwdPage />} />
 
                     // 메인
                     <Route path="/main" element={<MainPage />} />
