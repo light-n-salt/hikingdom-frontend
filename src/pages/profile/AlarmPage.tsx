@@ -27,9 +27,6 @@ function AlarmPage() {
 
     return (
         <div className={`page ${theme} mobile ${styles['alarm-page']}`}>
-            <div>
-                <span>알림 내역</span>
-            </div>
             <AlarmList alarmList={alarmList} />
         </div>
     )

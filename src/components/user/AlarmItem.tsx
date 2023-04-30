@@ -9,12 +9,12 @@ import { GoPrimitiveDot } from 'react-icons/go'
 function AlarmItem({ alarm }: { alarm: UserAlarm }) {
     const { theme } = useContext(ThemeContext)
 
-    const unreadStyle = !alarm.alarmId ? styles['alarm-unread'] : ''
+    const alarmStyle = alarm.isRead ? styles.read : styles.unread
 
     return (
-        <div className={`box ${theme} ${styles['alarm-box']} ${unreadStyle}`}>
+        <div className={`box ${theme} ${styles['alarm-box']} ${alarmStyle}`}>
             <div className={`${styles['alarm-title-box']}`}>
-                <div className={`${styles['alarm-title']}`}>
+                <div className={`${styles['alarm-title']} ${alarmStyle}`}>
                     <GoPrimitiveDot className={styles.dot} />
                     <span>{alarm.title}</span>
                 </div>
