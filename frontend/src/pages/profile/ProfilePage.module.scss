@@ -4,6 +4,7 @@
     gap: 1rem;
 
     > img:first-child {
+        z-index: 1;
         position: absolute;
         right: 1.5rem;
         top: 1.5rem;
