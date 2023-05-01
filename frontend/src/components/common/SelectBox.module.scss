@@ -1,51 +1,53 @@
-@use 'styles/colors' as *;
+@use 'src/styles/colors' as *;
+@use 'src/styles/animations' as *;
 
-.selectBox {
+.select-box {
+    position: relative;
     width: 100%;
-    &.light {
-        .selected {
-            display: flex;
-            align-items: center;
+
+    > div:first-child {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+
+        &.selected {
             justify-content: space-between;
-
-            padding: 0.5rem;
-
-            border: solid 0.2rem $secondary-light;
+            border: solid 0.2rem clr(secondary-clr);
             border-radius: 0.3rem;
-
-            background-color: $white;
-            color: $black;
-
+            color: clr(black-clr);
             font-weight: 600;
 
             svg {
-                color: $primary-light;
-
+                color: clr(primary-clr);
                 &:hover {
                     cursor: pointer;
                 }
             }
         }
 
-        .options {
-            border-radius: 0.3rem;
-            background-color: $white;
-
-            box-shadow: -1px 3px 5px 0px $shadow-light;
-            list-style: none;
-            li {
-                padding: 0.5rem;
-                border-radius: 0.1rem;
-
-                &:active {
-                    background-color: $secondary-light;
-                    color: $primary-light;
-                }
-            }
+        &.transparent {
+            gap: 0.5rem;
+            background-color: transparent;
+            box-shadow: none;
         }
     }
+    .options {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        border-radius: 0.3rem;
+        box-shadow: -1px 3px 5px 0px clr(shadow-clr);
+        list-style: none;
 
-    &.dark {
-        background-color: $black;
+        li {
+            padding: 0.5rem;
+            border-radius: 0.1rem;
+            font-size: 0.9rem;
+
+            &:active {
+                background-color: clr(secondary-clr);
+                color: clr(primary-clr);
+            }
+        }
     }
 }

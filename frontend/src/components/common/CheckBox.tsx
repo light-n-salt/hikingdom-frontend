@@ -12,7 +12,7 @@ function CheckBox({ label, isChecked, setIsChecked }: CheckBoxProps) {
     const { theme } = useContext(ThemeContext)
 
     return (
-        <div className={`${styles[theme]} ${styles.checkbox}`}>
+        <div className={`content ${theme} ${styles.checkbox}`}>
             <input
                 type="checkbox"
                 checked={isChecked}

@@ -51,7 +51,6 @@ export interface meetupInfoDetail extends MeetupInfo {
 export interface Createmeetup {
     name: string
     mountainName: string
-    startDate: string
-    startTime: string
+    startAt: string // 형식(YYYY.MM.DD HH:mm)
     description: string
 }

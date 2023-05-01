@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+
+    > h1 {
+        align-self: center;
+    }
+}
