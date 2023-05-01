@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import { UserAlarm } from 'types/user.interface'
 
+import PageHeader from 'components/common/PageHeader'
 import AlarmList from 'components/user/AlarmList'
 
 function AlarmPage() {
@@ -26,6 +27,7 @@ function AlarmPage() {
 
     return (
         <div className={`page p-sm ${theme} mobile `}>
+            <PageHeader text="알림 내역" url="/profile" />
             <AlarmList alarmList={alarmList} />
         </div>
     )
