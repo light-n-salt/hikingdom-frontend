@@ -1,0 +1,9 @@
+@use 'src/styles/colors' as *;
+
+.alarm-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    gap: 0.5rem;
+}

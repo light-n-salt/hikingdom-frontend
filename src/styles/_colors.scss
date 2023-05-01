@@ -1,15 +1,71 @@
-$primary-light: #50b06a;
-$secondary-light: #e8f2e9;
+// 브랜드 컬러
+$primary: #50b06a;
+$secondary: #e8f2e9;
+$tertiary: #323b34;
 
-$white: #ffffff;
-$black: #323b34;
+// 기본 컬러
+$white: #efefef;
+$black: #222222;
 $gray: #888888;
+$lime: #9feb72;
 $red: #ff0c0c;
 
-$bg-light: #f8f8f8;
-$bg-dark: #323b34;
+// 쉐도우용 컬러(opacity)
+$shadow: #00000022;
 
-$box-light: #ffffffaa;
-$box-dark: #ffffff22;
+// 밝기변화 인자
+$lighten: 5;
+$darken: 25;
 
-$shadow-light: #e5e5e5;
+$colors: (
+    primary-clr: (
+        base: $primary,
+        light: lighten($primary, $lighten),
+        dark: darken($primary, $darken),
+    ),
+    secondary-clr: (
+        base: $secondary,
+        light: lighten($secondary, $lighten),
+        dark: darken($secondary, $darken),
+    ),
+    tertiary-clr: (
+        base: $tertiary,
+        light: lighten($tertiary, $lighten),
+        dark: darken($tertiary, $darken),
+    ),
+    white-clr: (
+        base: $white,
+        light: lighten($white, $lighten),
+        dark: darken($white, $darken),
+    ),
+    black-clr: (
+        base: $black,
+        light: lighten($black, $lighten),
+        dark: darken($black, $darken),
+    ),
+    gray-clr: (
+        base: $gray,
+        light: lighten($gray, $lighten),
+        dark: darken($gray, $darken),
+    ),
+    lime-clr: (
+        base: $lime,
+        light: lighten($lime, $lighten),
+        dark: darken($lime, $darken),
+    ),
+    red-clr: (
+        base: $red,
+        light: lighten($red, $lighten),
+        dark: darken($red, $darken),
+    ),
+    shadow-clr: (
+        base: $shadow,
+        light: lighten($shadow, $lighten),
+        dark: darken($shadow, $darken),
+    ),
+);
+
+@function clr($base, $shade: base) {
+    $color: map-get(map-get($colors, $base), $shade);
+    @return $color;
+}

@@ -22,7 +22,7 @@ function LabelTextArea({
     }
 
     return (
-        <div className={`${styles[theme]} ${styles.labeltextarea}`}>
+        <div className={`content ${theme} ${styles.labeltextarea}`}>
             <label htmlFor="textarea">{label}</label>
             <textarea
                 id="textarea"
