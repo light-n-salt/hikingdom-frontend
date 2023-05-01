@@ -3,15 +3,18 @@
 .profile-box {
     position: relative;
     padding-top: 5.5rem;
+    width: 100%;
 
     .profile-img {
         display: flex;
         position: absolute;
         top: 1rem;
-        left: 7rem;
+        left: 50%;
         width: fit-content;
         padding: 0.5rem;
         border-radius: 5rem;
+
+        transform: translate(-50%, 0);
     }
 
     .user-record {
