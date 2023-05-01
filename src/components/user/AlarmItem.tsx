@@ -12,7 +12,9 @@ function AlarmItem({ alarm }: { alarm: UserAlarm }) {
     const alarmStyle = alarm.isRead ? styles.read : styles.unread
 
     return (
-        <div className={`box ${theme} ${styles['alarm-box']} ${alarmStyle}`}>
+        <div
+            className={`content ${theme} ${styles['alarm-box']} ${alarmStyle}`}
+        >
             <div className={`${styles['alarm-title-box']}`}>
                 <div className={`${styles['alarm-title']} ${alarmStyle}`}>
                     <GoPrimitiveDot className={styles.dot} />

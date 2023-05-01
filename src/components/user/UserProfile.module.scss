@@ -3,24 +3,18 @@
 .profile-box {
     position: relative;
     padding-top: 5.5rem;
+    width: 100%;
 
     .profile-img {
+        display: flex;
         position: absolute;
         top: 1rem;
-        left: 7rem;
-
+        left: 50%;
+        width: fit-content;
         padding: 0.5rem;
+        border-radius: 5rem;
 
-        border-radius: 50%;
-
-        &.light {
-            background-color: $white;
-            box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
-        }
-
-        &.dark {
-            background-color: $black;
-        }
+        transform: translate(-50%, 0);
     }
 
     .user-record {
