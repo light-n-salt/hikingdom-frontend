@@ -2,16 +2,15 @@ import Logo from 'components/common/Logo'
 import Loading from 'components/common/Loading'
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
+import LoginForm from 'components/auth/LoginForm'
 
 function LoginPage() {
     const { theme, toggleTheme } = useContext(ThemeContext)
 
     return (
-        <div className={`page ${theme}`}>
-            <div className={`login-background`} />
-            <button onClick={toggleTheme}>다크모드</button>
+        <div className={`page-gradation ${theme}`}>
             <Logo />
-            <Loading />
+            <LoginForm />
         </div>
     )
 }
