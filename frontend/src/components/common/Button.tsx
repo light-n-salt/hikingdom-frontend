@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styles from './Button.module.scss'
-import { ThemeContext } from 'styles/ThemeProvider'
 
 type ButtonProps = {
     text: string
@@ -15,10 +14,9 @@ export default function Button({
     color,
     onClick,
 }: ButtonProps) {
-    const { theme } = useContext(ThemeContext)
     return (
         <button
-            className={`${styles[theme]} ${styles[size]} ${styles[color]}`}
+            className={`${styles[size]} ${styles[color]}`}
             onClick={onClick}
         >
             {text}

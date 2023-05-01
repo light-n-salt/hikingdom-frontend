@@ -2,33 +2,27 @@
 
 button {
     box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
-}
+    font-weight: 600;
 
-.sm {
-    padding: 0.25rem;
-    border-radius: 0.3rem;
-    font-size: 0.8rem;
-}
+    &.sm {
+        padding: 0.25rem;
+        border-radius: 0.3rem;
+        font-size: 0.8rem;
+    }
 
-.md {
-    padding: 0.5rem;
-    border-radius: 0.4rem;
-    font-size: 1.2rem;
-}
+    &.md {
+        padding: 0.5rem;
+        border-radius: 0.4rem;
+        font-size: 1.2rem;
+    }
 
-.lg {
-    padding: 0.7rem;
-    border-radius: 0.5rem;
-    font-size: 1.4rem;
-    width: 100%;
-}
+    &.lg {
+        padding: 0.7rem;
+        border-radius: 0.5rem;
+        font-size: 1.4rem;
+        width: 100%;
+    }
 
-.red {
-    background-color: clr(red-clr);
-    color: clr(white-clr);
-}
-
-.light {
     &.primary {
         background-color: clr(primary-clr);
         color: clr(white-clr);
@@ -40,14 +34,12 @@ button {
     }
 
     &.white {
-        background-color: clr(white-clr);
+        background-color: clr(white-clr, light);
         color: clr(primary-clr);
     }
-}
 
-.dark {
-    &.primary {
-        background-color: clr(primary-clr);
+    &.red {
+        background-color: clr(red-clr);
         color: clr(white-clr);
     }
 }

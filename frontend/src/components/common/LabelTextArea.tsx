@@ -1,34 +1,35 @@
-import React, { useContext } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+import React from 'react'
 import styles from './LabelTextArea.module.scss'
 
 type LabelTextAreaProps = {
     label: string
     value: string
     placeholder: string
-    onChangeText: (value: string) => void
+    size?: 'sm' | 'md' | 'lg'
+    onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+    disabled?: boolean
 }
 
 function LabelTextArea({
     label,
     value,
     placeholder,
-    onChangeText,
+    size = 'md',
+    onChange = () => {},
+    disabled = false,
 }: LabelTextAreaProps) {
-    const { theme } = useContext(ThemeContext)
-
-    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        onChangeText(event.target.value)
-    }
-
     return (
-        <div className={`content ${theme} ${styles.labeltextarea}`}>
-            <label htmlFor="textarea">{label}</label>
+        <div className={styles.container}>
+            <label className={styles.label} htmlFor="textarea">
+                {label}
+            </label>
             <textarea
                 id="textarea"
                 value={value}
-                onChange={handleChange}
+                onChange={onChange}
                 placeholder={placeholder}
+                disabled={disabled}
+                className={`${styles.textarea} ${styles[size]}`}
             />
         </div>
     )
