@@ -3,23 +3,25 @@
 .searchbar {
     display: flex;
     justify-content: center;
-    width: 100%;
-    background: $white;
-    border: 2px solid $secondary-light;
+    position: sticky;
+    top: 0.5rem;
+    margin-bottom: 1rem;
+    border: 2px solid $secondary;
     border-radius: 0.5rem;
+    z-index: 2;
     // gap: 2rem;
 
     .icon {
         margin: 0.7rem;
         height: 1.6rem;
         width: 1.6rem;
-        color: $primary-light;
+        color: $primary;
     }
 
     label {
         font-size: 2.5rem;
         font-weight: 400;
-        color: $primary-light;
+        color: $primary;
     }
 
     input {
@@ -28,6 +30,6 @@
         font-size: 1.3rem;
         border-radius: 0.5rem;
         color: $gray;
-        // background: $white;
+        // background: clr(white-clr);
     }
 }

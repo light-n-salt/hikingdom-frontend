@@ -1,53 +1,64 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/themes' as *;
+@use 'src/styles/z-index' as *;
 
 .page {
-    position: relative;
-    z-index: 5;
-    min-width: 100vw;
-    min-height: 100vh;
-
-    &.light {
-        background-color: $bg-light;
-        color: $black;
-    }
-
-    &.dark {
-        background-color: $bg-dark;
-        color: $white;
-    }
-}
-
-.mobile {
+    @include z-index(background);
     display: flex;
     flex-direction: column;
     align-items: center;
-    // justify-content: center;
-}
-
-.box {
+    position: relative;
     width: 100%;
-    border-radius: 1rem;
+    min-height: 100%;
 
+    &.p-sm {
+        padding: 0 0.5rem 1rem;
+    }
+
+    &.p-md {
+        padding: 0 1rem 1rem;
+    }
+
+    &.p-lg {
+        padding: 0 1.5rem 1rem;
+    }
 
     &.light {
-        border-radius: 0.5rem;
-
-        background-color: $white;
-        color: $black;
-
-        box-shadow: -1px 3px 5px 0px $shadow-light;
+        @include deep-light-theme;
     }
 
     &.dark {
-        border-radius: 3%;
+        @include deep-dark-theme;
+    }
 
-        background-color: $box-dark;
-        color: $white;
+    &-gradation {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: z-index(background);
+        width: 100%;
+        height: 100%;
+        &.light {
+            @include light-gradation-theme;
+        }
 
+        &.dark {
+            @include dark-gradation-theme;
+        }
     }
 }
 
-.flex {
+.content {
     width: 100%;
-    height: 100%;
+    border-radius: 1rem;
+
+    &.light {
+        @include light-theme;
+        box-shadow: -1px 3px 5px 0px clr(shadow-clr);
+    }
+    &.dark {
+        @include dark-theme;
+        box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
+    }
 }

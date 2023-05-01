@@ -5,35 +5,34 @@ import styles from './LabelInput.module.scss'
 type LabelInputProps = {
     label: string
     value: string
-    placeholder: string
-    isError: boolean
-    onChangeText: (value: string) => void
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    isError?: boolean
+    placeholder?: string
+    type?: string
 }
 
 function LabelInput({
     label,
     value,
-    placeholder,
-    onChangeText,
-    isError,
+    onChange,
+    isError = false,
+    placeholder = '',
+    type = 'text',
 }: LabelInputProps) {
     const { theme } = useContext(ThemeContext)
 
     const error = isError ? styles.error : ''
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        onChangeText(event.target.value)
-    }
-
     return (
-        <div className={`${styles[theme]} ${styles.labelinput}`}>
+        <div className={`content ${theme} ${styles['label-input']}`}>
             <label htmlFor="input">{label}</label>
             <input
                 id="input"
                 value={value}
-                onChange={handleChange}
+                onChange={onChange}
                 placeholder={placeholder}
                 className={`${error}`}
+                type={type}
             />
         </div>
     )

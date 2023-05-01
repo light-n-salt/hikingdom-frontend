@@ -2,25 +2,16 @@
 
 .profile-box {
     position: relative;
-    padding-top: 5rem;
+    padding-top: 5.5rem;
 
     .profile-img {
+        display: flex;
         position: absolute;
         top: 1rem;
-        left: 7.5rem;
-
+        left: 7rem;
+        width: fit-content;
         padding: 0.5rem;
-
-        border-radius: 50%;
-
-        &.light {
-            background-color: $white;
-            box-shadow: -1px 3px 5px 0px $shadow-light;
-        }
-
-        &.dark {
-            background-color: $black;
-        }
+        border-radius: 5rem;
     }
 
     .user-record {
@@ -33,12 +24,12 @@
         .btn-box {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
             width: 100%;
         }
 
         .username {
-            color: $primary-light;
+            color: clr(primary-clr, light);
             font-size: 1.4rem;
             font-weight: bold;
         }
