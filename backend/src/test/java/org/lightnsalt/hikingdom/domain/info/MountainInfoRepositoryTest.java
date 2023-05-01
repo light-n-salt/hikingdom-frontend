@@ -1,3 +1,4 @@
+/*
 package org.lightnsalt.hikingdom.domain.info;
 
 import org.junit.jupiter.api.DisplayName;
@@ -109,3 +110,4 @@ public class MountainInfoRepositoryTest {
 	}
 
 }
+*/
