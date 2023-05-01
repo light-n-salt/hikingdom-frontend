@@ -18,7 +18,6 @@ import com.example.hikingdom.R
 import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.ui.main.hiking.HikingFragment.Companion.ACTION_STOP
 import com.example.hikingdom.utils.LocationHelper
-import java.time.LocalDateTime
 
 class LocationService : Service() {
     var isServiceRunning = false    // Foreground 서비스가 실행중인지 여부
@@ -33,8 +32,8 @@ class LocationService : Service() {
     var altitudeList = MutableLiveData<ArrayList<Double>>()
 //    var locations = MutableLiveData<ArrayList<Location>>()
 
-    // 최근 위치
-    var lastLocation = MutableLiveData<Location>()
+    // 현재 위치
+    var currentLocation = MutableLiveData<Location>()
 
     init {
         duration.value = 0
@@ -78,11 +77,11 @@ class LocationService : Service() {
                 override fun onLocationChanged(location: Location) {
                     // Here you got user location :)
                     Log.d("Location","" + location.latitude + "," + location.longitude + ","+location.altitude)
-                    if (lastLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
-                        val distance = location.distanceTo(lastLocation.value)
+                    if (currentLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
+                        val distance = location.distanceTo(currentLocation.value)
                         totalDistance.value = totalDistance.value?.plus(distance)
                     }
-                    lastLocation.value = location
+                    currentLocation.value = location
 //                    locations.value?.add(location)
                     latitudeList.value?.add(location.latitude)
                     longitudeList.value?.add(location.longitude)
