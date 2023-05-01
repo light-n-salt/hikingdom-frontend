@@ -1,3 +1,6 @@
+@use 'src/styles/animations' as *;
+
 .singup-page {
     padding: 2rem;
+    @include animation-slide-out-down;
 }
