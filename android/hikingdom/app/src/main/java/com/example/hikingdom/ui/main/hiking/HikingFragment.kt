@@ -8,6 +8,7 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
+//import android.location.LocationManager
 import android.os.IBinder
 import android.util.Log
 import android.view.View
@@ -15,15 +16,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.BuildConfig
+import com.example.hikingdom.R
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.ui.main.group.GroupFragment
 import com.example.hikingdom.utils.LocationHelper
 import net.daum.mf.map.api.*
-import net.daum.mf.map.api.MapPoint.GeoCoordinate
-import java.lang.String
 import java.time.LocalDateTime
 
 
@@ -43,6 +42,8 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 
     private var lastLat: Double = 0.0
     private var lastLng: Double = 0.0
+
+    private val ZOOM_LEVEL = 2
 
     override fun initAfterBinding() {
         binding.lifecycleOwner = this
@@ -154,14 +155,17 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
                 Log.d("polyline test 1", StringBuilder("lastLat: ").append(lastLat.toString()).append("/ lastLng: ").append(lastLng.toString()).toString())
                 lastLat = it.latitude
                 lastLng = it.longitude
+
+                setDepartMarker(lastLat, lastLng)
             }else{
                 val polyline = MapPolyline()
                 Log.d("polyline test 2", StringBuilder("lastLat: ").append(lastLat.toString()).append("/ lastLng: ").append(lastLng.toString())
                     .append(lastLng.toString()).append("/ lat: ").append(it.latitude).append("/ lng: ").append(it.longitude).toString())
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(lastLat, lastLng));
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(it.latitude, it.longitude));
+                polyline.lineColor = R.color.blue
                 mapView.addPolyline(polyline)
-                mapView.fitMapViewAreaToShowPolyline(polyline)
+//                mapView.fitMapViewAreaToShowPolyline(polyline)
 
                 lastLat = it.latitude
                 lastLng = it.longitude
@@ -202,34 +206,34 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         mapViewContainer.addView(mapView)
 
 //        Log.d("zoomLevel:",mapView.zoomLevelFloat.toString())
-        mapView.setZoomLevel(1, true);
+//        mapView.setZoomLevel(ZOOM_LEVEL, true);
 //        mapView.isShowingCurrentLocationMarker
 //        mapView.setCurrentLocationEventListener(this)
 //        mapView.setMapViewEventListener(this)
 
         /* 현위치 트래킹 모드 및 나침반 모드를 설정한다.
         TrackingModeOnWithHeading: 현위치 트랙킹 모드 On + 나침반 모드 On, 단말의 위치에 따라 지도 중심이 이동하며 단말의 방향에 따라 지도가 회전한다. */
-//        mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading //
+        mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading //
 //        if(mapView.isShowingCurrentLocationMarker){
 //            Log.d("isShowing 1", "true")
 //        }else{
 //            Log.d("isShowing 1", "false")
 //        }
-//        mapView.setShowCurrentLocationMarker(false)
+        mapView.setShowCurrentLocationMarker(false)
 //        if(mapView.isShowingCurrentLocationMarker){
 //            Log.d("isShowing 2", "true")
 //        }else{
 //            Log.d("isShowing 2", "false")
 //        }
-        LocationHelper().startListeningUserLocation(requireContext() , object : LocationHelper.HikingLocationListener {
-            override fun onLocationChanged(location: Location) {
-                // Here you got user location :)
-                Log.d("first Location","" + location.latitude + "," + location.longitude)
-                val currentMapPoint = MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude)
-                //이 좌표로 지도 중심 이동
-                mapView.setMapCenterPoint(currentMapPoint, true)
-            }
-        })
+//        LocationHelper().startListeningUserLocation(requireContext() , object : LocationHelper.HikingLocationListener {
+//            override fun onLocationChanged(location: Location) {
+//                // Here you got user location :)
+//                Log.d("first Location","" + location.latitude + "," + location.longitude)
+//                val currentMapPoint = MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude)
+//                //이 좌표로 지도 중심 이동
+//                mapView.setMapCenterPoint(currentMapPoint, true)
+//            }
+//        })
 //        mapView.setShowCurrentLocationMarker(false)
 
 
@@ -257,13 +261,18 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 
     private fun drawPolylineByExistingTrackingData(){
         val polyline = MapPolyline()
-        polyline.setLineColor(Color.argb(128, 255, 51, 0)); // Polyline 컬러 지정.
+        polyline.lineColor = R.color.blue // Polyline 컬러 지정.
 
         val existingLocationList = hikingViewModel.locations.value
         if(!existingLocationList.isNullOrEmpty()){
+
+            val firstExistingLocation = existingLocationList[0]
+            setDepartMarker(firstExistingLocation.latitude, firstExistingLocation.longitude)
+
             for(location in existingLocationList){
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude))
             }
+            polyline.lineColor = R.color.blue
             mapView.addPolyline(polyline)
 
             val lastExistingLocation = existingLocationList.last()
@@ -309,5 +318,27 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 //    override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
 //        TODO("Not yet implemented")
 //    }
+
+    private fun setDepartMarker(lat: Double, lng: Double){
+        // 출발 좌표에 마커 그리기
+//        val firstExistingLocation = existingLocationList[0]
+        val customMarker = MapPOIItem()
+        customMarker.itemName = "Custom Marker"
+        customMarker.tag = 1
+        customMarker.mapPoint = MapPoint.mapPointWithGeoCoord(lat, lng)
+        customMarker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
+
+        customMarker.customImageResourceId = R.drawable.custom_marker_red_25 // 마커 이미지.
+
+        customMarker.isCustomImageAutoscale = false // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+
+        customMarker.setCustomImageAnchor(
+            0.7f,
+            1.0f
+        ) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+
+
+        mapView.addPOIItem(customMarker)
+    }
 
 }
