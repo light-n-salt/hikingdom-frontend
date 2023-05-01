@@ -11,7 +11,7 @@
 }
 
 @mixin dark-gradation-theme() {
-    background: linear-gradient(clr(lime-clr), clr(white-clr));
+    background: linear-gradient(clr(lime-clr, dark), clr(white-clr));
     color: clr(white-clr, light);
 }
 
@@ -26,6 +26,6 @@
 }
 
 @mixin light-gradation-theme() {
-    background: linear-gradient(clr(lime-clr, dark), clr(white-clr, dark));
+    background: linear-gradient(clr(lime-clr), clr(white-clr));
     color: clr(black-clr);
 }

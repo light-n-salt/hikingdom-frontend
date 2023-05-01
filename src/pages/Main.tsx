@@ -15,7 +15,7 @@ export default function Main() {
     // }
 
     return (
-        <div className={`page ${theme} mobile`}>
+        <div className={`page-gradation ${theme} mobile`}>
             <button onClick={toggleTheme}>다크모드</button>
 
             {/* <UserProfile
