@@ -4,7 +4,7 @@
     padding: 1rem;
 
     &.read {
-        background-color: $shadow-light;
+        background-color: clr(shadow-clr, light);
     }
 
     .alarm-title-box {
@@ -31,7 +31,7 @@
 
             &.read {
                 .dot {
-                    color: $shadow-light;
+                    color: clr(shadow-clr, light);
                     font-size: 1.5rem;
                 }
             }
