@@ -8,8 +8,12 @@
     width: 60%;
     padding: 1rem 0;
 
-    &.black {
+    &.dark {
         color: $black;
+    }
+
+    &.light {
+        color: clr(white-clr);
     }
 
     &.primary {
