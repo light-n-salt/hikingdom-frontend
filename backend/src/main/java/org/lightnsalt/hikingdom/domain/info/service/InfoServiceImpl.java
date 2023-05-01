@@ -33,14 +33,13 @@ public class InfoServiceImpl implements InfoService {
 			.name(reqDto.getName())
 			.description(reqDto.getDescription())
 			.address(reqDto.getAddress())
-			.topAlt(reqDto.getMaxAlt())
+			.topAlt(reqDto.getTopAlt())
 			.topLat(reqDto.getTopLat())
 			.topLng(reqDto.getTopLng())
 			.totalDuration(reqDto.getTotalDuration())
 			.build();
 
 		final MountainInfo savedMountain = mountainInfoRepository.save(mountain);
-		System.out.println("saved mountain in service is " + savedMountain);
 
 		return MountainAddRes.builder()
 			.id(savedMountain.getId())
