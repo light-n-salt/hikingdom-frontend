@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import UserProfile from 'components/user/UserProfile'
 import PastMeetupList from 'components/user/PastMeetupList'
 import IconButton from 'components/common/IconButton'
+
 import bell from 'assets/images/bell.png'
 
 function ProfilePage() {
@@ -67,10 +68,8 @@ function ProfilePage() {
                 email="조혜진진자라@gamil.com"
                 userRecord={userRecord}
             />
-            <div>
-                <div>등산기록</div>
-                <div>최신순</div>
-            </div>
+
+            <div className={styles.title}>등산기록</div>
             <PastMeetupList hikingList={userHikingList} />
         </div>
     )
