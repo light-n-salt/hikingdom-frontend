@@ -7,7 +7,6 @@ import styles from './IndexPage.module.scss'
 import mountain from 'assets/videos/mountain.mp4'
 
 function IndexPage() {
-    const { theme } = useContext(ThemeContext)
     const navigate = useNavigate()
 
     function toLogin() {
