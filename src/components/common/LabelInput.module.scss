@@ -17,8 +17,9 @@
     input {
         width: 100%;
         padding: 0.5rem;
-        border: 2px solid clr(secondary-clr);
+        border: 3px solid clr(secondary-clr);
         border-radius: 0.5rem;
+        background-color: clr(white-clr, light);
         font-size: 1rem;
         font-weight: 600;
 
