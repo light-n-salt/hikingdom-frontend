@@ -10,6 +10,7 @@ import ProfilePage from 'pages/profile/ProfilePage '
 import AlarmPage from 'pages/profile/AlarmPage'
 import WebMargin from 'components/common/WebMargin'
 import IndexPage from 'pages/auth/IndexPage'
+import AgreePage from 'pages/auth/AgreePage'
 
 function App() {
     return (
@@ -18,8 +19,8 @@ function App() {
                 <Route path="" element={<IndexPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="signup" element={<SignupPage />} />
-                {/* <Route path="/agreement" element={<AgreementPage />} />
-                    <Route path="/password" element={<FindPwdPage />} />
+                <Route path="agreement" element={<AgreePage />} />
+                {/*  <Route path="/password" element={<FindPwdPage />} />
                     
                     // 메인
                     <Route path="/main" element={<MainPage />} />
