@@ -17,7 +17,7 @@
         width: 100%;
         padding: 0.7rem;
         min-height: 7rem;
-        border: 2px solid $secondary-light;
+        border: 2px solid clr(secondary-clr);
         border-radius: 0.5rem;
         font-size: 1rem;
         color: $gray;
@@ -27,6 +27,6 @@
     textarea:focus {
         outline: none; /* 기본 focus 스타일 제거 */
         border-color: $primary-light;
-        box-shadow: 0 0 0 2px $secondary-light; /* 선택된 요소 주변에 블러 효과 적용 */
+        box-shadow: 0 0 0 2px clr(secondary-clr); /* 선택된 요소 주변에 블러 효과 적용 */
     }
 }

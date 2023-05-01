@@ -24,7 +24,7 @@ function LabelInput({
     const error = isError ? styles.error : ''
 
     return (
-        <div className={`${styles[theme]} ${styles['label-input']}`}>
+        <div className={`content ${theme} ${styles['label-input']}`}>
             <label htmlFor="input">{label}</label>
             <input
                 id="input"
