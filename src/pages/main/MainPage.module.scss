@@ -1,15 +1,1 @@
-@use 'styles/colors' as *;
-
-.Main {
-    &.dark {
-        div {
-            background-color: $primary;
-        }
-    }
-
-    &.light {
-        div {
-            background-color: blue;
-        }
-    }
-}
+@use 'src/styles/colors' as *;
