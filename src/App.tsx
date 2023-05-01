@@ -9,12 +9,13 @@ import SignupPage from 'pages/auth/SignupPage'
 import ProfilePage from 'pages/profile/ProfilePage'
 import AlarmPage from 'pages/profile/AlarmPage'
 import WebMargin from 'components/common/WebMargin'
+import IndexPage from 'pages/auth/IndexPage'
 
 function App() {
     return (
         <Routes>
             <Route path="/" element={<WebMargin />}>
-                <Route path="" element={<Main />} />
+                <Route path="" element={<IndexPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="signup" element={<SignupPage />} />
                 {/* <Route path="/agreement" element={<AgreementPage />} />
