@@ -37,7 +37,9 @@ function RankItem({ clubInfo, size }: RankItemProps) {
     }
 
     return (
-        <div className={`box ${theme} ${styles['rank-item']} ${styles[size]}`}>
+        <div
+            className={`content ${theme} ${styles['rank-item']} ${styles[size]}`}
+        >
             <h3>{clubInfo.clubName}</h3>
             <div className={`${styles['icon-info-box']} ${styles[size]}`}>
                 <IconText imgSrc={person} text={totalMemeber} />

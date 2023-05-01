@@ -1,1 +1,12 @@
 @use 'src/styles/colors' as *;
+
+.main {
+    .rank-list {
+        padding: 0.7rem;
+        width: 100%;
+        overflow-x: scroll;
+        &::-webkit-scrollbar {
+            background: transparent;
+        }
+    }
+}

@@ -11,13 +11,16 @@ function MainPage() {
     const [value, setValue] = useState('')
 
     return (
-        <div className={`page ${theme} p-sm ${styles['search-mt']}`}>
+        <div className={`page ${theme} p-md ${styles['main']}`}>
             <SearchBar
                 value={value}
                 placeholder="산을 검색해보세요"
                 onChangeText={setValue}
             />
-            <RankList clubInfoArray={clubInfoArray} size="sm" />
+            <div className={styles['rank-list']}>
+                <span>여기 등산 어때요</span>
+                <RankList clubInfoArray={clubInfoArray} size="sm" />
+            </div>
             <MtList mtInfoArray={mtInfoArray} size="sm" />
         </div>
     )
@@ -26,6 +29,16 @@ function MainPage() {
 export default MainPage
 
 const clubInfoArray = [
+    {
+        clubId: 1,
+        clubName: '산타마리아',
+        location: '서울시 노원구',
+        totalMember: 23,
+        totalDuration: '12:02',
+        totalDistance: 123,
+        participationRate: 87,
+        ranking: 1,
+    },
     {
         clubId: 1,
         clubName: '산타마리아',
@@ -44,7 +57,7 @@ const clubInfoArray = [
         totalDuration: '12:02',
         totalDistance: 123,
         participationRate: 87,
-        ranking: 5,
+        ranking: 3,
     },
 ]
 
