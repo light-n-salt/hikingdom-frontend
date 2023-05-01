@@ -1,17 +1,17 @@
 @use 'src/styles/colors' as *;
 
 @mixin deep-dark-theme() {
-    background-color: clr(black-clr);
+    background-color: clr(tertiary-clr);
     color: clr(white-clr, light);
 }
 
 @mixin dark-theme() {
-    background-color: clr(black-clr, light);
+    background-color: clr(tertiary-clr, light);
     color: clr(white-clr, light);
 }
 
 @mixin dark-gradation-theme() {
-    background: linear-gradient(clr(lime-clr, dark), clr(white-clr));
+    background: linear-gradient(clr(lime-clr, dark), clr(tertiary-clr));
     color: clr(white-clr, light);
 }
 
