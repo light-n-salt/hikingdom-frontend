@@ -1,6 +1,8 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/z-index' as *;
 
 .searchbar {
+    @include z-index(content);
     display: flex;
     justify-content: center;
     position: sticky;
@@ -8,7 +10,6 @@
     margin-bottom: 1rem;
     border: 2px solid $secondary;
     border-radius: 0.5rem;
-    z-index: 2;
     // gap: 2rem;
 
     .icon {

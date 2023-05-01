@@ -6,7 +6,7 @@ import ThemeProvider from 'styles/ThemeProvider'
 // import Main from 'pages/Main'
 // Auth
 import LoginPage from 'pages/auth/LoginPage'
-import AgreementPage from 'pages/auth/AgreementPage'
+import AgreePage from 'pages/auth/AgreePage'
 import FindPwPage from 'pages/auth/FindPwPage'
 import SignupPage from 'pages/auth/SignupPage'
 
@@ -48,7 +48,7 @@ function App() {
                 <Route path="" element={<IndexPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="signup" element={<SignupPage />} />
-                <Route path="/agreement" element={<AgreementPage />} />
+                <Route path="/agreement" element={<AgreePage />} />
                 <Route path="/password" element={<FindPwPage />} />
 
                 {/* 메인 */}
