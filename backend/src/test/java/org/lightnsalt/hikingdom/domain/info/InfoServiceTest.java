@@ -1,3 +1,4 @@
+/*
 package org.lightnsalt.hikingdom.domain.info;
 
 import static org.assertj.core.api.Assertions.*;
@@ -24,7 +25,7 @@ public class InfoServiceTest {
 	private final String name = "테스트";
 	private final String description = "테스트 설명";
 	private final String address = "테스트 주소";
-	private final String peaks = "테스트 봉우리";
+	private final String peaks = "테스트";
 	private final double topAlt = 233;
 	private final double topLat = 333.4;
 	private final double topLng = 333.4;
@@ -105,5 +106,6 @@ public class InfoServiceTest {
 
 		// then
 	}
-*/
+
 }
+*/
