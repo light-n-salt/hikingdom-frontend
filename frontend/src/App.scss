@@ -3,7 +3,7 @@
 @use 'src/styles/z-index' as *;
 
 .page {
-    @include z-index(background);
+    @include z-index(page);
     display: flex;
     flex-direction: column;
     align-items: center;
