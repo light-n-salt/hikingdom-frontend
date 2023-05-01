@@ -1,3 +1,4 @@
+// 'slow' | 'normal' | 'fast'에 따라서 duration 값 반환
 @function func-animation-speed($speed) {
     @if $speed == 'slow' {
         @return 1s;
@@ -14,45 +15,28 @@
     $delay,
     $duration,
     $animation,
-    $direction: forward,
+    $function,
+    $direction: normal,
     $fillmode: fowards
 ) {
     animation-delay: $delay;
     animation-duration: $duration;
     animation-name: $animation;
-    animation-fill-mode: $fillmode;
-    animation-direction: $direction;
+    animation-timing-function: $function;
+    animation-direction: $direction; // 애니메이션의 진행 방향
+    animation-fill-mode: $fillmode; // 애니메이션이 끝난 뒤의 상태
 }
 
+// 아래로 내려오면서 보이는 애니메이션
 @mixin animation-slide-in-down($speed: 'normal') {
     @include animation(
         0,
         func-animation-speed($speed),
         animation-slide-in-down,
-        ease-in
+        ease-in-out
     );
 
     @keyframes animation-slide-in-down {
-        0% {
-            opacity: 0;
-            transform: translateY(100%);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-}
-
-@mixin animation-slide-in-up($speed: 'normal') {
-    @include animation(
-        0,
-        func-animation-speed($speed),
-        animation-slide-in-up,
-        ease-in
-    );
-
-    @keyframes animation-slide-in-up {
         0% {
             opacity: 0;
             transform: translateY(-100%);
@@ -64,6 +48,28 @@
     }
 }
 
+// 위로 올라오면서 보이는 애니메이션
+@mixin animation-slide-in-up($speed: 'normal') {
+    @include animation(
+        0,
+        func-animation-speed($speed),
+        animation-slide-in-up,
+        ease-in-out
+    );
+
+    @keyframes animation-slide-in-up {
+        0% {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+// 왼쪽으로 들어오면서 보이는 애니메이션
 @mixin animation-slide-in-left($speed: 'normal') {
     @include animation(
         0,
@@ -84,6 +90,7 @@
     }
 }
 
+// 오른쪽으로 들어오면서 보이는 애니메이션
 @mixin animation-slide-in-right($speed: 'normal') {
     @include animation(
         0,
@@ -104,6 +111,7 @@
     }
 }
 
+// 아래로 나가면서 안보이는 애니메이션
 @mixin animation-slide-out-down($speed: 'normal') {
     @include animation(
         0,
@@ -119,11 +127,12 @@
         }
         100% {
             opacity: 0;
-            transform: translateY(-100%);
+            transform: translateY(100%);
         }
     }
 }
 
+// 위로 올라가면서 안보이는 애니메이션
 @mixin animation-slide-out-up($speed: 'normal') {
     @include animation(
         0,
@@ -139,11 +148,12 @@
         }
         100% {
             opacity: 0;
-            transform: translateY(100%);
+            transform: translateY(-100%);
         }
     }
 }
 
+// 왼쪽으로 나가면서 안보이는 애니메이션
 @mixin animation-slide-out-left($speed: 'normal') {
     @include animation(
         0,
@@ -164,6 +174,7 @@
     }
 }
 
+// 오른쪽으로 나가면서 안보이는 애니메이션
 @mixin animation-slide-out-right($speed: 'normal') {
     @include animation(
         0,
