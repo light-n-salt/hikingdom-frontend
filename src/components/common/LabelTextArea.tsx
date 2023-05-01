@@ -6,20 +6,18 @@ type LabelTextAreaProps = {
     label: string
     value: string
     placeholder: string
-    onChangeText: (value: string) => void
+    onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+    disabled?: boolean
 }
 
 function LabelTextArea({
     label,
     value,
     placeholder,
-    onChangeText,
+    onChange = () => {},
+    disabled = false,
 }: LabelTextAreaProps) {
     const { theme } = useContext(ThemeContext)
-
-    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        onChangeText(event.target.value)
-    }
 
     return (
         <div className={`content ${theme} ${styles.labeltextarea}`}>
@@ -27,8 +25,9 @@ function LabelTextArea({
             <textarea
                 id="textarea"
                 value={value}
-                onChange={handleChange}
+                onChange={onChange}
                 placeholder={placeholder}
+                disabled={disabled}
             />
         </div>
     )
