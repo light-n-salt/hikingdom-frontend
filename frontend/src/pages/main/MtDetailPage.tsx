@@ -10,9 +10,9 @@ function MtDetailPage() {
 
     return (
         <div className={`page p-sm ${theme} ${styles.detail}`}>
-            {/* <img src={mtInfo.imgUrl} className={styles.image}/> */}
             <PageHeader title="" url="/mountain/search" color="dark" />
             <MtDetail mtInfo={mtInfo} />
+            <img src={mtInfo.imgUrl} className={styles.image}/>
         </div>
     )
 }
