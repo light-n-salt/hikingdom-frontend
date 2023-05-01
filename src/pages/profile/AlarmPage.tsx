@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
-import styles from './AlarmPage.module.scss'
 import { UserAlarm } from 'types/user.interface'
 
 import AlarmList from 'components/user/AlarmList'
@@ -26,7 +25,7 @@ function AlarmPage() {
     ]
 
     return (
-        <div className={`page ${theme} mobile ${styles['alarm-page']}`}>
+        <div className={`page p-sm ${theme} mobile `}>
             <AlarmList alarmList={alarmList} />
         </div>
     )

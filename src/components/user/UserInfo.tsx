@@ -9,6 +9,8 @@ import height from 'assets/images/hot_air_balloon.png'
 
 import { UserRecord } from 'types/user.interface'
 
+import { convertToKm } from 'utils/convertToKm'
+
 type UserInfoProps = {
     userRecord: UserRecord
 }
@@ -17,8 +19,8 @@ function UserInfo({ userRecord }: UserInfoProps) {
     const { theme } = useContext(ThemeContext)
 
     const totalMountain = userRecord.totalMountainCount.toString()
-    const totalDistance = userRecord.totalDistance.toString()
-    const totalAlt = userRecord.totalAlt.toString()
+    const totalDistance = convertToKm(userRecord.totalDistance).toString()
+    const totalAlt = convertToKm(userRecord.totalAlt).toString()
 
     return (
         <div className={`${theme} ${styles['user-info']}`}>
@@ -40,7 +42,7 @@ function UserInfo({ userRecord }: UserInfoProps) {
                     title={'거리(km)'}
                     content={totalDistance}
                 />
-                <Info imgSrc={height} title={'높이(m)'} content={totalAlt} />
+                <Info imgSrc={height} title={'높이(km)'} content={totalAlt} />
             </div>
         </div>
     )
