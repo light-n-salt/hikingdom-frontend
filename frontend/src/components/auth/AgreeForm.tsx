@@ -16,13 +16,15 @@ function AgreeForm() {
             <h1>약관동의</h1>
             <LabelTextArea
                 label="이용약관 (필수)"
-                value="이거슨 이용야관입니다."
+                value={c}
+                size="lg"
                 placeholder=""
                 disabled={true}
             />
             <LabelTextArea
                 label="개인정보 수집 및 이동 (필수)"
                 value="이거슨 개인정보 수집 및 동의내용입니다."
+                size="lg"
                 placeholder=""
                 disabled={true}
             />
@@ -37,3 +39,6 @@ function AgreeForm() {
 }
 
 export default AgreeForm
+
+const c =
+    'sfdsfdsf/nsdfdsfdsfdsf/nsdfdsfdsfdsfds/n\nsdfdsfdsfffffffffffffffffffffffffffff\nasdffffffffffffffffffffffffffffffffffffffffffff\nsfdsfdsf/nsdfdsfdsfdsf/nsdfdsfdsfdsfds/n\nsdfdsfdsfffffffffffffffffffffffffffff\nasdffffffffffffffffffffffffffffffffffffffffffff\nsfdsfdsf/nsdfdsfdsfdsf/nsdfdsfdsfdsfds/n\nsdfdsfdsfffffffffffffffffffffffffffff\nasdffffffffffffffffffffffffffffffffffffffffffff\nsfdsfdsf/nsdfdsfdsfdsf/nsdfdsfdsfdsfds/n\nsdfdsfdsfffffffffffffffffffffffffffff\nasdffffffffffffffffffffffffffffffffffffffffffff\nsfdsfdsf/nsdfdsfdsfdsf/nsdfdsfdsfdsfds/n\nsdfdsfdsfffffffffffffffffffffffffffff\nasdffffffffffffffffffffffffffffffffffffffffffff\nsfdsfdsf/nsdfdsfdsfdsf/nsdfdsfdsfdsfds/n\nsdfdsfdsfffffffffffffffffffffffffffff\nasdffffffffffffffffffffffffffffffffffffffffffff\n'
