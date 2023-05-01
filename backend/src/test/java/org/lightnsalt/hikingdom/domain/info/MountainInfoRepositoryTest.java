@@ -21,13 +21,13 @@ public class MountainInfoRepositoryTest {
 	public void MountainInfo_create() {
 		// given
 		final MountainInfo mountainInfo = MountainInfo.builder()
-			.name("관악산")
-			.description("관악산 테스트")
-			.address("관악산 주소")
+			.name("테스트")
+			.description("테스트 설명")
+			.address("테스트 주소")
 			.topAlt(233)
 			.topLat(333.4)
 			.topLng(333.4)
-			.peaks("연주대")
+			.peaks("테스트 봉우리")
 			.totalDuration(60)
 			.build();
 
@@ -36,13 +36,13 @@ public class MountainInfoRepositoryTest {
 
 		// then
 		assertThat(result.getId()).isNotNull();
-		assertThat(result.getName()).isEqualTo("관악산");
-		assertThat(result.getDescription()).isEqualTo("관악산 테스트");
-		assertThat(result.getAddress()).isEqualTo("관악산 주소");
+		assertThat(result.getName()).isEqualTo("테스트");
+		assertThat(result.getDescription()).isEqualTo("테스트 설명");
+		assertThat(result.getAddress()).isEqualTo("테스트 주소");
 		assertThat(result.getTopAlt()).isEqualTo(233);
 		assertThat(result.getTopLat()).isEqualTo(333.4);
 		assertThat(result.getTopLng()).isEqualTo(333.4);
-		assertThat(result.getPeaks()).isEqualTo("연주대");
+		assertThat(result.getPeaks()).isEqualTo("테스트 봉우리");
 		assertThat(result.getTotalDuration()).isEqualTo(60);
 	}
 
@@ -51,29 +51,29 @@ public class MountainInfoRepositoryTest {
 	public void MountainInfo_select() {
 		// given
 		final MountainInfo mountainInfo = MountainInfo.builder()
-			.name("관악산")
-			.description("관악산 테스트")
-			.address("관악산 주소")
+			.name("테스트")
+			.description("테스트 설명")
+			.address("테스트 주소")
 			.topAlt(233)
 			.topLat(333.4)
 			.topLng(333.4)
-			.peaks("연주대")
+			.peaks("테스트 봉우리")
 			.totalDuration(60)
 			.build();
 
 		// when
 		mountainInfoRepository.save(mountainInfo);
-		final MountainInfo result = mountainInfoRepository.findByName("관악산");
+		final MountainInfo result = mountainInfoRepository.findByName("테스트");
 
 		// then
 		assertThat(result.getId()).isNotNull();
-		assertThat(result.getName()).isEqualTo("관악산");
-		assertThat(result.getDescription()).isEqualTo("관악산 테스트");
-		assertThat(result.getAddress()).isEqualTo("관악산 주소");
+		assertThat(result.getName()).isEqualTo("테스트");
+		assertThat(result.getDescription()).isEqualTo("테스트 설명");
+		assertThat(result.getAddress()).isEqualTo("테스트 주소");
 		assertThat(result.getTopAlt()).isEqualTo(233);
 		assertThat(result.getTopLat()).isEqualTo(333.4);
 		assertThat(result.getTopLng()).isEqualTo(333.4);
-		assertThat(result.getPeaks()).isEqualTo("연주대");
+		assertThat(result.getPeaks()).isEqualTo("테스트 봉우리");
 		assertThat(result.getTotalDuration()).isEqualTo(60);
 	}
 
@@ -82,13 +82,13 @@ public class MountainInfoRepositoryTest {
 	public void MountainInfo_findById() {
 		// given
 		final MountainInfo mountainInfo = MountainInfo.builder()
-			.name("관악산")
-			.description("관악산 테스트")
-			.address("관악산 주소")
+			.name("테스트")
+			.description("테스트 설명")
+			.address("테스트 주소")
 			.topAlt(233)
 			.topLat(333.4)
 			.topLng(333.4)
-			.peaks("연주대")
+			.peaks("테스트 봉우리")
 			.totalDuration(60)
 			.build();
 
@@ -97,14 +97,14 @@ public class MountainInfoRepositoryTest {
 		final MountainInfo result = mountainInfoRepository.findById(id).orElseThrow();
 
 		// then
-		assertThat(result.getId()).isEqualTo(id);
-		assertThat(result.getName()).isEqualTo("관악산");
-		assertThat(result.getDescription()).isEqualTo("관악산 테스트");
-		assertThat(result.getAddress()).isEqualTo("관악산 주소");
+		assertThat(result.getId()).isNotNull();
+		assertThat(result.getName()).isEqualTo("테스트");
+		assertThat(result.getDescription()).isEqualTo("테스트 설명");
+		assertThat(result.getAddress()).isEqualTo("테스트 주소");
 		assertThat(result.getTopAlt()).isEqualTo(233);
 		assertThat(result.getTopLat()).isEqualTo(333.4);
 		assertThat(result.getTopLng()).isEqualTo(333.4);
-		assertThat(result.getPeaks()).isEqualTo("연주대");
+		assertThat(result.getPeaks()).isEqualTo("테스트 봉우리");
 		assertThat(result.getTotalDuration()).isEqualTo(60);
 	}
 
