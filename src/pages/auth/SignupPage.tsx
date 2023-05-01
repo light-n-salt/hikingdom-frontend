@@ -7,9 +7,8 @@ function SignupPage() {
     const { theme, toggleTheme } = useContext(ThemeContext)
 
     return (
-        <div className={`page ${theme} ${styles['singup-page']}`}>
-            <div className={`login-background`} />
-            <button onClick={toggleTheme}>다크모드</button>
+        <div className={`page-gradation ${theme} ${styles['singup-page']}`}>
+            <h3>회원가입</h3>
             <SignupForm />
         </div>
     )

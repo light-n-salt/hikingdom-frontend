@@ -11,33 +11,32 @@
         margin: 0 0 0 0.5rem;
         font-size: 0.9rem;
         font-weight: 800;
-        color: clr(black-clr);
+        color: clr(tertiary-clr);
     }
 
     input {
         width: 100%;
         padding: 0.5rem;
-        border: 2px solid clr(secondary-clr);
+        border: 3px solid clr(secondary-clr);
         border-radius: 0.5rem;
-        background: clr(white-clr);
-        color: clr(black-clr);
+        background-color: clr(white-clr, light);
         font-size: 1rem;
         font-weight: 600;
 
         // 유효성 검사 실시했을 때, 에러 표시
         &.error {
-            border: 2px solid clr(red-clr);
+            border: 3px solid clr(red-clr);
+        }
+        &.pass {
+            border: 3px solid clr(primary-clr);
         }
     }
 
-    input:focus {
-        outline: none; /* 기본 focus 스타일 제거 */
-        border-color: clr(primary-clr);
-        box-shadow: 0 0 0 2px clr(secondary-clr); /* 선택된 요소 주변에 블러 효과 적용 */
+    input::placeholder {
+        color: clr(gray-clr, light);
+    }
 
-        // 유효성 검사 실시했을 때, 에러 표시
-        &.error {
-            border: 2px solid clr(red-clr);
-        }
+    input:focus {
+        box-shadow: 0 0 0 2px clr(lime-clr, light); /* 선택된 요소 주변에 블러 효과 적용 */
     }
 }

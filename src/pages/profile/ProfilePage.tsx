@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import UserProfile from 'components/user/UserProfile'
 import PastMeetupList from 'components/user/PastMeetupList'
 import IconButton from 'components/common/IconButton'
+
 import bell from 'assets/images/bell.png'
 
 function ProfilePage() {
@@ -59,7 +60,7 @@ function ProfilePage() {
     ]
 
     return (
-        <div className={`page p-sm ${theme} mobile ${styles['profile-page']}`}>
+        <div className={`page p-sm ${theme} ${styles['profile-page']}`}>
             <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
             <UserProfile
                 imgUrl="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80"
@@ -67,10 +68,8 @@ function ProfilePage() {
                 email="조혜진진자라@gamil.com"
                 userRecord={userRecord}
             />
-            <div>
-                <div>등산기록</div>
-                <div>최신순</div>
-            </div>
+
+            <div className={styles.title}>등산기록</div>
             <PastMeetupList hikingList={userHikingList} />
         </div>
     )

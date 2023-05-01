@@ -1,32 +1,46 @@
 @use 'src/styles/colors' as *;
 
-.labeltextarea {
+.container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
     width: 100%;
+}
 
-    label {
-        font-size: 1.1rem;
-        font-weight: 470;
-        color: $black;
-    }
+.label {
+    margin: 0 0 0 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: clr(tertiary-clr);
+}
 
-    textarea {
-        width: 100%;
-        padding: 0.7rem;
+.textarea {
+    overflow-y: auto;
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid clr(secondary-clr);
+    border-radius: 0.5rem;
+    background-color: clr(white-clr, light);
+    font-size: 1rem;
+
+    &.sm {
         min-height: 7rem;
-        border: 2px solid clr(secondary-clr);
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        color: $gray;
-        background: $white;
     }
 
-    textarea:focus {
-        outline: none; /* 기본 focus 스타일 제거 */
-        border-color: $primary-light;
-        box-shadow: 0 0 0 2px clr(secondary-clr); /* 선택된 요소 주변에 블러 효과 적용 */
+    &.md {
+        min-height: 10rem;
     }
+
+    &.lg {
+        min-height: 15rem;
+    }
+}
+
+.textarea::placeholder {
+    color: clr(gray-clr, light);
+}
+
+.textarea:focus {
+    box-shadow: 0 0 0 2px clr(lime-clr, light); /* 선택된 요소 주변에 블러 효과 적용 */
 }
