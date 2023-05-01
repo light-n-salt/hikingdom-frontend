@@ -2,24 +2,18 @@ package org.lightnsalt.hikingdom.domain.info.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MountainAddRes {
+public class MountainSearchRes {
 	private Long id;
 	private String name;
-	private String description;
 	private String address;
 	private double maxAlt;
-	private double topLat;
-	private double topLng;
-	private int totalDuration;
 	private String imgUrl;
-	private String peaks;
-	private String transport;
-	private String facility;
+
 }
