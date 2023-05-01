@@ -1,19 +1,47 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/themes' as *;
+@use 'src/styles/z-index' as *;
 
 .page {
+    @include z-index(page);
     position: relative;
-    z-index: 5;
-    min-width: 100vw;
-    min-height: 100vh;
+    width: 100%;
+    min-height: 100%;
 
     &.light {
-        background-color: $bg-light;
-        color: $black;
+        @include deep-light-theme;
     }
 
     &.dark {
-        background-color: $black;
-        color: $white;
+        @include deep-dark-theme;
+    }
+
+    &-gradation {
+        @include z-index(page);
+        position: relative;
+        width: 100%;
+        height: 100%;
+        &.light {
+            @include light-gradation-theme;
+        }
+
+        &.dark {
+            @include dark-gradation-theme;
+        }
+    }
+}
+
+.content {
+    width: 100%;
+    border-radius: 1rem;
+
+    &.light {
+        @include light-theme;
+        box-shadow: -1px 3px 5px 0px clr(shadow-clr);
+    }
+    &.dark {
+        @include dark-theme;
+        box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
     }
 }
 
@@ -22,27 +50,4 @@
     flex-direction: column;
     align-items: center;
     // justify-content: center;
-}
-
-.box {
-    &.light {
-        border-radius: 0.5rem;
-
-        background-color: $white;
-        color: $black;
-
-        box-shadow: -1px 3px 5px 0px $shadow-light;
-    }
-
-    &.dark {
-        border-radius: 3%;
-
-        background-color: $black;
-        color: $white;
-    }
-}
-
-.flex {
-    width: 100%;
-    height: 100%;
 }

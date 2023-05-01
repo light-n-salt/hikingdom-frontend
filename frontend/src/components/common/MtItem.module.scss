@@ -3,14 +3,17 @@
 .mt-item {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
     overflow: hidden;
     position: relative;
-    padding: 2rem;
-    border-radius: 10%;
+    padding: 1.5rem 0.9rem;
+    border-radius: 0.8rem;
     color: white;
 
     > div {
         display: flex;
+        gap: 1rem;
+        font-size: 0.9rem;
         font-weight: 600;
     }
 
@@ -23,6 +26,14 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: brightness(70%);
+        filter: brightness(95%) blur(2px) saturate(80%);
+    }
+
+    &.lg {
+        width: 100%;
+    }
+
+    &.sm {
+        width: 13rem;
     }
 }

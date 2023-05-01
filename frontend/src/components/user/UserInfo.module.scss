@@ -7,20 +7,26 @@
     gap: 1rem;
 
     .info-box {
+        display: flex;
         gap: 3rem;
     }
 }
 
 .info {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
     gap: 1rem;
 
     img {
-        width: 2rem;
+        width: 2.2rem;
+        object-fit: contain;
     }
 
     .content-box {
         display: flex;
         flex-direction: column;
+        align-items: center;
 
         gap: 0.3rem;
 
@@ -31,7 +37,7 @@
         }
 
         .content {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
         }
     }

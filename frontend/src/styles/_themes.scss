@@ -1,0 +1,31 @@
+@use 'src/styles/colors' as *;
+
+@mixin deep-dark-theme() {
+    background-color: clr(tertiary-clr);
+    color: clr(white-clr, light);
+}
+
+@mixin dark-theme() {
+    background-color: clr(tertiary-clr, light);
+    color: clr(white-clr, light);
+}
+
+@mixin dark-gradation-theme() {
+    background: linear-gradient(clr(lime-clr, dark), clr(tertiary-clr));
+    color: clr(white-clr, light);
+}
+
+@mixin deep-light-theme() {
+    background-color: clr(white-clr);
+    color: clr(black-clr);
+}
+
+@mixin light-theme() {
+    background-color: clr(white-clr, light);
+    color: clr(black-clr);
+}
+
+@mixin light-gradation-theme() {
+    background: linear-gradient(clr(lime-clr), clr(white-clr));
+    color: clr(black-clr);
+}
