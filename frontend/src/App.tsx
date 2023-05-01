@@ -23,7 +23,7 @@ import SearchClubPage from 'pages/club/SearchClubPage'
 import MainDetailPage from 'pages/club/MainDetailPage'
 import ClubCreatePage from 'pages/club/ClubCreatePage'
 import ClubChatPage from 'pages/club/ClubChatPage'
-// Club -
+// Club - main
 import ClubPage from 'pages/club/ClubPage'
 import ClubMainPage from 'pages/club/ClubMainPage'
 import ClubMeetupPage from 'pages/club/ClubMeetupPage'
@@ -55,6 +55,7 @@ function App() {
                 <Route path="/main" element={<MainPage />} />
                 <Route path="/mountain/search" element={<SearchMtPage />} />
                 <Route path="/mountain/detail/:id" element={<MtDetailPage />} />
+                {/* <Route path="/mountain/detail" element={<MtDetailPage />} />  */}
 
                 {/* 순위 */}
                 <Route path="/rank" element={<RankPage />} />
