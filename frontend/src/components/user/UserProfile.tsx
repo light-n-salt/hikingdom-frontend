@@ -39,10 +39,10 @@ export default function UserProfile({
                     <RankModal />
                 </Modal>
             )}
-            <div className={`${styles['profile-img']} ${styles[theme]}`}>
+            <div className={`content ${theme} ${styles['profile-img']}`}>
                 <UserImage size="lg" imgUrl={imgUrl} />
             </div>
-            <div className={`box ${theme} ${styles['user-record']}`}>
+            <div className={`content ${theme} ${styles['user-record']}`}>
                 <div className={styles['btn-box']}>
                     <Button
                         text={'로그아웃'}
