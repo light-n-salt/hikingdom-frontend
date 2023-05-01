@@ -1,9 +1,10 @@
 @use 'src/styles/colors' as *;
 @use 'src/styles/themes' as *;
+@use 'src/styles/z-index' as *;
 
 .page {
+    @include z-index(background);
     position: relative;
-    z-index: 1;
     width: 100%;
     height: 100%;
 
