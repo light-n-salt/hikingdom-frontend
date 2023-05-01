@@ -1,0 +1,7 @@
+@use 'src/styles/colors' as *;
+@use 'src/styles/z-index' as *;
+
+.detail {
+    @include z-index(content);
+    margin-top: 7rem;
+}
