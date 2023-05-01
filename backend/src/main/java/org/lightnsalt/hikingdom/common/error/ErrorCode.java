@@ -20,7 +20,11 @@ public enum ErrorCode {
 
 	// member related error codes
 	DUPLICATE_EMAIL(400, "M001", "사용할 수 없는 이메일입니다"),
-	DUPLICATE_NICKNAME(400, "M002", "사용할 수 없는 닉네임입니다")
+	DUPLICATE_NICKNAME(400, "M002", "사용할 수 없는 닉네임입니다"),
+
+	// info related error codes
+	DUPLICATED_MOUNTAIN_REGISTER(403, "M001", "이미 등록된 산 이름입니다"),
+	MOUNTAIN_NOT_FOUND(404, "M002", "존재하지 않는 데이터입니다")
 	;
 
 	private final int status;
