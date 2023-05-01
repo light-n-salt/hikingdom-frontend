@@ -21,10 +21,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class InfoServiceTest {
 	// 이미 산 데이터가 존재하는 경우
-	private final String name = "관악산";
-	private final String description = "관악산 테스트";
-	private final String address = "관악산 주소";
-	private final String peaks = "연주대";
+	private final String name = "테스트";
+	private final String description = "테스트 설명";
+	private final String address = "테스트 주소";
+	private final String peaks = "테스트 봉우리";
 	private final double topAlt = 233;
 	private final double topLat = 333.4;
 	private final double topLng = 333.4;
