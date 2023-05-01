@@ -5,19 +5,19 @@ import { useNavigate } from 'react-router-dom'
 import { FiChevronLeft } from 'react-icons/fi'
 
 type PageHeaderProps = {
-    text: string
+    title: string
     url: string // 이동할 URL 주소
-    color?: 'black' | 'primary'
+    color?: 'dark' | 'light' | 'primary'
 }
 
-function PageHeader({ text, url, color = 'black' }: PageHeaderProps) {
+function PageHeader({ title, url, color = 'dark' }: PageHeaderProps) {
     const navigate = useNavigate()
     const textStyle = styles[color]
 
     return (
         <div className={`${styles.header} ${textStyle}`}>
             <FiChevronLeft onClick={() => navigate(url)} />
-            <span>{text}</span>
+            <span>{title}</span>
         </div>
     )
 }
