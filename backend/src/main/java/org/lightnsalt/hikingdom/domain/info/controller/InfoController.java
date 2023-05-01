@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.domain.info.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
@@ -9,6 +11,7 @@ import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.domain.info.dto.request.MountainAddReq;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainAddRes;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainDetailRes;
+import org.lightnsalt.hikingdom.domain.info.dto.response.MountainListRes;
 import org.lightnsalt.hikingdom.domain.info.service.InfoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +34,7 @@ public class InfoController {
 	private final InfoService infoService;
 
 	@PostMapping("/mountains")
-	public ResponseEntity<?> addMountainInfo(@RequestBody @Valid final MountainAddReq mountainCreateReq,
+	public ResponseEntity<?> mountainInfoAdd(@RequestBody @Valid final MountainAddReq mountainCreateReq,
 		BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
@@ -47,17 +50,17 @@ public class InfoController {
 	}
 
 	@GetMapping("/mountains/{mountainId}")
-	public ResponseEntity<?> getMountainInfo(@PathVariable Long mountainId) {
+	public ResponseEntity<?> mountainInfoDetails(@PathVariable Long mountainId) {
 
 		MountainDetailRes response = infoService.findMountainInfo(mountainId);
-
 		return new ResponseEntity<>(BaseResponseBody.of("산 상세 정보 조회에 성공했습니다", response), HttpStatus.OK);
 	}
 
 	@GetMapping("/mountains")
-	public ResponseEntity<?> getAllMountainInfo(@PathParam("query") String query, @PathParam("lat") String lat,
-		@PathParam("lng") String lng, @PathParam("mountainId") Long id) {
+	public ResponseEntity<?> mountainInfoList(@PathParam("query") String query, @PathParam("word") String word,
+		@PathParam("lat") double lat, @PathParam("lng") double lng, @PathParam("mountainId") Long id) {
 
-		return null;
+		List<MountainListRes> results = infoService.findAllMountainInfo(query, word, lat, lng, id);
+		return new ResponseEntity<>(BaseResponseBody.of("산 검색에 성공했습니다", results), HttpStatus.OK);
 	}
 }
