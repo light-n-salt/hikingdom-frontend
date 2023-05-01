@@ -60,18 +60,18 @@ const mtInfoArray = [
         address: '서울시 노원구',
         imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
     },
-    // {
-    //     mountainId: 1,
-    //     name: '도봉산',
-    //     maxAlt: 123,
-    //     address: '서울시 노원구',
-    //     imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-    // },
-    // {
-    //     mountainId: 1,
-    //     name: '도봉산',
-    //     maxAlt: 123,
-    //     address: '서울시 노원구',
-    //     imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-    // },
+    {
+        mountainId: 1,
+        name: '도봉산',
+        maxAlt: 123,
+        address: '서울시 노원구',
+        imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+    },
+    {
+        mountainId: 1,
+        name: '도봉산',
+        maxAlt: 123,
+        address: '서울시 노원구',
+        imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+    },
 ]
