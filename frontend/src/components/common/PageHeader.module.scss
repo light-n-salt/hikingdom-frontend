@@ -1,0 +1,26 @@
+@use 'src/styles/colors' as *;
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: flex-start;
+    width: 60%;
+    padding: 1rem 0;
+
+    &.black {
+        color: $black;
+    }
+
+    &.primary {
+        color: $primary;
+    }
+
+    > svg {
+        font-size: 2rem;
+    }
+
+    > span {
+        font-size: 1.5rem;
+    }
+}

@@ -60,7 +60,7 @@ function ProfilePage() {
     ]
 
     return (
-        <div className={`page p-sm ${theme} mobile ${styles['profile-page']}`}>
+        <div className={`page p-sm ${theme} ${styles['profile-page']}`}>
             <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
             <UserProfile
                 imgUrl="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80"
