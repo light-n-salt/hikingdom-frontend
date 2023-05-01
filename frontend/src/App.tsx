@@ -39,19 +39,20 @@ import ProfileUpdatePage from 'pages/profile/ProfileUpdatePage'
 import AlarmPage from 'pages/profile/AlarmPage'
 
 import WebMargin from 'components/common/WebMargin'
+import IndexPage from 'pages/auth/IndexPage'
 
 function App() {
     return (
         <Routes>
             <Route path="/" element={<WebMargin />}>
-                {/* <Route path="" element={<Main />} /> */}
+                <Route path="" element={<IndexPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="signup" element={<SignupPage />} />
                 <Route path="/agreement" element={<AgreementPage />} />
                 <Route path="/password" element={<FindPwPage />} />
 
                 {/* 메인 */}
-                <Route path="" element={<MainPage />} />
+                <Route path="/main" element={<MainPage />} />
                 <Route path="/mountain/search" element={<SearchMtPage />} />
                 <Route path="/mountain/detail/:id" element={<MtDetailPage />} />
 

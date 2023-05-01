@@ -2,7 +2,8 @@ import React from 'react'
 import styles from './IconText.module.scss'
 
 type IconTextProps = {
-    imgSrc: string
+    imgSrc?: string
+    icon?: React.ReactNode
     text: string
     size?: 'sm' | 'md' | 'lg'
     isBold?: boolean // font-weight : bold 설정
@@ -11,6 +12,7 @@ type IconTextProps = {
 
 function IconText({
     imgSrc,
+    icon,
     text,
     size = 'sm',
     isBold = false,
@@ -23,7 +25,8 @@ function IconText({
         <div
             className={`${styles['icon-text']} ${styles[size]} ${textStyle} ${flexStyle}`}
         >
-            <img src={imgSrc} />
+            {imgSrc && <img src={imgSrc} />}
+            {icon && icon}
             {text}
         </div>
     )

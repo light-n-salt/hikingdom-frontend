@@ -2,7 +2,8 @@ $z-index: (
     modal: 100,
     navgation: 50,
     content: 2,
-    background: 0,
+    page: 0,
+    background: -1,
 );
 
 @mixin z-index($key) {
