@@ -1,13 +1,17 @@
 package org.lightnsalt.hikingdom.domain.info.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +20,8 @@ import lombok.ToString;
 @Entity
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "mountain_info")
 public class MountainInfo {
@@ -33,8 +39,8 @@ public class MountainInfo {
 	@Column(length = 200, nullable = false)
 	private String address;
 
-	@Column(name = "max_alt", nullable = false)
-	private double maxAlt;
+	@Column(name = "top_alt", nullable = false)
+	private double topAlt;
 
 	@Column(name = "top_lat", nullable = false)
 	private double topLat;
@@ -48,16 +54,15 @@ public class MountainInfo {
 	@Column(name = "img_url", length = 512)
 	private String imgUrl;
 
-	@Builder
-	public MountainInfo(String name, String description, String address, double maxAlt, double topLat, double topLng,
-		int totalDuration, String imgUrl) {
-		this.name = name;
-		this.description = description;
-		this.address = address;
-		this.maxAlt = maxAlt;
-		this.topLat = topLat;
-		this.topLng = topLng;
-		this.totalDuration = totalDuration;
-		this.imgUrl = imgUrl;
+	@Column(name = "peaks", length = 128)
+	private String peaks;
+
+	@OneToMany(mappedBy = "mountain")
+	@ToString.Exclude
+	private List<AssetInfo> asset;
+
+	public void setAsset(List<AssetInfo> asset) {
+		this.asset = asset;
 	}
+
 }
