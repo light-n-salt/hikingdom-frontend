@@ -5,22 +5,13 @@
     padding-top: 5.5rem;
 
     .profile-img {
+        display: flex;
         position: absolute;
         top: 1rem;
         left: 7rem;
-
+        width: fit-content;
         padding: 0.5rem;
-
-        border-radius: 50%;
-
-        &.light {
-            background-color: $white;
-            box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
-        }
-
-        &.dark {
-            background-color: $black;
-        }
+        border-radius: 5rem;
     }
 
     .user-record {
