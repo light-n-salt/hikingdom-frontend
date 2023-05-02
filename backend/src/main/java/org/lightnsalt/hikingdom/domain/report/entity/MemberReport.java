@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
-import org.lightnsalt.hikingdom.domain.report.enumtype.ReportType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -56,13 +55,13 @@ public class MemberReport {
 	private LocalDateTime reportedAt;
 
 	@Column(name = "reported_type", nullable = false)
-	private ReportType reportType;
+	private String reportType;
 
 	@Column(name = "reported_content", nullable = false)
 	private Long reportedContent;
 
 	@Builder
-	public MemberReport(Member reporter, Member reported, LocalDateTime reportedAt, ReportType reportType,
+	public MemberReport(Member reporter, Member reported, LocalDateTime reportedAt, String reportType,
 		Long reportedContent) {
 		this.reporter = reporter;
 		this.reported = reported;
