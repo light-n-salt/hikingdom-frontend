@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.domain.info.dto.repository;
 
-public interface MountainInfoDto {
+public interface MountainInfo {
 	Long getId();
 
 	String getName();

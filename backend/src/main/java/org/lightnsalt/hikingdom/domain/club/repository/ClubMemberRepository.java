@@ -4,11 +4,13 @@ import java.util.Optional;
 
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.repository.query.Param;
 
 public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
-	boolean existsByMemberId(@Param("member_id") Long memberId);
+	Optional<ClubMember> findByMemberIdAndIsWithdraw(@Param("member_id") Long memberId,
+		@Param("is_withdraw") boolean isWithdraw);
 
-	Optional<ClubMember> findByClubIdAndMemberId(Long clubId, Long memberId);
+	Optional<ClubMember> findByClubIdAndMemberIdAndIsWithdraw(@Param("club_id") Long clubId,
+		@Param("member_id") Long memberId, @Param("is_withdraw") boolean isWithdraw);
+
 }

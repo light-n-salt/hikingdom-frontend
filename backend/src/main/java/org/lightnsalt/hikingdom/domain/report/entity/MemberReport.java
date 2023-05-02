@@ -1,10 +1,12 @@
-package org.lightnsalt.hikingdom.domain.club.entity;
+package org.lightnsalt.hikingdom.domain.report.entity;
 
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +16,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.lightnsalt.hikingdom.domain.BaseTimeEntity;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,9 +32,8 @@ import lombok.ToString;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "club_member")
-public class ClubMember extends BaseTimeEntity {
-
+@Table(name = "member_report")
+public class MemberReport {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "BIGINT UNSIGNED")
@@ -42,26 +42,31 @@ public class ClubMember extends BaseTimeEntity {
 	@ToString.Exclude
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
+	@JoinColumn(name = "reporter_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Member reporter;
 
 	@ToString.Exclude
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "club_id")
-	private Club club;
+	@JoinColumn(name = "reported_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Member reported;
 
-	@Column(name = "withdraw_at")
-	private LocalDateTime withdrawAt;
+	@Column(name = "reported_at", nullable = false)
+	private LocalDateTime reportedAt;
 
-	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT 0")
-	private Boolean isWithdraw;
+	@Column(name = "reported_type", nullable = false)
+	private String reportType;
+
+	@Column(name = "reported_content", nullable = false)
+	private Long reportedContent;
 
 	@Builder
-	public ClubMember(Member member, Club club, LocalDateTime withdrawAt, Boolean isWithdraw) {
-		this.member = member;
-		this.club = club;
-		this.withdrawAt = withdrawAt;
-		this.isWithdraw = isWithdraw;
+	public MemberReport(Member reporter, Member reported, LocalDateTime reportedAt, String reportType,
+		Long reportedContent) {
+		this.reporter = reporter;
+		this.reported = reported;
+		this.reportedAt = reportedAt;
+		this.reportType = reportType;
+		this.reportedContent = reportedContent;
 	}
 }

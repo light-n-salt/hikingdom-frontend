@@ -42,7 +42,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 	@Override
 	public void sendFindPasswordEmail(MemberEmailReq memberEmailReq) {
 		String email = memberEmailReq.getEmail();
-		Member member = memberRepository.findByEmail(email)
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_INPUT_VALUE));
 
 		String tempPassword = RandomStringUtils.random(10, 0, possiblePasswordCharacters.length - 1, false, false,
@@ -57,7 +57,8 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 			message.setText(createFindPasswordEmail(tempPassword), "UTF-8", "html");
 			javaMailSender.send(message);
 
-			memberRepository.setPasswordById(passwordEncoder.encode(tempPassword), member.getId());
+			if (!setTemporaryPassword(tempPassword, member.getId()))
+				throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
 		} catch (MessagingException e) {
 			log.error("Failure while sending authentication email to " + email);
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
@@ -66,7 +67,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 
 	@Override
 	public void sendAuthenticationEmail(MemberEmailReq memberEmailReq) {
-		if (memberRepository.existsByEmail(memberEmailReq.getEmail())) {
+		if (memberRepository.existsByEmailAndIsWithdraw(memberEmailReq.getEmail(), false)) {
 			throw new GlobalException(ErrorCode.DUPLICATE_EMAIL);
 		}
 
@@ -101,6 +102,11 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 		} else {
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}
+	}
+
+	@Transactional
+	boolean setTemporaryPassword(String tempPassword, Long memberId) {
+		return memberRepository.setPasswordById(passwordEncoder.encode(tempPassword), memberId) > 0;
 	}
 
 	private String createFindPasswordEmail(String password) {
