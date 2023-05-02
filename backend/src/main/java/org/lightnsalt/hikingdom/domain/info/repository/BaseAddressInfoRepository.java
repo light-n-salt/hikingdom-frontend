@@ -9,5 +9,4 @@ import org.springframework.data.jpa.repository.Query;
 public interface BaseAddressInfoRepository extends JpaRepository<BaseAddressInfo, String> {
 	@Query("SELECT b FROM BaseAddressInfo b WHERE b.dongCode LIKE '%00000000' OR b.dongCode = '3611000000'")
 	List<BaseAddressInfo> selectSidoList();
-
 }

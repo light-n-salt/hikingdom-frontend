@@ -14,25 +14,30 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MountainGetRes {
-	private Long id;
+public class MountainDetailRes {
+	private Long mountainId;
 	private String name;
 	private String description;
 	private String address;
 	private String imgUrl;
-	private double topAlt;
+	private double maxAlt;
 	private String peaks;
-	private List<AssetMountainRes> assets;
 	private int totalDuration;
+	private String transport;
+	private String facility;
+	private List<AssetMountainRes> assets;
 
-	public MountainGetRes(final MountainInfo mountainInfo) {
-		this.id = mountainInfo.getId();
+	public MountainDetailRes(final MountainInfo mountainInfo) {
+		this.mountainId = mountainInfo.getId();
 		this.name = mountainInfo.getName();
 		this.description = mountainInfo.getDescription();
 		this.address = mountainInfo.getAddress();
 		this.imgUrl = mountainInfo.getImgUrl();
-		this.topAlt = mountainInfo.getTopAlt();
+		this.maxAlt = mountainInfo.getTopAlt();
 		this.peaks = mountainInfo.getPeaks();
+		this.totalDuration = mountainInfo.getTotalDuration();
+		this.transport = mountainInfo.getTransport();
+		this.facility = mountainInfo.getFacility();
 		this.assets = mountainInfo.getAsset().stream().map(AssetMountainRes::new).collect(Collectors.toList());
 		this.totalDuration = mountainInfo.getTotalDuration();
 	}

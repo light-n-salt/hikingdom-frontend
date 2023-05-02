@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssetMountainRes {
-	private Long id;
+	private Long assetId;
 	private String name;
 	private String assetUrl;
 	private String getCondition;
 
 	public AssetMountainRes(final AssetInfo asset) {
-		this.id = asset.getId();
+		this.assetId = asset.getId();
 		this.name = asset.getName();
 		this.assetUrl = asset.getAssetUrl();
 		this.getCondition = asset.getGetCondition();
