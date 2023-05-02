@@ -66,4 +66,11 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 
 		return club.getId();
 	}
+
+	@Override
+	public void checkDuplicateClubName(ClubNameReq clubNameReq) {
+		if (clubRepository.findByNameAndIsNotDeleted(clubNameReq.getName()).isPresent()) {
+			throw new GlobalException(ErrorCode.DUPLICATE_CLUB_NAME);
+		}
+	}
 }
