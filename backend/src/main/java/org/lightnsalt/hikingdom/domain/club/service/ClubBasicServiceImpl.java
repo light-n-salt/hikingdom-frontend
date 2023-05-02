@@ -39,7 +39,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		checkDuplicateClubName(clubInfoReq.getName());
 
 		if (clubMemberRepository.existsByMemberId(host.getId())) {
-			throw new GlobalException(ErrorCode.ALREADY_JOINED_CLUB);
+			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 		}
 
 		BaseAddressInfo baseAddressInfo = getBaseAddressInfo(clubInfoReq);
