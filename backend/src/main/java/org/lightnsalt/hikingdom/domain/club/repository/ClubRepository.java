@@ -18,5 +18,5 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 	@Query("UPDATE Club c "
 		+ "SET c.name = :name, c.description = :description, c.baseAddress = :baseAddress, c.modifiedAt = :now "
 		+ "WHERE c.id = :id")
-	int updateClub(String name, String description, BaseAddressInfo baseAddressInfo, Long id, LocalDateTime now);
+	int updateClub(String name, String description, BaseAddressInfo baseAddress, Long id, LocalDateTime now);
 }
