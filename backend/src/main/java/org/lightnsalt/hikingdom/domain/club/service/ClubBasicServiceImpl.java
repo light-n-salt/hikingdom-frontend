@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.domain.club.service;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.club.dto.request.ClubInfoReq;
+import org.lightnsalt.hikingdom.domain.club.dto.response.ClubSimpleDetailRes;
 import org.lightnsalt.hikingdom.domain.club.entity.Club;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
@@ -83,6 +84,17 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		}
 
 		clubRepository.updateClub(clubInfoReq.getName(), clubInfoReq.getDescription(), baseAddressInfo, clubId);
+	}
+
+	@Override
+	public ClubSimpleDetailRes findClubSimpleDetail(Long clubId) {
+		Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
+
+		return ClubSimpleDetailRes.builder()
+			.hostId(club.getHost().getId())
+			.groupId(clubId)
+			.groupName(club.getName())
+			.build();
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.domain.club.dto.request.ClubInfoReq;
 import org.lightnsalt.hikingdom.domain.club.dto.request.ClubNameReq;
+import org.lightnsalt.hikingdom.domain.club.dto.response.ClubSimpleDetailRes;
 import org.lightnsalt.hikingdom.domain.club.service.ClubBasicService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,9 +59,14 @@ public class ClubBasicController {
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 정보 수정에 성공했습니다"), HttpStatus.OK);
 	}
 
+	@GetMapping("/{clubId}")
+	public ResponseEntity<?> clubSimpleDetails(@PathVariable Long clubId) {
+		ClubSimpleDetailRes clubSimpleDetailRes = clubBasicService.findClubSimpleDetail(clubId);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 정보 조회에 성공했습니다", clubSimpleDetailRes), HttpStatus.OK);
+	}
+
 	@GetMapping("/check-duplicate")
-	public ResponseEntity<?> clubNameCheck(@RequestBody @Valid ClubNameReq clubNameReq,
-		BindingResult bindingResult) {
+	public ResponseEntity<?> clubNameCheck(@RequestBody @Valid ClubNameReq clubNameReq, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
 				bindingResult.getAllErrors().get(0).getDefaultMessage()),
