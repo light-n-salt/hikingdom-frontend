@@ -3,9 +3,11 @@ package org.lightnsalt.hikingdom.domain.club.service;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.club.dto.request.MeetupReviewReq;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupReviewRes;
 import org.lightnsalt.hikingdom.domain.club.entity.Club;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupReview;
+import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupRepository;
@@ -23,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MeetupReviewServiceImpl implements MeetupReviewService {
 	private final ClubRepository clubRepository;
+	private final ClubMemberRepository clubMemberRepository;
 	private final MeetupRepository meetupRepository;
 	private final MeetupMemberRepository meetupMemberRepository;
 	private final MeetupReviewRepository meetupReviewRepository;
@@ -52,5 +55,37 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 		meetupReviewRepository.save(meetupReview);
 
 		return meetupReview.getId();
+	}
+
+	@Override
+	public void removeMeetupReview(String email, Long clubId, Long meetupId, Long reviewId) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final MeetupReview meetupReview = meetupReviewRepository.findByIdAndIsDeleted(reviewId, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_REVIEW_NOT_FOUND));
+
+		// 일정 후기 작성자 여부 확인
+		if (!meetupReview.getMember().equals(member))
+			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
+
+		// 정상 삭제 처리 여부 확인
+		if (!deleteMeetupReview(reviewId))
+			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
+	}
+
+	@Override
+	public List<MeetupReviewRes> findMeetupReviewList(String email, Long clubId, Long meetupId) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+
+		// 소모임 가입 여부 확인
+		if (clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(), false).isEmpty())
+			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
+
+		return meetupReviewRepository.selectMeetupReviewAsMeetupReviewRes(meetupId);
+	}
+
+	private boolean deleteMeetupReview(Long reviewId) {
+		return meetupReviewRepository.deleteMeetupReviewById(reviewId, LocalDateTime.now()) > 0;
 	}
 }
