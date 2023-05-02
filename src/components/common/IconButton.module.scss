@@ -1,18 +1,48 @@
 @use 'src/styles/colors' as *;
 
-.icon-btn {
-    &:hover {
-        cursor: pointer;
-    }
-    &.sm {
+.btn:hover {
+    cursor: pointer;
+}
+
+.sm {
+    .img {
         width: 2rem;
     }
+    > svg {
+        font-size: 2rem;
+    }
+}
 
-    &.md {
+.md {
+    .img {
         width: 3rem;
     }
+    > svg {
+        font-size: 3rem;
+    }
+}
 
-    &.lg {
+.lg {
+    .img {
         width: 4rem;
     }
+    > svg {
+        font-size: 4rem;
+    }
+}
+
+.dark {
+    color: clr(black-clr, dark);
+}
+
+.light {
+    color: clr(white-clr, light);
+}
+
+.primary {
+    color: clr(primary-clr);
+}
+
+.gray {
+    color: clr(gray-clr, light);
 }

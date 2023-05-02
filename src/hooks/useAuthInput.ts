@@ -20,7 +20,7 @@ function useAuthInput({
 }: AuthInputProps): AuthInputReturns {
     const [value, setValue] = useState<string>(initialValue)
     const [isPass, setIsPass] = useState(false)
-    const [condition, setCondition] = useState('')
+    const [condition, setCondition] = useState('') // 정규식 통과 조건
     const debouncedValue = useDebounce(value)
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
