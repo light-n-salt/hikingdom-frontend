@@ -1,19 +1,19 @@
 @use 'src/styles/colors' as *;
 
 .container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: clr(tertiary-clr, light);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: clr(tertiary-clr, light);
 }
 
 .mobile {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .laptop {
-    width: 480px;
-    height: 100%;
+  width: 480px;
+  height: 100%;
 }

@@ -11,53 +11,53 @@ import facilityImg from 'assets/images/facility.png'
 import descriptionImg from 'assets/images/message.png'
 
 type MtContentProps = {
-    address: string
-    peaks: string[]
-    transport: string
-    facility: string
-    description: string
+  address: string
+  peaks: string[]
+  transport: string
+  facility: string
+  description: string
 }
 
 function MtContent({
-    address,
-    peaks,
-    transport,
-    facility,
-    description,
+  address,
+  peaks,
+  transport,
+  facility,
+  description,
 }: MtContentProps) {
-    const { theme, toggleTheme } = useContext(ThemeContext)
-    return (
-        <div className={`${styles.mtcontent}`}>
-            <Info imgSrc={addressImg} title="주소" content={address} />
-            <Info imgSrc={peaksImg} title="봉우리" content={peaks[0]} />
-            <Info imgSrc={transportImg} title="지하철역" content={transport} />
-            <Info imgSrc={facilityImg} title="편의시설" content={facility} />
-            <div className={styles.description}>
-                <IconText
-                    imgSrc={descriptionImg}
-                    text="설명"
-                    size="md"
-                    isBold={false}
-                />
-                <span className={styles.text}>{description}</span>
-            </div>
-        </div>
-    )
+  const { theme, toggleTheme } = useContext(ThemeContext)
+  return (
+    <div className={`${styles.mtcontent}`}>
+      <Info imgSrc={addressImg} title="주소" content={address} />
+      <Info imgSrc={peaksImg} title="봉우리" content={peaks[0]} />
+      <Info imgSrc={transportImg} title="지하철역" content={transport} />
+      <Info imgSrc={facilityImg} title="편의시설" content={facility} />
+      <div className={styles.description}>
+        <IconText
+          imgSrc={descriptionImg}
+          text="설명"
+          size="md"
+          isBold={false}
+        />
+        <span className={styles.text}>{description}</span>
+      </div>
+    </div>
+  )
 }
 
 type InfoProps = {
-    imgSrc: string
-    title: string
-    content: string
+  imgSrc: string
+  title: string
+  content: string
 }
 
 function Info({ imgSrc, title, content }: InfoProps) {
-    return (
-        <div className={styles.content}>
-            <IconText imgSrc={imgSrc} text={title} size="md" isBold={false} />
-            <span className={styles.text}>{content}</span>
-        </div>
-    )
+  return (
+    <div className={styles.content}>
+      <IconText imgSrc={imgSrc} text={title} size="md" isBold={false} />
+      <span className={styles.text}>{content}</span>
+    </div>
+  )
 }
 
 export default MtContent

@@ -1,7 +1,7 @@
 import * as users from './users'
 
 const services = {
-    ...users,
+  ...users,
 }
 
 export default services
