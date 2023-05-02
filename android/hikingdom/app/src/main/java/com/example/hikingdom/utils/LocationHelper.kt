@@ -15,8 +15,8 @@ import androidx.core.content.ContextCompat
 
 class LocationHelper {
     // 2000ms, 15미터로 테스트했을 때 적합
-    val LOCATION_REFRESH_TIME = 1000 // 3 seconds. The Minimum Time to get location update
-    val LOCATION_REFRESH_DISTANCE = 5 // 30 meters. The Minimum Distance to be changed to get location update
+    val LOCATION_REFRESH_TIME = 2000 // 3 seconds. The Minimum Time to get location update
+    val LOCATION_REFRESH_DISTANCE = 10 // 30 meters. The Minimum Distance to be changed to get location update
     val MY_PERMISSIONS_REQUEST_LOCATION = 100
 
     var hikingLocationListener: HikingLocationListener? = null

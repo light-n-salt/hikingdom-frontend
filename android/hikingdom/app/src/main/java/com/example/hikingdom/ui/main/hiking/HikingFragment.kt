@@ -6,9 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.location.Location
-//import android.location.LocationManager
 import android.os.IBinder
 import android.util.Log
 import android.view.View
@@ -20,8 +17,7 @@ import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.R
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
-import com.example.hikingdom.ui.main.group.GroupFragment
-import com.example.hikingdom.utils.LocationHelper
+//import com.example.hikingdom.ui.main.group.GroupFragment
 import net.daum.mf.map.api.*
 import java.time.LocalDateTime
 
@@ -45,6 +41,8 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 
     private val ZOOM_LEVEL = 2
 
+    private val POLYLINE_COLOR_CODE = 0xFF0F7BDF.toInt()
+
     override fun initAfterBinding() {
         binding.lifecycleOwner = this
         binding.hikingFragmentViewModel = hikingViewModel
@@ -61,12 +59,12 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             drawPolylineByExistingTrackingData()
             setMarkerSetting()
         } else {
-            showToast("위치 권한을 항상 허용하지 않으면 백그라운드 경로 기록 서비스를 이용하실 수 없습니다.")
+            showToast("22위치 권한을 항상 허용하지 않으면 백그라운드 경로 기록 서비스를 이용하실 수 없습니다.")
         }
     }
 
     companion object {
-        fun newInstance(): GroupFragment = GroupFragment()
+        fun newInstance(): HikingFragment = HikingFragment()
         const val  ACTION_STOP = "${BuildConfig.APPLICATION_ID}.stop"
     }
 
@@ -161,8 +159,12 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
                 Log.d("polyline test 2", StringBuilder("lastLat: ").append(lastLat.toString()).append("/ lastLng: ").append(lastLng.toString())
                     .append(lastLng.toString()).append("/ lat: ").append(it.latitude).append("/ lng: ").append(it.longitude).toString())
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(lastLat, lastLng));
-                polyline.addPoint(MapPoint.mapPointWithGeoCoord(it.latitude, it.longitude));
-                polyline.lineColor = R.color.blue
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(it.latitude, it.longitude))
+                polyline.lineColor = POLYLINE_COLOR_CODE
+                //                polyline.setLineColor(R.color.blue)
+//                polyline.lineColor = Color.rgb(255,204,0)
+//                polyline.lineColor = Color.rgb(15.0f,123.0f,223.0f)  // @color/blue 에 해당하는 rgb color
+//                polyline.lineColor = Color.argb(1, 15, 123, 223)
                 mapView.addPolyline(polyline)
 //                mapView.fitMapViewAreaToShowPolyline(polyline)
 
@@ -263,7 +265,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 
     private fun drawPolylineByExistingTrackingData(){
         val polyline = MapPolyline()
-        polyline.lineColor = R.color.blue // Polyline 컬러 지정.
+        polyline.lineColor = POLYLINE_COLOR_CODE  // @color/blue 에 해당하는 rgb color
 
         val existingLocationList = hikingViewModel.locations.value
         if(!existingLocationList.isNullOrEmpty()){
@@ -274,7 +276,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             for(location in existingLocationList){
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude))
             }
-            polyline.lineColor = R.color.blue
+            polyline.lineColor = POLYLINE_COLOR_CODE  // @color/blue 에 해당하는 rgb color
             mapView.addPolyline(polyline)
 
             val lastExistingLocation = existingLocationList.last()
