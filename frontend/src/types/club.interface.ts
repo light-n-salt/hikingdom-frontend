@@ -21,7 +21,6 @@ export interface ClubInfo {
 
 // 에셋 정보
 // 소모임 산 조회
-// 오늘의 모임 산 (메인페이지)
 export interface AssetInfo {
     mountainName: string | undefined
     scheduleId: number | undefined
