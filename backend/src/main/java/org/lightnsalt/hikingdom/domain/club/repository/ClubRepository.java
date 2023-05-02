@@ -1,5 +1,6 @@
 package org.lightnsalt.hikingdom.domain.club.repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.lightnsalt.hikingdom.domain.club.entity.Club;
@@ -14,7 +15,9 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 	Optional<Club> findByNameAndIsNotDeleted(@Param("name") String name);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("UPDATE Club c set c.name = :name, c.description = :description, c.baseAddress = :baseAddress where c.id = :id")
-	void updateClub(@Param("name") String name, @Param("description") String description,
-		@Param("baseAddress") BaseAddressInfo baseAddressInfo, @Param("id") Long id);
+	@Query("UPDATE Club c "
+		+ "SET c.name = :name, c.description = :description, c.baseAddress = :baseAddress, c.modifiedAt = :now "
+		+ "WHERE c.id = :id")
+	int updateClub(@Param("name") String name, @Param("description") String description,
+		@Param("baseAddress") BaseAddressInfo baseAddressInfo, @Param("id") Long id, LocalDateTime now);
 }

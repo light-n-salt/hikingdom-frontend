@@ -75,6 +75,12 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 
-		memberRepository.setNicknameById(newNickname, member.getId());
+		if (!setNickname(newNickname, member.getId()))
+			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
+	}
+
+	@Transactional
+	boolean setNickname(String nickname, Long memberId) {
+		return memberRepository.setNicknameById(nickname, memberId) > 0;
 	}
 }

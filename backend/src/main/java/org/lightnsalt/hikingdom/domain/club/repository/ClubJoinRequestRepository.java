@@ -18,7 +18,7 @@ public interface ClubJoinRequestRepository extends JpaRepository<ClubJoinRequest
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE ClubJoinRequest c SET c.status = 'RETRACTED', c.modifiedAt = :now "
 		+ "WHERE c.member = :member AND c.club = :club AND  c.status = 'PENDING'")
-	void retractPendingJoinRequestByMemberAndClub(Member member, Club club, LocalDateTime now);
+	int retractPendingJoinRequestByMemberAndClub(Member member, Club club, LocalDateTime now);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE ClubJoinRequest c SET c.status = 'RETRACTED', c.modifiedAt = :now "
@@ -28,10 +28,10 @@ public interface ClubJoinRequestRepository extends JpaRepository<ClubJoinRequest
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE ClubJoinRequest c SET c.status = 'ACCEPTED', c.modifiedAt = :now "
 		+ "WHERE c.member = :member AND c.club = :club AND  c.status = 'PENDING'")
-	void acceptPendingJoinRequestByMemberAndClub(Member member, Club club, LocalDateTime now);
+	int acceptPendingJoinRequestByMemberAndClub(Member member, Club club, LocalDateTime now);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE ClubJoinRequest c SET c.status = 'REJECTED', c.modifiedAt = :now "
 		+ "WHERE c.member = :member AND c.club = :club AND  c.status = 'PENDING'")
-	void rejectPendingJoinRequestByMemberAndClub(Member member, Club club, LocalDateTime now);
+	int rejectPendingJoinRequestByMemberAndClub(Member member, Club club, LocalDateTime now);
 }

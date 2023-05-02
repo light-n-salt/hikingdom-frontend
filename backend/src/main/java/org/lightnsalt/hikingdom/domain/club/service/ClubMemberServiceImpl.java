@@ -32,7 +32,8 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	public void sendClubJoinRequest(String email, Long clubId) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
+		final Club club = clubRepository.findById(clubId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 현재 소모임에 가입되어 있는지 확인
 		if (clubMemberRepository.findCurrentClubByMember(member).isPresent())
@@ -56,12 +57,20 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	public void retractClubJoinRequest(String email, Long clubId) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
+		final Club club = clubRepository.findById(clubId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
-		final ClubJoinRequest clubJoinRequest = clubJoinRequestRepository.findPendingRequestByMemberAndClub(member, club)
+		final ClubJoinRequest clubJoinRequest = clubJoinRequestRepository.findPendingRequestByMemberAndClub(member,
+				club)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_JOIN_REQUEST_NOT_FOUND));
 
-		clubJoinRequestRepository.retractPendingJoinRequestByMemberAndClub(clubJoinRequest.getMember(),
-			clubJoinRequest.getClub(), LocalDateTime.now());
+		if (!retractPendingJoinRequest(clubJoinRequest.getMember(), clubJoinRequest.getClub()))
+			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
+	}
+
+	@Transactional
+	boolean retractPendingJoinRequest(Member member, Club club) {
+		return clubJoinRequestRepository.retractPendingJoinRequestByMemberAndClub(member, club, LocalDateTime.now())
+			> 0;
 	}
 }

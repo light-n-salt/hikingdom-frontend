@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.domain.club.service;
 
+import java.time.LocalDateTime;
+
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.club.dto.request.ClubInfoReq;
@@ -87,7 +89,8 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			baseAddressInfo = club.getBaseAddress();
 		}
 
-		clubRepository.updateClub(clubInfoReq.getName(), clubInfoReq.getDescription(), baseAddressInfo, clubId);
+		if (!updateClub(clubId, clubInfoReq, baseAddressInfo))
+			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
 	}
 
 	@Override
@@ -107,6 +110,12 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		if (clubRepository.findByNameAndIsNotDeleted(clubName).isPresent()) {
 			throw new GlobalException(ErrorCode.DUPLICATE_CLUB_NAME);
 		}
+	}
+
+	@Transactional
+	boolean updateClub(Long clubId, ClubInfoReq clubInfoReq, BaseAddressInfo baseAddressInfo) {
+		return clubRepository.updateClub(clubInfoReq.getName(), clubInfoReq.getDescription(), baseAddressInfo, clubId,
+			LocalDateTime.now()) > 0;
 	}
 
 	private BaseAddressInfo getBaseAddressInfo(ClubInfoReq clubInfoReq) {

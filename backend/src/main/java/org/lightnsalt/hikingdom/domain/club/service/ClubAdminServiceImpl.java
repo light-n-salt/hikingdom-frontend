@@ -49,7 +49,8 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 
 		// 가입 신청 처리
-		clubJoinRequestRepository.acceptPendingJoinRequestByMemberAndClub(candidate, club, LocalDateTime.now());
+		if (!acceptPendingJoinRequest(candidate, club))
+			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
 		clubMemberRepository.save(ClubMember.builder()
 			.club(club)
 			.member(candidate)
@@ -73,6 +74,19 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 		if (!club.getHost().equals(host))
 			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
 
-		clubJoinRequestRepository.rejectPendingJoinRequestByMemberAndClub(candidate, club, LocalDateTime.now());
+		if (!rejectPendingJoinRequest(candidate, club))
+			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
+	}
+
+	@Transactional
+	boolean acceptPendingJoinRequest(Member candidate, Club club) {
+		return clubJoinRequestRepository.acceptPendingJoinRequestByMemberAndClub(candidate, club, LocalDateTime.now())
+			> 0;
+	}
+
+	@Transactional
+	boolean rejectPendingJoinRequest(Member candidate, Club club) {
+		return clubJoinRequestRepository.rejectPendingJoinRequestByMemberAndClub(candidate, club, LocalDateTime.now())
+			> 0;
 	}
 }
