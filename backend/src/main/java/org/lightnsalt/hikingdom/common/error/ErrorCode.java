@@ -45,6 +45,8 @@ public enum ErrorCode {
 
 	// meetup photo related error codes
 	FAIL_TO_SAVE_PHOTO(500, "MP001", "사진 저장에 실패했습니다"),
+	PHOTO_NOT_FOUND(404, "MP002", "삭제되었거나 존재하지 않는 사진입니다"),
+
 
 	;
 	private final int status;

@@ -11,4 +11,6 @@ public interface MeetupAlbumService {
 	List<String> saveMeetupAlbum(String email, Long clubId, Long meetupId, List<MultipartFile> photos);
 
 	Slice<MeetupAlbumRes> findMeetupAlbumList(Long clubId, Long meetupId, Long photoId, Pageable pageable);
+
+	void removeMeetupAlbum(String email, Long clubId, Long meetupId, Long photoId);
 }
