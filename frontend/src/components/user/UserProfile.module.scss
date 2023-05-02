@@ -1,46 +1,46 @@
 @use 'src/styles/colors' as *;
 
-.profile-box {
+.profile {
     position: relative;
     padding-top: 5.5rem;
     width: 100%;
+}
 
-    .profile-img {
-        display: flex;
-        position: absolute;
-        top: 1rem;
-        left: 50%;
-        width: fit-content;
-        padding: 0.5rem;
-        border-radius: 5rem;
+.img {
+    display: flex;
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    width: fit-content;
+    padding: 0.5rem;
+    border-radius: 5rem;
 
-        transform: translate(-50%, 0);
-    }
+    transform: translate(-50%, 0);
+}
+.record {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    gap: 0.5rem;
+}
 
-    .user-record {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem;
-        gap: 0.5rem;
+.btns {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    width: 100%;
+}
 
-        .btn-box {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            width: 100%;
-        }
+.username {
+    display: flex;
+    align-items: center;
+    color: clr(primary-clr, light);
+    font-size: 1.4rem;
+    font-weight: bold;
+}
 
-        .username {
-            color: clr(primary-clr, light);
-            font-size: 1.4rem;
-            font-weight: bold;
-        }
-
-        > span {
-            margin-bottom: 1rem;
-            color: $gray;
-            font-size: 0.9rem;
-        }
-    }
+.email {
+    margin-bottom: 1rem;
+    color: clr(gray-clr, light);
 }
