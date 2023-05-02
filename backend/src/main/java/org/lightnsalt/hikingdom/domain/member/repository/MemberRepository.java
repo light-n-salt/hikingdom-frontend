@@ -17,11 +17,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	boolean existsByNickname(@Param("nickname") String nickname);
 
-	@Modifying
-	@Query("update Member m set m.password = ?1 where m.id = ?2")
-	void setPasswordById(String password, Long id);
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Query("update Member m set m.password = :password where m.id = :id")
+	void setPasswordById(@Param("password") String password, @Param("id") Long id);
 
-	@Modifying
-	@Query("update Member m set m.nickname = ?1 where m.id = ?2")
-	void setNicknameById(String nickname, Long id);
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Query("update Member m set m.nickname = :nickname where m.id = :id")
+	void setNicknameById(@Param("nickname") String nickname, @Param("id") Long id);
 }
