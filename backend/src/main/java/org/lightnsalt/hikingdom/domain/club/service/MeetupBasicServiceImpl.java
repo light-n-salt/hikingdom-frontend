@@ -13,6 +13,7 @@ import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDailyResDto;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyResDto;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
+import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupMember;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupRepository;
@@ -76,7 +77,17 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 			.startAt(LocalDateTime.parse(req.getStartAt(), DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")))
 			.build();
 
-		return meetupRepository.save(meetup).getId();
+		final Meetup savedMeetup = meetupRepository.save(meetup);
+
+		// 일정장 일정 가입
+		final MeetupMember meetupMember = MeetupMember.builder()
+			.meetup(savedMeetup)
+			.member(member)
+			.build();
+
+		meetupMemberRepository.save(meetupMember);
+
+		return savedMeetup.getId();
 	}
 
 	@Override
