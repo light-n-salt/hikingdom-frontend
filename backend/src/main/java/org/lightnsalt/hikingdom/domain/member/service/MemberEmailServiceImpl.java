@@ -66,6 +66,10 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 
 	@Override
 	public void sendAuthenticationEmail(MemberEmailReq memberEmailReq) {
+		if (memberRepository.existsByEmail(memberEmailReq.getEmail())) {
+			throw new GlobalException(ErrorCode.DUPLICATE_EMAIL);
+		}
+
 		String email = memberEmailReq.getEmail();
 		String authCode = createAuthCode(6);
 
