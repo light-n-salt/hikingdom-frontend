@@ -7,13 +7,13 @@
     position: relative;
     padding-top: 1.7rem;
     gap: 1.7rem;
+    width: 90%;
 }
 
 .container {
     display: flex;
     padding: 0 2.5rem 1rem;
-    gap: 2rem;
-    
+    gap: 1.2rem;
 }
 
 .content {
@@ -24,12 +24,12 @@
 }
 
 .bold {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     font-weight: bold;
 }
 
 .text {
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .border {
