@@ -47,12 +47,12 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		}
 
 		Member member = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		boolean isValidPassword = passwordEncoder.matches(memberChangePasswordReq.getPassword(), member.getPassword());
 
 		if (!isValidPassword) {
-			throw new GlobalException(ErrorCode.INVALID_LOGIN);
+			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
 		}
 
 		memberRepository.setPasswordById(passwordEncoder.encode(memberChangePasswordReq.getNewPassword()),
@@ -63,7 +63,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Override
 	public void changeNickname(String email, MemberNicknameReq memberNicknameReq) {
 		Member member = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		String newNickname = memberNicknameReq.getNickname();
 

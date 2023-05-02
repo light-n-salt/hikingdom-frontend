@@ -34,7 +34,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		response.setStatus(ErrorCode.INVALID_LOGIN.getStatus());
-		response.getWriter().write(objectMapper.writeValueAsString(ErrorResponseBody.of(ErrorCode.INVALID_LOGIN)));
+		response.setStatus(ErrorCode.MEMBER_UNAUTHORIZED.getStatus());
+		response.getWriter().write(objectMapper.writeValueAsString(ErrorResponseBody.of(ErrorCode.MEMBER_UNAUTHORIZED)));
 	}
 }

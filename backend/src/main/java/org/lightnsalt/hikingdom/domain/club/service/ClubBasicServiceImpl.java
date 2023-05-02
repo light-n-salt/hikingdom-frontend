@@ -34,7 +34,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Override
 	public Long addClub(String email, ClubInfoReq clubInfoReq) {
 		Member host = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		checkDuplicateClubName(clubInfoReq.getName());
 
@@ -64,13 +64,13 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Override
 	public void modifyClub(String email, Long clubId, ClubInfoReq clubInfoReq) {
 		Member host = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		if (!club.getHost().getId().equals(host.getId())) {
 			log.error("ClubBasicService:modifyClub: hostId is not equal, {} {}", host.getId(), club.getHost().getId());
-			throw new GlobalException(ErrorCode.INVALID_LOGIN);
+			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
 		}
 
 		// 소모임 이름 체크

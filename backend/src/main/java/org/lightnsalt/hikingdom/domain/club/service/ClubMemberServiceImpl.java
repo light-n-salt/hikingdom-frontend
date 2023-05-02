@@ -31,7 +31,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	@Override
 	public void sendClubJoinRequest(String email, Long clubId) {
 		Member member = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 현재 소모임에 가입되어 있는지 확인
@@ -55,7 +55,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	@Override
 	public void retractClubJoinRequest(String email, Long clubId) {
 		Member member = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		ClubJoinRequest clubJoinRequest = clubJoinRequestRepository.findPendingRequestByMemberAndClub(member, club)
