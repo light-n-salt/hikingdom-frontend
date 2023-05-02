@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { MtInfo } from 'types/mt.interface'
 import IconText from './IconText'
 import hotAirBalloon from 'assets/images/hot_air_balloon.png'
@@ -12,9 +13,17 @@ type MtItemProps = {
 
 function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
     const maxAlt = mtInfo.maxAlt.toString() + 'm'
+    const navigate = useNavigate()
+
+    function onClickDetail(mtId: number) {
+        navigate(`/mountain/detail/${mtId}`)
+    }
 
     return (
-        <div className={`${styles['mt-item']} ${styles[size]}`}>
+        <div
+            className={`${styles['mt-item']} ${styles[size]}`}
+            onClick={() => onClickDetail(mtInfo.mountainId)}
+        >
             <h3>{mtInfo.name}</h3>
             <div>
                 <IconText imgSrc={hotAirBalloon} text="높이" />

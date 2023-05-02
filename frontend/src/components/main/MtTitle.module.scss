@@ -1,7 +1,44 @@
 @use 'src/styles/colors' as *;
 
-.mt-title {
-    width: 100%;
-    // height: 8rem;
+.mttitle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
+    padding: 1.7rem 1rem 1rem;
+    gap: 1.3rem;
+    width: 90%;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bold {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.text {
+    font-size: 1rem;
+}
+
+.border {
+    font-size: 3rem;
+    color: $gray;
+}
+
+.img {
+    width: 3rem;
+    height: 3rem;
 }
