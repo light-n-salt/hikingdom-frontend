@@ -23,7 +23,7 @@ function SearchBar({
     }
 
     return (
-        <div className={`${styles[theme]} ${styles.searchbar}`}>
+        <div className={`content ${theme} ${styles.searchbar}`}>
             {setSeleted ? (
                 <>toggle</>
             ) : (

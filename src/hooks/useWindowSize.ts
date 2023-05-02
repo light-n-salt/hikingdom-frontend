@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-type useWindowSizwReturns = {
+type useWindowSizeReturns = {
     width: number
     height: number
 }
 
-function useWindowSize(): useWindowSizwReturns {
+function useWindowSize(): useWindowSizeReturns {
     // 화면 크기 상태를 저장할 useState 훅
     const [windowSize, setWindowSize] = useState({
         width: 0,

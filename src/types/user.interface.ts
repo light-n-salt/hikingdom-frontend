@@ -27,8 +27,8 @@ export interface UserHiking {
     totalDistance: number
     maxAlt: number
     isGroup: boolean
-    scheduleId: number
-    scheduleName: string
+    scheduleId: number | null
+    scheduleName: string | null
 }
 
 // 회원 프로필 조회
