@@ -16,23 +16,24 @@ function MtTitle({ name, maxAlt, timeDuration, assetUrl }: MtTitleProps) {
         <div className={`content ${theme} ${styles.mttitle}`}>
             <h1>{name}</h1>
             <div className={styles.container}>
-                
                 {/* 높이 */}
                 <div className={styles.content}>
                     <span className={styles.bold}>{maxAlt}m</span>
                     <span className={styles.text}>높이</span>
                 </div>
-                
+
                 <span className={styles.border}>|</span>
-                
+
                 {/* 왕복시간 */}
                 <div className={styles.content}>
-                    <span className={styles.bold}>약 {timeDuration/60}시간</span>
+                    <span className={styles.bold}>
+                        약 {timeDuration / 60}시간
+                    </span>
                     <span className={styles.text}>왕복시간</span>
                 </div>
-                
+
                 <span className={styles.border}>|</span>
-                
+
                 {/* asset */}
                 <img src={assetUrl} className={styles.img} />
             </div>

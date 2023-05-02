@@ -11,7 +11,7 @@ type MtDetailProps = {
     mtInfo: MtInfoDetail
 }
 
-function MtDetail({mtInfo}: MtDetailProps) {
+function MtDetail({ mtInfo }: MtDetailProps) {
     const { theme, toggleTheme } = useContext(ThemeContext)
     return (
         <div className={styles.detail}>
@@ -21,7 +21,7 @@ function MtDetail({mtInfo}: MtDetailProps) {
                 timeDuration={mtInfo.timeDuration}
                 assetUrl={mtInfo.asset[0].assetUrl}
             />
-            <MtContent 
+            <MtContent
                 address={mtInfo.address}
                 peaks={mtInfo.peaks}
                 transport={mtInfo.transport}
