@@ -35,7 +35,9 @@ function MtTitle({ name, maxAlt, timeDuration, assetUrl }: MtTitleProps) {
                 <span className={styles.border}>|</span>
 
                 {/* asset */}
-                <img src={assetUrl} className={styles.img} />
+                <div className={styles.content}>
+                    <img src={assetUrl} className={styles.img} />
+                </div>
             </div>
         </div>
     )
