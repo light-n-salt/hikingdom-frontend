@@ -5,14 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.domain.club.service.MeetupAlbumService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,6 +57,14 @@ public class MeetupAlbumController {
 		Map<String, List<String>> result = new HashMap<>();
 		result.put("imgUrl", list);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 사진이 등록되었습니다", result), HttpStatus.CREATED);
+	}
+
+	@GetMapping("")
+	public ResponseEntity<?> meetupAlbumList(@PathVariable Long clubId, @PathVariable Long meetupId,
+		@RequestParam Long photoId, @PageableDefault(size = 10) Pageable pageable) {
+
+		List<MeetupAlbumRes> result = meetupAlbumService.findMeetupAlbumList(clubId, meetupId, photoId, pageable);
+		return new ResponseEntity<>(BaseResponseBody.of("일정 사진 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 
 }

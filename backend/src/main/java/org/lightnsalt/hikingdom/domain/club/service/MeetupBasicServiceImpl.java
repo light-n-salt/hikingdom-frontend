@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.club.dto.request.MeetupAddReq;
-import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDailyResDto;
-import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyResDto;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDailyRes;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyRes;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupMember;
@@ -92,7 +92,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 
 	@Override
 	@Transactional
-	public MeetupMonthlyResDto findMeetupMonthly(Long clubId, String month) {
+	public MeetupMonthlyRes findMeetupMonthly(Long clubId, String month) {
 		// 소모임이 존재하는지 확인
 		final boolean isExit = clubRepository.existsById(clubId);
 		if (!isExit) {
@@ -109,7 +109,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		List<Integer> list = meetups.stream()
 			.map((meetup -> meetup.getStartAt().getDayOfMonth())).collect(Collectors.toList());
 
-		MeetupMonthlyResDto result = new MeetupMonthlyResDto();
+		MeetupMonthlyRes result = new MeetupMonthlyRes();
 		result.setStartAt(list);
 
 		return result;
@@ -117,7 +117,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 
 	@Override
 	@Transactional
-	public List<MeetupDailyResDto> findMeetupDaily(Long clubId, String date) {
+	public List<MeetupDailyRes> findMeetupDaily(Long clubId, String date) {
 		// 소모임이 존재하는지 확인
 		final boolean isExit = clubRepository.existsById(clubId);
 		if (!isExit) {
@@ -134,7 +134,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 
 		// 형 변환
 		return meetups.stream().map(meetup -> {
-			MeetupDailyResDto dto = new MeetupDailyResDto(meetup);
+			MeetupDailyRes dto = new MeetupDailyRes(meetup);
 			// 일정 참여 멤버 가져오기
 			final int totalMember = meetupMemberRepository.countByMeetupId(meetup.getId());
 			dto.setTotalMember(totalMember);

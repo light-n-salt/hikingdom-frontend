@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MeetupMonthlyResDto {
+public class MeetupMonthlyRes {
 	private List<Integer> startAt;
 
 }
