@@ -1,17 +1,21 @@
 package org.lightnsalt.hikingdom.domain.info.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
+import org.lightnsalt.hikingdom.domain.info.dto.repository.MountainDailyInfoRepository;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainAddRes;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.domain.info.dto.request.MountainAddReq;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainListRes;
+import org.lightnsalt.hikingdom.domain.info.entity.MountainDailyInfo;
 import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
 import org.lightnsalt.hikingdom.domain.info.repository.MountainInfoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +23,24 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class InfoServiceImpl implements InfoService {
+public class MountainInfoServiceImpl implements MountainInfoService {
+
+	/*
+	- 서비스 클래스 안에서 메서드 명을 작성 할 때는 아래와 같은 접두사를 붙인다.
+
+		findOrder() - 조회 유형의 service 메서드
+
+		addOrder() - 등록 유형의 service 메서드
+
+		modifyOrder() - 변경 유형의 service 메서드
+
+		removeOrder() - 삭제 유형의 service 메서드
+
+		saveOrder() – 등록/수정/삭제 가 동시에 일어나는 유형의 service 메서드
+	* */
+
+
+	private final MountainDailyInfoRepository mountainDailyInfoRepository;
 	private final MountainInfoRepository mountainInfoRepository;
 
 	@Override
@@ -101,5 +122,30 @@ public class InfoServiceImpl implements InfoService {
 		}
 
 		return result;
+	}
+
+	@Override
+	public List<MountainListRes> findMountainInfoToday() {
+		// MountainDailyInfo 데이터 가져오기
+		List<MountainDailyInfo> list = mountainDailyInfoRepository.findBySetDate(LocalDate.now());
+		// 형 변환
+		List<MountainListRes> result = list.stream().map(MountainListRes::new).collect(Collectors.toList());
+
+		return result;
+	}
+
+	@Override
+	@Transactional
+	public void addMountainInfoDaily(Long mountainId) {
+		// 산 정보 찾기
+		final MountainInfo mountain = mountainInfoRepository.findById(mountainId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MOUNTAIN_NOT_FOUND));
+
+		// 오늘의 산 저장
+		MountainDailyInfo mountainDailyInfo = MountainDailyInfo.builder()
+			.mountain(mountain)
+			.setDate(LocalDate.now())
+			.build();
+		mountainDailyInfoRepository.save(mountainDailyInfo);
 	}
 }
