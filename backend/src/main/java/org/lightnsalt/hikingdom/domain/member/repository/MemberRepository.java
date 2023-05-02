@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 	Optional<Member> findByEmailAndIsWithdraw(@Param("email") String email, @Param("is_withdraw") boolean isWithdraw);
 
-	boolean existsByEmail(@Param("email") String email);
+	boolean existsByEmailAndIsWithdraw(@Param("email") String email, @Param("is_withdraw") boolean isWithdraw);
 
-	boolean existsByNickname(@Param("nickname") String nickname);
+	boolean existsByNicknameAndIsWithdraw(@Param("nickname") String nickname, @Param("is_withdraw") boolean isWithdraw);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Member m SET m.password = :password WHERE m.id = :id")

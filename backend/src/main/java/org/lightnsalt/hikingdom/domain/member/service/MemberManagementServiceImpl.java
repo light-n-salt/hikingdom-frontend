@@ -71,7 +71,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			return;
 		}
 
-		if (memberRepository.existsByNickname(newNickname)) {
+		if (memberRepository.existsByNicknameAndIsWithdraw(newNickname, false)) {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 
