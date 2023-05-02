@@ -1,5 +1,8 @@
 package org.lightnsalt.hikingdom.common.error;
 
+import javax.validation.ConstraintViolationException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +50,22 @@ public class GlobalExceptionHandler {
 		HttpMessageNotReadableException e) {
 		log.error("handleHttpMessageNotReadableException", e);
 		return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.MISSING_REQUEST_BODY), HttpStatus.BAD_REQUEST);
+	}
+
+	/**
+	 * PathVariable 형식 에러 처리
+	 */
+	@ExceptionHandler(ConstraintViolationException.class)
+	protected ResponseEntity<ErrorResponseBody> handleConstraintValidationException(
+		final ConstraintViolationException e) {
+		log.error("handleConstraintValidationException", e);
+		String errorMessage = e.getMessage();
+		if (StringUtils.contains(errorMessage, ":")) {
+			errorMessage = StringUtils.substringAfter(errorMessage, ":").trim();
+		}
+
+		return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE, errorMessage),
+			HttpStatus.BAD_REQUEST);
 	}
 
 	/**
