@@ -1,6 +1,8 @@
 package org.lightnsalt.hikingdom.domain.club.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -64,7 +66,10 @@ public class MeetupController {
 		}
 
 		Long id = meetupBasicService.saveMeetup(authentication.getName(), clubId, req);
-		return new ResponseEntity<>(BaseResponseBody.of("일정이 생성되었습니다", id), HttpStatus.CREATED);
+		Map<String, Long> result = new HashMap<>();
+		result.put("id", id);
+
+		return new ResponseEntity<>(BaseResponseBody.of("일정이 생성되었습니다", result), HttpStatus.CREATED);
 	}
 
 	@GetMapping("/month/{month}")
