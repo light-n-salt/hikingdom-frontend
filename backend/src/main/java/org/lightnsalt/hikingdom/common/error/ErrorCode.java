@@ -21,7 +21,7 @@ public enum ErrorCode {
 	// member related error codes
 	DUPLICATE_EMAIL(400, "M001", "사용할 수 없는 이메일입니다"),
 	DUPLICATE_NICKNAME(400, "M002", "사용할 수 없는 닉네임입니다"),
-	MEMBER_NOT_FOUND(400, "M003", "존재하지 않는 사용자입니다"),
+	MEMBER_NOT_FOUND(404, "M003", "존재하지 않는 사용자입니다"),
 
 	// info related error codes
 	DUPLICATED_MOUNTAIN_REGISTER(403, "M001", "이미 등록된 산 이름입니다"),
