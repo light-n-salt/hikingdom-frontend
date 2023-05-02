@@ -62,7 +62,7 @@ public class MemberSignUpController {
 		return new ResponseEntity<>(BaseResponseBody.of("사용할 수 있는 닉네임입니다"), HttpStatus.OK);
 	}
 
-	@GetMapping("/email-valid")
+	@PostMapping("/email-valid")
 	public ResponseEntity<?> emailValid(@RequestBody @Valid MemberEmailReq memberEmailReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -76,7 +76,7 @@ public class MemberSignUpController {
 		return new ResponseEntity<>(BaseResponseBody.of("인증 이메일을 전송했습니다. 5분 내에 확인해주세요."), HttpStatus.OK);
 	}
 
-	@GetMapping("/email-confirm")
+	@DeleteMapping("/email-valid")
 	public ResponseEntity<?> emailConfirm(@RequestBody @Valid MemberEmailAuthenticationReq memberEmailAuthenticationReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
