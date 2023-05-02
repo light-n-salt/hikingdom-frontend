@@ -11,8 +11,8 @@ type MtListProps = {
 function MtList({ mtInfoArray, size = 'lg' }: MtListProps) {
     return (
         <div className={`${styles['mt-list']} ${styles[size]}`}>
-            {mtInfoArray.map((mtInfo, index) => (
-                <MtItem key={`MtItem-${index}`} mtInfo={mtInfo} size={size} />
+            {mtInfoArray.map((mtInfo) => (
+                <MtItem key={mtInfo.mountainId} mtInfo={mtInfo} size={size} />
             ))}
         </div>
     )
