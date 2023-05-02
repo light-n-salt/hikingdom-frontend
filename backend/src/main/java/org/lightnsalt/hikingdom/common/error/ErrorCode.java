@@ -24,8 +24,12 @@ public enum ErrorCode {
 
 	// info related error codes
 	DUPLICATED_MOUNTAIN_REGISTER(403, "M001", "이미 등록된 산 이름입니다"),
-	MOUNTAIN_NOT_FOUND(404, "M002", "존재하지 않는 데이터입니다")
-	;
+	MOUNTAIN_NOT_FOUND(404, "M002", "존재하지 않는 데이터입니다"),
+	BASE_ADDRESS_NOT_FOUND(404, "L001", "존재하지 않는 지역 정보입니다"),
+
+	// club related error codes
+	ALREADY_JOINED_CLUB(400, "K001", "이미 소모임에 가입되어 있습니다"),
+	ALREADY_EXIST_CLUB(400, "K002", "이미 존재하는 소모임 이름입니다");
 
 	private final int status;
 	private final String code;
