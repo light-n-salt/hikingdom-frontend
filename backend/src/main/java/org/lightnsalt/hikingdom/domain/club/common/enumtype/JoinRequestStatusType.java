@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public enum JoinRequestStatusType {
 	PENDING, // 가입 신청
+	RETRACTED, // 가입 신청 취소
 	ACCEPTED, // 가입 신청 수락
 	REJECTED // 가입 신청 거절
 }
