@@ -149,7 +149,7 @@ function SignupForm() {
                 value={checkPassword}
                 onChange={changeCheckPw}
                 isPass={isCheckPwPass}
-                placeholder="비밀번호을 확인해주세요"
+                placeholder="비밀번호를 확인해주세요"
                 type="password"
             />
             <Button text="회원가입" color="primary" onClick={signup} />
