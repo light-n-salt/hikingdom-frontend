@@ -9,6 +9,7 @@ type LabelInputProps = {
     isError?: boolean
     placeholder?: string
     type?: string
+    disabled?: boolean
 }
 
 function LabelInput({
@@ -19,20 +20,24 @@ function LabelInput({
     isError = false,
     placeholder = '',
     type = 'text',
+    disabled = false,
 }: LabelInputProps) {
     const error = isError ? styles.error : ''
     const pass = isPass ? styles.pass : ''
 
     return (
-        <div className={`${styles['label-input']}`}>
-            <label htmlFor="input">{label}</label>
+        <div className={styles.container}>
+            <label className={styles.label} htmlFor={`label-input-${label}`}>
+                {label}
+            </label>
             <input
-                id="input"
+                id={`label-input-${label}`}
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                className={`${error} ${pass}`}
+                className={`${styles.input} ${error} ${pass}`}
                 type={type}
+                disabled={disabled}
             />
         </div>
     )

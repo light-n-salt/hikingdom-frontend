@@ -4,6 +4,7 @@ import useAuthInput from 'hooks/useAuthInput'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import sytles from './LoginForm.module.scss'
+import services from 'apis/services'
 
 function LoginForm() {
     const navigate = useNavigate()
@@ -20,8 +21,14 @@ function LoginForm() {
         isPass: isPwPass,
     } = useAuthInput({ type: 'password' })
 
-    function toMain() {
-        navigate('/profile')
+    function login() {
+        if (!isEmailPass || !isPwPass) return
+        services
+            .login(email, password)
+            .then((res) => {
+                navigate('/main')
+            })
+            .catch(() => {})
     }
     function toAgree() {
         navigate('/agreement')
@@ -51,13 +58,13 @@ function LoginForm() {
                 <Button
                     text="로그인"
                     color="primary"
-                    size="md"
-                    onClick={toMain}
+                    size="lg"
+                    onClick={login}
                 />
                 <Button
                     text="회원가입"
                     color="white"
-                    size="md"
+                    size="lg"
                     onClick={toAgree}
                 />
             </div>
