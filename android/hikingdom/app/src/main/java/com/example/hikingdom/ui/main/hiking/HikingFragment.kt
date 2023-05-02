@@ -61,9 +61,8 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             drawPolylineByExistingTrackingData()
             setMarkerSetting()
         } else {
-            showToast("위치 권한을 허용하지 않으면 시작할 수 없습니다.")
+            showToast("위치 권한을 항상 허용하지 않으면 백그라운드 경로 기록 서비스를 이용하실 수 없습니다.")
         }
-
     }
 
     companion object {
@@ -181,13 +180,16 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
     }
 
     private fun checkPermission(): Boolean {
-        val result = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-        val result1 = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED
+        val isFineLocationPermissionGranted = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        val isCoarseLocationPermissionGranted = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+        val isBackgroundLocationPermissionGranted = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        return isFineLocationPermissionGranted == PackageManager.PERMISSION_GRANTED
+                && isCoarseLocationPermissionGranted == PackageManager.PERMISSION_GRANTED
+                && isBackgroundLocationPermissionGranted == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestPermission() {
-        ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 1)
+        ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 1)
     }
 
     fun startHikingService(){

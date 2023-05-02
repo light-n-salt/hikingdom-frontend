@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />      <!-- 네트워크와 GPS를 이용 -> 더 정확한 위치 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />    <!--네트워크(와이파이, 3G, 4G 등)만을 이용해서 단말기 위치를 식별-->
 
