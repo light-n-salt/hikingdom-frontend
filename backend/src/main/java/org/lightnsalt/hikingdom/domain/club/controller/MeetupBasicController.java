@@ -51,7 +51,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/api/v1/clubs/{clubId}/meetups")
 @RequiredArgsConstructor
-public class MeetupController {
+public class MeetupBasicController {
 
 	private final MeetupBasicService meetupBasicService;
 

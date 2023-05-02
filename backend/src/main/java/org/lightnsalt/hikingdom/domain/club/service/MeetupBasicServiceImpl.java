@@ -61,7 +61,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 
 		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, member.getId())
-			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_MEMBER_NOT_FOUND));
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED));
 
 		// 산 데이터 가져오기
 		final MountainInfo mountainInfo = mountainInfoRepository.findById(req.getMountainId())
