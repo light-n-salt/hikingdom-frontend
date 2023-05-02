@@ -16,7 +16,6 @@ public enum ErrorCode {
 	INVALID_TOKEN(401, "C005", "토큰이 유효하지 않습니다"),
 	EXPIRED_TOKEN(401, "C006", "토큰이 만료되었습니다"),
 	MISSING_REQUEST_BODY(400, "C007", "응답 요청 내용이 없습니다"),
-
 	// business error codes
 
 	// member related error codes
@@ -35,9 +34,9 @@ public enum ErrorCode {
 	CLUB_NOT_FOUND(404, "K003", "존재하지 않는 소모임입니다"),
 
 	// club member related error codes
-	CLUB_MEMBER_NOT_FOUND(400, "CM001", "소모임에 가입된 회원이 아닙니다"),
-
-	;
+	CLUB_MEMBER_NOT_FOUND(404, "CM001", "소모임에 가입된 회원이 아닙니다"),
+	CLUB_JOIN_REQUEST_PENDING(400, "CM002", "소모임 가입 요청이 이미 존재합니다"),
+	CLUB_JOIN_REQUEST_NOT_FOUND(404, "CM003", "유효한 소모임 가입 요청이 없습니다");
 
 	private final int status;
 	private final String code;
