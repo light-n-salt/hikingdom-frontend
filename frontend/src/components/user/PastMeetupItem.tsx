@@ -43,7 +43,12 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
         >
             {isOpen && (
                 <Modal onClick={() => setIsOpen(false)}>
-                    <TrackingInfo />
+                    <TrackingInfo 
+                        gpsRoute='위경도'
+                        totalDistance={6.43}
+                        maxAlt={600}
+                        totalDuration='02:13'
+                    />
                 </Modal>
             )}
             <div className={styles.title}>

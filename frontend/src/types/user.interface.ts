@@ -41,7 +41,7 @@ export interface UserHikingDetail {
     gpsRoute: string
     totalDistance: number
     maxAlt: number
-    totalDuration: string
+    totalDuration: string  // HH:MM
 }
 
 // 전체 알림 조회
