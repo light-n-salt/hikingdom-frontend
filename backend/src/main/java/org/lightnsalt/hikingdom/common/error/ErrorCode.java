@@ -15,6 +15,7 @@ public enum ErrorCode {
 	INVALID_LOGIN(401, "C004", "인증 자격 증명이 유효하지 않습니다"),
 	INVALID_TOKEN(401, "C005", "토큰이 유효하지 않습니다"),
 	EXPIRED_TOKEN(401, "C006", "토큰이 만료되었습니다"),
+	MISSING_REQUEST_BODY(400, "C007", "응답 요청 내용이 없습니다"),
 
 	// business error codes
 
