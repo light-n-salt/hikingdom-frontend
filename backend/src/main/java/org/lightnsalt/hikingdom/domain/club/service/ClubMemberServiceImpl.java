@@ -30,17 +30,18 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	@Transactional
 	@Override
 	public void sendClubJoinRequest(String email, Long clubId) {
-		final Member member = memberRepository.findByEmail(email)
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 현재 소모임에 가입되어 있는지 확인
-		if (clubMemberRepository.findCurrentClubByMember(member).isPresent())
+		if (clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false).isPresent())
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 
 		// 현재 소모임에 가입 요청했는지 확인 (동시에 여러 소모임 가입 신청 가능)
-		if (clubJoinRequestRepository.findPendingRequestByMemberAndClub(member, club).isPresent())
+		if (clubJoinRequestRepository.findByMemberIdAndClubIdAndStatus(member.getId(), clubId,
+			JoinRequestStatusType.PENDING).isPresent())
 			throw new GlobalException(ErrorCode.CLUB_JOIN_REQUEST_PENDING);
 
 		ClubJoinRequest clubJoinRequest = ClubJoinRequest.builder()
@@ -55,13 +56,13 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	@Transactional
 	@Override
 	public void retractClubJoinRequest(String email, Long clubId) {
-		final Member member = memberRepository.findByEmail(email)
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Club club = clubRepository.findById(clubId)
+		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
-		final ClubJoinRequest clubJoinRequest = clubJoinRequestRepository.findPendingRequestByMemberAndClub(member,
-				club)
+		final ClubJoinRequest clubJoinRequest = clubJoinRequestRepository.findByMemberIdAndClubIdAndStatus(
+				member.getId(), club.getId(), JoinRequestStatusType.PENDING)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_JOIN_REQUEST_NOT_FOUND));
 
 		if (!retractPendingJoinRequest(clubJoinRequest.getMember(), clubJoinRequest.getClub()))
@@ -70,7 +71,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 
 	@Transactional
 	boolean retractPendingJoinRequest(Member member, Club club) {
-		return clubJoinRequestRepository.retractPendingJoinRequestByMemberAndClub(member, club, LocalDateTime.now())
-			> 0;
+		return clubJoinRequestRepository.updatePendingJoinRequestByMemberAndClub(member, club,
+			JoinRequestStatusType.RETRACTED, LocalDateTime.now()) > 0;
 	}
 }

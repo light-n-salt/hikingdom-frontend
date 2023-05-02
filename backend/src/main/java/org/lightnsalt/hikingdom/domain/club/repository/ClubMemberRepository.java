@@ -3,19 +3,14 @@ package org.lightnsalt.hikingdom.domain.club.repository;
 import java.util.Optional;
 
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
-import org.lightnsalt.hikingdom.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
-import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.repository.query.Param;
 
 public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
-	boolean existsByMemberId(@Param("member_id") Long memberId);
+	Optional<ClubMember> findByMemberIdAndIsWithdraw(@Param("member_id") Long memberId,
+		@Param("is_withdraw") boolean isWithdraw);
 
-	@Query("SELECT c from ClubMember c "
-		+ "WHERE c.club.id = :clubId AND c.member.id = :memberId AND c.isWithdraw = false")
-	Optional<ClubMember> findByClubIdAndMemberId(Long clubId, Long memberId);
+	Optional<ClubMember> findByClubIdAndMemberIdAndIsWithdraw(@Param("club_id") Long clubId,
+		@Param("member_id") Long memberId, @Param("is_withdraw") boolean isWithdraw);
 
-	@Query("SELECT c FROM ClubMember c WHERE c.member =:member AND c.isWithdraw = false")
-	Optional<ClubMember> findCurrentClubByMember(Member member);
 }

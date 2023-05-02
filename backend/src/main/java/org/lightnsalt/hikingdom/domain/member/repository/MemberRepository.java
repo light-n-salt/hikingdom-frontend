@@ -11,17 +11,17 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-	Optional<Member> findByEmail(@Param("email") String email);
+	Optional<Member> findByEmailAndIsWithdraw(@Param("email") String email, @Param("is_withdraw") boolean isWithdraw);
 
 	boolean existsByEmail(@Param("email") String email);
 
 	boolean existsByNickname(@Param("nickname") String nickname);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("update Member m set m.password = :password where m.id = :id")
+	@Query("UPDATE Member m SET m.password = :password WHERE m.id = :id")
 	int setPasswordById(@Param("password") String password, @Param("id") Long id);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("update Member m set m.nickname = :nickname where m.id = :id")
+	@Query("UPDATE Member m SET m.nickname = :nickname WHERE m.id = :id")
 	int setNicknameById(@Param("nickname") String nickname, @Param("id") Long id);
 }

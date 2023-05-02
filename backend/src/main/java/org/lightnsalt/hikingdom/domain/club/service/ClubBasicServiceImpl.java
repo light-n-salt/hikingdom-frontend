@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
+import org.lightnsalt.hikingdom.domain.club.common.enumtype.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.club.dto.request.ClubInfoReq;
 import org.lightnsalt.hikingdom.domain.club.dto.response.ClubSimpleDetailRes;
 import org.lightnsalt.hikingdom.domain.club.entity.Club;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
+import org.lightnsalt.hikingdom.domain.club.repository.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.domain.info.entity.BaseAddressInfo;
@@ -29,20 +31,25 @@ import lombok.extern.slf4j.Slf4j;
 public class ClubBasicServiceImpl implements ClubBasicService {
 	private final ClubRepository clubRepository;
 	private final ClubMemberRepository clubMemberRepository;
+	private final ClubJoinRequestRepository clubJoinRequestRepository;
 	private final BaseAddressInfoRepository baseAddressInfoRepository;
 	private final MemberRepository memberRepository;
 
 	@Transactional
 	@Override
 	public Long addClub(String email, ClubInfoReq clubInfoReq) {
-		final Member host = memberRepository.findByEmail(email)
+		final Member host = memberRepository.findByEmailAndIsWithdraw(email,false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		checkDuplicateClubName(clubInfoReq.getName());
 
-		if (clubMemberRepository.existsByMemberId(host.getId())) {
+		// 소모임 가입 여부 확인. 이미 가입된 경우, 소모임 생성 X
+		if (clubMemberRepository.findByMemberIdAndIsWithdraw(host.getId(), false).isPresent())
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
-		}
+
+		// 소모임 신청 취소
+		clubJoinRequestRepository.updatePendingJoinRequestByMember(host, JoinRequestStatusType.RETRACTED,
+			LocalDateTime.now());
 
 		final BaseAddressInfo baseAddressInfo = getBaseAddressInfo(clubInfoReq);
 
@@ -65,7 +72,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public void modifyClub(String email, Long clubId, ClubInfoReq clubInfoReq) {
-		final Member host = memberRepository.findByEmail(email)
+		final Member host = memberRepository.findByEmailAndIsWithdraw(email,false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		final Club club = clubRepository.findById(clubId)
@@ -107,7 +114,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 
 	@Override
 	public void checkDuplicateClubName(String clubName) {
-		if (clubRepository.findByNameAndIsNotDeleted(clubName).isPresent()) {
+		if (clubRepository.findByNameAndIsDeleted(clubName, false).isPresent()) {
 			throw new GlobalException(ErrorCode.DUPLICATE_CLUB_NAME);
 		}
 	}

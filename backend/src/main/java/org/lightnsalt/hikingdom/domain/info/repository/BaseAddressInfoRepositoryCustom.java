@@ -1,7 +1,5 @@
 package org.lightnsalt.hikingdom.domain.info.repository;
 
-import static org.lightnsalt.hikingdom.domain.info.entity.QBaseAddressInfo.*;
-
 import java.util.List;
 
 import org.lightnsalt.hikingdom.domain.info.entity.BaseAddressInfo;
@@ -19,7 +17,7 @@ public class BaseAddressInfoRepositoryCustom {
 	private final JPAQueryFactory jpaQueryFactory;
 
 	public List<BaseAddressInfo> selectGugunList(String dongCode) {
-		QBaseAddressInfo qBaseAddressInfo = baseAddressInfo;
+		QBaseAddressInfo qBaseAddressInfo = QBaseAddressInfo.baseAddressInfo;
 		BooleanExpression predicate;
 
 		if (dongCode.equals("3611000000")) {
@@ -30,9 +28,9 @@ public class BaseAddressInfoRepositoryCustom {
 				.and(qBaseAddressInfo.dongCode.notLike("__00000000"));
 		}
 
-		return jpaQueryFactory.selectFrom(baseAddressInfo)
+		return jpaQueryFactory.selectFrom(qBaseAddressInfo)
 			.where(predicate)
-			.orderBy(baseAddressInfo.gugunName.asc())
+			.orderBy(qBaseAddressInfo.gugunName.asc())
 			.fetch();
 	}
 }

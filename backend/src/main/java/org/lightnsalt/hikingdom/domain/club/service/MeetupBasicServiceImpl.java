@@ -57,10 +57,10 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	@Transactional
 	public Long saveMeetup(String email, Long clubId, MeetupAddReq req) {
 		// club에 속해있는 멤버인지 확인
-		final Member member = memberRepository.findByEmail(email)
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email,false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 
-		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, member.getId())
+		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(), false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED));
 
 		// 산 데이터 가져오기
