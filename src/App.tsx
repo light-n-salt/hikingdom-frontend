@@ -3,7 +3,6 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import ThemeProvider from 'styles/ThemeProvider'
 
-import Main from 'pages/Main'
 import LoginPage from 'pages/auth/LoginPage'
 import SignupPage from 'pages/auth/SignupPage'
 import ProfilePage from 'pages/profile/ProfilePage '

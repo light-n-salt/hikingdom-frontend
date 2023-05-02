@@ -38,9 +38,9 @@
 }
 
 .textarea::placeholder {
-    color: clr(gray-clr, light);
+    color: transparentize(clr(gray-clr, light), 0.4);
 }
 
 .textarea:focus {
-    box-shadow: 0 0 0 2px clr(lime-clr, light); /* 선택된 요소 주변에 블러 효과 적용 */
+    box-shadow: 0 0 2px 2px clr(lime-clr, light); /* 선택된 요소 주변에 블러 효과 적용 */
 }

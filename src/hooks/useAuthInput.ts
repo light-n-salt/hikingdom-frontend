@@ -3,7 +3,7 @@ import checkReg from 'utils/checkReg'
 import useDebounce from './useDebounce'
 
 type AuthInputProps = {
-    type: 'email' | 'nickname' | 'password'
+    type: 'email' | 'nickname' | 'password' | 'code'
     initialValue?: string
 }
 
@@ -11,6 +11,7 @@ type AuthInputReturns = {
     value: string
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     isPass: boolean
+    condition: string
 }
 
 function useAuthInput({
@@ -19,6 +20,7 @@ function useAuthInput({
 }: AuthInputProps): AuthInputReturns {
     const [value, setValue] = useState<string>(initialValue)
     const [isPass, setIsPass] = useState(false)
+    const [condition, setCondition] = useState('')
     const debouncedValue = useDebounce(value)
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,11 +28,12 @@ function useAuthInput({
     }
 
     useEffect(() => {
-        console.log(checkReg(type, debouncedValue))
-        setIsPass(checkReg(type, debouncedValue))
+        const { result, condition } = checkReg(type, debouncedValue)
+        setIsPass(result)
+        setCondition(condition)
     }, [debouncedValue])
 
-    return { value, onChange, isPass }
+    return { value, onChange, isPass, condition }
 }
 
 export default useAuthInput
