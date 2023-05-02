@@ -8,6 +8,7 @@ import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.domain.club.service.MeetupAlbumService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,9 +62,9 @@ public class MeetupAlbumController {
 
 	@GetMapping("")
 	public ResponseEntity<?> meetupAlbumList(@PathVariable Long clubId, @PathVariable Long meetupId,
-		@RequestParam Long photoId, @PageableDefault(size = 10) Pageable pageable) {
+		@RequestParam(defaultValue = "") Long photoId, @PageableDefault(size = 10) Pageable pageable) {
 
-		List<MeetupAlbumRes> result = meetupAlbumService.findMeetupAlbumList(clubId, meetupId, photoId, pageable);
+		Slice<MeetupAlbumRes> result = meetupAlbumService.findMeetupAlbumList(clubId, meetupId, photoId, pageable);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 사진 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 

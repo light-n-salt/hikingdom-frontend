@@ -84,13 +84,11 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 
 	@Override
 	@Transactional
-	public List<MeetupAlbumRes> findMeetupAlbumList(Long clubId, Long meetupId, Long photoId, Pageable pageable) {
-		// TODO: 사진 정보 가져오기
-		List<MeetupAlbum> list = meetupRepositoryCustom.findPhotos(photoId, meetupId, pageable);
+	public Slice<MeetupAlbumRes> findMeetupAlbumList(Long clubId, Long meetupId, Long photoId, Pageable pageable) {
+		// 사진 정보 가져오기
+		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotos(photoId, meetupId, pageable);
 
-		// TODO: 형 변환
-
-
-		return null;
+		// 형 변환
+		return list.map(MeetupAlbumRes::new);
 	}
 }
