@@ -37,7 +37,7 @@ function MtContent({
                     imgSrc={descriptionImg}
                     text="설명"
                     size="md"
-                    isBold={true}
+                    isBold={false}
                 />
                 <span className={styles.text}>{description}</span>
             </div>
@@ -54,7 +54,7 @@ type InfoProps = {
 function Info({ imgSrc, title, content }: InfoProps) {
     return (
         <div className={styles.content}>
-            <IconText imgSrc={imgSrc} text={title} size="md" isBold={true} />
+            <IconText imgSrc={imgSrc} text={title} size="md" isBold={false} />
             <span className={styles.text}>{content}</span>
         </div>
     )

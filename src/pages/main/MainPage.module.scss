@@ -1,12 +1,22 @@
 @use 'src/styles/colors' as *;
 
 .main {
-    .rank-list {
-        padding: 0.7rem;
-        width: 100%;
-        overflow-x: scroll;
-        &::-webkit-scrollbar {
-            background: transparent;
-        }
+    display: flex;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.7rem;
+    gap: 0.3rem;
+    width: 100%;
+}
+
+.scroll {
+    padding: 0.7rem;
+    overflow-x: scroll;
+    // 스크롤바 숨기기
+    &::-webkit-scrollbar {
+        background: transparent;
     }
 }
