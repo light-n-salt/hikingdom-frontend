@@ -46,13 +46,13 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}
 
-		Member member = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+		final Member member = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		boolean isValidPassword = passwordEncoder.matches(memberChangePasswordReq.getPassword(), member.getPassword());
 
 		if (!isValidPassword) {
-			throw new GlobalException(ErrorCode.INVALID_LOGIN);
+			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
 		}
 
 		memberRepository.setPasswordById(passwordEncoder.encode(memberChangePasswordReq.getNewPassword()),
@@ -62,8 +62,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Transactional
 	@Override
 	public void changeNickname(String email, MemberNicknameReq memberNicknameReq) {
-		Member member = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
+		final Member member = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		String newNickname = memberNicknameReq.getNickname();
 
@@ -75,6 +75,12 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 
-		memberRepository.setNicknameById(newNickname, member.getId());
+		if (!setNickname(newNickname, member.getId()))
+			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
+	}
+
+	@Transactional
+	boolean setNickname(String nickname, Long memberId) {
+		return memberRepository.setNicknameById(nickname, memberId) > 0;
 	}
 }

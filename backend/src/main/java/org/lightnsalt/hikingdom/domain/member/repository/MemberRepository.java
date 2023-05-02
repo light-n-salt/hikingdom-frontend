@@ -19,9 +19,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("update Member m set m.password = :password where m.id = :id")
-	void setPasswordById(@Param("password") String password, @Param("id") Long id);
+	int setPasswordById(@Param("password") String password, @Param("id") Long id);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("update Member m set m.nickname = :nickname where m.id = :id")
-	void setNicknameById(@Param("nickname") String nickname, @Param("id") Long id);
+	int setNicknameById(@Param("nickname") String nickname, @Param("id") Long id);
 }

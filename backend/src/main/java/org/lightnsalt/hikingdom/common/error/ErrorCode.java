@@ -12,7 +12,7 @@ public enum ErrorCode {
 	INVALID_INPUT_VALUE(400, "C001", "입력값이 유효하지 않습니다"),
 	METHOD_NOT_ALLOWED(405, "C002", "지원하지 않는 HTTP 요청 메서드입니다"),
 	INTERNAL_SERVER_ERROR(500, "C003", "서버에서 예상치 못한 오류가 발생했습니다"),
-	INVALID_LOGIN(401, "C004", "인증 자격 증명이 유효하지 않습니다"),
+	MEMBER_UNAUTHORIZED(401, "C004", "인증 자격 증명이 유효하지 않습니다"),
 	INVALID_TOKEN(401, "C005", "토큰이 유효하지 않습니다"),
 	EXPIRED_TOKEN(401, "C006", "토큰이 만료되었습니다"),
 	MISSING_REQUEST_BODY(400, "C007", "응답 요청 내용이 없습니다"),
