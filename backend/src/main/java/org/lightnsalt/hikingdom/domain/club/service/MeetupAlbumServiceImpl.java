@@ -44,7 +44,7 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 	@Transactional
 	public List<String> saveMeetupAlbum(String email, Long clubId, Long meetupId, List<MultipartFile> photos) {
 		// meetup에 가입되어있는 회원인지 확인
-		final Member member = memberRepository.findByEmail(email)
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 
 		// 모임 데이터 가져오기
