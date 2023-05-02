@@ -28,7 +28,8 @@ public class MeetupAlbumRepositoryCustom {
 				// no-offset 페이징 처리
 				isLast(photoId),
 				// 기타 조건
-				meetupAlbum.meetup.id.eq(meetupId)
+				meetupAlbum.meetup.id.eq(meetupId),
+				meetupAlbum.isDeleted.eq(false)
 			)
 			.orderBy(meetupAlbum.createdAt.desc())
 			.limit(pageable.getPageSize() + 1)
