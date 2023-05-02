@@ -52,7 +52,10 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			.build();
 
 		clubRepository.save(club);
-		clubMemberRepository.save(new ClubMember(host, club));
+		clubMemberRepository.save(ClubMember.builder()
+			.member(host)
+			.club(club)
+			.build());
 
 		return club.getId();
 	}
