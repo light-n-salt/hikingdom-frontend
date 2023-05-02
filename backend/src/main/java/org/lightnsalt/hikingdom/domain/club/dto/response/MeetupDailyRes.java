@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MeetupDailyResDto {
+public class MeetupDailyRes {
 
 	private Long meetupId;
 	private Long meetupHostId;
@@ -21,7 +21,7 @@ public class MeetupDailyResDto {
 	private int totalMember;
 	private LocalDateTime startAt;
 
-	public MeetupDailyResDto(Meetup meetup) {
+	public MeetupDailyRes(Meetup meetup) {
 		this.meetupId = meetup.getId();
 		this.meetupHostId = meetup.getHost().getId();
 		this.meetupName = meetup.getName();
