@@ -3,7 +3,6 @@ package org.lightnsalt.hikingdom.domain.member.service;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.member.common.enumtype.MemberRoleType;
-import org.lightnsalt.hikingdom.domain.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberSignUpReq;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberLevelInfoRepository;
@@ -49,8 +48,8 @@ public class MemberSignUpServiceImpl implements MemberSignUpService {
 	}
 
 	@Override
-	public void checkDuplicateNickname(MemberNicknameReq memberNicknameReq) {
-		if (memberRepository.existsByNickname(memberNicknameReq.getNickname())) {
+	public void checkDuplicateNickname(String nickname) {
+		if (memberRepository.existsByNickname(nickname)) {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 	}
