@@ -7,9 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Location
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
+import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
@@ -35,6 +33,9 @@ class LocationService : Service() {
     // 현재 위치
     var currentLocation = MutableLiveData<Location>()
 
+    private lateinit var handler: Handler
+    private lateinit var looper: Looper
+
     init {
         duration.value = 0
         totalDistance.value = 0.0f
@@ -53,7 +54,6 @@ class LocationService : Service() {
         fun getService(): LocationService = this@LocationService
     }
 
-
     override fun onBind(intent: Intent?): IBinder? {
         return binder
     }
@@ -61,58 +61,59 @@ class LocationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand 진입")
         if (intent?.action != null
-            && intent.action.equals(ACTION_STOP, ignoreCase = true)) {  // "하이킹 종료" 버튼을 눌렀을 때, foreground 서비스를 종료.
+            && intent.action.equals(ACTION_STOP, ignoreCase = true)) {
             Log.d(TAG, "foreground service 종료")
             stopForeground(true)
             stopSelf()
-
             isServiceRunning = false
         }else{
             Log.d(TAG, "foreground service 시작")
             createNotification()
-            mThread?.start()
             isServiceRunning = true
+
+            // 핸들러와 루퍼를 생성합니다.
+            val handlerThread = HandlerThread("location_update_thread")
+            handlerThread.start()
+            looper = handlerThread.looper
+            handler = Handler(looper)
 
             LocationHelper().startListeningUserLocation(this, object : LocationHelper.HikingLocationListener {
                 override fun onLocationChanged(location: Location) {
-                    // Here you got user location :)
-                    Log.d("Location","" + location.latitude + "," + location.longitude + ","+location.altitude)
-                    if (currentLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
-                        val distance = location.distanceTo(currentLocation.value)
-                        totalDistance.value = totalDistance.value?.plus(distance)
+                    handler.post {
+                        // Here you got user location :)
+                        Log.d("Location","" + location.latitude + "," + location.longitude + ","+location.altitude)
+                        if (currentLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
+                            val distance = location.distanceTo(currentLocation.value)
+                            totalDistance.postValue(totalDistance.value?.plus(distance))
+                        }
+                        currentLocation.postValue(location)
+                        latitudeList.value?.add(location.latitude)
+                        longitudeList.value?.add(location.longitude)
+                        altitudeList.value?.add(location.altitude)
                     }
-                    currentLocation.value = location
-//                    locations.value?.add(location)
-                    latitudeList.value?.add(location.latitude)
-                    longitudeList.value?.add(location.longitude)
-                    altitudeList.value?.add(location.altitude)
                 }
-
-
             })
         }
 
-        return START_STICKY // 서비스가 강제로 종료되었을 때 시스템이 자동으로 다시 시작, 사용자의 위치 정보를 계속 추적해야할 때 적합
-                            // https://work2type.tistory.com/entry/STARTSTICKY-STARTNOTSTICKY
+        return START_STICKY
     }
-
-    private var mThread: Thread? = object : Thread("calculate duration") {
-        override fun run() {
-            super.run()
-            while(isServiceRunning){
-
-                try {
-                    sleep(1000)
-                    duration.postValue(duration.value?.plus(1))
-                } catch (e: InterruptedException) {
-                    currentThread().interrupt()
-                    break
-                }
-            }
-            Log.d(TAG, "경로 기록 스레드 종료")
-            // while문 빠져나와 run()메서드 종료 => 스레드가 사용 중이던 자원을 정리하고, run()메서드가 끝나게 됨으로써 스레드가 안전하게 종료됨
-        }
-    }
+//    private var mThread: Thread? = object : Thread("calculate duration") {
+//        override fun run() {
+//            super.run()
+//            while(isServiceRunning){
+//
+//                try {
+//                    sleep(1000)
+//                    duration.postValue(duration.value?.plus(1))
+//                } catch (e: InterruptedException) {
+//                    currentThread().interrupt()
+//                    break
+//                }
+//            }
+//            Log.d(TAG, "경로 기록 스레드 종료")
+//            // while문 빠져나와 run()메서드 종료 => 스레드가 사용 중이던 자원을 정리하고, run()메서드가 끝나게 됨으로써 스레드가 안전하게 종료됨
+//        }
+//    }
 
     //Notififcation for ON-going
     private var iconNotification: Bitmap? = null
@@ -160,5 +161,11 @@ class LocationService : Service() {
             startForeground(mNotificationId, notification)
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopForeground(true)
+        stopSelf()
     }
 }

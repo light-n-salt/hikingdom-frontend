@@ -25,4 +25,8 @@ class MainActivity: BaseActivity<ActivityMainBinding>(ActivityMainBinding::infla
         binding.mainBottomNavigation.itemIconTintList = null
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }

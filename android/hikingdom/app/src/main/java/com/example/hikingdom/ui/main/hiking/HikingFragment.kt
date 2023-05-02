@@ -341,4 +341,30 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         mapView.addPOIItem(customMarker)
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("fragment lifecycle", "onDestroyView")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("fragment lifecycle", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("fragment lifecycle", "onStop")
+        mapViewContainer.removeAllViews()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("fragment lifecycle", "onDestroy")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("fragment lifecycle", "onDetach")
+    }
 }
