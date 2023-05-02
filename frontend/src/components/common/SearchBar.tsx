@@ -6,14 +6,14 @@ import { BsSearch } from 'react-icons/bs'
 type SearchBarProps = {
     value: string
     placeholder: string
-    setSeleted?: (value: string) => void // selectbox 값 변경 함수
+    setSelected?: (value: string) => void // selectbox 값 변경 함수
     onChangeText: (value: string) => void // 검색값
 }
 
 function SearchBar({
     value,
     placeholder,
-    setSeleted,
+    setSelected,
     onChangeText,
 }: SearchBarProps) {
     const { theme } = useContext(ThemeContext)
@@ -24,7 +24,7 @@ function SearchBar({
 
     return (
         <div className={`content ${theme} ${styles.searchbar}`}>
-            {setSeleted ? (
+            {setSelected ? (
                 <>toggle</>
             ) : (
                 <BsSearch className={`${styles.icon}`} />
