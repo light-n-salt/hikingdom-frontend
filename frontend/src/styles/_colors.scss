@@ -6,16 +6,15 @@ $tertiary: #323b34;
 // 기본 컬러
 $white: #efefef;
 $black: #222222;
-$gray: #888888;
+$gray: #999999;
 $lime: #9feb72;
 $red: #ff0c0c;
 
 // 쉐도우용 컬러(opacity)
 $shadow: #00000022;
 
-// 밝기변화 인자
-$lighten: 5;
-$darken: 25;
+$lighten: 10;
+$darken: 10;
 
 $colors: (
     primary-clr: (

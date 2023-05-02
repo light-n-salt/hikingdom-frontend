@@ -11,6 +11,8 @@ import tree from 'assets/level/tree.png'
 import forest from 'assets/level/forest.png'
 import mountain from 'assets/level/mountain.png'
 import god from 'assets/level/god.png'
+import getLevelImg from 'utils/getLevelImg'
+import LEVEL_TO_IMG from 'constants/levels'
 
 function LevelModal() {
     return (
@@ -36,12 +38,19 @@ type LevelItemProps = {
 }
 
 function LevelItem({ level, imgSrc, des }: LevelItemProps) {
+    // const imgSrc = getLevelImg(level)
+    // const imgSrc = LEVEL_TO_IMG[level]
+
     return (
-        <div className={styles.level}>
-            <span>Lv.{level}</span>
-            <img src={imgSrc} />
-            <span>{des}</span>
-        </div>
+        <>
+            {imgSrc && (
+                <div className={styles.level}>
+                    <span>Lv.{level}</span>
+                    <img src={imgSrc} />
+                    <span>{des}</span>
+                </div>
+            )}
+        </>
     )
 }
 

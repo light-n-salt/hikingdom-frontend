@@ -3,17 +3,23 @@
 button {
     box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
     font-weight: 600;
+    white-space: nowrap;
+    transition: ease-in-out 0.1s;
+
+    &:hover {
+        transform: scale(1.01);
+    }
 
     &.sm {
-        padding: 0.25rem;
+        padding: 0.5rem;
         border-radius: 0.3rem;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
 
     &.md {
-        padding: 0.5rem;
+        padding: 0.6rem;
         border-radius: 0.4rem;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     &.lg {
@@ -26,20 +32,40 @@ button {
     &.primary {
         background-color: clr(primary-clr);
         color: clr(white-clr);
+        &:hover {
+            background-color: clr(primary-clr, dark);
+        }
     }
 
     &.secondary {
         background-color: clr(secondary-clr);
         color: clr(primary-clr);
+        &:hover {
+            background-color: clr(secondary-clr, dark);
+        }
     }
 
     &.white {
         background-color: clr(white-clr, light);
         color: clr(primary-clr);
+        &:hover {
+            background-color: clr(white-clr);
+        }
     }
 
     &.red {
         background-color: clr(red-clr);
         color: clr(white-clr);
+        &:hover {
+            background-color: clr(red-clr, dark);
+        }
+    }
+
+    &.gray {
+        background-color: clr(gray-clr);
+        color: clr(white-clr);
+        &:hover {
+            background-color: clr(gray-clr, dark);
+        }
     }
 }

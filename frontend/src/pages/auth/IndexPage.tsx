@@ -16,7 +16,12 @@ function IndexPage() {
     return (
         <div className={`page ${styles.container}`}>
             <Logo size="lg" />
-            <Button text="시작하기" color="primary" onClick={toLogin} />
+            <Button
+                text="시작하기"
+                color="primary"
+                size="lg"
+                onClick={toLogin}
+            />
             <video className={styles.video} autoPlay loop muted>
                 <source src={mountain} />
             </video>

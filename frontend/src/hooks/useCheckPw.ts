@@ -21,7 +21,7 @@ function useCheckPw({ password }: CheckPwProps): CheckPwReturns {
     }
 
     useEffect(() => {
-        setIsPass(password !== debouncedValue)
+        setIsPass(debouncedValue !== '' && password === debouncedValue)
     }, [debouncedValue])
 
     return { value, onChange, isPass }
