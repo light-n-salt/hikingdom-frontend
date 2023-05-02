@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.domain.club.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.lightnsalt.hikingdom.domain.BaseTimeEntity;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 
@@ -23,8 +27,10 @@ import lombok.ToString;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
+@DynamicInsert
+@DynamicUpdate
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "club_member")
 public class ClubMember extends BaseTimeEntity {
 
@@ -45,9 +51,17 @@ public class ClubMember extends BaseTimeEntity {
 	@JoinColumn(name = "club_id")
 	private Club club;
 
+	@Column(name = "withdraw_at")
+	private LocalDateTime withdrawAt;
+
+	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT 0")
+	private Boolean isWithdraw;
+
 	@Builder
-	public ClubMember(Member member, Club club) {
+	public ClubMember(Member member, Club club, LocalDateTime withdrawAt, Boolean isWithdraw) {
 		this.member = member;
 		this.club = club;
+		this.withdrawAt = withdrawAt;
+		this.isWithdraw = isWithdraw;
 	}
 }

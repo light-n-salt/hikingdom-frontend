@@ -39,7 +39,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		checkDuplicateClubName(clubInfoReq.getName());
 
 		if (clubMemberRepository.existsByMemberId(host.getId())) {
-			throw new GlobalException(ErrorCode.ALREADY_JOINED_CLUB);
+			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 		}
 
 		BaseAddressInfo baseAddressInfo = getBaseAddressInfo(clubInfoReq);
@@ -52,7 +52,10 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			.build();
 
 		clubRepository.save(club);
-		clubMemberRepository.save(new ClubMember(host, club));
+		clubMemberRepository.save(ClubMember.builder()
+			.member(host)
+			.club(club)
+			.build());
 
 		return club.getId();
 	}
