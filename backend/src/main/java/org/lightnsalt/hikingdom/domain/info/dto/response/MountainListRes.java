@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.domain.info.dto.response;
 
-import org.lightnsalt.hikingdom.domain.info.dto.repository.MountainInfoDtoInterface;
+import org.lightnsalt.hikingdom.domain.info.dto.repository.MountainInfoDto;
 import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
 
 import lombok.AllArgsConstructor;
@@ -20,13 +20,13 @@ public class MountainListRes implements Comparable<MountainListRes> {
 	private String imgUrl;
 	private int distance;
 
-	public MountainListRes(MountainInfoDtoInterface mountain) {
-		this.id = mountain.getMountainInfo().getId();
-		this.name = mountain.getMountainInfo().getName();
-		this.address = mountain.getMountainInfo().getAddress();
-		this.maxAlt = mountain.getMountainInfo().getTopAlt();
-		this.imgUrl = mountain.getMountainInfo().getImgUrl();
-		this.distance = (int)Math.round(mountain.getDistance());
+	public MountainListRes(MountainInfoDto mountain) {
+		this.id = mountain.getId();
+		this.name = mountain.getName();
+		this.address = mountain.getAddress();
+		this.maxAlt = mountain.getMaxAlt();
+		this.imgUrl = mountain.getImgUrl();
+		this.distance = (int)Math.round(mountain.getDiffDistance());
 	}
 
 	public MountainListRes(MountainInfo mountain) {

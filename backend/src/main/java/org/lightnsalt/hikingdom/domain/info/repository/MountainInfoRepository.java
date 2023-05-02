@@ -3,25 +3,20 @@ package org.lightnsalt.hikingdom.domain.info.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.lightnsalt.hikingdom.domain.info.dto.repository.MountainInfoDtoInterface;
 import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
-import io.lettuce.core.dynamic.annotation.Param;
 
 public interface MountainInfoRepository extends JpaRepository<MountainInfo, Long> {
 	MountainInfo findByName(String name);
 
 	Optional<MountainInfo> findById(Long id);
 
-	@Query(value =
-		"SELECT mountainInfo,  ST_Distance_Sphere(Point(:lat,:lng),POINT(mountainInfo.topLat, mountainInfo.topLng)) AS distance "
-			+ "FROM MountainInfo AS mountainInfo "
-			+ "WHERE ST_Distance_Sphere(Point(:lat,:lng),POINT(mountainInfo.topLat, mountainInfo.topLng)) <= :distance",
-		nativeQuery = true)
-	List<MountainInfoDtoInterface> findByDistance(@Param("lat") double lat, @Param("lng") double lng, @Param("distance")
-	double distance);
+	// @Query(value =
+	// 	"SELECT *, ST_Distance_Sphere(Point(:lng,:lat), POINT(top_lng, top_lat)) AS diff_distance "
+	// 		+ "FROM MountainInfo "
+	// 		+ "WHERE ST_Distance_Sphere(Point(:lng,:lat), POINT(top_lng, top_lat)) <= :distance ", nativeQuery = true)
+	// List<MountainInfoDto> findDistance(@Param("lat") double lat, @Param("lng") double lng,
+	// 	@Param("distance") double distance);
 
-	List<MountainInfo> findAllByName(String name);
+	List<MountainInfo> findAllByNameContaining(String name);
 }

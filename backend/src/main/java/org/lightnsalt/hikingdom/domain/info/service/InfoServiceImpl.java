@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.domain.info.dto.repository.MountainInfoDtoInterface;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainAddRes;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.domain.info.dto.request.MountainAddReq;
@@ -83,15 +82,15 @@ public class InfoServiceImpl implements InfoService {
 				break;
 			}
 			// 가까운 산 검색
-			case "location": {
-				List<MountainInfoDtoInterface> list = mountainInfoRepository.findByDistance(lat, lng, 3000);
-				result = list.stream().map(MountainListRes::new).sorted().collect(
-					Collectors.toList());
-				break;
-			}
+			// case "location": {
+			// 	List<MountainInfoDto> list = mountainInfoRepository.findDistance(lat, lng, 3000);
+			// 	result = list.stream().map(MountainListRes::new).sorted().collect(
+			// 		Collectors.toList());
+			// 	break;
+			// }
 			// 이름으로 산 검색
 			case "name": {
-				List<MountainInfo> list = mountainInfoRepository.findAllByName(word);
+				List<MountainInfo> list = mountainInfoRepository.findAllByNameContaining(word);
 				result = list.stream().map(MountainListRes::new).sorted().collect(
 					Collectors.toList());
 				break;
