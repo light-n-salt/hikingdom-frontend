@@ -11,7 +11,7 @@ import org.lightnsalt.hikingdom.domain.info.dto.request.MountainAddReq;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainAddRes;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainListRes;
-import org.lightnsalt.hikingdom.domain.info.service.InfoService;
+import org.lightnsalt.hikingdom.domain.info.service.MountainInfoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -31,7 +31,24 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/info")
 @RequiredArgsConstructor
 public class MountainInfoController {
-	private final InfoService infoService;
+
+	/*
+	- 컨트롤러 클래스 안에서 메서드 명을 작성 할 때는 아래와 같은 접미사를 붙인다.
+
+		orderList() – 목록 조회 유형의 서비스
+
+		orderDetails() – 단 건 상세 조회 유형의 controller 메서드
+
+		orderSave() – 등록/수정/삭제 가 동시에 일어나는 유형의 controller 메서드
+
+		orderAdd() – 등록만 하는 유형의 controller 메서드
+
+		orderModify() – 수정만 하는 유형의 controller 메서드
+
+		orderRemove() – 삭제만 하는 유형의 controller 메서드
+	* */
+
+	private final MountainInfoService mountainInfoService;
 
 	@PostMapping("/mountains")
 	public ResponseEntity<?> mountainInfoAdd(@RequestBody @Valid final MountainAddReq mountainCreateReq,
@@ -45,14 +62,14 @@ public class MountainInfoController {
 
 		log.debug("request is : {}", mountainCreateReq);
 
-		final MountainAddRes response = infoService.addMountainInfo(mountainCreateReq);
+		final MountainAddRes response = mountainInfoService.addMountainInfo(mountainCreateReq);
 		return new ResponseEntity<>(BaseResponseBody.of("산 정보 생성에 성공했습니다", response), HttpStatus.CREATED);
 	}
 
 	@GetMapping("/mountains/{mountainId}")
 	public ResponseEntity<?> mountainInfoDetails(@PathVariable Long mountainId) {
 
-		MountainDetailRes response = infoService.findMountainInfo(mountainId);
+		MountainDetailRes response = mountainInfoService.findMountainInfo(mountainId);
 		return new ResponseEntity<>(BaseResponseBody.of("산 상세 정보 조회에 성공했습니다", response), HttpStatus.OK);
 	}
 
@@ -61,7 +78,22 @@ public class MountainInfoController {
 		@RequestParam(defaultValue = "") String word, @RequestParam(defaultValue = "0") double lat,
 		@RequestParam(defaultValue = "0") double lng, @RequestParam(defaultValue = "") Long id) {
 
-		List<MountainListRes> results = infoService.findAllMountainInfo(query, word, lat, lng, id);
+		List<MountainListRes> results = mountainInfoService.findAllMountainInfo(query, word, lat, lng, id);
 		return new ResponseEntity<>(BaseResponseBody.of("산 검색에 성공했습니다", results), HttpStatus.OK);
 	}
+
+	@GetMapping("/mountains/today")
+	public ResponseEntity<?> mountainInfoToday() {
+
+		List<MountainListRes> results = mountainInfoService.findMountainInfoToday();
+		return new ResponseEntity<>(BaseResponseBody.of("오늘의 산 조회에 성공했습니다", results), HttpStatus.OK);
+	}
+
+	@PostMapping("/mountains/today/{mountainId}")
+	public ResponseEntity<?> mountainInfoTodayAdd(@PathVariable Long mountainId) {
+
+		mountainInfoService.addMountainInfoDaily(mountainId);
+		return new ResponseEntity<>(BaseResponseBody.of("오늘의 산 등록에 성공했습니다"), HttpStatus.CREATED);
+	}
+
 }
