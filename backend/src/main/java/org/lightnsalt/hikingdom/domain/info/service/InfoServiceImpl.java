@@ -1,10 +1,14 @@
 package org.lightnsalt.hikingdom.domain.info.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainAddRes;
-import org.lightnsalt.hikingdom.domain.info.dto.response.MountainGetRes;
+import org.lightnsalt.hikingdom.domain.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.domain.info.dto.request.MountainAddReq;
+import org.lightnsalt.hikingdom.domain.info.dto.response.MountainListRes;
 import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
 import org.lightnsalt.hikingdom.domain.info.repository.MountainInfoRepository;
 import org.springframework.stereotype.Service;
@@ -33,7 +37,7 @@ public class InfoServiceImpl implements InfoService {
 			.name(reqDto.getName())
 			.description(reqDto.getDescription())
 			.address(reqDto.getAddress())
-			.topAlt(reqDto.getTopAlt())
+			.topAlt(reqDto.getMaxAlt())
 			.topLat(reqDto.getTopLat())
 			.topLng(reqDto.getTopLng())
 			.totalDuration(reqDto.getTotalDuration())
@@ -55,13 +59,47 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 	@Override
-	public MountainGetRes findMountainInfo(Long id) {
+	public MountainDetailRes findMountainInfo(Long id) {
 		// 산 데이터 DB에서 가져오기
 		final MountainInfo mountain = mountainInfoRepository.findById(id)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MOUNTAIN_NOT_FOUND));
 
 		// build MountainInfoRes
-		return new MountainGetRes(mountain);
+		return new MountainDetailRes(mountain);
 
+	}
+
+	// TODO: refactoring
+	@Override
+	public List<MountainListRes> findAllMountainInfo(String query, String word, double lat, double lng, Long id) {
+		List<MountainListRes> result;
+		switch (query) {
+			// 전체조회
+			case "": {
+				List<MountainInfo> list = mountainInfoRepository.findAll();
+				result = list.stream().map(MountainListRes::new).sorted().collect(
+					Collectors.toList());
+				break;
+			}
+			// 가까운 산 검색
+			// case "location": {
+			// 	List<MountainInfoDto> list = mountainInfoRepository.findDistance(lat, lng, 3000);
+			// 	result = list.stream().map(MountainListRes::new).sorted().collect(
+			// 		Collectors.toList());
+			// 	break;
+			// }
+			// 이름으로 산 검색
+			case "name": {
+				List<MountainInfo> list = mountainInfoRepository.findAllByNameContaining(word);
+				result = list.stream().map(MountainListRes::new).sorted().collect(
+					Collectors.toList());
+				break;
+			}
+			// 정해진 query의 입력이 주어지지 않을 때
+			default:
+				throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
+		}
+
+		return result;
 	}
 }
