@@ -2,12 +2,17 @@ package org.lightnsalt.hikingdom.domain.club.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.club.dto.request.MeetupAddReq;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyResDto;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
+import org.lightnsalt.hikingdom.domain.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
@@ -23,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class MeetupBasicServiceImpl implements MeetupBasicService {
+	private final ClubRepository clubRepository;
 	private final MeetupRepository meetupRepository;
 	private final MountainInfoRepository mountainInfoRepository;
 	private final MemberRepository memberRepository;
@@ -66,5 +72,29 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 			.build();
 
 		return meetupRepository.save(meetup).getId();
+	}
+
+	@Override
+	public MeetupMonthlyResDto findMeetupMonthly(Long clubId, String month) {
+		// 소모임이 존재하는지 확인
+		final boolean isExit = clubRepository.existsById(clubId);
+		if (!isExit) {
+			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
+		}
+
+		// 일정 가져오기
+		String[] date = month.split("-");
+		log.debug("query intput date is : {}", Arrays.toString(date));
+		final List<Meetup> meetups = meetupRepository.findByClubIdAndStartAt(clubId, Integer.parseInt(date[0]),
+			Integer.parseInt(date[1]));
+
+		// 형 변환
+		List<Integer> list = meetups.stream()
+			.map((meetup -> meetup.getStartAt().getDayOfMonth())).collect(Collectors.toList());
+
+		MeetupMonthlyResDto result = new MeetupMonthlyResDto();
+		result.setStartAt(list);
+
+		return result;
 	}
 }

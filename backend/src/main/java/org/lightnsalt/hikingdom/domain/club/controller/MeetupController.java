@@ -6,11 +6,13 @@ import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.domain.club.dto.request.MeetupAddReq;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyResDto;
 import org.lightnsalt.hikingdom.domain.club.service.MeetupBasicService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,4 +64,10 @@ public class MeetupController {
 		return new ResponseEntity<>(BaseResponseBody.of("일정이 생성되었습니다", id), HttpStatus.CREATED);
 	}
 
+	@GetMapping("/month/{month}")
+	public ResponseEntity<?> meetupMonthlyList(@PathVariable Long clubId, @PathVariable String month) {
+
+		MeetupMonthlyResDto result = meetupBasicService.findMeetupMonthly(clubId, month);
+		return new ResponseEntity<>(BaseResponseBody.of("모임 일정 조회에 성공했습니다", result), HttpStatus.OK);
+	}
 }
