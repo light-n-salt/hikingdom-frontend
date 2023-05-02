@@ -7,15 +7,19 @@ import java.util.List;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.S3FileUtil;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.domain.club.entity.Club;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupAlbum;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupAlbumRepository;
+import org.lightnsalt.hikingdom.domain.club.repository.MeetupAlbumRepositoryCustom;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupRepository;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +37,8 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 	private final MeetupMemberRepository meetupMemberRepository;
 	private final S3FileUtil s3FileUtil;
 	private final MeetupAlbumRepository meetupAlbumRepository;
+
+	private final MeetupAlbumRepositoryCustom meetupRepositoryCustom;
 
 	@Override
 	@Transactional
@@ -74,5 +80,32 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 		meetupAlbumRepository.saveAll(albums);
 
 		return result;
+	}
+
+	@Override
+	@Transactional
+	public Slice<MeetupAlbumRes> findMeetupAlbumList(Long clubId, Long meetupId, Long photoId, Pageable pageable) {
+		// 사진 정보 가져오기
+		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotos(photoId, meetupId, pageable);
+
+		// 형 변환
+		return list.map(MeetupAlbumRes::new);
+	}
+
+	@Override
+	@Transactional
+	public void removeMeetupAlbum(String email, Long clubId, Long meetupId, Long photoId) {
+		// 사진을 올린 사용자인지 확인
+		final boolean isMemberExists = memberRepository.existsByEmail(email);
+		if (!isMemberExists) {
+			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
+		}
+		// 사진이 존재하는지 확인
+		final boolean isAlbumExists = meetupAlbumRepository.existsByIdAndIsDeleted(photoId, false);
+		if (!isAlbumExists) {
+			throw new GlobalException(ErrorCode.PHOTO_NOT_FOUND);
+		}
+
+		meetupAlbumRepository.updateIsDeleted(photoId);
 	}
 }
