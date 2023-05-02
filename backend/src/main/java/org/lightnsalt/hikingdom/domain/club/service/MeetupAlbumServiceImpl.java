@@ -96,7 +96,7 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 	@Transactional
 	public void removeMeetupAlbum(String email, Long clubId, Long meetupId, Long photoId) {
 		// 사진을 올린 사용자인지 확인
-		final boolean isMemberExists = memberRepository.existsByEmail(email);
+		final boolean isMemberExists = memberRepository.existsByEmailAndIsWithdraw(email, false);
 		if (!isMemberExists) {
 			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
 		}
