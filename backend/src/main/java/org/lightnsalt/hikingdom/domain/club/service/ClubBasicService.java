@@ -1,10 +1,11 @@
 package org.lightnsalt.hikingdom.domain.club.service;
 
-import org.lightnsalt.hikingdom.domain.club.dto.request.ClubAddReq;
-import org.lightnsalt.hikingdom.domain.club.dto.request.ClubNameReq;
+import org.lightnsalt.hikingdom.domain.club.dto.request.ClubInfoReq;
 
 public interface ClubBasicService {
-	Long addClub(String email, ClubAddReq clubAddReq);
+	Long addClub(String email, ClubInfoReq clubInfoReq);
 
-	void checkDuplicateClubName(ClubNameReq clubNameReq);
+	void modifyClub(String email, Long clubId, ClubInfoReq clubInfoReq);
+
+	void checkDuplicateClubName(String clubName);
 }

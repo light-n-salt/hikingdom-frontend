@@ -44,6 +44,20 @@ public class ClubBasicController {
 			HttpStatus.CREATED);
 	}
 
+	@PutMapping("/{clubId}")
+	public ResponseEntity<?> clubModify(Authentication authentication, @PathVariable Long clubId,
+		@RequestBody @Valid ClubInfoReq clubInfoReq, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
+				bindingResult.getAllErrors().get(0).getDefaultMessage()),
+				HttpStatus.BAD_REQUEST);
+		}
+
+		clubBasicService.modifyClub(authentication.getName(), clubId, clubInfoReq);
+
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 정보 수정에 성공했습니다"), HttpStatus.OK);
+	}
+
 	@GetMapping("/check-duplicate")
 	public ResponseEntity<?> clubNameCheck(@RequestBody @Valid ClubNameReq clubNameReq,
 		BindingResult bindingResult) {
@@ -53,7 +67,7 @@ public class ClubBasicController {
 				HttpStatus.BAD_REQUEST);
 		}
 
-		clubBasicService.checkDuplicateClubName(clubNameReq);
+		clubBasicService.checkDuplicateClubName(clubNameReq.getName());
 		return new ResponseEntity<>(BaseResponseBody.of("사용할 수 있는 소모임 이름입니다"), HttpStatus.OK);
 	}
 }
