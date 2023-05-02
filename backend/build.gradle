@@ -42,6 +42,9 @@ dependencies {
 //	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+	// AWS S3
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.385'
+
 	// mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 

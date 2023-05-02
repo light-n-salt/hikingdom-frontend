@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MeetupMemberRepository extends JpaRepository<MeetupMember, Long> {
 	int countByMeetupId(Long id);
+
+	boolean existsByMeetupIdAndMemberId(Long meetupId, Long memberId);
 }
