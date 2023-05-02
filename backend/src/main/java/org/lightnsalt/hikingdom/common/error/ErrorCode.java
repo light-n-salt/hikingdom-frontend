@@ -37,7 +37,7 @@ public enum ErrorCode {
 	CLUB_MEMBER_UNAUTHORIZED(401, "CM001", "소모임에 가입된 회원이 아닙니다"),
 	CLUB_MEMBER_NOT_FOUND(404, "CM001", "소모임에 가입된 회원이 아닙니다"),
 	CLUB_JOIN_REQUEST_PENDING(400, "CM002", "소모임 가입 요청이 이미 존재합니다"),
-	CLUB_JOIN_REQUEST_NOT_FOUND(404, "CM003", "유효한 소모임 가입 요청이 없습니다");
+	CLUB_JOIN_REQUEST_NOT_FOUND(404, "CM003", "유효한 소모임 가입 요청이 없습니다"),
 
 	// meetup related error codes
 	MEETUP_MEMBER_UNAUTHORIZED(401, "MM001", "일정에 가입된 회원이 아닙니다"),
