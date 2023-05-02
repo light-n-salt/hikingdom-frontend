@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import styles from './UserProfile.module.scss'
 import { ThemeContext } from 'styles/ThemeProvider'
+import { useNavigate } from 'react-router-dom'
 
 import Button from 'components/common/Button'
 import UserImage from 'components/common/UserImage'
@@ -11,7 +12,7 @@ import RankModal from 'components/user/LevelModal'
 import Modal from 'components/common/Modal'
 
 import mountain from 'assets/images/mountain.png'
-// Todo: 아이콘 버튼으로 바꾸기
+
 import { BiEdit } from 'react-icons/bi'
 
 import { UserRecord } from 'types/user.interface'
@@ -30,27 +31,34 @@ export default function UserProfile({
     userRecord,
 }: UserProfileProps) {
     const { theme } = useContext(ThemeContext)
+    const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <div className={`${styles['profile-box']}`}>
+        <div className={styles.profile}>
             {isOpen && (
                 <Modal onClick={() => setIsOpen(false)}>
                     <RankModal />
                 </Modal>
             )}
-            <div className={`content ${theme} ${styles['profile-img']}`}>
+            <div className={`content ${theme} ${styles.img}`}>
                 <UserImage size="lg" imgUrl={imgUrl} />
             </div>
-            <div className={`content ${theme} ${styles['user-record']}`}>
-                <div className={styles['btn-box']}>
+            <div className={`content ${theme} ${styles.record}`}>
+                <div className={styles.btns}>
                     <Button
                         text={'로그아웃'}
                         size={'sm'}
                         color={'secondary'}
                         onClick={() => console.log('로그아웃')}
                     />
-                    <BiEdit />
+
+                    <IconButton
+                        icon={<BiEdit />}
+                        size="sm"
+                        color="gray"
+                        onClick={() => navigate('/profile/update')}
+                    />
                 </div>
                 <div className={styles.username}>
                     {nickname}
@@ -60,7 +68,7 @@ export default function UserProfile({
                         onClick={() => setIsOpen(true)}
                     />
                 </div>
-                <span>{email}</span>
+                <span className={styles.email}>{email}</span>
                 <UserInfo userRecord={userRecord} />
             </div>
         </div>
