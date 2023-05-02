@@ -24,13 +24,13 @@ public class BaseAddressInfo {
 	@Column(name = "sido_name", length = 20)
 	private String sidoName;
 
-	@Column(name = "sigungu_name", length = 20)
-	private String sigunguName;
+	@Column(name = "gugun_name", length = 20)
+	private String gugunName;
 
 	@Builder
-	public BaseAddressInfo(String dongCode, String sidoName, String sigunguName) {
+	public BaseAddressInfo(String dongCode, String sidoName, String gugunName) {
 		this.dongCode = dongCode;
 		this.sidoName = sidoName;
-		this.sigunguName = sigunguName;
+		this.gugunName = gugunName;
 	}
 }

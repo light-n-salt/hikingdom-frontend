@@ -31,15 +31,12 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 	private static final SecureRandom secureRandom = new SecureRandom();
 	private static final char[] possiblePasswordCharacters =
 		("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()+|=").toCharArray();
-
-	@Value("{mail.setFrom}")
-	private String fromEmail;
-
 	private final JavaMailSender javaMailSender;
 	private final PasswordEncoder passwordEncoder;
 	private final RedisUtil redisUtil;
-
 	private final MemberRepository memberRepository;
+	@Value("{mail.setFrom}")
+	private String fromEmail;
 
 	@Transactional
 	@Override
@@ -70,7 +67,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 	@Override
 	public void sendAuthenticationEmail(MemberEmailReq memberEmailReq) {
 		String email = memberEmailReq.getEmail();
-		String authCode = createAuthCode(12);
+		String authCode = createAuthCode(6);
 
 		MimeMessage message = javaMailSender.createMimeMessage();
 		try {
@@ -114,16 +111,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 		StringBuilder authCode = new StringBuilder();
 
 		while (authCode.length() < length) {
-			int index = secureRandom.nextInt(2);
-
-			switch (index) {
-				case 0: // A~Z
-					authCode.append((char)(secureRandom.nextInt(26) + 65));
-					break;
-				case 1: // 0~9
-					authCode.append(secureRandom.nextInt(10));
-					break;
-			}
+			authCode.append(secureRandom.nextInt(10));
 		}
 
 		return authCode.toString();
