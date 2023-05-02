@@ -4,40 +4,36 @@ import styles from './SearchBar.module.scss'
 import { BsSearch } from 'react-icons/bs'
 
 type SearchBarProps = {
-    value: string
-    placeholder: string
-    setSelected?: (value: string) => void // selectbox 값 변경 함수
-    onChangeText: (value: string) => void // 검색값
+  value: string
+  placeholder: string
+  setSelected?: (value: string) => void // selectbox 값 변경 함수
+  onChangeText: (value: string) => void // 검색값
 }
 
 function SearchBar({
-    value,
-    placeholder,
-    setSelected,
-    onChangeText,
+  value,
+  placeholder,
+  setSelected,
+  onChangeText,
 }: SearchBarProps) {
-    const { theme } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        onChangeText(event.target.value)
-    }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onChangeText(event.target.value)
+  }
 
-    return (
-        <div className={`content ${theme} ${styles.searchbar}`}>
-            {setSelected ? (
-                <>toggle</>
-            ) : (
-                <BsSearch className={`${styles.icon}`} />
-            )}
-            <label htmlFor="input"> I </label>
-            <input
-                id="input"
-                value={value}
-                onChange={handleChange}
-                placeholder={placeholder}
-            />
-        </div>
-    )
+  return (
+    <div className={`content ${theme} ${styles.searchbar}`}>
+      {setSelected ? <>toggle</> : <BsSearch className={`${styles.icon}`} />}
+      <label htmlFor="input"> I </label>
+      <input
+        id="input"
+        value={value}
+        onChange={handleChange}
+        placeholder={placeholder}
+      />
+    </div>
+  )
 }
 
 export default SearchBar

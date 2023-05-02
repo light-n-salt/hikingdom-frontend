@@ -1,54 +1,54 @@
 @use 'src/styles/colors' as *;
 
 .profile {
-    gap: 0.8rem;
-    position: relative;
-    width: 100%;
+  gap: 0.8rem;
+  position: relative;
+  width: 100%;
 }
 
 .img {
-    display: flex;
-    position: absolute;
-    top: 1rem;
-    left: 50%;
-    width: fit-content;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transform: translate(-50%, 0);
+  display: flex;
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transform: translate(-50%, 0);
 }
 
 .signout {
-    align-self: flex-start;
-    margin: 1rem;
-    color: clr(red-clr);
+  align-self: flex-start;
+  margin: 1rem;
+  color: clr(red-clr);
 }
 
 .nickname,
 .password {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 3rem;
 }
 
 .nickname {
-    margin-top: 1.5rem;
-    padding-top: 4.5rem;
+  margin-top: 1.5rem;
+  padding-top: 4.5rem;
 
-    > button:first-child {
-        position: absolute;
-        top: 6.5rem;
-        right: 1.5rem;
-        width: 15%;
-    }
+  > button:first-child {
+    position: absolute;
+    top: 6.5rem;
+    right: 1.5rem;
+    width: 15%;
+  }
 }
 
 .password {
-    padding-top: 2rem;
+  padding-top: 2rem;
 }
 
 .err {
-    text-align: center;
-    font-size: 1.2rem;
-    color: clr(red-clr);
+  text-align: center;
+  font-size: 1.2rem;
+  color: clr(red-clr);
 }

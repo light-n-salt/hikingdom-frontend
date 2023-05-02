@@ -1,46 +1,46 @@
 @use 'src/styles/colors' as *;
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2rem;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  width: 100%;
 }
 
 .label {
-    margin: 0 0 0 0.5rem;
-    font-size: 0.9rem;
-    font-weight: 800;
-    color: clr(tertiary-clr);
+  margin: 0 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: clr(tertiary-clr);
 }
 
 .input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 3px solid clr(secondary-clr);
-    border-radius: 0.5rem;
-    background-color: clr(white-clr, light);
-    font-size: 1rem;
-    font-weight: 600;
+  width: 100%;
+  padding: 0.5rem;
+  border: 3px solid clr(secondary-clr);
+  border-radius: 0.5rem;
+  background-color: clr(white-clr, light);
+  font-size: 1rem;
+  font-weight: 600;
 
-    // 유효성 검사 실시했을 때, 에러 표시
-    &.error {
-        border: 3px solid clr(red-clr, light);
-    }
-    &.pass {
-        border: 3px solid clr(primary-clr);
-    }
+  // 유효성 검사 실시했을 때, 에러 표시
+  &.error {
+    border: 3px solid clr(red-clr, light);
+  }
+  &.pass {
+    border: 3px solid clr(primary-clr);
+  }
 }
 
 .input:focus {
-    box-shadow: 0 0 2px 2px clr(lime-clr, light); /* 선택된 요소 주변에 블러 효과 적용 */
+  box-shadow: 0 0 2px 2px clr(lime-clr, light); /* 선택된 요소 주변에 블러 효과 적용 */
 }
 
 .input::placeholder {
-    color: transparentize(clr(gray-clr, light), 0.4);
+  color: transparentize(clr(gray-clr, light), 0.4);
 }
 
 .input:disabled {
-    background-color: clr(white-clr);
+  background-color: clr(white-clr);
 }

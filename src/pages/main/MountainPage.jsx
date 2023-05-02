@@ -10,22 +10,22 @@ import SearchMtPage from './SearchMtPage'
 import MainPage from './MainPage'
 
 function MountainPage() {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-    const { theme } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
 
-    const [value, setValue] = useState('')
+  const [value, setValue] = useState('')
 
-    return (
-        <div className={`page ${theme} p-md ${styles.main}`}>
-            <SearchBar
-                value={value}
-                placeholder="산을 검색해보세요"
-                onChangeText={setValue}
-            />
-            {value ? <SearchMtPage /> : <MainPage />}
-        </div>
-    )
+  return (
+    <div className={`page ${theme} p-md ${styles.main}`}>
+      <SearchBar
+        value={value}
+        placeholder="산을 검색해보세요"
+        onChangeText={setValue}
+      />
+      {value ? <SearchMtPage /> : <MainPage />}
+    </div>
+  )
 }
 
 export default MountainPage

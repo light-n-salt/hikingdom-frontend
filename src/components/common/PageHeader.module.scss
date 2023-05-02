@@ -1,30 +1,30 @@
 @use 'src/styles/colors' as *;
 
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    align-self: flex-start;
-    width: 60%;
-    padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-self: flex-start;
+  width: 60%;
+  padding: 1rem 0;
 
-    &.dark {
-        color: $black;
-    }
+  &.dark {
+    color: $black;
+  }
 
-    &.light {
-        color: clr(white-clr);
-    }
+  &.light {
+    color: clr(white-clr);
+  }
 
-    &.primary {
-        color: $primary;
-    }
+  &.primary {
+    color: $primary;
+  }
 
-    > svg {
-        font-size: 2rem;
-    }
+  > svg {
+    font-size: 2rem;
+  }
 
-    > span {
-        font-size: 1.5rem;
-    }
+  > span {
+    font-size: 1.5rem;
+  }
 }

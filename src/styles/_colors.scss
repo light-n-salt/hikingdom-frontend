@@ -17,54 +17,54 @@ $lighten: 10;
 $darken: 10;
 
 $colors: (
-    primary-clr: (
-        base: $primary,
-        light: lighten($primary, $lighten),
-        dark: darken($primary, $darken),
-    ),
-    secondary-clr: (
-        base: $secondary,
-        light: lighten($secondary, $lighten),
-        dark: darken($secondary, $darken),
-    ),
-    tertiary-clr: (
-        base: $tertiary,
-        light: lighten($tertiary, $lighten),
-        dark: darken($tertiary, $darken),
-    ),
-    white-clr: (
-        base: $white,
-        light: lighten($white, $lighten),
-        dark: darken($white, $darken),
-    ),
-    black-clr: (
-        base: $black,
-        light: lighten($black, $lighten),
-        dark: darken($black, $darken),
-    ),
-    gray-clr: (
-        base: $gray,
-        light: lighten($gray, $lighten),
-        dark: darken($gray, $darken),
-    ),
-    lime-clr: (
-        base: $lime,
-        light: lighten($lime, $lighten),
-        dark: darken($lime, $darken),
-    ),
-    red-clr: (
-        base: $red,
-        light: lighten($red, $lighten),
-        dark: darken($red, $darken),
-    ),
-    shadow-clr: (
-        base: $shadow,
-        light: lighten($shadow, $lighten),
-        dark: darken($shadow, $darken),
-    ),
+  primary-clr: (
+    base: $primary,
+    light: lighten($primary, $lighten),
+    dark: darken($primary, $darken),
+  ),
+  secondary-clr: (
+    base: $secondary,
+    light: lighten($secondary, $lighten),
+    dark: darken($secondary, $darken),
+  ),
+  tertiary-clr: (
+    base: $tertiary,
+    light: lighten($tertiary, $lighten),
+    dark: darken($tertiary, $darken),
+  ),
+  white-clr: (
+    base: $white,
+    light: lighten($white, $lighten),
+    dark: darken($white, $darken),
+  ),
+  black-clr: (
+    base: $black,
+    light: lighten($black, $lighten),
+    dark: darken($black, $darken),
+  ),
+  gray-clr: (
+    base: $gray,
+    light: lighten($gray, $lighten),
+    dark: darken($gray, $darken),
+  ),
+  lime-clr: (
+    base: $lime,
+    light: lighten($lime, $lighten),
+    dark: darken($lime, $darken),
+  ),
+  red-clr: (
+    base: $red,
+    light: lighten($red, $lighten),
+    dark: darken($red, $darken),
+  ),
+  shadow-clr: (
+    base: $shadow,
+    light: lighten($shadow, $lighten),
+    dark: darken($shadow, $darken),
+  ),
 );
 
 @function clr($base, $shade: base) {
-    $color: map-get(map-get($colors, $base), $shade);
-    @return $color;
+  $color: map-get(map-get($colors, $base), $shade);
+  @return $color;
 }
