@@ -30,7 +30,7 @@ public enum ErrorCode {
 
 	// club related error codes
 	ALREADY_JOINED_CLUB(400, "K001", "이미 소모임에 가입되어 있습니다"),
-	ALREADY_EXIST_CLUB(400, "K002", "이미 존재하는 소모임 이름입니다");
+	DUPLICATE_CLUB_NAME(400, "K002", "이미 존재하는 소모임 이름입니다");
 
 	private final int status;
 	private final String code;

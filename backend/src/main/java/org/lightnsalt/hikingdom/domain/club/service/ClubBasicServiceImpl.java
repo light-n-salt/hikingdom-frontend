@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.domain.club.service;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.club.dto.request.ClubAddReq;
+import org.lightnsalt.hikingdom.domain.club.dto.request.ClubNameReq;
 import org.lightnsalt.hikingdom.domain.club.entity.Club;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
@@ -36,7 +37,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_LOGIN));
 
 		if (clubRepository.findByNameAndIsNotDeleted(clubAddReq.getName()).isPresent()) {
-			throw new GlobalException(ErrorCode.ALREADY_EXIST_CLUB);
+			throw new GlobalException(ErrorCode.DUPLICATE_CLUB_NAME);
 		}
 
 		if (clubMemberRepository.existsByMemberId(host.getId())) {
