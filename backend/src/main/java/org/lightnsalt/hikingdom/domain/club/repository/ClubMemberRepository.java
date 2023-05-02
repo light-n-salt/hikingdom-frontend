@@ -12,8 +12,10 @@ import io.lettuce.core.dynamic.annotation.Param;
 public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
 	boolean existsByMemberId(@Param("member_id") Long memberId);
 
+	@Query("SELECT c from ClubMember c "
+		+ "WHERE c.club.id = :clubId AND c.member.id = :memberId AND c.isWithdraw = false")
 	Optional<ClubMember> findByClubIdAndMemberId(Long clubId, Long memberId);
 
-	@Query("SELECT c FROM ClubMember c WHERE c.member =:member AND c.isWithdraw=false")
+	@Query("SELECT c FROM ClubMember c WHERE c.member =:member AND c.isWithdraw = false")
 	Optional<ClubMember> findCurrentClubByMember(Member member);
 }
