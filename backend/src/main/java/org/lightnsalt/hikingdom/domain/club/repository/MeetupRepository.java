@@ -13,6 +13,15 @@ public interface MeetupRepository extends JpaRepository<Meetup, Long> {
 		+ "WHERE m.club.id = :clubId "
 		+ "AND YEAR(m.startAt) = :year "
 		+ "AND MONTH(m.startAt) = :month ")
-	List<Meetup> findByClubIdAndStartAt(@Param("clubId") Long clubId, @Param("year") int year,
+	List<Meetup> findByClubIdAndStartMonth(@Param("clubId") Long clubId, @Param("year") int year,
 		@Param("month") int month);
+
+	@Query(value = "SELECT m "
+		+ "FROM Meetup m "
+		+ "WHERE m.club.id = :clubId "
+		+ "AND YEAR(m.startAt) = :year "
+		+ "AND MONTH(m.startAt) = :month "
+		+ "AND DAYOFMONTH(m.startAt) = :date")
+	List<Meetup> findByClubIdAndStartDay(@Param("clubId") Long clubId, @Param("year") int year,
+		@Param("month") int month, @Param("date") int date);
 }
