@@ -5,18 +5,29 @@ import styles from './MtDetail.module.scss'
 import MtTitle from './MtTitle'
 import MtContent from './MtContent'
 
-function MtDetail() {
+import { MtInfoDetail } from 'types/mt.interface'
+
+type MtDetailProps = {
+    mtInfo: MtInfoDetail
+}
+
+function MtDetail({ mtInfo }: MtDetailProps) {
     const { theme, toggleTheme } = useContext(ThemeContext)
     return (
-        <div>
-            MtDetail
+        <div className={styles.detail}>
             <MtTitle
-                name={'관악산'}
-                maxAlt={608}
-                timeDuration={3}
-                hikingNumber={421}
+                name={mtInfo.name}
+                maxAlt={mtInfo.maxAlt}
+                timeDuration={mtInfo.timeDuration}
+                assetUrl={mtInfo.asset[0].assetUrl}
             />
-            <MtContent />
+            <MtContent
+                address={mtInfo.address}
+                peaks={mtInfo.peaks}
+                transport={mtInfo.transport}
+                facility={mtInfo.facility}
+                description={mtInfo.description}
+            />
         </div>
     )
 }
