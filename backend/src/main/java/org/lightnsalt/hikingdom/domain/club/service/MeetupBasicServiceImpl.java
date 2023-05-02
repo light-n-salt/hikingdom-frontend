@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.club.dto.request.MeetupAddReq;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDailyResDto;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyResDto;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubRepository;
+import org.lightnsalt.hikingdom.domain.club.repository.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
@@ -20,6 +22,7 @@ import org.lightnsalt.hikingdom.domain.info.repository.MountainInfoRepository;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class MeetupBasicServiceImpl implements MeetupBasicService {
+	private final MeetupMemberRepository meetupMemberRepository;
 	private final ClubRepository clubRepository;
 	private final MeetupRepository meetupRepository;
 	private final MountainInfoRepository mountainInfoRepository;
@@ -49,6 +53,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	* */
 
 	@Override
+	@Transactional
 	public Long saveMeetup(String email, Long clubId, MeetupAddReq req) {
 		// club에 속해있는 멤버인지 확인
 		final Member member = memberRepository.findByEmail(email)
@@ -75,6 +80,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	}
 
 	@Override
+	@Transactional
 	public MeetupMonthlyResDto findMeetupMonthly(Long clubId, String month) {
 		// 소모임이 존재하는지 확인
 		final boolean isExit = clubRepository.existsById(clubId);
@@ -83,10 +89,10 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		}
 
 		// 일정 가져오기
-		String[] date = month.split("-");
-		log.debug("query intput date is : {}", Arrays.toString(date));
-		final List<Meetup> meetups = meetupRepository.findByClubIdAndStartAt(clubId, Integer.parseInt(date[0]),
-			Integer.parseInt(date[1]));
+		String[] element = month.split("-");
+		log.debug("query intput date is : {}", Arrays.toString(element));
+		final List<Meetup> meetups = meetupRepository.findByClubIdAndStartMonth(clubId, Integer.parseInt(element[0]),
+			Integer.parseInt(element[1]));
 
 		// 형 변환
 		List<Integer> list = meetups.stream()
@@ -96,5 +102,32 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		result.setStartAt(list);
 
 		return result;
+	}
+
+	@Override
+	@Transactional
+	public List<MeetupDailyResDto> findMeetupDaily(Long clubId, String date) {
+		// 소모임이 존재하는지 확인
+		final boolean isExit = clubRepository.existsById(clubId);
+		if (!isExit) {
+			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
+		}
+
+		// 입력 데이터 가공
+		String[] element = date.split("-");
+
+		// 일정 데이터 가져오기
+		final List<Meetup> meetups = meetupRepository.findByClubIdAndStartDay(clubId, Integer.parseInt(element[0]),
+			Integer.parseInt(element[1]),
+			Integer.parseInt(element[2]));
+
+		// 형 변환
+		return meetups.stream().map(meetup -> {
+			MeetupDailyResDto dto = new MeetupDailyResDto(meetup);
+			// 일정 참여 멤버 가져오기
+			final int totalMember = meetupMemberRepository.countByMeetupId(meetup.getId());
+			dto.setTotalMember(totalMember);
+			return dto;
+		}).collect(Collectors.toList());
 	}
 }

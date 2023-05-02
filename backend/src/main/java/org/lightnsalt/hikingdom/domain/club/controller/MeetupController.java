@@ -1,11 +1,14 @@
 package org.lightnsalt.hikingdom.domain.club.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.domain.club.dto.request.MeetupAddReq;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDailyResDto;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyResDto;
 import org.lightnsalt.hikingdom.domain.club.service.MeetupBasicService;
 import org.springframework.http.HttpStatus;
@@ -69,5 +72,13 @@ public class MeetupController {
 
 		MeetupMonthlyResDto result = meetupBasicService.findMeetupMonthly(clubId, month);
 		return new ResponseEntity<>(BaseResponseBody.of("모임 일정 조회에 성공했습니다", result), HttpStatus.OK);
+	}
+
+	@GetMapping("/date/{date}")
+	public ResponseEntity<?> meetupDailyList(@PathVariable Long clubId, @PathVariable String date) {
+
+		List<MeetupDailyResDto> result = meetupBasicService.findMeetupDaily(clubId, date);
+		return new ResponseEntity<>(BaseResponseBody.of("일정 조회에 성공했습니다", result), HttpStatus.OK);
+
 	}
 }
