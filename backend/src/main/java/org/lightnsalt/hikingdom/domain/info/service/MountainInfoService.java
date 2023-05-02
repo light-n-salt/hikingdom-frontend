@@ -7,10 +7,14 @@ import org.lightnsalt.hikingdom.domain.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.domain.info.dto.request.MountainAddReq;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainListRes;
 
-public interface InfoService {
+public interface MountainInfoService {
 	MountainAddRes addMountainInfo(MountainAddReq reqDto);
 
 	MountainDetailRes findMountainInfo(Long id);
 
 	List<MountainListRes> findAllMountainInfo(String query, String word, double lat, double lng, Long id);
+
+	List<MountainListRes> findMountainInfoToday();
+
+	void addMountainInfoDaily(Long mountainId);
 }
