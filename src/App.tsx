@@ -11,6 +11,7 @@ import FindPwPage from 'pages/auth/FindPwPage'
 import SignupPage from 'pages/auth/SignupPage'
 
 // Main
+import MountainPage from 'pages/main/MountainPage'
 import MainPage from 'pages/main/MainPage'
 import SearchMtPage from 'pages/main/SearchMtPage'
 import MtDetailPage from 'pages/main/MtDetailPage'
@@ -20,7 +21,7 @@ import RankPage from 'pages/rank/RankPage'
 
 // Club
 import SearchClubPage from 'pages/club/SearchClubPage'
-import MainDetailPage from 'pages/club/MainDetailPage'
+import MainDetailPage from 'pages/club/ClubMainDetailPage'
 import ClubCreatePage from 'pages/club/ClubCreatePage'
 import ClubChatPage from 'pages/club/ClubChatPage'
 // Club - main
@@ -52,8 +53,10 @@ function App() {
                 <Route path="/password" element={<FindPwPage />} />
 
                 {/* 메인 */}
-                <Route path="/main" element={<MainPage />} />
-                <Route path="/mountain/search" element={<SearchMtPage />} />
+                <Route path="/main" element={<MountainPage />}>
+                    <Route path="" element={<MainPage />} />
+                    <Route path="search" element={<SearchMtPage />} />
+                </Route>
                 <Route path="/mountain/detail/:id" element={<MtDetailPage />} />
                 {/* <Route path="/mountain/detail" element={<MtDetailPage />} />  */}
 

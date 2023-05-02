@@ -11,12 +11,7 @@ function SearchMtPage() {
     const [value, setValue] = useState('')
 
     return (
-        <div className={`page ${theme} p-sm ${styles['search-mt']}`}>
-            <SearchBar
-                value={value}
-                placeholder="산을 검색해보세요"
-                onChangeText={setValue}
-            />
+        <div className={styles.search}>
             <MtList mtInfoArray={mtInfoArray} size="lg" />
         </div>
     )
