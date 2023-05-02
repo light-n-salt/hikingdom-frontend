@@ -29,11 +29,12 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	@Transactional
 	@Override
 	public void acceptClubJoinRequest(String email, Long clubId, Long memberId) {
-		Member host = memberRepository.findByEmail(email)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		Member candidate = memberRepository.findById(memberId)
+		final Member candidate = memberRepository.findById(memberId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
-		Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
+		final Club club = clubRepository.findById(clubId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 소모임 관리자인지 확인
 		if (!club.getHost().equals(host))
@@ -61,11 +62,12 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	@Transactional
 	@Override
 	public void rejectClubJoinRequest(String email, Long clubId, Long memberId) {
-		Member host = memberRepository.findByEmail(email)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		Member candidate = memberRepository.findById(memberId)
+		final Member candidate = memberRepository.findById(memberId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
-		Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
+		final Club club = clubRepository.findById(clubId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 소모임 관리자인지 확인
 		if (!club.getHost().equals(host))

@@ -30,7 +30,7 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 	public MemberTokenRes login(MemberLoginReq memberLoginReq) {
 		String email = memberLoginReq.getEmail();
 
-		Member member = memberRepository.findByEmail(email)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		if (!passwordEncoder.matches(memberLoginReq.getPassword(), member.getPassword())) {

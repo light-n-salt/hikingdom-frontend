@@ -46,7 +46,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}
 
-		Member member = memberRepository.findByEmail(email)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		boolean isValidPassword = passwordEncoder.matches(memberChangePasswordReq.getPassword(), member.getPassword());
@@ -62,7 +62,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Transactional
 	@Override
 	public void changeNickname(String email, MemberNicknameReq memberNicknameReq) {
-		Member member = memberRepository.findByEmail(email)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		String newNickname = memberNicknameReq.getNickname();

@@ -33,7 +33,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public Long addClub(String email, ClubInfoReq clubInfoReq) {
-		Member host = memberRepository.findByEmail(email)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		checkDuplicateClubName(clubInfoReq.getName());
@@ -42,7 +42,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 		}
 
-		BaseAddressInfo baseAddressInfo = getBaseAddressInfo(clubInfoReq);
+		final BaseAddressInfo baseAddressInfo = getBaseAddressInfo(clubInfoReq);
 
 		Club club = Club.builder()
 			.host(host)
@@ -63,10 +63,11 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public void modifyClub(String email, Long clubId, ClubInfoReq clubInfoReq) {
-		Member host = memberRepository.findByEmail(email)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
-		Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
+		final Club club = clubRepository.findById(clubId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		if (!club.getHost().getId().equals(host.getId())) {
 			log.error("ClubBasicService:modifyClub: hostId is not equal, {} {}", host.getId(), club.getHost().getId());
@@ -91,7 +92,8 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 
 	@Override
 	public ClubSimpleDetailRes findClubSimpleDetail(Long clubId) {
-		Club club = clubRepository.findById(clubId).orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
+		final Club club = clubRepository.findById(clubId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		return ClubSimpleDetailRes.builder()
 			.hostId(club.getHost().getId())
