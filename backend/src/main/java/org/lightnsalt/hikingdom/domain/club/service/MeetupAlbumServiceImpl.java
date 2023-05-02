@@ -91,4 +91,21 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 		// 형 변환
 		return list.map(MeetupAlbumRes::new);
 	}
+
+	@Override
+	@Transactional
+	public void removeMeetupAlbum(String email, Long clubId, Long meetupId, Long photoId) {
+		// 사진을 올린 사용자인지 확인
+		final boolean isMemberExists = memberRepository.existsByEmail(email);
+		if (!isMemberExists) {
+			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
+		}
+		// 사진이 존재하는지 확인
+		final boolean isAlbumExists = meetupAlbumRepository.existsByIdAndIsDeleted(photoId, false);
+		if (!isAlbumExists) {
+			throw new GlobalException(ErrorCode.PHOTO_NOT_FOUND);
+		}
+
+		meetupAlbumRepository.updateIsDeleted(photoId);
+	}
 }
