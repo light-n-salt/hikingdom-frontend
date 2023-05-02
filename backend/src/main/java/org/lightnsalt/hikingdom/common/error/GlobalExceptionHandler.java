@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.common.error;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,6 +37,16 @@ public class GlobalExceptionHandler {
 		HttpRequestMethodNotSupportedException e) {
 		log.error("handleHttpRequestMethodNotSupportedException", e);
 		return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.METHOD_NOT_ALLOWED), HttpStatus.METHOD_NOT_ALLOWED);
+	}
+
+	/**
+	 * 필요한 Request Body가 없을 때 발생하는 에러 처리
+	 */
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	protected ResponseEntity<ErrorResponseBody> handleHttpMessageNotReadableException(
+		HttpMessageNotReadableException e) {
+		log.error("handleHttpMessageNotReadableException", e);
+		return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.MISSING_REQUEST_BODY), HttpStatus.BAD_REQUEST);
 	}
 
 	/**

@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.lightnsalt.hikingdom.domain.BaseTimeEntity;
 import org.lightnsalt.hikingdom.domain.info.entity.BaseAddressInfo;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
@@ -29,6 +31,8 @@ import lombok.ToString;
 @Entity
 @Getter
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "club")
 public class Club extends BaseTimeEntity {
