@@ -12,58 +12,46 @@ import { UserRecord } from 'types/user.interface'
 import { convertToKm } from 'utils/convertToKm'
 
 type UserInfoProps = {
-    userRecord: UserRecord
+  userRecord: UserRecord
 }
 
 function UserInfo({ userRecord }: UserInfoProps) {
-    const { theme } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
 
-    const totalMountain = userRecord.totalMountainCount.toString()
-    const totalDistance = convertToKm(userRecord.totalDistance).toString()
-    const totalAlt = convertToKm(userRecord.totalAlt).toString()
+  const totalMountain = userRecord.totalMountainCount.toString()
+  const totalDistance = convertToKm(userRecord.totalDistance).toString()
+  const totalAlt = convertToKm(userRecord.totalAlt).toString()
 
-    return (
-        <div className={`${theme} ${styles['user-info']}`}>
-            <div className={styles['info-box']}>
-                <Info
-                    imgSrc={mountain}
-                    title={'등반한 산'}
-                    content={totalMountain}
-                />
-                <Info
-                    imgSrc={time}
-                    title={'시간'}
-                    content={userRecord.totalDuration}
-                />
-            </div>
-            <div className={styles['info-box']}>
-                <Info
-                    imgSrc={distance}
-                    title={'거리(km)'}
-                    content={totalDistance}
-                />
-                <Info imgSrc={height} title={'높이(km)'} content={totalAlt} />
-            </div>
-        </div>
-    )
+  return (
+    <div className={`${theme} ${styles['user-info']}`}>
+      <div className={styles['info-box']}>
+        <Info imgSrc={mountain} title={'등반한 산'} content={totalMountain} />
+        <Info imgSrc={time} title={'시간'} content={userRecord.totalDuration} />
+      </div>
+      <div className={styles['info-box']}>
+        <Info imgSrc={distance} title={'거리(km)'} content={totalDistance} />
+        <Info imgSrc={height} title={'높이(km)'} content={totalAlt} />
+      </div>
+    </div>
+  )
 }
 
 type InfoProps = {
-    imgSrc: string
-    title: string
-    content: string
+  imgSrc: string
+  title: string
+  content: string
 }
 
 function Info({ imgSrc, title, content }: InfoProps) {
-    return (
-        <div className={styles.info}>
-            <img src={imgSrc} />
-            <div className={styles['content-box']}>
-                <span className={styles.title}>{title}</span>
-                <span className={styles.content}>{content}</span>
-            </div>
-        </div>
-    )
+  return (
+    <div className={styles.info}>
+      <img src={imgSrc} />
+      <div className={styles['content-box']}>
+        <span className={styles.title}>{title}</span>
+        <span className={styles.content}>{content}</span>
+      </div>
+    </div>
+  )
 }
 
 export default UserInfo

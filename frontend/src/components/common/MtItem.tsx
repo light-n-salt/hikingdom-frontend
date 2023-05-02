@@ -7,35 +7,35 @@ import marker from 'assets/images/marker.png'
 import styles from './MtItem.module.scss'
 
 type MtItemProps = {
-    mtInfo: MtInfo
-    size?: 'sm' | 'lg'
+  mtInfo: MtInfo
+  size?: 'sm' | 'lg'
 }
 
 function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
-    const maxAlt = mtInfo.maxAlt.toString() + 'm'
-    const navigate = useNavigate()
+  const maxAlt = mtInfo.maxAlt.toString() + 'm'
+  const navigate = useNavigate()
 
-    function onClickDetail(mtId: number) {
-        navigate(`/mountain/detail/${mtId}`)
-    }
+  function onClickDetail(mtId: number) {
+    navigate(`/mountain/detail/${mtId}`)
+  }
 
-    return (
-        <div
-            className={`${styles['mt-item']} ${styles[size]}`}
-            onClick={() => onClickDetail(mtInfo.mountainId)}
-        >
-            <h3>{mtInfo.name}</h3>
-            <div>
-                <IconText imgSrc={hotAirBalloon} text="높이" />
-                {maxAlt}
-            </div>
-            <div>
-                <IconText imgSrc={marker} text="위치" />
-                {mtInfo.address}
-            </div>
-            <img src={mtInfo.imgUrl} />
-        </div>
-    )
+  return (
+    <div
+      className={`${styles['mt-item']} ${styles[size]}`}
+      onClick={() => onClickDetail(mtInfo.mountainId)}
+    >
+      <h3>{mtInfo.name}</h3>
+      <div>
+        <IconText imgSrc={hotAirBalloon} text="높이" />
+        {maxAlt}
+      </div>
+      <div>
+        <IconText imgSrc={marker} text="위치" />
+        {mtInfo.address}
+      </div>
+      <img src={mtInfo.imgUrl} />
+    </div>
+  )
 }
 
 export default MtItem

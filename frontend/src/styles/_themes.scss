@@ -2,36 +2,36 @@
 
 // 짙은 다크모드 테마(백그라운드)
 @mixin deep-dark-theme() {
-    background-color: clr(tertiary-clr);
-    color: clr(white-clr, light);
+  background-color: clr(tertiary-clr);
+  color: clr(white-clr, light);
 }
 
 // 다크모드 테마
 @mixin dark-theme() {
-    background-color: clr(tertiary-clr, light);
-    color: clr(white-clr, light);
+  background-color: clr(tertiary-clr, light);
+  color: clr(white-clr, light);
 }
 
 // 그라데이션 다크모드 테마
 @mixin dark-gradation-theme() {
-    background: linear-gradient(clr(lime-clr, dark), clr(tertiary-clr));
-    color: clr(white-clr, light);
+  background: linear-gradient(clr(lime-clr, dark), clr(tertiary-clr));
+  color: clr(white-clr, light);
 }
 
 // 짙은 라이트모드 테마(백그라운드)
 @mixin deep-light-theme() {
-    background-color: clr(white-clr);
-    color: clr(black-clr);
+  background-color: clr(white-clr);
+  color: clr(black-clr);
 }
 
 // 라이트모드 테마
 @mixin light-theme() {
-    background-color: clr(white-clr, light);
-    color: clr(black-clr);
+  background-color: clr(white-clr, light);
+  color: clr(black-clr);
 }
 
 // 그라데이션 라이트모드 테마
 @mixin light-gradation-theme() {
-    background: linear-gradient(clr(lime-clr), clr(white-clr));
-    color: clr(black-clr);
+  background: linear-gradient(clr(lime-clr), clr(white-clr));
+  color: clr(black-clr);
 }
