@@ -33,8 +33,10 @@ class LocationService : Service() {
     // 현재 위치
     var currentLocation = MutableLiveData<Location>()
 
-    private lateinit var handler: Handler
-    private lateinit var looper: Looper
+    private lateinit var locationHandler: Handler
+    private lateinit var locationLooper: Looper
+    private lateinit var timerHandler: Handler
+    private lateinit var timerLooper: Looper
 
     init {
         duration.value = 0
@@ -72,16 +74,18 @@ class LocationService : Service() {
             isServiceRunning = true
 
             // 핸들러와 루퍼를 생성합니다.
-            val handlerThread = HandlerThread("location_update_thread")
-            handlerThread.start()
-            looper = handlerThread.looper
-            handler = Handler(looper)
+            val locationHandlerThread = HandlerThread("location_update_thread")
+            locationHandlerThread.start()
+            locationLooper = locationHandlerThread.looper
+            locationHandler = Handler(locationLooper)
 
-            LocationHelper().startListeningUserLocation(this, object : LocationHelper.HikingLocationListener {
+            LocationHelper().startListeningUserLocation(this, object : LocationHelper.HikingLocationListener {          // viewModel 코드는 그대로 두고, 로컬에도 저장하도록 수정해야함.
                 override fun onLocationChanged(location: Location) {
-                    handler.post {
+                    locationHandler.post {
                         // Here you got user location :)
                         Log.d("Location","" + location.latitude + "," + location.longitude + ","+location.altitude)
+                        Log.d("viewModel", currentLocation.value.toString())
+                        val firstVal = currentLocation.value
                         if (currentLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
                             val distance = location.distanceTo(currentLocation.value)
                             totalDistance.postValue(totalDistance.value?.plus(distance))
@@ -93,6 +97,12 @@ class LocationService : Service() {
                     }
                 }
             })
+
+            // 타이머 핸들러스레드 생성
+            val timernHandlerThread = HandlerThread("timer_thread")
+            timernHandlerThread.start()
+            timerLooper = timernHandlerThread.looper
+            timerHandler = Handler(timerLooper)
         }
 
         return START_STICKY

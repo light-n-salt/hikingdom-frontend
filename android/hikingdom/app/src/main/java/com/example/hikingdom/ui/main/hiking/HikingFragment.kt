@@ -340,12 +340,14 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         ) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
     }
 
-    private fun drawPolylineByExistingTrackingData(){
+    private fun drawPolylineByExistingTrackingData(){   // viewmodel은 앱이 백그라운드로 가면 같이 죽기 때문에 당연히 비어있음. 로컬에서 가져오도록 변경해야함.
         val polyline = MapPolyline()
         polyline.lineColor = POLYLINE_COLOR_CODE  // @color/blue 에 해당하는 rgb color
 
         val existingLocationList = hikingViewModel.locations.value
         if(!existingLocationList.isNullOrEmpty()){
+
+            Log.d("existingLocationList", existingLocationList.size.toString()+" / "+existingLocationList.toString())
 
             val firstExistingLocation = existingLocationList[0]
             setDepartMarker(firstExistingLocation.latitude, firstExistingLocation.longitude)
@@ -366,6 +368,8 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             val padding = 100 // px
 
             mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
+        }else{
+            Log.d("existingLocationList", "is Null or Empty")
         }
     }
 
@@ -437,6 +441,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         super.onStop()
         Log.d("fragment lifecycle", "onStop")
         mapViewContainer.removeAllViews()
+        Log.d("onDestroy LocationList", hikingViewModel.locations.value?.size.toString()+" / "+hikingViewModel.locations.value.toString())
     }
 
     override fun onDestroy() {
