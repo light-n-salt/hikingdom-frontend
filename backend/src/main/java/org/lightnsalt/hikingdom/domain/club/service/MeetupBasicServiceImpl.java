@@ -10,14 +10,22 @@ import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.club.dto.request.MeetupAddReq;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDailyRes;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDetailRes;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyRes;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MemberInfoRes;
+import org.lightnsalt.hikingdom.domain.club.dto.response.PhotoInfoRes;
+import org.lightnsalt.hikingdom.domain.club.dto.response.ReviewInfoRes;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
+import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupAlbum;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupMember;
+import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupReview;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubRepository;
+import org.lightnsalt.hikingdom.domain.club.repository.MeetupAlbumRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
+import org.lightnsalt.hikingdom.domain.club.repository.MeetupReviewRepository;
 import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
 import org.lightnsalt.hikingdom.domain.info.repository.MountainInfoRepository;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
@@ -32,6 +40,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class MeetupBasicServiceImpl implements MeetupBasicService {
+	private final MeetupReviewRepository meetupReviewRepository;
+	private final MeetupAlbumRepository meetupAlbumRepository;
 	private final MeetupMemberRepository meetupMemberRepository;
 	private final ClubRepository clubRepository;
 	private final MeetupRepository meetupRepository;
@@ -39,28 +49,15 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	private final MemberRepository memberRepository;
 	private final ClubMemberRepository clubMemberRepository;
 
-	/*
-	- 서비스 클래스 안에서 메서드 명을 작성 할 때는 아래와 같은 접두사를 붙인다.
-
-		findOrder() - 조회 유형의 service 메서드
-
-		addOrder() - 등록 유형의 service 메서드
-
-		modifyOrder() - 변경 유형의 service 메서드
-
-		removeOrder() - 삭제 유형의 service 메서드
-
-		saveOrder() – 등록/수정/삭제 가 동시에 일어나는 유형의 service 메서드
-	* */
-
 	@Override
 	@Transactional
 	public Long saveMeetup(String email, Long clubId, MeetupAddReq req) {
 		// club에 속해있는 멤버인지 확인
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email,false)
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 
-		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(), false)
+		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(),
+				false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED));
 
 		// 산 데이터 가져오기
@@ -140,5 +137,36 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 			dto.setTotalMember(totalMember);
 			return dto;
 		}).collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional
+	public MeetupDetailRes findMeetup(String email, Long clubId, Long meetupId) {
+		// 일정 정보 가져오기
+		final Meetup meetup = meetupRepository.findById(meetupId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
+
+		// 일정 참여여부 가져오기
+		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND)).getId();
+
+		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, memberId);
+
+		// 일정 참여 멤버 수 조회하기
+		final int totalMember = meetupMemberRepository.countByMeetupId(meetupId);
+
+		// 일정 참여멤버 조회하기 6명
+		List<MeetupMember> meetupMembers = meetupMemberRepository.findTop6ByMeetupId(meetupId);
+		List<MemberInfoRes> memberInfos = meetupMembers.stream().map(MemberInfoRes::new).collect(Collectors.toList());
+
+		// 일정 사진 조회하기 3개
+		List<MeetupAlbum> meetupAlbums = meetupAlbumRepository.findTop3ByMeetupIdOrderByCreatedAtDesc(meetupId);
+		List<PhotoInfoRes> photoInfos = meetupAlbums.stream().map(PhotoInfoRes::new).collect(Collectors.toList());
+
+		// 일정 리뷰 조회하기 전체
+		List<MeetupReview> meetupReviews = meetupReviewRepository.findByMeetupId(meetupId);
+		List<ReviewInfoRes> reviewInfos = meetupReviews.stream().map(ReviewInfoRes::new).collect(Collectors.toList());
+
+		return new MeetupDetailRes(meetup, totalMember, isJoin, memberInfos, photoInfos, reviewInfos);
 	}
 }

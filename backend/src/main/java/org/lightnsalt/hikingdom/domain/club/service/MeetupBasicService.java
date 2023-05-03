@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lightnsalt.hikingdom.domain.club.dto.request.MeetupAddReq;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDailyRes;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDetailRes;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyRes;
 
 public interface MeetupBasicService {
@@ -12,4 +13,6 @@ public interface MeetupBasicService {
 	MeetupMonthlyRes findMeetupMonthly(Long clubId, String month);
 
 	List<MeetupDailyRes> findMeetupDaily(Long clubId, String date);
+
+	MeetupDetailRes findMeetup(String email, Long clubId, Long meetupId);
 }

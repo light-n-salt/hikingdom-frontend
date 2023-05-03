@@ -11,6 +11,7 @@ import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.domain.club.dto.request.MeetupAddReq;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDailyRes;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupDetailRes;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMonthlyRes;
 import org.lightnsalt.hikingdom.domain.club.service.MeetupBasicService;
 import org.springframework.http.HttpStatus;
@@ -85,5 +86,13 @@ public class MeetupBasicController {
 		List<MeetupDailyRes> result = meetupBasicService.findMeetupDaily(clubId, date);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 조회에 성공했습니다", result), HttpStatus.OK);
 
+	}
+
+	@GetMapping("{meetupId}/detail")
+	public ResponseEntity<?> meetupDetail(Authentication authentication, @PathVariable Long clubId,
+		@PathVariable Long meetupId) {
+
+		MeetupDetailRes result = meetupBasicService.findMeetup(authentication.getName(), clubId, meetupId);
+		return new ResponseEntity<>(BaseResponseBody.of("일정 상세 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 }

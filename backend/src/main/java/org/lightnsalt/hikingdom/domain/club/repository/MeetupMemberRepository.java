@@ -14,4 +14,6 @@ public interface MeetupMemberRepository extends JpaRepository<MeetupMember, Long
 	Optional<MeetupMember> findByMeetupIdAndMemberId(Long meetupId, Long memberId);
 
 	List<MeetupMember> findByMeetupId(Long meetupId);
+
+	List<MeetupMember> findTop6ByMeetupId(Long meetupId);
 }

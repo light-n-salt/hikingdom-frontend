@@ -24,4 +24,6 @@ public interface MeetupReviewRepository extends JpaRepository<MeetupReview, Long
 			+ "FROM Member m LEFT JOIN MeetupReview r ON m.id = r.member.id "
 			+ "WHERE r.meetup.id = :meetupId AND r.meetup.isDeleted = false")
 	List<MeetupReviewRes> selectMeetupReviewAsMeetupReviewRes(Long meetupId);
+
+	List<MeetupReview> findByMeetupId(Long meetupId);
 }
