@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
+	boolean existsByClubIdAndMemberIdAndIsWithdraw(@Param("club_id") Long clubId,
+		@Param("member_id") Long memberId, @Param("is_withdraw") boolean isWithdraw);
+
 	Optional<ClubMember> findByMemberIdAndIsWithdraw(@Param("member_id") Long memberId,
 		@Param("is_withdraw") boolean isWithdraw);
 
