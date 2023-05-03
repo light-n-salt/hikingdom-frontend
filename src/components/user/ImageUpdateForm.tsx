@@ -6,7 +6,7 @@ import UserImage from 'components/common/UserImage'
 
 import IconButton from 'components/common/IconButton'
 import { TbCameraPlus } from 'react-icons/tb'
-
+// Todo: API 연결
 function ImageUpdateForm() {
     const { theme } = useContext(ThemeContext)
 

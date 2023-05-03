@@ -15,24 +15,33 @@ import mountain from 'assets/images/mountain.png'
 
 import { BiEdit } from 'react-icons/bi'
 
-import { UserRecord } from 'types/user.interface'
+// import { UserRecord } from 'types/user.interface'
 
-type UserProfileProps = {
-    imgUrl: string
-    nickname: string
-    email: string
-    userRecord: UserRecord
-}
+// type UserProfileProps = {
+//     imgUrl: string
+//     nickname: string
+//     email: string
+//     userRecord: UserRecord
+// }
 
-export default function UserProfile({
-    imgUrl,
-    nickname,
-    email,
-    userRecord,
-}: UserProfileProps) {
+export default function UserProfile() {
     const { theme } = useContext(ThemeContext)
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
+
+    // Todo: user API 연동
+    const userRecord = {
+        totalHikingCount: 10,
+        totalMountainCount: 30,
+        totalDuration: '30:23',
+        totalDistance: 34,
+        totalAlt: 34,
+    }
+
+    const imgUrl =
+        'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80'
+    const nickname = '이병호리병'
+    const email = '조혜진진자라@gamil.com'
 
     return (
         <div className={styles.profile}>
