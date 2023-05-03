@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 
 import styles from './TrackingInfo.module.scss'
-import Button from './Button'
-import IconText from './IconText'
+import Button from 'components/common/Button'
+import IconText from 'components/common/IconText'
 
 import { convertToKm } from 'utils/convertToKm'
 import { UserHikingDetail } from 'types/user.interface'
