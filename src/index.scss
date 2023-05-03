@@ -1,6 +1,11 @@
+@use 'src/styles/z-index' as *;
 @import 'styles/base/reset';
 @import 'styles/base/typography';
 @import 'styles/fonts';
+
+#toast-root {
+  @include z-index(toast);
+}
 
 #root {
   height: 100%;
