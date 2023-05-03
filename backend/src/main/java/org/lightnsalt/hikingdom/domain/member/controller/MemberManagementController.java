@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
@@ -65,5 +66,12 @@ public class MemberManagementController {
 		memberManagementService.changeNickname(authentication.getName(), memberNicknameReq);
 
 		return new ResponseEntity<>(BaseResponseBody.of("닉네임 변경에 성공했습니다"), HttpStatus.OK);
+	}
+
+	@PutMapping("/profile-image-change")
+	public ResponseEntity<?> profileImageChange(Authentication authentication, @RequestBody MultipartFile image) {
+		String profileUrl = memberManagementService.changeProfileImage(authentication.getName(), image);
+
+		return new ResponseEntity<>(BaseResponseBody.of("프로필 사진 변경에 성공했습니다", profileUrl), HttpStatus.OK);
 	}
 }
