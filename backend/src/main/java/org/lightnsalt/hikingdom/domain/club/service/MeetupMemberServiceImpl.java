@@ -35,7 +35,10 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		if (!clubMemberRepository.existsByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(), false))
-			throw new GlobalException(ErrorCode.MEETUP_MEMBER_UNAUTHORIZED);
+			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
+
+		if (meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, member.getId()))
+			throw new GlobalException(ErrorCode.MEETUP_ALREADY_JOINED);
 
 		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));

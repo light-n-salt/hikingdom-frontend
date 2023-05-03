@@ -43,6 +43,7 @@ public enum ErrorCode {
 	// meetup related error codes
 	MEETUP_MEMBER_UNAUTHORIZED(401, "MM001", "일정에 가입된 회원이 아닙니다"),
 	MEETUP_NOT_FOUND(404, "MU001", "존재하지 않는 일정입니다"),
+	MEETUP_ALREADY_JOINED(400, "MU002", "이미 참여한 일정입니다"),
 
 	// meetup photo related error codes
 	FAIL_TO_SAVE_PHOTO(500, "MP001", "사진 저장에 실패했습니다"),
