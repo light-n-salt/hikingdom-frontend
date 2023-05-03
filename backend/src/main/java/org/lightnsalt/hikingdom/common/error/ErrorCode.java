@@ -32,6 +32,7 @@ public enum ErrorCode {
 	CLUB_ALREADY_JOINED(400, "K001", "이미 소모임에 가입되어 있습니다"),
 	DUPLICATE_CLUB_NAME(400, "K002", "이미 존재하는 소모임 이름입니다"),
 	CLUB_NOT_FOUND(404, "K003", "존재하지 않는 소모임입니다"),
+	CLUB_MEETUP_NOT_FOUND(404, "KM001", "해당 소모임에 포함된 일정이 아닙니다"),
 
 	// club member related error codes
 	CLUB_MEMBER_UNAUTHORIZED(401, "CM001", "소모임에 가입된 회원이 아닙니다"),
@@ -47,10 +48,8 @@ public enum ErrorCode {
 	FAIL_TO_SAVE_PHOTO(500, "MP001", "사진 저장에 실패했습니다"),
 	PHOTO_NOT_FOUND(404, "MP002", "삭제되었거나 존재하지 않는 사진입니다"),
 
-
 	// meetup review related error codes
-	MEETUP_REVIEW_NOT_FOUND(404, "MR001", "존재하지 않는 일정 후기입니다")
-	;
+	MEETUP_REVIEW_NOT_FOUND(404, "MR001", "존재하지 않는 일정 후기입니다");
 	private final int status;
 	private final String code;
 	private final String message;
