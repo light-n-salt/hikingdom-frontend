@@ -20,7 +20,7 @@ const { kakao } = window
 
 type TrackingInfoProps = {
   hikingRecordId: number
-  onClickCloseModal: () => void
+  onClickCloseModal: any
 }
 
 function TrackingInfo({
