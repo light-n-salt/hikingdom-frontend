@@ -17,9 +17,20 @@ import static org.lightnsalt.hikingdom.domain.club.entity.meetup.QMeetupAlbum.me
 
 @Repository
 @RequiredArgsConstructor
-
 public class MeetupAlbumRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
+
+	public Slice<MeetupAlbum> findPhotosByClubId(Long photoId, Long clubId, Pageable pageable) {
+		List<MeetupAlbum> result = queryFactory.selectFrom(meetupAlbum)
+			.where(isLast(photoId),
+				meetupAlbum.club.id.eq(clubId),
+				meetupAlbum.isDeleted.eq(false))
+			.orderBy(meetupAlbum.createdAt.desc())
+			.limit(pageable.getPageSize() + 1)
+			.fetch();
+
+		return checkLastPage(pageable, result);
+	}
 
 	// Slice를 이용한 무한 스크롤
 	public Slice<MeetupAlbum> findPhotos(Long photoId, Long meetupId, Pageable pageable) {
