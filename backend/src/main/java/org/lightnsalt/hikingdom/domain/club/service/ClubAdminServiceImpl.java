@@ -54,10 +54,14 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 		if (!updatePendingJoinRequest(candidate, club, JoinRequestStatusType.ACCEPTED))
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
 
+		// 소모임 멤버로 등록
 		clubMemberRepository.save(ClubMember.builder()
 			.club(club)
 			.member(candidate)
 			.build());
+
+		// 소모임 멤버 숫자 업데이트
+		clubRepository.updateClubMemberCount(clubId, club.getTotalMemberCount() + 1, LocalDateTime.now());
 
 		// 가입 신청자의 다른 가입 요청 취소
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(candidate, JoinRequestStatusType.RETRACTED,
