@@ -26,7 +26,8 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
     const [isOpen, setIsOpen] = useState(false)
 
     // 일정 상세보기로 이동하는 함수
-    const onClickMeetup = () => {
+    const onClickMeetup = (e: MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation() // 부모 이벤트 버블링 방지
         setIsOpen(true)
         console.log(`${hiking.hikingRecordId} 일정 상세로 이동하기`)
     }
@@ -34,8 +35,9 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
     // 그룹 일정 상세보기로 이동하는 함수
     const onClickGroup = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation() // 부모 이벤트 버블링 방지
-        console.log(`${hiking.scheduleId} 그룹으로 이동하기`)
+        console.log(`${hiking.meetupId} 그룹으로 이동하기`)
     }
+
     return (
         <div
             className={`content ${theme} ${styles['meetup-item']}`}
@@ -43,11 +45,14 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
         >
             {isOpen && (
                 <Modal onClick={() => setIsOpen(false)}>
-                    <TrackingInfo 
-                        gpsRoute='위경도'
+                    <TrackingInfo
+                        title={`${hiking.mountainName} 트래킹 기록`}
+                        gpsRoute="위경도"
+                        startAt={hiking.startAt}
                         totalDistance={6.43}
                         maxAlt={600}
-                        totalDuration='02:13'
+                        totalDuration="02:13"
+                        setIsOpen={setIsOpen}
                     />
                 </Modal>
             )}
@@ -62,7 +67,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
                 {/* 그룹 스케줄일 때 상세보기 버튼 */}
                 {hiking.isGroup && (
                     <div className={styles.group} onClick={onClickGroup}>
-                        {hiking.scheduleName} <FiChevronRight />
+                        {hiking.meetupName} <FiChevronRight />
                     </div>
                 )}
             </div>

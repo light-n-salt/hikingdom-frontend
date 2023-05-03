@@ -2,7 +2,11 @@ import React, { useEffect } from 'react'
 
 import styles from './TrackingInfo.module.scss'
 import Button from './Button'
+import IconText from './IconText'
 import { UserHikingDetail } from 'types/user.interface'
+
+import { BiCalendarAlt } from 'react-icons/bi'
+import { AiOutlineClockCircle } from 'react-icons/ai'
 
 declare global {
     interface Window {
@@ -12,7 +16,21 @@ declare global {
 
 const { kakao } = window
 
-function TrackingInfo({gpsRoute, totalDistance, maxAlt, totalDuration}: UserHikingDetail) {
+interface TrackingInfoProps extends UserHikingDetail {
+    title: string
+    setIsOpen: (value: boolean) => void
+    isProfile?: boolean
+}
+
+function TrackingInfo({
+    title,
+    setIsOpen,
+    gpsRoute,
+    startAt,
+    totalDistance,
+    maxAlt,
+    totalDuration,
+}: TrackingInfoProps) {
     useEffect(() => {
         const container = document.getElementById('map')
         const options = {
@@ -21,12 +39,30 @@ function TrackingInfo({gpsRoute, totalDistance, maxAlt, totalDuration}: UserHiki
         }
         const map = new kakao.maps.Map(container, options)
     }, [])
+
+    console.log('열렸다')
+    console.log(title)
+
     return (
         <div className={styles.tracking}>
-            <h2>하이킹을 종료하겠습니까?</h2>
+            <h2>{title}</h2>
+
+            <div className={`${styles.container} ${styles.gap}`}>
+                <IconText
+                    icon={<BiCalendarAlt className={styles.icon} />}
+                    text={startAt.split(' ')[0]}
+                    size="sm"
+                />
+                <IconText
+                    icon={<AiOutlineClockCircle className={styles.icon} />}
+                    text={startAt.split(' ')[1]}
+                    size="sm"
+                />
+            </div>
+
             {/* Kakaomap 띄우기 id를 map으로 해줘야 뜬다 */}
             <div id="map" className={styles.map}></div>
-            
+
             {/* 트레킹 기록 */}
             <div className={styles.container}>
                 {/* 거리 */}
@@ -38,31 +74,22 @@ function TrackingInfo({gpsRoute, totalDistance, maxAlt, totalDuration}: UserHiki
                 {/* 높이 */}
                 <div className={styles.content}>
                     <span className={styles.text}>높이</span>
-                    <span className={styles.bold}>
-                        {maxAlt} m
-                    </span>
+                    <span className={styles.bold}>{maxAlt} m</span>
                 </div>
 
                 {/* 시간 */}
                 <div className={styles.content}>
                     <span className={styles.text}>시간</span>
-                    <span className={styles.bold}>
-                        {totalDuration}
-                    </span>
+                    <span className={styles.bold}>{totalDuration}</span>
                 </div>
             </div>
-            <div className={styles.container}>
-                <Button 
-                    text="취소"
-                    size='lg'
-                    color='secondary'
-                    onClick={() => console.log('취소')}
-                />
 
-                <Button 
+            {/* 하단 버튼 */}
+            <div className={`${styles.container} ${styles.gap}`}>
+                <Button
                     text="종료"
-                    size='lg'
-                    color='primary'
+                    size="lg"
+                    color="primary"
                     onClick={() => console.log('종료')}
                 />
             </div>

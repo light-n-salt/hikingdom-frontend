@@ -19,9 +19,14 @@
     width: 100%;
     display: flex;
     align-items: center;
-    // justify-content: space-evenly;
+    justify-content: end;
+
     > .content {
         flex: 1;
+    }
+
+    &.gap {
+        gap: 1rem;
     }
 }
 
@@ -41,4 +46,8 @@
 
 .text {
     font-size: 1rem;
+}
+
+.icon {
+    color: clr(primary-clr);
 }
