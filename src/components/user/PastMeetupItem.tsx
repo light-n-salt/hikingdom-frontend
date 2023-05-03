@@ -13,7 +13,7 @@ import time from 'assets/images/hourglass.png'
 import distance from 'assets/images/shoe.png'
 import height from 'assets/images/hot_air_balloon.png'
 
-import TrackingInfo from 'components/common/TrackingInfo'
+import TrackingInfo from './TrackingInfo'
 import Modal from 'components/common/Modal'
 
 import { UserHiking } from 'types/user.interface'
