@@ -25,7 +25,12 @@ function LoginForm() {
   function login() {
     if (!isEmailPass || !password) {
       // 이메일 형식이 틀렸거나 비밀번호가 입력되지 않은 경우
-      toast.addMessage('error', '이메일과 비밀번호를 정확하게 입력해주세요')
+      toast.addMessage(
+        'error',
+        `이메일과 비밀번호를
+      
+      정확하게 입력해주세요`
+      )
       return
     }
     services
