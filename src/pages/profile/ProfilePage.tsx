@@ -30,8 +30,8 @@ function ProfilePage() {
             totalDistance: 402,
             maxAlt: 203,
             isGroup: true,
-            scheduleId: 3,
-            scheduleName: '등산 가즈아',
+            meetupId: 3,
+            meetupName: '등산 가즈아',
         },
 
         {
@@ -42,8 +42,8 @@ function ProfilePage() {
             totalDistance: 402,
             maxAlt: 203,
             isGroup: false,
-            scheduleId: null,
-            scheduleName: null,
+            meetupId: null,
+            meetupName: null,
         },
 
         {
@@ -54,8 +54,8 @@ function ProfilePage() {
             totalDistance: 402,
             maxAlt: 203,
             isGroup: false,
-            scheduleId: null,
-            scheduleName: null,
+            meetupId: null,
+            meetupName: null,
         },
     ]
 
