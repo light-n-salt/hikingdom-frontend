@@ -6,14 +6,14 @@ import LoginForm from 'components/auth/LoginForm'
 import styles from './LoginPage.module.scss'
 
 function LoginPage() {
-    const { theme, toggleTheme } = useContext(ThemeContext)
+  const { theme, toggleTheme } = useContext(ThemeContext)
 
-    return (
-        <div className={`page-gradation p-lg ${theme} ${styles.container}`}>
-            <Logo />
-            <LoginForm />
-        </div>
-    )
+  return (
+    <div className={`page-gradation p-lg ${theme} ${styles.container}`}>
+      <Logo />
+      <LoginForm />
+    </div>
+  )
 }
 
 export default LoginPage

@@ -3,88 +3,88 @@
 @use 'src/styles/z-index' as *;
 
 .page {
+  @include z-index(page);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+
+  &.p-sm {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 1rem;
+  }
+
+  &.p-md {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  &.p-lg {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  &.light {
+    @include deep-light-theme;
+  }
+
+  &.dark {
+    @include deep-dark-theme;
+  }
+
+  &-gradation {
     @include z-index(page);
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+    z-index: z-index(page);
     width: 100%;
     min-height: 100%;
 
     &.p-sm {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        padding-bottom: 1rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      padding-bottom: 1rem;
     }
 
     &.p-md {
-        padding-left: 1rem;
-        padding-right: 1rem;
-        padding-bottom: 1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-bottom: 1rem;
     }
 
     &.p-lg {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        padding-bottom: 1rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-bottom: 1rem;
     }
 
     &.light {
-        @include deep-light-theme;
+      @include light-gradation-theme;
     }
 
     &.dark {
-        @include deep-dark-theme;
+      @include dark-gradation-theme;
     }
-
-    &-gradation {
-        @include z-index(page);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-        z-index: z-index(background);
-        width: 100%;
-        min-height: 100%;
-
-        &.p-sm {
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-            padding-bottom: 1rem;
-        }
-
-        &.p-md {
-            padding-left: 1rem;
-            padding-right: 1rem;
-            padding-bottom: 1rem;
-        }
-
-        &.p-lg {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-            padding-bottom: 1rem;
-        }
-
-        &.light {
-            @include light-gradation-theme;
-        }
-
-        &.dark {
-            @include dark-gradation-theme;
-        }
-    }
+  }
 }
 
 .content {
-    width: 100%;
-    border-radius: 1rem;
+  width: 100%;
+  border-radius: 1rem;
 
-    &.light {
-        @include light-theme;
-        box-shadow: -1px 3px 5px 0px clr(shadow-clr);
-    }
-    &.dark {
-        @include dark-theme;
-        box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
-    }
+  &.light {
+    @include light-theme;
+    box-shadow: -1px 3px 5px 0px clr(shadow-clr);
+  }
+  &.dark {
+    @include dark-theme;
+    box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
+  }
 }
