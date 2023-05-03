@@ -1,15 +1,15 @@
-import seed from 'assets/level/seed.png'
-import sprout from 'assets/level/sprout.png'
-import leaf from 'assets/level/leaf.png'
-import twig from 'assets/level/twig.png'
-import flower from 'assets/level/flower.png'
-import fruit from 'assets/level/fruit.png'
-import tree from 'assets/level/tree.png'
-import forest from 'assets/level/forest.png'
-import mountain from 'assets/level/mountain.png'
-import god from 'assets/level/god.png'
+import seed from 'assets/levels/seed.png'
+import sprout from 'assets/levels/sprout.png'
+import leaf from 'assets/levels/leaf.png'
+import twig from 'assets/levels/twig.png'
+import flower from 'assets/levels/flower.png'
+import fruit from 'assets/levels/fruit.png'
+import tree from 'assets/levels/tree.png'
+import forest from 'assets/levels/forest.png'
+import mountain from 'assets/levels/mountain.png'
+import god from 'assets/levels/god.png'
 
-const LEVEL_TO_IMG = {
+const LEVEL_TO_IMG: { [key: number]: string } = {
   1: seed,
   2: sprout,
   3: leaf,

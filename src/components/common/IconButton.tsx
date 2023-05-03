@@ -4,7 +4,7 @@ import styles from './IconButton.module.scss'
 type IconButtonProps = {
   imgSrc?: string
   icon?: React.ReactNode
-  color?: 'dark' | 'light' | 'primary' | 'gray'
+  color?: 'dark' | 'light' | 'primary' | 'secondary' | 'gray'
   size?: 'sm' | 'md' | 'lg'
   onClick: () => void
 }
