@@ -1,7 +1,7 @@
 import React from 'react'
-import styles from './Button.module.scss'
+import styles from './TextButton.module.scss'
 
-type ButtonProps = {
+type TextButtonProps = {
   text: string
   size?: 'sm' | 'md' | 'lg'
   color: 'primary' | 'secondary' | 'white' | 'red' | 'gray'
@@ -9,18 +9,17 @@ type ButtonProps = {
   disabled?: boolean
 }
 
-export default function Button({
+export default function TextButton({
   text,
   size = 'lg',
   color,
   onClick = () => {},
   disabled = false,
-}: ButtonProps) {
+}: TextButtonProps) {
   return (
     <button
       className={`${styles.button} ${styles[size]} ${styles[color]}`}
       onClick={onClick}
-      // onTouchEnd={onClick}
       disabled={disabled}
     >
       {text}

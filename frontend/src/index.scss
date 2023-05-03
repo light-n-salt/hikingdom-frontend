@@ -5,6 +5,8 @@
 
 #toast-root {
   @include z-index(toast);
+  position: fixed;
+  width: 100%;
 }
 
 #root {

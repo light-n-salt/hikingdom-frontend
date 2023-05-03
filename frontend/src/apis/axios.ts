@@ -16,11 +16,14 @@ const axiosInstance = axios.create({
 // Axios 인스턴스에 Interceptor 추가
 axiosInstance.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem('accessToken') // recoil에서 accessToken 읽어오기
+    // 인증관련 요청이 아닐 경우에만
+    if (config.url?.slice(0, 13) !== '/members/auth') {
+      const accessToken = localStorage.getItem('accessToken') // recoil에서 accessToken 읽어오기
 
-    // JWT access 토큰이 있다면 Authorization 헤더에 추가
-    if (accessToken) {
-      config.headers.Authorization = accessToken
+      // JWT access 토큰이 있다면 Authorization 헤더에 추가
+      if (accessToken) {
+        config.headers.Authorization = accessToken
+      }
     }
     return config
   },
