@@ -9,22 +9,22 @@ function SignupForm() {
     const {
         value: email,
         onChange: changeEmail,
-        isError: isEmailError,
+        isPass: isEmailPass,
     } = useAuthInput({ type: 'email' })
     const {
         value: nickname,
         onChange: changeNickname,
-        isError: isNicknameError,
+        isPass: isNicknamePass,
     } = useAuthInput({ type: 'nickname' })
     const {
         value: password,
         onChange: changePw,
-        isError: isPwError,
+        isPass: isPwPass,
     } = useAuthInput({ type: 'password' })
     const {
         value: checkPassword,
         onChange: changeCheckPw,
-        isError: isCheckPwError,
+        isPass: isCheckPwPass,
     } = useCheckPw({ password })
 
     return (
@@ -33,21 +33,21 @@ function SignupForm() {
                 label="이메일"
                 value={email}
                 onChange={changeEmail}
-                isError={isEmailError}
+                isPass={isEmailPass}
                 placeholder="이메일을 입력해주세요"
             />
             <LabelInput
                 label="닉네임"
                 value={nickname}
                 onChange={changeNickname}
-                isError={isNicknameError}
+                isPass={isNicknamePass}
                 placeholder="닉네임을 입력해주세요"
             />
             <LabelInput
                 label="비밀번호"
                 value={password}
                 onChange={changePw}
-                isError={isPwError}
+                isPass={isPwPass}
                 placeholder="비밀번호을 입력해주세요"
                 type="password"
             />
@@ -55,7 +55,7 @@ function SignupForm() {
                 label="비밀번호 확인"
                 value={checkPassword}
                 onChange={changeCheckPw}
-                isError={isCheckPwError}
+                isPass={isCheckPwPass}
                 placeholder="비밀번호을 확인해주세요"
                 type="password"
             />
