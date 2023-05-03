@@ -8,12 +8,12 @@ type CheckPwProps = {
 type CheckPwReturns = {
     value: string
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-    isError: boolean
+    isPass: boolean
 }
 
 function useCheckPw({ password }: CheckPwProps): CheckPwReturns {
     const [value, setValue] = useState<string>('')
-    const [isError, setIsError] = useState(false)
+    const [isPass, setIsPass] = useState(false)
     const debouncedValue = useDebounce(value)
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,10 +21,10 @@ function useCheckPw({ password }: CheckPwProps): CheckPwReturns {
     }
 
     useEffect(() => {
-        setIsError(password !== debouncedValue)
+        setIsPass(password !== debouncedValue)
     }, [debouncedValue])
 
-    return { value, onChange, isError }
+    return { value, onChange, isPass }
 }
 
 export default useCheckPw

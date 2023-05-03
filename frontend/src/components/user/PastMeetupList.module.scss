@@ -1,0 +1,8 @@
+@use 'src/styles/colors' as *;
+
+.meetup-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+}
