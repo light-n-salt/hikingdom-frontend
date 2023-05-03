@@ -1,0 +1,28 @@
+@use 'src/styles/colors' as *;
+
+.album {
+  width: 100%;
+}
+
+.titles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  color: clr(primary-clr);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.photos {
+  overflow: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  width: 100%;
+}

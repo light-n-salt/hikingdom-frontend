@@ -4,7 +4,7 @@ import { ThemeContext } from 'styles/ThemeProvider'
 import { useNavigate } from 'react-router-dom'
 
 import Button from 'components/common/Button'
-import UserImage from 'components/common/UserImage'
+import Image from 'components/common/Image'
 import IconButton from 'components/common/IconButton'
 import UserInfo from 'components/user/UserInfo'
 
@@ -51,7 +51,7 @@ export default function UserProfile() {
         </Modal>
       )}
       <div className={`content ${theme} ${styles.img}`}>
-        <UserImage size="lg" imgUrl={imgUrl} />
+        <Image size="lg" imgUrl={imgUrl} />
       </div>
       <div className={`content ${theme} ${styles.record}`}>
         <div className={styles.btns}>

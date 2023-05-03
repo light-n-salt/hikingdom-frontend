@@ -1,0 +1,41 @@
+@use 'src/styles/colors' as *;
+.review {
+  display: flex;
+  border-bottom: 0.01rem solid clr(white-clr, dark);
+  padding: 0.4rem;
+
+  > img {
+    margin-top: 0.3rem;
+  }
+}
+
+.content {
+  margin-left: 0.5rem;
+  width: 100%;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nickname {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.siren {
+  display: flex;
+  font-size: 0.8rem;
+  > svg {
+    color: clr(red-clr);
+  }
+}
