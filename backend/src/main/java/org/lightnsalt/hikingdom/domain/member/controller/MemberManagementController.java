@@ -7,11 +7,13 @@ import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberNicknameReq;
+import org.lightnsalt.hikingdom.domain.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.domain.member.service.MemberManagementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +33,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberManagementController {
 	private final MemberManagementService memberManagementService;
+
+	@GetMapping
+	public ResponseEntity<?> memberInfoDetail(Authentication authentication) {
+		MemberInfoRes memberInfoRes = memberManagementService.findMemberInfo(authentication.getName());
+		return new ResponseEntity<>(BaseResponseBody.of("회원 정보 조회에 성공했습니다", memberInfoRes), HttpStatus.OK);
+	}
 
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(@RequestHeader("Authorization") String bearerToken) {

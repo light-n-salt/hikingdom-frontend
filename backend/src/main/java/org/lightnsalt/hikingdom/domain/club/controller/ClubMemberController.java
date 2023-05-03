@@ -1,11 +1,16 @@
 package org.lightnsalt.hikingdom.domain.club.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MemberListRes;
 import org.lightnsalt.hikingdom.domain.club.service.ClubMemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,5 +42,12 @@ public class ClubMemberController {
 		clubMemberService.retractClubJoinRequest(authentication.getName(), clubId);
 
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 가입 신청 취소에 성공했습니다"), HttpStatus.OK);
+	}
+
+	@GetMapping
+	public ResponseEntity<?> clubMemberList(Authentication authentication, @PathVariable Long clubId) {
+
+		Map<String, List<MemberListRes>> result = clubMemberService.findClubMember(authentication.getName(), clubId);
+		return new ResponseEntity<>(BaseResponseBody.of("모임 멤버 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 }

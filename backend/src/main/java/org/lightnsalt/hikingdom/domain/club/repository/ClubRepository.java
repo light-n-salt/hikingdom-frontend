@@ -18,6 +18,12 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Club c "
 		+ "SET c.name = :name, c.description = :description, c.baseAddress = :baseAddress, c.modifiedAt = :now "
-		+ "WHERE c.id = :id")
-	int updateClub(String name, String description, BaseAddressInfo baseAddress, Long id, LocalDateTime now);
+		+ "WHERE c.id = :clubId")
+	int updateClubProfile(Long clubId, String name, String description, BaseAddressInfo baseAddress, LocalDateTime now);
+
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Query("UPDATE Club c "
+		+ "SET c.totalMemberCount = :totalMemberCount, c.modifiedAt = :now "
+		+ "WHERE c.id = :clubId")
+	void updateClubMemberCount(Long clubId, Long totalMemberCount, LocalDateTime now);
 }

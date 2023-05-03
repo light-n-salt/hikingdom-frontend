@@ -10,7 +10,7 @@ type AuthInputProps = {
 type AuthInputReturns = {
     value: string
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-    isError: boolean
+    isPass: boolean
 }
 
 function useAuthInput({
@@ -18,7 +18,7 @@ function useAuthInput({
     initialValue = '',
 }: AuthInputProps): AuthInputReturns {
     const [value, setValue] = useState<string>(initialValue)
-    const [isError, setIsError] = useState(false)
+    const [isPass, setIsPass] = useState(false)
     const debouncedValue = useDebounce(value)
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,10 +26,11 @@ function useAuthInput({
     }
 
     useEffect(() => {
-        setIsError(checkReg(type, debouncedValue))
+        console.log(checkReg(type, debouncedValue))
+        setIsPass(checkReg(type, debouncedValue))
     }, [debouncedValue])
 
-    return { value, onChange, isError }
+    return { value, onChange, isPass }
 }
 
 export default useAuthInput

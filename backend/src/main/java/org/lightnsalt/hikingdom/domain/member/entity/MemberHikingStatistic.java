@@ -8,6 +8,9 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AccessLevel;
@@ -19,6 +22,8 @@ import lombok.ToString;
 @Entity
 @Getter
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member_hiking_statistic")
 public class MemberHikingStatistic {
@@ -32,19 +37,19 @@ public class MemberHikingStatistic {
 	@JoinColumn(name = "id", columnDefinition = "BIGINT UNSIGNED")
 	private Member member;
 
-	@Column(name = "total_hiking_count", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_hiking_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalHikingCount;
 
-	@Column(name = "total_mountain_count", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_mountain_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalMountainCount;
 
-	@Column(name = "total_duration", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_duration", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalDuration; // in seconds
 
-	@Column(name = "total_distance", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_distance", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalDistance; // in metres
 
-	@Column(name = "total_alt", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_alt", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private double totalAlt; // in metres
 
 	@Builder

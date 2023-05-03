@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.domain.club.repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.lightnsalt.hikingdom.domain.club.common.enumtype.JoinRequestStatusType;
@@ -26,4 +27,7 @@ public interface ClubJoinRequestRepository extends JpaRepository<ClubJoinRequest
 		+ "WHERE c.member = :member AND c.club = :club AND  c.status = 'PENDING'")
 	int updatePendingJoinRequestByMemberAndClub(Member member, Club club, JoinRequestStatusType status,
 		LocalDateTime now);
+
+	List<ClubJoinRequest> findByClubIdAndMemberIsWithdrawAndStatus(Long clubId, boolean isWithdraw,
+		JoinRequestStatusType status);
 }

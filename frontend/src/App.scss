@@ -3,13 +3,25 @@
 @use 'src/styles/z-index' as *;
 
 .page {
-    @include z-index(background);
+    @include z-index(page);
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     width: 100%;
     min-height: 100%;
+
+    &.p-sm {
+        padding: 0 0.5rem 1rem;
+    }
+
+    &.p-md {
+        padding: 0 1rem 1rem;
+    }
+
+    &.p-lg {
+        padding: 0 1.5rem 1rem;
+    }
 
     &.light {
         @include deep-light-theme;
@@ -20,13 +32,27 @@
     }
 
     &-gradation {
+        @include z-index(page);
         display: flex;
         flex-direction: column;
         align-items: center;
         position: relative;
         z-index: z-index(background);
         width: 100%;
-        height: 100%;
+        min-height: 100%;
+
+        &.p-sm {
+            padding: 0 0.5rem 1rem;
+        }
+
+        &.p-md {
+            padding: 0 1rem 1rem;
+        }
+
+        &.p-lg {
+            padding: 0 1.5rem 1rem;
+        }
+
         &.light {
             @include light-gradation-theme;
         }

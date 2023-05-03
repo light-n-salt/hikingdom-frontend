@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -70,9 +71,14 @@ public class Member extends BaseTimeEntity {
 	@Column(nullable = false, length = 10)
 	private MemberRoleType role;
 
+	@ToString.Exclude
+	@JsonIgnore
+	@OneToOne(mappedBy = "member")
+	private MemberHikingStatistic hikingStatistic;
+
 	@Builder
 	public Member(MemberLevelInfo level, String email, String password, String nickname, String profileUrl,
-		LocalDateTime withdrawAt, Boolean isWithdraw, MemberRoleType role) {
+		LocalDateTime withdrawAt, Boolean isWithdraw, MemberRoleType role, MemberHikingStatistic hikingStatistic) {
 		this.level = level;
 		this.email = email;
 		this.password = password;
@@ -81,5 +87,6 @@ public class Member extends BaseTimeEntity {
 		this.withdrawAt = withdrawAt;
 		this.isWithdraw = isWithdraw;
 		this.role = role;
+		this.hikingStatistic = hikingStatistic;
 	}
 }

@@ -59,6 +59,9 @@ public class Club extends BaseTimeEntity {
 	@Column(length = 512)
 	private String description;
 
+	@Column(name = "total_member_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 1")
+	private Long totalMemberCount;
+
 	@Column(name = "deleted_at")
 	private LocalDateTime deletedAt;
 
@@ -66,12 +69,13 @@ public class Club extends BaseTimeEntity {
 	private boolean isDeleted;
 
 	@Builder
-	public Club(Member host, BaseAddressInfo baseAddress, String name, String description, LocalDateTime deletedAt,
-		boolean isDeleted) {
+	public Club(Member host, BaseAddressInfo baseAddress, String name, String description, Long totalMemberCount,
+		LocalDateTime deletedAt, boolean isDeleted) {
 		this.host = host;
 		this.baseAddress = baseAddress;
 		this.name = name;
 		this.description = description;
+		this.totalMemberCount = totalMemberCount;
 		this.deletedAt = deletedAt;
 		this.isDeleted = isDeleted;
 	}

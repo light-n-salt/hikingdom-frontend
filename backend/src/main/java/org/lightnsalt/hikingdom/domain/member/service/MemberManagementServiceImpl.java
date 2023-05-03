@@ -7,8 +7,11 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.JwtTokenUtil;
 import org.lightnsalt.hikingdom.common.util.RedisUtil;
 import org.lightnsalt.hikingdom.common.util.S3FileUtil;
+import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
+import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberNicknameReq;
+import org.lightnsalt.hikingdom.domain.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +32,23 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	private final RedisUtil redisUtil;
 	private final JwtTokenUtil jwtTokenUtil;
 
+	private final ClubMemberRepository clubMemberRepository;
 	private final MemberRepository memberRepository;
+
+	@Override
+	public MemberInfoRes findMemberInfo(String email) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
+			.orElse(null);
+
+		return MemberInfoRes.builder()
+			.email(member.getEmail())
+			.nickname(member.getNickname())
+			.profileUrl(member.getProfileUrl())
+			.clubId(clubMember != null ? clubMember.getClub().getId() : null)
+			.build();
+	}
 
 	@Override
 	public void logout(String bearerToken) {

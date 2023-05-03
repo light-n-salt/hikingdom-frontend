@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.domain.club.service.MeetupAlbumService;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +65,8 @@ public class MeetupAlbumController {
 	public ResponseEntity<?> meetupAlbumList(@PathVariable Long clubId, @PathVariable Long meetupId,
 		@RequestParam(defaultValue = "") Long photoId, @PageableDefault(size = 10) Pageable pageable) {
 
-		Slice<MeetupAlbumRes> result = meetupAlbumService.findMeetupAlbumList(clubId, meetupId, photoId, pageable);
+		CustomSlice<MeetupAlbumRes> result = meetupAlbumService.findMeetupAlbumList(clubId, meetupId, photoId,
+			pageable);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 사진 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 

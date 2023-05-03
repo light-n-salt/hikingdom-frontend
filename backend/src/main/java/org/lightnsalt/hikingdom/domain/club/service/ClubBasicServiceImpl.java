@@ -9,9 +9,11 @@ import org.lightnsalt.hikingdom.domain.club.dto.request.ClubInfoReq;
 import org.lightnsalt.hikingdom.domain.club.dto.response.ClubSimpleDetailRes;
 import org.lightnsalt.hikingdom.domain.club.entity.Club;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
+import org.lightnsalt.hikingdom.domain.club.entity.record.ClubTotalHikingStatistic;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubRepository;
+import org.lightnsalt.hikingdom.domain.club.repository.ClubTotalHikingStatisticRepository;
 import org.lightnsalt.hikingdom.domain.info.entity.BaseAddressInfo;
 import org.lightnsalt.hikingdom.domain.info.repository.BaseAddressInfoRepository;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
@@ -32,13 +34,14 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	private final ClubRepository clubRepository;
 	private final ClubMemberRepository clubMemberRepository;
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
+	private final ClubTotalHikingStatisticRepository clubTotalHikingStatisticRepository;
 	private final BaseAddressInfoRepository baseAddressInfoRepository;
 	private final MemberRepository memberRepository;
 
 	@Transactional
 	@Override
 	public Long addClub(String email, ClubInfoReq clubInfoReq) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email,false)
+		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		checkDuplicateClubName(clubInfoReq.getName());
@@ -60,7 +63,11 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			.baseAddress(baseAddressInfo)
 			.build();
 
-		clubRepository.save(club);
+		final Club savedclub = clubRepository.save(club);
+		clubTotalHikingStatisticRepository.save(ClubTotalHikingStatistic.builder()
+			.club(savedclub)
+			.build());
+
 		clubMemberRepository.save(ClubMember.builder()
 			.member(host)
 			.club(club)
@@ -72,7 +79,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public void modifyClub(String email, Long clubId, ClubInfoReq clubInfoReq) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email,false)
+		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		final Club club = clubRepository.findById(clubId)
@@ -121,8 +128,8 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 
 	@Transactional
 	boolean updateClub(Long clubId, ClubInfoReq clubInfoReq, BaseAddressInfo baseAddressInfo) {
-		return clubRepository.updateClub(clubInfoReq.getName(), clubInfoReq.getDescription(), baseAddressInfo, clubId,
-			LocalDateTime.now()) > 0;
+		return clubRepository.updateClubProfile(clubId, clubInfoReq.getName(), clubInfoReq.getDescription(),
+			baseAddressInfo, LocalDateTime.now()) > 0;
 	}
 
 	private BaseAddressInfo getBaseAddressInfo(ClubInfoReq clubInfoReq) {
