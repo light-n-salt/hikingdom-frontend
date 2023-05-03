@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './PwUpdateForm.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 import LabelInput from 'components/common/LabelInput'
 import Button from 'components/common/Button'
@@ -8,14 +9,13 @@ import Button from 'components/common/Button'
 import useAuthInput from 'hooks/useAuthInput'
 import useCheckPw from 'hooks/useCheckPw'
 
+import { updatePw } from 'apis/services/users'
+
 function PwUpdateForm() {
     const { theme } = useContext(ThemeContext)
-
-    const [pwErr, setPwErr] = useState('pwerr')
-
-    const onClickUpdatePw = () => {
-        console.log('비밀번호 ')
-    }
+    const navigate = useNavigate()
+    // Todo: toast 적용
+    const [pwErr, setPwErr] = useState('')
 
     // 비밀번호 변경
     const {
@@ -37,6 +37,19 @@ function PwUpdateForm() {
         onChange: changeCheckPw,
         isPass: isCheckPwPass,
     } = useCheckPw({ password })
+
+    // 비밀번호 변경 함수
+    const onClickUpdatePw = () => {
+        updatePw(password, newPassword, checkPassword)
+            .then(() => {
+                navigate('/profile')
+            })
+            .catch((err) => {
+                if (err.status === 401) {
+                    setPwErr('현재 비밀번호가 일치하지 않습니다.')
+                }
+            })
+    }
 
     return (
         <div className={`content ${theme} ${styles.password}`}>
@@ -62,6 +75,7 @@ function PwUpdateForm() {
                 value={checkPassword}
                 onChange={changeCheckPw}
                 isPass={isCheckPwPass}
+                isError={newPassword !== checkPassword}
                 placeholder="새 비밀번호를 확인해주세요"
                 type="password"
             />

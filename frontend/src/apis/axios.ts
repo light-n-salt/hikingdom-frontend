@@ -20,7 +20,7 @@ axiosInstance.interceptors.request.use(
 
         // JWT access 토큰이 있다면 Authorization 헤더에 추가
         if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`
+            config.headers.Authorization = accessToken
         }
         return config
     },
@@ -50,8 +50,10 @@ axiosInstance.interceptors.response.use(
                     refreshToken,
                 })
                 .then((response) => {
-                    const newAccessToken = response.data.token
+                    const newAccessToken = response.data.result.accessToken
+                    const newRefreshToken = response.data.result.refreshToken
                     localStorage.setItem('accessToken', newAccessToken)
+                    localStorage.setItem('refreshToken', newRefreshToken)
                     originalRequest.headers.Authorization = `Bearer ${newAccessToken}` // 새로운 JWT access 토큰으로 요청을 다시 보내기
                     return axiosInstance(originalRequest)
                 })

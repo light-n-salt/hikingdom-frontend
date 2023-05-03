@@ -14,6 +14,7 @@ function NicknameUpdateForm() {
     const { theme } = useContext(ThemeContext)
     const navigate = useNavigate()
 
+    // Todo: toast 적용
     const [errMsg, setErrMsg] = useState('')
 
     // 닉네임 수정
@@ -33,7 +34,7 @@ function NicknameUpdateForm() {
             })
             .catch((err) => {
                 if (err.status === 400) {
-                    setErrMsg(err.message)
+                    setErrMsg(err.data.message)
                 }
             })
     }
