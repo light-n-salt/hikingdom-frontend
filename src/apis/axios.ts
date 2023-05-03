@@ -18,14 +18,9 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem('accessToken') // recoil에서 accessToken 읽어오기
 
-        // JWT access 토큰이 있다면 Authorization 헤더에 추가
-        if (accessToken) {
-            config.headers.Authorization = accessToken
-        }
-        return config
-    },
-    (error) => {
-        return Promise.reject(error)
+    // JWT access 토큰이 있다면 Authorization 헤더에 추가
+    if (accessToken) {
+      config.headers.Authorization = accessToken
     }
     return config
   },
@@ -50,29 +45,26 @@ axiosInstance.interceptors.response.use(
     ) {
       const refreshToken = localStorage.getItem('refreshToken') // recoil에서 refreshToken 읽어오기
 
-            axios
-                .post(`${process.env.REACT_APP_API_BASE_URL}/refresh_token`, {
-                    refreshToken,
-                })
-                .then((response) => {
-                    const newAccessToken = response.data.result.accessToken
-                    const newRefreshToken = response.data.result.refreshToken
-                    localStorage.setItem('accessToken', newAccessToken)
-                    localStorage.setItem('refreshToken', newRefreshToken)
-                    originalRequest.headers.Authorization = `Bearer ${newAccessToken}` // 새로운 JWT access 토큰으로 요청을 다시 보내기
-                    return axiosInstance(originalRequest)
-                })
-                .catch((error) => {
-                    // JWT access 토큰 갱신에 실패한 경우, 로그인 페이지로 리다이렉트 하는 함수 추가
-                    // 이 코드에서는 단순히 에러를 반환
-                    return Promise.reject(error)
-                })
-        }
-
-        return Promise.reject(error.response)
+      axios
+        .post(`${process.env.REACT_APP_API_BASE_URL}/refresh_token`, {
+          refreshToken,
+        })
+        .then((response) => {
+          const newAccessToken = response.data.result.accessToken
+          const newRefreshToken = response.data.result.refreshToken
+          localStorage.setItem('accessToken', newAccessToken)
+          localStorage.setItem('refreshToken', newRefreshToken)
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}` // 새로운 JWT access 토큰으로 요청을 다시 보내기
+          return axiosInstance(originalRequest)
+        })
+        .catch((error) => {
+          // JWT access 토큰 갱신에 실패한 경우, 로그인 페이지로 리다이렉트 하는 함수 추가
+          // 이 코드에서는 단순히 에러를 반환
+          return Promise.reject(error)
+        })
     }
 
-    return Promise.reject(error)
+    return Promise.reject(error.response)
   }
 )
 

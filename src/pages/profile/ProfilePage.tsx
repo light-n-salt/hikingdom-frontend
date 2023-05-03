@@ -13,14 +13,14 @@ function ProfilePage() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
 
-    return (
-        <div className={`page p-sm ${theme} ${styles.profile}`}>
-            <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
-            <UserProfile />
-            <div className={styles.title}>등산기록</div>
-            <PastMeetupList />
-        </div>
-    )
+  return (
+    <div className={`page p-sm ${theme} ${styles.profile}`}>
+      <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
+      <UserProfile />
+      <div className={styles.title}>등산기록</div>
+      <PastMeetupList />
+    </div>
+  )
 }
 
 export default ProfilePage

@@ -11,57 +11,57 @@ import useAuthInput from 'hooks/useAuthInput'
 import { updateNickname } from 'apis/services/users'
 
 function NicknameUpdateForm() {
-    const { theme } = useContext(ThemeContext)
-    const navigate = useNavigate()
+  const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
 
-    // Todo: toast 적용
-    const [errMsg, setErrMsg] = useState('')
+  // Todo: toast 적용
+  const [errMsg, setErrMsg] = useState('')
 
-    // 닉네임 수정
-    const {
-        value: nickname,
-        onChange: changeNickname,
-        isPass: isNicknamePass,
-        condition: nicknameCond,
-    } = useAuthInput({ type: 'nickname' })
+  // 닉네임 수정
+  const {
+    value: nickname,
+    onChange: changeNickname,
+    isPass: isNicknamePass,
+    condition: nicknameCond,
+  } = useAuthInput({ type: 'nickname' })
 
-    // 닉네임 수정 함수
-    const onClickUpdateNickname = () => {
-        updateNickname(nickname)
-            .then(() => {
-                navigate('/profile')
-                // Todo: Query invalidate 처리
-            })
-            .catch((err) => {
-                if (err.status === 400) {
-                    setErrMsg(err.data.message)
-                }
-            })
-    }
+  // 닉네임 수정 함수
+  const onClickUpdateNickname = () => {
+    updateNickname(nickname)
+      .then(() => {
+        navigate('/profile')
+        // Todo: Query invalidate 처리
+      })
+      .catch((err) => {
+        if (err.status === 400) {
+          setErrMsg(err.data.message)
+        }
+      })
+  }
 
-    return (
-        <div className={`content ${theme} ${styles.nickname}`}>
-            <Button
-                text="취소"
-                color="secondary"
-                size="sm"
-                onClick={() => navigate('/profile')}
-            />
+  return (
+    <div className={`content ${theme} ${styles.nickname}`}>
+      <Button
+        text="취소"
+        color="secondary"
+        size="sm"
+        onClick={() => navigate('/profile')}
+      />
 
-            <span className={styles.err}>{errMsg}</span>
-            <LabelInput
-                label="닉네임"
-                value={nickname}
-                onChange={changeNickname}
-                placeholder={nicknameCond}
-            />
-            <Button
-                text="닉네임 수정"
-                color={isNicknamePass ? 'primary' : 'gray'}
-                onClick={onClickUpdateNickname}
-            />
-        </div>
-    )
+      <span className={styles.err}>{errMsg}</span>
+      <LabelInput
+        label="닉네임"
+        value={nickname}
+        onChange={changeNickname}
+        placeholder={nicknameCond}
+      />
+      <Button
+        text="닉네임 수정"
+        color={isNicknamePass ? 'primary' : 'gray'}
+        onClick={onClickUpdateNickname}
+      />
+    </div>
+  )
 }
 
 export default NicknameUpdateForm
