@@ -13,7 +13,7 @@ public class ClubSimpleDetailRes {
 	private Long hostId;
 
 	@NotNull
-	private Long groupId;
+	private Long clubId;
 
 	@NotEmpty
 	private String groupName;

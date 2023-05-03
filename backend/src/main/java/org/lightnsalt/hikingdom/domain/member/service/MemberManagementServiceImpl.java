@@ -1,9 +1,12 @@
 package org.lightnsalt.hikingdom.domain.member.service;
 
+import java.io.IOException;
+
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.JwtTokenUtil;
 import org.lightnsalt.hikingdom.common.util.RedisUtil;
+import org.lightnsalt.hikingdom.common.util.S3FileUtil;
 import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberChangePasswordReq;
@@ -14,6 +17,7 @@ import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberManagementServiceImpl implements MemberManagementService {
 	private final PasswordEncoder passwordEncoder;
 
+	private final S3FileUtil s3FileUtil;
 	private final RedisUtil redisUtil;
 	private final JwtTokenUtil jwtTokenUtil;
 
@@ -96,6 +101,22 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 		if (!setNickname(newNickname, member.getId()))
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
+	}
+
+	@Transactional
+	@Override
+	public String changeProfileImage(String email, MultipartFile photo) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+
+		try {
+			String url = s3FileUtil.upload(photo, "members/" + member.getId() + "/profiles");
+			memberRepository.setProfileUrlById(url, member.getId());
+
+			return url;
+		} catch (IOException e) {
+			throw new GlobalException(ErrorCode.FAIL_TO_SAVE_PHOTO);
+		}
 	}
 
 	@Transactional

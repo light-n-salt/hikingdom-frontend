@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.domain.club.repository;
 
+import java.util.List;
+
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupAlbum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,4 +17,5 @@ public interface MeetupAlbumRepository extends JpaRepository<MeetupAlbum, Long> 
 		+ "WHERE m.id = :photoId ")
 	void updateIsDeleted(@Param("photoId") Long photoId);
 
+	List<MeetupAlbum> findTop3ByMeetupIdOrderByCreatedAtDesc(Long meetupId);
 }

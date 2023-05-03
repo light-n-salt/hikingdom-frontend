@@ -5,6 +5,8 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.member.common.enumtype.MemberRoleType;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberSignUpReq;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
+import org.lightnsalt.hikingdom.domain.member.entity.MemberHikingStatistic;
+import org.lightnsalt.hikingdom.domain.member.repository.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberLevelInfoRepository;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,13 +20,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberSignUpServiceImpl implements MemberSignUpService {
+	private final MemberHikingStatisticRepository memberHikingStatisticRepository;
 	private final PasswordEncoder passwordEncoder;
 
 	private final MemberRepository memberRepository;
 	private final MemberLevelInfoRepository memberLevelInfoRepository;
 
-	@Transactional
 	@Override
+	@Transactional
 	public void signUp(MemberSignUpReq memberSignUpReq) {
 		String email = memberSignUpReq.getEmail();
 		String nickname = memberSignUpReq.getNickname();
@@ -44,7 +47,13 @@ public class MemberSignUpServiceImpl implements MemberSignUpService {
 				.orElseThrow(() -> new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR)))
 			.build();
 
-		memberRepository.save(member);
+		final Member savedMember = memberRepository.save(member);
+
+		MemberHikingStatistic memberHikingStatistic = MemberHikingStatistic.builder()
+			.member(savedMember)
+			.build();
+
+		memberHikingStatisticRepository.save(memberHikingStatistic);
 	}
 
 	@Override
