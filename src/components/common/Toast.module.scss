@@ -4,11 +4,13 @@
 .container {
   display: flex;
   flex-direction: column-reverse;
+  align-items: center;
   gap: 0.2rem;
   position: absolute;
   top: 0.5rem;
   left: 50%;
   transform: translate(-50%, 0);
+  width: 100%;
   transition: all 0.5s ease-in-out;
 }
 
@@ -23,6 +25,7 @@
   color: clr(tertiary-clr);
   font-size: 1rem;
   font-weight: 600;
+  max-width: 80%;
   box-shadow: -1px 3px 5px 0px clr(shadow-clr);
 }
 
