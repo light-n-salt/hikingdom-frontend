@@ -5,15 +5,25 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: clr(tertiary-clr, light);
+  background-image: url('./../../assets/images/web_background.png');
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .mobile {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   height: 100%;
 }
 
 .laptop {
+  overflow: hidden;
+  position: absolute;
+  right: 15%;
   width: 480px;
+  min-width: 480px;
   height: 100%;
+  box-shadow: 0 0 15px clr(shadow-clr, dark);
 }
