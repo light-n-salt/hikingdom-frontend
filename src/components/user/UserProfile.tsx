@@ -8,7 +8,7 @@ import UserImage from 'components/common/UserImage'
 import IconButton from 'components/common/IconButton'
 import UserInfo from 'components/user/UserInfo'
 
-import RankModal from 'components/user/LevelModal'
+import LevelModal from 'components/user/LevelModal'
 import Modal from 'components/common/Modal'
 
 import mountain from 'assets/images/mountain.png'
@@ -38,7 +38,7 @@ export default function UserProfile({
         <div className={styles.profile}>
             {isOpen && (
                 <Modal onClick={() => setIsOpen(false)}>
-                    <RankModal />
+                    <LevelModal />
                 </Modal>
             )}
             <div className={`content ${theme} ${styles.img}`}>
