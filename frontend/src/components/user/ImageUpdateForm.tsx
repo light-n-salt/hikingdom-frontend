@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ImageUpdateForm.module.scss'
 
-import UserImage from 'components/common/UserImage'
+import Image from 'components/common/Image'
 
 import IconButton from 'components/common/IconButton'
 import { TbCameraPlus } from 'react-icons/tb'
@@ -21,7 +21,7 @@ function ImageUpdateForm() {
   }
   return (
     <div className={`content ${theme} ${styles.img}`}>
-      <UserImage imgUrl={userInfo.imgUrl} size="lg" />
+      <Image imgUrl={userInfo.imgUrl} size="lg" />
       <IconButton
         icon={<TbCameraPlus />}
         size="sm"

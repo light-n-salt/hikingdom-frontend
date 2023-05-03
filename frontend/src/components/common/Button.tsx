@@ -3,7 +3,7 @@ import styles from './Button.module.scss'
 
 type ButtonProps = {
   text: string
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   color: 'primary' | 'secondary' | 'white' | 'red' | 'gray'
   onClick?: () => void
   disabled?: boolean
