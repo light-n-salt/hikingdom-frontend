@@ -16,7 +16,8 @@ public enum ErrorCode {
 	INVALID_TOKEN(401, "C005", "토큰이 유효하지 않습니다"),
 	EXPIRED_TOKEN(401, "C006", "토큰이 만료되었습니다"),
 	MISSING_REQUEST_BODY(400, "C007", "응답 요청 내용이 없습니다"),
-	// business error codes
+
+	// business error codes //
 
 	// member related error codes
 	DUPLICATE_EMAIL(400, "M001", "사용할 수 없는 이메일입니다"),
@@ -41,9 +42,9 @@ public enum ErrorCode {
 	CLUB_JOIN_REQUEST_NOT_FOUND(404, "CM003", "유효한 소모임 가입 요청이 없습니다"),
 
 	// meetup related error codes
-	MEETUP_MEMBER_UNAUTHORIZED(401, "MM001", "일정에 가입된 회원이 아닙니다"),
 	MEETUP_NOT_FOUND(404, "MU001", "존재하지 않는 일정입니다"),
 	MEETUP_ALREADY_JOINED(400, "MU002", "이미 참여한 일정입니다"),
+	MEETUP_MEMBER_UNAUTHORIZED(401, "MU003", "일정에 가입된 회원이 아닙니다"),
 
 	// meetup photo related error codes
 	FAIL_TO_SAVE_PHOTO(500, "MP001", "사진 저장에 실패했습니다"),
