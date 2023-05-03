@@ -1,0 +1,48 @@
+@use 'src/styles/colors' as *;
+@use 'src/styles/animations' as *;
+
+.container {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.2rem;
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+  transition: all 0.5s ease-in-out;
+}
+
+.item {
+  @include animation-slide-in-down();
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: clr(white-clr, light);
+  color: clr(tertiary-clr);
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: -1px 3px 5px 0px clr(shadow-clr);
+}
+
+.item[closing] {
+  @include animation-slide-out-down($distance: 50%);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  &.success {
+    color: clr(lime-clr);
+  }
+  &.error {
+    color: clr(red-clr);
+  }
+  &.warning {
+    color: clr(orange-clr);
+  }
+  &.info {
+    color: clr(blue-clr);
+  }
+}

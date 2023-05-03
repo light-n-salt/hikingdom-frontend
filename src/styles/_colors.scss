@@ -9,6 +9,8 @@ $black: #222222;
 $gray: #999999;
 $lime: #9feb72;
 $red: #ff0c0c;
+$orange: #b8a721;
+$blue: #2d40be;
 
 // 쉐도우용 컬러(opacity)
 $shadow: #00000022;
@@ -56,6 +58,16 @@ $colors: (
     base: $red,
     light: lighten($red, $lighten),
     dark: darken($red, $darken),
+  ),
+  orange-clr: (
+    base: $orange,
+    light: lighten($orange, $lighten),
+    dark: darken($orange, $darken),
+  ),
+  blue-clr: (
+    base: $blue,
+    light: lighten($blue, $lighten),
+    dark: darken($blue, $darken),
   ),
   shadow-clr: (
     base: $shadow,
