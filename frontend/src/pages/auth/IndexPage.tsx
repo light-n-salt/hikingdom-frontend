@@ -15,7 +15,7 @@ function IndexPage() {
 
   return (
     <>
-      <div className={`page p-md ${styles.container}`}>
+      <div className={`page p-lg ${styles.container}`}>
         <Logo size="lg" />
         <Button text="시작하기" color="primary" size="lg" onClick={toLogin} />
       </div>

@@ -4,14 +4,14 @@ import styles from './TextButton.module.scss'
 type TextButtonProps = {
   text: string
   size?: 'sm' | 'md' | 'lg'
-  color: 'primary' | 'secondary' | 'white' | 'red' | 'gray'
+  color: 'primary' | 'secondary' | 'tertiary' | 'white' | 'red' | 'gray'
   onClick?: () => void
   disabled?: boolean
 }
 
 export default function TextButton({
   text,
-  size = 'lg',
+  size = 'sm',
   color,
   onClick = () => {},
   disabled = false,
