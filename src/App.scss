@@ -88,3 +88,10 @@
     box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
   }
 }
+
+.scroll {
+  // 스크롤바 숨기기
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -1,12 +1,11 @@
 @use 'src/styles/colors' as *;
 
 .header {
+  // position: absolute;
+
   padding-top: 1rem;
   display: flex;
   align-items: center;
-  align-self: flex-end;
-  justify-content: space-between;
-  width: 68%;
 }
 
 .title {
@@ -14,7 +13,5 @@
   color: clr(primary-clr);
 }
 
-.image {
-  width: 2.5rem;
-  height: 2.5rem;
+.nav {
 }

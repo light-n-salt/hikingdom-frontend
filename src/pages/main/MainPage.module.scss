@@ -26,6 +26,6 @@
   overflow-x: scroll;
   // 스크롤바 숨기기
   &::-webkit-scrollbar {
-    background: transparent;
+    display: none;
   }
 }
