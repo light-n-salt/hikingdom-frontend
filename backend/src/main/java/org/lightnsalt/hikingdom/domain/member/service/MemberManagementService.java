@@ -12,4 +12,6 @@ public interface MemberManagementService {
 	void changePassword(String email, MemberChangePasswordReq memberChangePasswordReq);
 
 	void changeNickname(String email, MemberNicknameReq memberNicknameReq);
+
+	String changeProfileImage(String email, MultipartFile photo);
 }
