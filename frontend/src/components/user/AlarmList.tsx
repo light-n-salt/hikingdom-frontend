@@ -4,13 +4,13 @@ import styles from './AlarmList.module.scss'
 import { UserAlarm } from 'types/user.interface'
 
 function AlarmList({ alarmList }: { alarmList: UserAlarm[] }) {
-    return (
-        <div className={`${styles['alarm-list']}`}>
-            {alarmList.map((alarm) => (
-                <AlarmItem key={alarm.alarmId} alarm={alarm} />
-            ))}
-        </div>
-    )
+  return (
+    <div className={`${styles['alarm-list']}`}>
+      {alarmList.map((alarm) => (
+        <AlarmItem key={alarm.alarmId} alarm={alarm} />
+      ))}
+    </div>
+  )
 }
 
 export default AlarmList

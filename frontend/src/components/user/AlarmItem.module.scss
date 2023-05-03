@@ -1,54 +1,54 @@
 @use 'src/styles/colors' as *;
 
 .alarm-box {
-    padding: 1rem;
+  padding: 1rem;
 
-    &.read {
-        background-color: clr(shadow-clr, light);
-    }
+  &.read {
+    background-color: clr(shadow-clr, light);
+  }
 
-    .alarm-title-box {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
+  .alarm-title-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
 
-        .alarm-title {
-            display: flex;
-            align-items: center;
+    .alarm-title {
+      display: flex;
+      align-items: center;
 
-            > span {
-                font-size: 1.1rem;
-                font-weight: bold;
-            }
+      > span {
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
 
-            &.unread {
-                .dot {
-                    color: $red;
-                    font-size: 1.5rem;
-                }
-            }
-
-            &.read {
-                .dot {
-                    color: clr(shadow-clr, light);
-                    font-size: 1.5rem;
-                }
-            }
+      &.unread {
+        .dot {
+          color: $red;
+          font-size: 1.5rem;
         }
+      }
 
-        > span {
-            color: $gray;
-            font-size: 0.8rem;
+      &.read {
+        .dot {
+          color: clr(shadow-clr, light);
+          font-size: 1.5rem;
         }
+      }
     }
 
-    .alarm-content {
-        white-space: nowrap;
-
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        padding-left: 1.5rem;
+    > span {
+      color: $gray;
+      font-size: 0.8rem;
     }
+  }
+
+  .alarm-content {
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    padding-left: 1.5rem;
+  }
 }

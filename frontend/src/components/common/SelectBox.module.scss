@@ -2,52 +2,52 @@
 @use 'src/styles/animations' as *;
 
 .select-box {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 
-    > div:first-child {
-        display: flex;
-        align-items: center;
-        padding: 0.5rem;
+  > div:first-child {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
 
-        &.selected {
-            justify-content: space-between;
-            border: solid 0.2rem clr(secondary-clr);
-            border-radius: 0.3rem;
-            color: clr(black-clr);
-            font-weight: 600;
+    &.selected {
+      justify-content: space-between;
+      border: solid 0.2rem clr(secondary-clr);
+      border-radius: 0.3rem;
+      color: clr(black-clr);
+      font-weight: 600;
 
-            svg {
-                color: clr(primary-clr);
-                &:hover {
-                    cursor: pointer;
-                }
-            }
+      svg {
+        color: clr(primary-clr);
+        &:hover {
+          cursor: pointer;
         }
-
-        &.transparent {
-            gap: 0.5rem;
-            background-color: transparent;
-            box-shadow: none;
-        }
+      }
     }
-    .options {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        border-radius: 0.3rem;
-        box-shadow: -1px 3px 5px 0px clr(shadow-clr);
-        list-style: none;
 
-        li {
-            padding: 0.5rem;
-            border-radius: 0.1rem;
-            font-size: 0.9rem;
-
-            &:active {
-                background-color: clr(secondary-clr);
-                color: clr(primary-clr);
-            }
-        }
+    &.transparent {
+      gap: 0.5rem;
+      background-color: transparent;
+      box-shadow: none;
     }
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    border-radius: 0.3rem;
+    box-shadow: -1px 3px 5px 0px clr(shadow-clr);
+    list-style: none;
+
+    li {
+      padding: 0.5rem;
+      border-radius: 0.1rem;
+      font-size: 0.9rem;
+
+      &:active {
+        background-color: clr(secondary-clr);
+        color: clr(primary-clr);
+      }
+    }
+  }
 }
