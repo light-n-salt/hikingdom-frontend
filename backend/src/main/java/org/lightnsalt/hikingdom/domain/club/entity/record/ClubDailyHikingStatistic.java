@@ -11,10 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.lightnsalt.hikingdom.domain.club.entity.Club;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,6 +29,8 @@ import lombok.ToString;
 @Entity
 @Getter
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "club_daily_hiking_statistic")
 public class ClubDailyHikingStatistic {
@@ -38,28 +41,27 @@ public class ClubDailyHikingStatistic {
 
 	@ToString.Exclude
 	@JsonIgnore
-	@MapsId
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "club_id", nullable = false, columnDefinition = "BIGINT UNSIGNED", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "club_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Club club;
 
-	@Column(name = "total_hiking_count", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_hiking_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalHikingCount;
 
-	@Column(name = "total_mountain_count", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_mountain_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalMountainCount;
 
-	@Column(name = "total_duration", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_duration", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalDuration; // in seconds
 
-	@Column(name = "total_distance", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_distance", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalDistance; // in metres
 
-	@Column(name = "total_alt", nullable = false, columnDefinition = "INT UNSIGNED")
+	@Column(name = "total_alt", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalAlt; // in metres
 
-	@Column(name = "participation_rate", nullable = false, columnDefinition = "DOUBLE")
-	private double participationRate;
+	@Column(name = "participation_rate", nullable = false, columnDefinition = "DOUBLE DEFAULT 0")
+	private double participationRate; // in %
 
 	@Column(name = "date", nullable = false)
 	private LocalDateTime date;
