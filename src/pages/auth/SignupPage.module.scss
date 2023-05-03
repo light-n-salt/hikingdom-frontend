@@ -1,8 +1,7 @@
 @use 'src/styles/animations' as *;
 
 .singup-page {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 2rem;
+  justify-content: start;
+  gap: 1rem;
+  padding-top: 3rem;
 }

@@ -5,6 +5,7 @@ import useCheckPw from 'hooks/useCheckPw'
 import styles from './SignupForm.module.scss'
 import Button from 'components/common/Button'
 import services from 'apis/services'
+import toast from 'components/common/Toast'
 import { useNavigate } from 'react-router-dom'
 
 function SignupForm() {
@@ -47,7 +48,9 @@ function SignupForm() {
     services
       .validEmail(email)
       .then(() => {})
-      .catch(() => {})
+      .catch((err) => {
+        toast.addMessage('error', err.data.message)
+      })
   }
 
   function confirmEmail() {
@@ -56,8 +59,9 @@ function SignupForm() {
       .then(() => {
         setIsAuthStatus(0)
       })
-      .catch(() => {
+      .catch((err) => {
         setIsAuthStatus(2)
+        toast.addMessage('error', err.data.message)
       })
   }
 
@@ -67,8 +71,9 @@ function SignupForm() {
       .then(() => {
         setIsDupStatus(0)
       })
-      .catch(() => {
+      .catch((err) => {
         setIsDupStatus(2)
+        toast.addMessage('error', err.data.message)
       })
   }
 
@@ -77,9 +82,12 @@ function SignupForm() {
     services
       .signup(email, nickname, password, checkPassword)
       .then(() => {
+        toast.addMessage('success', '회원가입에 성공했습니다!')
         navigate('login')
       })
-      .catch(() => {})
+      .catch((err) => {
+        toast.addMessage('error', err.data.message)
+      })
   }
 
   return (
