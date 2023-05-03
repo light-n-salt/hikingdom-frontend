@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMemberListRes;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MemberListRes;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupMember;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupMemberRepository;
@@ -25,7 +25,7 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 
 	@Override
 	@Transactional
-	public List<MeetupMemberListRes> findMeetupMember(Long clubId, Long meetupId) {
+	public List<MemberListRes> findMeetupMember(Long clubId, Long meetupId) {
 		// 존재하는 일정인지 확인
 		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
@@ -37,6 +37,8 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 		// 일정 멤버 조회
 		List<MeetupMember> list = meetupMemberRepository.findByMeetupId(meetupId);
 		// 형 변환
-		return list.stream().map(MeetupMemberListRes::new).collect(Collectors.toList());
+		return list.stream()
+			.map((meetupMember) -> new MemberListRes(meetupMember.getMember()))
+			.collect(Collectors.toList());
 	}
 }

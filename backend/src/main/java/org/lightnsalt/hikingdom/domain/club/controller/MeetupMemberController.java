@@ -3,7 +3,7 @@ package org.lightnsalt.hikingdom.domain.club.controller;
 import java.util.List;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
-import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupMemberListRes;
+import org.lightnsalt.hikingdom.domain.club.dto.response.MemberListRes;
 import org.lightnsalt.hikingdom.domain.club.service.MeetupMemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +41,7 @@ public class MeetupMemberController {
 	@GetMapping
 	public ResponseEntity<?> meetupMemberList(@PathVariable Long clubId, @PathVariable Long meetupId) {
 
-		List<MeetupMemberListRes> result = meetupMemberService.findMeetupMember(clubId, meetupId);
+		List<MemberListRes> result = meetupMemberService.findMeetupMember(clubId, meetupId);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 멤버 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 }
