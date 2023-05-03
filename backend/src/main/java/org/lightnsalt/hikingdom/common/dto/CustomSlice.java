@@ -2,7 +2,7 @@ package org.lightnsalt.hikingdom.common.dto;
 
 import java.util.List;
 
-import org.springframework.data.domain.Slice;
+	import org.springframework.data.domain.Slice;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
