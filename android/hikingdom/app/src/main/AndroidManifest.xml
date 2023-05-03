@@ -42,7 +42,9 @@
             android:exported="true"
             android:windowSoftInputMode="adjustNothing"/><!--MainActivity 내의 Fragment에서 검색 시 하단바가 키보드 위에 올라오지 않도록, 키보드가 레이아웃에 영향을 주지 않게 처리 -->
 
-        <service android:name=".ui.main.hiking.LocationService"/>
+        <service
+            android:name=".ui.main.hiking.LocationService"
+            android:foregroundServiceType="location"/>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

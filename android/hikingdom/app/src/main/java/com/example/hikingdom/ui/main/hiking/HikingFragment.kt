@@ -1,14 +1,17 @@
 package com.example.hikingdom.ui.main.hiking
 
+//import com.example.hikingdom.ui.main.group.GroupFragment
+
 import android.Manifest
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.app.AlertDialog
+import android.content.*
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,7 +20,6 @@ import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.R
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
-//import com.example.hikingdom.ui.main.group.GroupFragment
 import net.daum.mf.map.api.*
 import java.time.LocalDateTime
 
@@ -43,6 +45,9 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 
     private val POLYLINE_COLOR_CODE = 0xFF0F7BDF.toInt()
 
+    private val LOCATION_PERMISSION_CODE = 1
+    private val BACKGROUND_LOCATION_PERMISSION_CODE = 2
+
     override fun initAfterBinding() {
         binding.lifecycleOwner = this
         binding.hikingFragmentViewModel = hikingViewModel
@@ -50,17 +55,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         mapView = MapView(requireContext())
         mapViewContainer = binding.hikingMapview
 
-        if(!checkPermission()){
-            requestPermission()
-        }
-        if(checkPermission()){  // 위치권한 요청 후 다시 확인
-            setHikingService()
-            setMapView()
-            drawPolylineByExistingTrackingData()
-            setMarkerSetting()
-        } else {
-            showToast("22위치 권한을 항상 허용하지 않으면 백그라운드 경로 기록 서비스를 이용하실 수 없습니다.")
-        }
+        checkPermission()
     }
 
     companion object {
@@ -96,25 +91,6 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             showToast("등산 기록을 시작합니다.")
             hikingFinishBtn.visibility = View.VISIBLE
             hikingStartBtn.visibility = View.GONE
-//            if (!checkPermission()) {
-//                requestPermission()
-//                if(checkPermission()){
-//                    startHikingService()
-//                    showToast("등산 기록을 시작합니다.")
-//                    hikingFinishBtn.visibility = View.VISIBLE
-//                    hikingStartBtn.visibility = View.GONE
-//                }else{
-//                    showToast("위치 권한을 허용하지 않으면 시작할 수 없습니다.")
-//                }
-//            }
-//            else {
-//                startHikingService()
-//                showToast("등산 기록을 시작합니다.")
-//                hikingFinishBtn.visibility = View.VISIBLE
-//                hikingStartBtn.visibility = View.GONE
-//            }
-
-
         }
 
         hikingFinishBtn.setOnClickListener {
@@ -181,17 +157,118 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 //        }
     }
 
-    private fun checkPermission(): Boolean {
-        val isFineLocationPermissionGranted = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-        val isCoarseLocationPermissionGranted = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-        val isBackgroundLocationPermissionGranted = ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-        return isFineLocationPermissionGranted == PackageManager.PERMISSION_GRANTED
-                && isCoarseLocationPermissionGranted == PackageManager.PERMISSION_GRANTED
-                && isBackgroundLocationPermissionGranted == PackageManager.PERMISSION_GRANTED
+    private fun checkPermission() {
+//        Log.d("checkPermission", "첫번쨰 확인")
+        if (ContextCompat.checkSelfPermission(
+                this.requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // Fine Location permission is granted
+            // Check if current android version >= 11, if >= 11 check for Background Location permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (ContextCompat.checkSelfPermission(
+                        this.requireActivity(),
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    // Background Location Permission is granted so do your work here
+//                    Log.d("checkPermission", "이미 백그라운드 허용됨")
+                    setServiceAndMapView()
+                } else {
+                    // Ask for Background Location Permission
+//                    Log.d("checkPermission", "이미 위치권한 허용됨, but 백그라운드 위치권한은 허용 X")
+                    askPermissionForBackgroundUsage()
+                }
+            }
+        } else {
+            // Fine Location Permission is not granted so ask for permission
+//            Log.d("checkPermission", "위치권한, 백그라운드 허용 X")
+            askForLocationPermission()
+        }
     }
 
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 1)
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            askPermissionForBackgroundUsage()
+        } else {
+            showToast("위치 권한을 허용하지 않으면 경로 기록 서비스를 이용하실 수 없습니다.")
+        }
+    }
+    private val backgroundLocationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            setServiceAndMapView()
+        } else {
+            showToast("위치 권한을 항상 허용하지 않으면 백그라운드 경로 기록이 불가능합니다.")
+        }
+    }
+
+    private fun askForLocationPermission() {
+//        Log.d("askForLocationPermission", "진입")
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this.requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        ) {
+//            Log.d("askForLocationPermission", "조건문 true")
+            AlertDialog.Builder(this.requireContext())
+                .setTitle("위치 권한 설정")
+                .setMessage("경로 기록 서비스를 이용하려면 위치 권한을 허용해주세요.")
+                .setPositiveButton("허용",
+                    DialogInterface.OnClickListener { dialog, which ->
+                        ActivityCompat.requestPermissions(
+                            this.requireActivity(), arrayOf<String>(
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                            ), LOCATION_PERMISSION_CODE
+                        )
+                    })
+                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
+                    // Permission is denied by the user
+                })
+                .create().show()
+        } else {
+//            Log.d("askForLocationPermission", "조건문 false")
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun askPermissionForBackgroundUsage() {
+//        Log.d("askPermissionForBackgroundUsage", "진입")
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this.requireActivity(),
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            )
+        ) {
+//            Log.d("askPermissionForBackgroundUsage", "조건문 true")
+            AlertDialog.Builder(this.requireContext())
+                .setTitle("백그라운드 권한 설정")
+                .setMessage("백그라운드 위치 권한을 설정하지 않으면, 백그라운드 경로 기록 서비스를 이용할 수 없어요.")
+                .setPositiveButton("설정",
+                    DialogInterface.OnClickListener { dialog, which ->
+                        ActivityCompat.requestPermissions(
+                            this.requireActivity(), arrayOf<String>(
+                                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                            ), BACKGROUND_LOCATION_PERMISSION_CODE
+                        )
+                    })
+                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
+                    // User declined for Background Location Permission.
+                })
+                .create().show()
+        } else {
+//            Log.d("askPermissionForBackgroundUsage", "조건문 false")
+            backgroundLocationPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        }
+    }
+    private fun setServiceAndMapView(){
+        setHikingService()
+        setMapView()
+        drawPolylineByExistingTrackingData()
+        setMarkerSetting()
     }
 
     fun startHikingService(){
