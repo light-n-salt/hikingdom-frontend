@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -48,6 +49,9 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
     private val LOCATION_PERMISSION_CODE = 1
     private val BACKGROUND_LOCATION_PERMISSION_CODE = 2
 
+    lateinit var hikingStartBtn: Button
+    lateinit var hikingFinishBtn: Button
+
     override fun initAfterBinding() {
         binding.lifecycleOwner = this
         binding.hikingFragmentViewModel = hikingViewModel
@@ -84,13 +88,24 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
     }
 
     fun setHikingService(){
-        val hikingStartBtn = binding.hikingStartBtn
-        val hikingFinishBtn = binding.hikingFinishBtn
+        hikingStartBtn = binding.hikingStartBtn
+        hikingFinishBtn = binding.hikingFinishBtn
+
+//        if(locationService != null && locationService?.isHikingStarted?.value == true){
+//            Log.d("setHikingService", "true")
+//            hikingFinishBtn.visibility = View.VISIBLE
+//            hikingStartBtn.visibility = View.GONE
+//        } else{
+//
+//            Log.d("setHikingService", "false / "+locationService.toString() + "/ "+locationService?.isHikingStarted?.value)
+//        }
+
         hikingStartBtn.setOnClickListener {
             startHikingService()
             showToast("등산 기록을 시작합니다.")
             hikingFinishBtn.visibility = View.VISIBLE
             hikingStartBtn.visibility = View.GONE
+
         }
 
         hikingFinishBtn.setOnClickListener {
@@ -151,6 +166,13 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             mapView.setMapCenterPoint(currentMapPoint, true)
         }
 
+        if(locationService?.isHikingStarted?.value == true){
+            Log.d("setHikingService", "true")
+            hikingFinishBtn.visibility = View.VISIBLE
+            hikingStartBtn.visibility = View.GONE
+        }else{
+            Log.d("setHikingService", "false")
+        }
 
 //        locationService.lastLocation.observe(this){
 //            hikingViewModel.setTotalAltitude(it.altitude)

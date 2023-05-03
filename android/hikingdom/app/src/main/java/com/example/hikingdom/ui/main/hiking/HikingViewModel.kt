@@ -4,19 +4,16 @@ import android.location.Location
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlin.collections.ArrayList
 import kotlin.math.round
 import kotlin.math.roundToInt
 
 class HikingViewModel : ViewModel() {
     var duration = MutableLiveData<String>()
     var totalDistance = MutableLiveData<String>()
-    var totalAltitude = MutableLiveData<String>()
-    var altitudeList = MutableLiveData<Double>()
     var latitude = MutableLiveData<Double>()    // 경로 저장과 관련 없음
     var longitude = MutableLiveData<Double>()
     var altitude = MutableLiveData<Double>()
-
+    var isHikingStarted = MutableLiveData<Boolean>()
 
     // 위도, 경도, 고도 list
     var locations = MutableLiveData<ArrayList<Location>>()
@@ -28,6 +25,7 @@ class HikingViewModel : ViewModel() {
         latitude.value = 0.0
         longitude.value = 0.0
         altitude.value = 0.0
+        isHikingStarted.value = false
     }
 
     fun getLocations(){

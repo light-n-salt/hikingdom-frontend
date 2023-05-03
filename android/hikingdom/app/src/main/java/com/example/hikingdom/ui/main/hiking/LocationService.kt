@@ -30,6 +30,8 @@ class LocationService : Service() {
     // 현재 위치
     var currentLocation = MutableLiveData<Location>()
 
+    var isHikingStarted = MutableLiveData<Boolean>()
+
     private lateinit var locationHandler: Handler
     private lateinit var locationLooper: Looper
     private lateinit var timerHandler: Handler
@@ -39,6 +41,7 @@ class LocationService : Service() {
         duration.value = 0
         totalDistance.value = 0.0f
         locations.value = ArrayList()
+        isHikingStarted.value = false
     }
 
     /*
@@ -62,10 +65,12 @@ class LocationService : Service() {
             stopForeground(true)
             stopSelf()
             isServiceRunning = false
+            isHikingStarted.postValue(false)
         }else{
             Log.d(TAG, "foreground service 시작")
             createNotification()
             isServiceRunning = true
+            isHikingStarted.postValue(true)
 
             // 핸들러와 루퍼를 생성합니다.
             val locationHandlerThread = HandlerThread("location_update_thread")
