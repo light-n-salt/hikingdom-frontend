@@ -26,10 +26,8 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   const [isOpen, setIsOpen] = useState(false)
 
   // 일정 상세보기로 이동하는 함수
-  const onClickMeetup = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation() // 부모 이벤트 버블링 방지
+  const onClickOpenModal = () => {
     setIsOpen(true)
-    console.log(`${hiking.hikingRecordId} 일정 상세로 이동하기`)
   }
 
   // 그룹 일정 상세보기로 이동하는 함수
@@ -39,64 +37,61 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   }
 
   return (
-    <div
-      className={`content ${theme} ${styles['meetup-item']}`}
-      onClick={onClickMeetup}
-    >
+    <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
           <TrackingInfo
-            title={`${hiking.mountainName} 트래킹 기록`}
-            gpsRoute="위경도"
-            startAt={hiking.startAt}
-            totalDistance={6.43}
-            maxAlt={600}
-            totalDuration="02:13"
-            setIsOpen={setIsOpen}
+            hikingRecordId={hiking.hikingRecordId}
+            onClickCloseModal={() => setIsOpen(false)}
           />
         </Modal>
       )}
-      <div className={styles.title}>
-        <IconText
-          imgSrc={mountain}
-          text={hiking.mountainName}
-          size="md"
-          isBold={true}
-        />
+      <div
+        className={`content ${theme} ${styles['meetup-item']}`}
+        onClick={onClickOpenModal}
+      >
+        <div className={styles.title}>
+          <IconText
+            imgSrc={mountain}
+            text={hiking.mountainName}
+            size="md"
+            isBold={true}
+          />
 
-        {/* 그룹 스케줄일 때 상세보기 버튼 */}
-        {hiking.isGroup && (
-          <div className={styles.group} onClick={onClickGroup}>
-            {hiking.meetupName} <FiChevronRight />
-          </div>
-        )}
-      </div>
+          {/* 그룹 스케줄일 때 상세보기 버튼 */}
+          {hiking.isGroup && (
+            <div className={styles.group} onClick={onClickGroup}>
+              {hiking.meetupName} <FiChevronRight />
+            </div>
+          )}
+        </div>
 
-      <div>
-        <IconText
-          icon={<BiCalendarAlt />}
-          text={hiking.startAt.split(' ')[0]}
-          size="sm"
-        />
-        <IconText
-          icon={<AiOutlineClockCircle />}
-          text={hiking.startAt.split(' ')[1]}
-          size="sm"
-        />
+        <div>
+          <IconText
+            icon={<BiCalendarAlt />}
+            text={hiking.startAt.split(' ')[0]}
+            size="sm"
+          />
+          <IconText
+            icon={<AiOutlineClockCircle />}
+            text={hiking.startAt.split(' ')[1]}
+            size="sm"
+          />
+        </div>
+        <div>
+          <IconText imgSrc={time} text={hiking.totalDuration} size="sm" />
+          <IconText
+            imgSrc={distance}
+            text={convertToKm(hiking.totalDistance) + 'km'}
+            size="sm"
+          />
+          <IconText
+            imgSrc={height}
+            text={convertToKm(hiking.maxAlt) + 'km'}
+            size="sm"
+          />
+        </div>
       </div>
-      <div>
-        <IconText imgSrc={time} text={hiking.totalDuration} size="sm" />
-        <IconText
-          imgSrc={distance}
-          text={convertToKm(hiking.totalDistance) + 'km'}
-          size="sm"
-        />
-        <IconText
-          imgSrc={height}
-          text={convertToKm(hiking.maxAlt) + 'km'}
-          size="sm"
-        />
-      </div>
-    </div>
+    </>
   )
 }
