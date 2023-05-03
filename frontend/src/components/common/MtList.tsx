@@ -4,22 +4,18 @@ import MtItem from './MtItem'
 import styles from './Mtlist.module.scss'
 
 type MtListProps = {
-    mtInfoArray: MtInfo[]
-    size?: 'sm' | 'lg'
+  mtInfoArray: MtInfo[]
+  size?: 'sm' | 'lg'
 }
 
 function MtList({ mtInfoArray, size = 'lg' }: MtListProps) {
-    return (
-        <div className={`${styles['mt-list']} ${styles[size]}`}>
-            {mtInfoArray.map((mtInfo, index) => (
-                <MtItem
-                    key={`mtinfo-item-${index}`}
-                    mtInfo={mtInfo}
-                    size={size}
-                />
-            ))}
-        </div>
-    )
+  return (
+    <div className={`${styles['mt-list']} ${styles[size]}`}>
+      {mtInfoArray.map((mtInfo, index) => (
+        <MtItem key={`mtinfo-item-${index}`} mtInfo={mtInfo} size={size} />
+      ))}
+    </div>
+  )
 }
 
 export default MtList

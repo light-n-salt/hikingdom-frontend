@@ -4,15 +4,15 @@ import { Outlet } from 'react-router-dom'
 import useIsMobile from 'hooks/useIsMobile'
 
 function WebMargin() {
-    const isMobile = useIsMobile()
+  const isMobile = useIsMobile()
 
-    return (
-        <div className={styles.container}>
-            <div className={isMobile ? styles.mobile : styles.laptop}>
-                <Outlet />
-            </div>
-        </div>
-    )
+  return (
+    <div className={styles.container}>
+      <div className={isMobile ? styles.mobile : styles.laptop}>
+        <Outlet />
+      </div>
+    </div>
+  )
 }
 
 export default WebMargin
