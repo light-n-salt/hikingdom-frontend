@@ -5,6 +5,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import sytles from './LoginForm.module.scss'
 import services from 'apis/services'
+import toast from 'components/common/Toast'
 
 function LoginForm() {
   const navigate = useNavigate()
@@ -14,7 +15,6 @@ function LoginForm() {
     onChange: changeEmail,
     isPass: isEmailPass,
   } = useAuthInput({ type: 'email' })
-
   const {
     value: password,
     onChange: changePw,
@@ -22,16 +22,20 @@ function LoginForm() {
   } = useAuthInput({ type: 'password' })
 
   function login() {
-    if (!isEmailPass || !isPwPass) return
+    if (!isEmailPass || !password) {
+      // 이메일 형식이 틀렸거나 비밀번호가 입력되지 않은 경우
+      console.log(1)
+      toast.addMessage('error', '이메일과 비밀번호를 정확하게 입력해주세요')
+      return
+    }
     services
       .login(email, password)
       .then((res) => {
         navigate('/main')
       })
-      .catch(() => {})
-  }
-  function toAgree() {
-    navigate('/agreement')
+      .catch((err) => {
+        toast.addMessage('error', err.data.message)
+      })
   }
 
   return (
@@ -56,7 +60,12 @@ function LoginForm() {
       </div>
       <div className={sytles.buttons}>
         <Button text="로그인" color="primary" size="lg" onClick={login} />
-        <Button text="회원가입" color="white" size="lg" onClick={toAgree} />
+        <Button
+          text="회원가입"
+          color="white"
+          size="lg"
+          onClick={() => navigate('/agreement')}
+        />
       </div>
     </div>
   )

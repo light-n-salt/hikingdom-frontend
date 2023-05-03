@@ -1,0 +1,50 @@
+@use 'src/styles/colors' as *;
+
+.button {
+  &.sm {
+    font-size: 0.9rem;
+  }
+
+  &.md {
+    font-size: 1.1rem;
+  }
+
+  &.lg {
+    font-size: 1.4rem;
+  }
+
+  &.primary {
+    color: clr(primary-clr);
+    &:hover {
+      color: clr(primary-clr, dark);
+    }
+  }
+
+  &.secondary {
+    color: clr(secondary-clr);
+    &:hover {
+      color: clr(secondary-clr, dark);
+    }
+  }
+
+  &.white {
+    color: clr(white-clr, light);
+    &:hover {
+      color: clr(white-clr);
+    }
+  }
+
+  &.red {
+    color: clr(red-clr);
+    &:hover {
+      color: clr(red-clr, dark);
+    }
+  }
+
+  &.gray {
+    color: clr(gray-clr);
+    &:hover {
+      color: clr(gray-clr, dark);
+    }
+  }
+}
