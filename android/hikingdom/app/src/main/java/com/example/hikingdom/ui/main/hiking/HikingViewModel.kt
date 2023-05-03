@@ -1,6 +1,7 @@
 package com.example.hikingdom.ui.main.hiking
 
 import android.location.Location
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.collections.ArrayList
@@ -12,7 +13,7 @@ class HikingViewModel : ViewModel() {
     var totalDistance = MutableLiveData<String>()
     var totalAltitude = MutableLiveData<String>()
     var altitudeList = MutableLiveData<Double>()
-    var latitude = MutableLiveData<Double>()
+    var latitude = MutableLiveData<Double>()    // 경로 저장과 관련 없음
     var longitude = MutableLiveData<Double>()
     var altitude = MutableLiveData<Double>()
 
@@ -77,5 +78,8 @@ class HikingViewModel : ViewModel() {
             "$minute:$second"
     }
 
-
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("HikingViewModel", "onCleared 호출됨")
+    }
 }

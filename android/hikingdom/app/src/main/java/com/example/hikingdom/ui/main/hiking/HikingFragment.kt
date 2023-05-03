@@ -27,7 +27,7 @@ import java.time.LocalDateTime
 class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBinding::inflate)
 //    , MapView.CurrentLocationEventListener
 {
-    private lateinit var locationService : LocationService
+    private var locationService: LocationService? = null
     private val hikingViewModel : HikingViewModel by viewModels()
 
     private var bound: Boolean = false
@@ -112,16 +112,16 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 
     fun loadLocationInfo() {
 
-        locationService.totalDistance.observe(this) {
+        locationService?.totalDistance?.observe(this) {
             Log.d("HikingFragment", it.toString())
             hikingViewModel.setTotalDistance(it)
         }
 
-        locationService.duration.observe(this) {
+        locationService?.duration?.observe(this) {
             hikingViewModel.setDuration(it)
         }
 
-        locationService.currentLocation.observe(this){
+        locationService?.currentLocation?.observe(this){
             hikingViewModel.setCurrentLocation(it)
 
             if (lastLat == 0.0 && lastLng == 0.0){
@@ -138,11 +138,11 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(it.latitude, it.longitude))
                 polyline.lineColor = POLYLINE_COLOR_CODE
                 //                polyline.setLineColor(R.color.blue)
-//                polyline.lineColor = Color.rgb(255,204,0)
-//                polyline.lineColor = Color.rgb(15.0f,123.0f,223.0f)  // @color/blue 에 해당하는 rgb color
-//                polyline.lineColor = Color.argb(1, 15, 123, 223)
+    //                polyline.lineColor = Color.rgb(255,204,0)
+    //                polyline.lineColor = Color.rgb(15.0f,123.0f,223.0f)  // @color/blue 에 해당하는 rgb color
+    //                polyline.lineColor = Color.argb(1, 15, 123, 223)
                 mapView.addPolyline(polyline)
-//                mapView.fitMapViewAreaToShowPolyline(polyline)
+    //                mapView.fitMapViewAreaToShowPolyline(polyline)
 
                 lastLat = it.latitude
                 lastLng = it.longitude
@@ -267,7 +267,12 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
     private fun setServiceAndMapView(){
         setHikingService()
         setMapView()
-        drawPolylineByExistingTrackingData()
+        if(locationService != null){
+            Log.d("setServiceAndMapView", "locationService is not null")
+            drawPolylineByExistingTrackingData()
+        }else{
+            Log.d("setServiceAndMapView", "locationService is null")
+        }
         setMarkerSetting()
     }
 
@@ -317,8 +322,6 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 //        })
 //        mapView.setShowCurrentLocationMarker(false)
 
-
-
 //        mapView.addPOIItem(customMarker)
 
     }
@@ -344,7 +347,8 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         val polyline = MapPolyline()
         polyline.lineColor = POLYLINE_COLOR_CODE  // @color/blue 에 해당하는 rgb color
 
-        val existingLocationList = hikingViewModel.locations.value
+        val existingLocationList = locationService?.locations?.value
+
         if(!existingLocationList.isNullOrEmpty()){
 
             Log.d("existingLocationList", existingLocationList.size.toString()+" / "+existingLocationList.toString())
@@ -441,7 +445,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         super.onStop()
         Log.d("fragment lifecycle", "onStop")
         mapViewContainer.removeAllViews()
-        Log.d("onDestroy LocationList", hikingViewModel.locations.value?.size.toString()+" / "+hikingViewModel.locations.value.toString())
+        Log.d("onStop LocationList", locationService?.locations?.value?.size.toString()+" / "+locationService?.locations?.value.toString())
     }
 
     override fun onDestroy() {

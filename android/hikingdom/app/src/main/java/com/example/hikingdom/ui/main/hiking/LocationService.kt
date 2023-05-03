@@ -25,10 +25,7 @@ class LocationService : Service() {
     var totalDistance = MutableLiveData<Float>()
 
     // 위도, 경도, 고도 list
-    var latitudeList = MutableLiveData<ArrayList<Double>>()
-    var longitudeList = MutableLiveData<ArrayList<Double>>()
-    var altitudeList = MutableLiveData<ArrayList<Double>>()
-//    var locations = MutableLiveData<ArrayList<Location>>()
+    var locations = MutableLiveData<ArrayList<Location>>()
 
     // 현재 위치
     var currentLocation = MutableLiveData<Location>()
@@ -41,10 +38,7 @@ class LocationService : Service() {
     init {
         duration.value = 0
         totalDistance.value = 0.0f
-//        locations.value = ArrayList()
-        latitudeList.value = ArrayList()
-        longitudeList.value = ArrayList()
-        altitudeList.value = ArrayList()
+        locations.value = ArrayList()
     }
 
     /*
@@ -91,9 +85,7 @@ class LocationService : Service() {
                             totalDistance.postValue(totalDistance.value?.plus(distance))
                         }
                         currentLocation.postValue(location)
-                        latitudeList.value?.add(location.latitude)
-                        longitudeList.value?.add(location.longitude)
-                        altitudeList.value?.add(location.altitude)
+                        locations.value?.add(location)
                     }
                 }
             })
