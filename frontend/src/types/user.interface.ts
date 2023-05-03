@@ -4,8 +4,8 @@ export interface User {
   email: string
   nickname: string
   profileUrl: string
-  grouldId: number | undefined
-  level: number | undefined
+  grouldId?: number | undefined
+  level?: number | undefined
 }
 
 // 회원 프로필 조회 - 회원 등산 기록
@@ -27,8 +27,8 @@ export interface UserHiking {
   totalDistance: number
   maxAlt: number
   isGroup: boolean
-  scheduleId: number | null
-  scheduleName: string | null
+  meetupId: number | null
+  meetupName: string | null
 }
 
 // 회원 프로필 조회
@@ -39,6 +39,7 @@ export interface UserProfile extends User, UserRecord {
 // 등산 기록 상세 조회
 export interface UserHikingDetail {
   gpsRoute: string
+  startAt: string
   totalDistance: number
   maxAlt: number
   totalDuration: string

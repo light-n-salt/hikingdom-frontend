@@ -15,14 +15,10 @@ function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
   const maxAlt = mtInfo.maxAlt.toString() + 'm'
   const navigate = useNavigate()
 
-  function onClickDetail(mtId: number) {
-    navigate(`/mountain/detail/${mtId}`)
-  }
-
   return (
     <div
       className={`${styles['mt-item']} ${styles[size]}`}
-      onClick={() => onClickDetail(mtInfo.mountainId)}
+      onClick={() => navigate(`/mountain/detail/${mtInfo.mountainId}`)}
     >
       <h3>{mtInfo.name}</h3>
       <div>

@@ -12,7 +12,7 @@ function Modal({ onClick, children }: ModalProps) {
 
   return (
     <div onClick={onClick} className={`${styles.modal}`}>
-      <div onClick={(e) => e.stopPropagation()} className={`box ${theme}`}>
+      <div onClick={(e) => e.stopPropagation()} className={`content ${theme}`}>
         {children}
       </div>
     </div>

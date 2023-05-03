@@ -16,8 +16,8 @@ export default function PastMeetupList() {
       totalDistance: 402,
       maxAlt: 203,
       isGroup: true,
-      scheduleId: 3,
-      scheduleName: '등산 가즈아',
+      meetupId: 3,
+      meetupName: '등산 가즈아',
     },
 
     {
@@ -28,8 +28,8 @@ export default function PastMeetupList() {
       totalDistance: 402,
       maxAlt: 203,
       isGroup: false,
-      scheduleId: null,
-      scheduleName: null,
+      meetupId: null,
+      meetupName: null,
     },
 
     {
@@ -40,8 +40,8 @@ export default function PastMeetupList() {
       totalDistance: 402,
       maxAlt: 203,
       isGroup: false,
-      scheduleId: null,
-      scheduleName: null,
+      meetupId: null,
+      meetupName: null,
     },
   ]
 

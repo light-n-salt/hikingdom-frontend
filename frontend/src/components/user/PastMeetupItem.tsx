@@ -1,4 +1,4 @@
-import React, { useContext, MouseEvent } from 'react'
+import React, { useContext, MouseEvent, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './PastMeetupItem.module.scss'
 
@@ -13,6 +13,9 @@ import time from 'assets/images/hourglass.png'
 import distance from 'assets/images/shoe.png'
 import height from 'assets/images/hot_air_balloon.png'
 
+import TrackingInfo from 'components/common/TrackingInfo'
+import Modal from 'components/common/Modal'
+
 import { UserHiking } from 'types/user.interface'
 
 import { convertToKm } from 'utils/convertToKm'
@@ -20,21 +23,39 @@ import { convertToKm } from 'utils/convertToKm'
 export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   const { theme } = useContext(ThemeContext)
 
+  const [isOpen, setIsOpen] = useState(false)
+
   // 일정 상세보기로 이동하는 함수
-  const onClickMeetup = () => {
+  const onClickMeetup = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation() // 부모 이벤트 버블링 방지
+    setIsOpen(true)
     console.log(`${hiking.hikingRecordId} 일정 상세로 이동하기`)
   }
 
   // 그룹 일정 상세보기로 이동하는 함수
   const onClickGroup = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation() // 부모 이벤트 버블링 방지
-    console.log(`${hiking.scheduleId} 그룹으로 이동하기`)
+    console.log(`${hiking.meetupId} 그룹으로 이동하기`)
   }
+
   return (
     <div
       className={`content ${theme} ${styles['meetup-item']}`}
       onClick={onClickMeetup}
     >
+      {isOpen && (
+        <Modal onClick={() => setIsOpen(false)}>
+          <TrackingInfo
+            title={`${hiking.mountainName} 트래킹 기록`}
+            gpsRoute="위경도"
+            startAt={hiking.startAt}
+            totalDistance={6.43}
+            maxAlt={600}
+            totalDuration="02:13"
+            setIsOpen={setIsOpen}
+          />
+        </Modal>
+      )}
       <div className={styles.title}>
         <IconText
           imgSrc={mountain}
@@ -46,7 +67,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
         {/* 그룹 스케줄일 때 상세보기 버튼 */}
         {hiking.isGroup && (
           <div className={styles.group} onClick={onClickGroup}>
-            {hiking.scheduleName} <FiChevronRight />
+            {hiking.meetupName} <FiChevronRight />
           </div>
         )}
       </div>

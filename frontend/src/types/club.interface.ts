@@ -23,7 +23,7 @@ export interface ClubInfo {
 // 소모임 산 조회
 export interface AssetInfo {
   mountainName: string | undefined
-  scheduleId: number | undefined
+  meetupId: number | undefined
   assetUrl: string
   row: number
   column: number

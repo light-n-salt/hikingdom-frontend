@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './MtTitle.module.scss'
-import { time } from 'console'
 
 type MtTitleProps = {
   name: string
