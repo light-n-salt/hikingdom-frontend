@@ -2,7 +2,7 @@ version: "3"
 
 services:
   backend_test:
-    container_name: backend_test
+    container_name: backend_domain
     build:
       context: ./backend/domain
       dockerfile: Dockerfile
