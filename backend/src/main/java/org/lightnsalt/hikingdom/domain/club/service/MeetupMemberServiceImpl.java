@@ -8,8 +8,11 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MemberListRes;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupMember;
+import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupRepository;
+import org.lightnsalt.hikingdom.domain.member.entity.Member;
+import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +23,42 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class MeetupMemberServiceImpl implements MeetupMemberService {
+	private final ClubMemberRepository clubMemberRepository;
+	private final MemberRepository memberRepository;
 	private final MeetupRepository meetupRepository;
 	private final MeetupMemberRepository meetupMemberRepository;
+
+	@Override
+	@Transactional
+	public void addJoinMeetup(String email, Long clubId, Long meetupId) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+
+		if (!clubMemberRepository.existsByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(), false))
+			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
+
+		if (meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, member.getId()))
+			throw new GlobalException(ErrorCode.MEETUP_ALREADY_JOINED);
+
+		final Meetup meetup = meetupRepository.findById(meetupId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
+
+		meetupMemberRepository.save(MeetupMember.builder()
+			.meetup(meetup)
+			.member(member)
+			.build());
+	}
+
+	@Override
+	@Transactional
+	public void removeJoinMeetup(String email, Long clubId, Long meetupId) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final MeetupMember meetupMember = meetupMemberRepository.findByMeetupIdAndMemberId(meetupId, member.getId())
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+
+		meetupMemberRepository.delete(meetupMember);
+	}
 
 	@Override
 	@Transactional
