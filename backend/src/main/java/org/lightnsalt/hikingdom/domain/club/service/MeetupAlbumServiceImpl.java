@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.S3FileUtil;
@@ -84,12 +85,13 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 
 	@Override
 	@Transactional
-	public Slice<MeetupAlbumRes> findMeetupAlbumList(Long clubId, Long meetupId, Long photoId, Pageable pageable) {
+	public CustomSlice<MeetupAlbumRes> findMeetupAlbumList(Long clubId, Long meetupId, Long photoId,
+		Pageable pageable) {
 		// 사진 정보 가져오기
 		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotos(photoId, meetupId, pageable);
 
 		// 형 변환
-		return list.map(MeetupAlbumRes::new);
+		return new CustomSlice<>(list.map(MeetupAlbumRes::new));
 	}
 
 	@Override
