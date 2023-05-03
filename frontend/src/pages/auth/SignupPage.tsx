@@ -5,18 +5,14 @@ import styles from './SignupPage.module.scss'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 import TextButton from 'components/common/TextButton'
+import PageHeader from 'components/common/PageHeader'
 
 function SignupPage() {
   const { theme, toggleTheme } = useContext(ThemeContext)
 
   return (
-    <div className={`page-gradation ${theme} ${styles['singup-page']}`}>
-      <TextButton
-        color="primary"
-        text="button"
-        onClick={() => toast.addMessage('success', '성공시 문구')}
-      />
-      <h3>회원가입</h3>
+    <div className={`page-gradation p-lg ${theme} ${styles['singup-page']}`}>
+      <PageHeader title="회원가입" url="/login" />
       <SignupForm />
     </div>
   )
