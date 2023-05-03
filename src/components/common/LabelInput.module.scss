@@ -26,7 +26,7 @@
 
   // 유효성 검사 실시했을 때, 에러 표시
   &.error {
-    border: 3px solid clr(red-clr, light);
+    border: 3px solid transparentize(clr(red-clr, light), 0.4);
   }
   &.pass {
     border: 3px solid clr(primary-clr);

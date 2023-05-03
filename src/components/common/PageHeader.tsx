@@ -8,16 +8,23 @@ type PageHeaderProps = {
   title: string
   url: string // 이동할 URL 주소
   color?: 'dark' | 'light' | 'primary'
+  size?: 'sm' | 'md' | 'lg'
 }
 
-function PageHeader({ title, url, color = 'dark' }: PageHeaderProps) {
+function PageHeader({
+  title,
+  url,
+  color = 'dark',
+  size = 'md',
+}: PageHeaderProps) {
   const navigate = useNavigate()
-  const textStyle = styles[color]
 
   return (
-    <div className={`${styles.header} ${textStyle}`}>
-      <FiChevronLeft onClick={() => navigate(url)} />
-      <span>{title}</span>
+    <div className={`${styles.container} ${styles[color]}`}>
+      <div className={styles.icon}>
+        <FiChevronLeft onClick={() => navigate(url)} />
+      </div>
+      <div className={`${styles.title} ${styles[size]}`}>{title}</div>
     </div>
   )
 }
