@@ -1,7 +1,7 @@
 @use 'src/styles/colors' as *;
 
 .btn:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .sm {
@@ -28,17 +28,17 @@
 }
 
 .dark {
-    color: clr(black-clr, dark);
+  color: clr(black-clr, dark);
 }
 
 .light {
-    color: clr(white-clr, light);
+  color: clr(white-clr, light);
 }
 
 .primary {
-    color: clr(primary-clr);
+  color: clr(primary-clr);
 }
 
 .gray {
-    color: clr(gray-clr, light);
+  color: clr(gray-clr, light);
 }

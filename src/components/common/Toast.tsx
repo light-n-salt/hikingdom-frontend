@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Toast() {
-    return <div>Toast</div>
+  return <div>Toast</div>
 }
 
 export default Toast

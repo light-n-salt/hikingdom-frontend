@@ -10,8 +10,8 @@ import IconButton from 'components/common/IconButton'
 import bell from 'assets/images/bell.png'
 
 function ProfilePage() {
-    const { theme } = useContext(ThemeContext)
-    const navigate = useNavigate()
+  const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
 
     return (
         <div className={`page p-sm ${theme} ${styles.profile}`}>

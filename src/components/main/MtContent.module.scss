@@ -1,37 +1,37 @@
 @use 'src/styles/colors' as *;
 
 .mtcontent {
-    display: flex;
-    flex-direction: column;
-    padding: 1.7rem;
-    gap: 0.9rem;
-    background-color: clr(white-clr, light);
+  display: flex;
+  flex-direction: column;
+  padding: 1.7rem;
+  gap: 0.9rem;
+  background-color: clr(white-clr, light);
 }
 
 .content {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    > div {
-        flex: 2;
-    }
-    > span {
-        flex: 3;
-    }
+  > div {
+    flex: 2;
+  }
+  > span {
+    flex: 3;
+  }
 }
 
 .text {
-    font-size: 1rem;
-    font-weight: bold;
-    line-height: 1.6rem;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.6rem;
 }
 
 .description {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
 
-    .text {
-        padding-left: 2rem;
-    }
+  .text {
+    padding-left: 2rem;
+  }
 }

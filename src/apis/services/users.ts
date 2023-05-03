@@ -7,23 +7,23 @@ export function checkNickname(nickname: string) {
 
 // POST Request
 export function validEmail(email: string) {
-    return apiRequest.post(`/members/auth/email-valid`, {
-        email,
-    })
+  return apiRequest.post(`/members/auth/email-valid`, {
+    email,
+  })
 }
 
 export function signup(
-    email: string,
-    nickname: string,
-    password: string,
-    checkPassword: string
+  email: string,
+  nickname: string,
+  password: string,
+  checkPassword: string
 ) {
-    return apiRequest.post(`/members/auth/signup`, {
-        email,
-        nickname,
-        password,
-        checkPassword,
-    })
+  return apiRequest.post(`/members/auth/signup`, {
+    email,
+    nickname,
+    password,
+    checkPassword,
+  })
 }
 
 export function login(email: string, password: string) {

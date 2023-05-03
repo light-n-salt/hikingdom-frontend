@@ -62,24 +62,24 @@ export default function UserProfile() {
                         onClick={() => console.log('로그아웃')}
                     />
 
-                    <IconButton
-                        icon={<BiEdit />}
-                        size="sm"
-                        color="gray"
-                        onClick={() => navigate('/profile/update')}
-                    />
-                </div>
-                <div className={styles.username}>
-                    {nickname}
-                    <IconButton
-                        imgSrc={mountain}
-                        size={'sm'}
-                        onClick={() => setIsOpen(true)}
-                    />
-                </div>
-                <span className={styles.email}>{email}</span>
-                <UserInfo userRecord={userRecord} />
-            </div>
+          <IconButton
+            icon={<BiEdit />}
+            size="sm"
+            color="gray"
+            onClick={() => navigate('/profile/update')}
+          />
         </div>
-    )
+        <div className={styles.username}>
+          {nickname}
+          <IconButton
+            imgSrc={mountain}
+            size={'sm'}
+            onClick={() => setIsOpen(true)}
+          />
+        </div>
+        <span className={styles.email}>{email}</span>
+        <UserInfo userRecord={userRecord} />
+      </div>
+    </div>
+  )
 }

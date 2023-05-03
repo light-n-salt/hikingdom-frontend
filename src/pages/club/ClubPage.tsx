@@ -1,7 +1,7 @@
 import React from 'react'
 
 function ClubPage() {
-    return <div>ClubPage</div>
+  return <div>ClubPage</div>
 }
 
 export default ClubPage
