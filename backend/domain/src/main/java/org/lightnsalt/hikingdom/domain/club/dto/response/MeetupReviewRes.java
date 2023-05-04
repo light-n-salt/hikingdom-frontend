@@ -18,6 +18,9 @@ public class MeetupReviewRes {
 	private String profileUrl;
 
 	@NotNull
+	private Integer level;
+
+	@NotNull
 	private Long reviewId;
 
 	@NotEmpty
