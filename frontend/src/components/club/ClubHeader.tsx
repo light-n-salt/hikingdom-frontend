@@ -12,7 +12,7 @@ import TextButton from 'components/common/TextButton'
 function ClubHeader() {
   const navigate = useNavigate()
 
-  const ClubInfo: ClubSimpleInfo = {
+  const clubInfo: ClubSimpleInfo = {
     hostId: 1,
     clubId: 1,
     clubName: '산타마리아',
@@ -30,7 +30,7 @@ function ClubHeader() {
   return (
     <>
       <div className={styles.header}>
-        <span className={styles.title}>{ClubInfo.clubName}</span>
+        <span className={styles.title}>{clubInfo.clubName}</span>
         <div className={styles.chat}>
           <IconButton
             imgSrc={Chatting}
@@ -44,7 +44,7 @@ function ClubHeader() {
           className={`${styles.button} ${
             type === 'main' ? styles.active : styles.disabled
           }`}
-          onClick={() => navigate('main')}
+          onClick={() => navigate(`main/${clubInfo.clubId}`)}
         >
           모임
         </span>

@@ -22,6 +22,7 @@ import SearchClubPage from 'pages/club/SearchClubPage'
 import MainDetailPage from 'pages/club/ClubMainDetailPage'
 import ClubCreatePage from 'pages/club/ClubCreatePage'
 import ClubChatPage from 'pages/club/ClubChatPage'
+import ClubNoneExistPage from 'pages/club/ClubNoneExistPage'
 // Club - main
 import ClubPage from 'pages/club/ClubPage'
 import ClubMainPage from 'pages/club/ClubMainPage'
@@ -66,8 +67,9 @@ function App() {
         <Route path="/club/detail/:id" element={<MainDetailPage />} />
         <Route path="/club/create" element={<ClubCreatePage />} />
         <Route path="/club/chat" element={<ClubChatPage />} />
+        <Route path="/club/main" element={<ClubNoneExistPage />} />
         <Route path="/club" element={<ClubPage />}>
-          <Route path="main" element={<ClubMainPage />} />
+          <Route path="main/:id" element={<ClubMainPage />} />
           <Route path="meetup" element={<ClubMeetupPage />} />
           <Route path="member" element={<ClubMemberPage />} />
           <Route path="album" element={<ClubAlbumPage />} />
