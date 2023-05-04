@@ -20,7 +20,7 @@ public interface MeetupReviewRepository extends JpaRepository<MeetupReview, Long
 	Optional<MeetupReview> findByIdAndIsDeleted(Long id, boolean isDeleted);
 
 	@Query(
-		"SELECT new org.lightnsalt.hikingdom.domain.club.dto.response.MeetupReviewRes(m.id, m.nickname, m.profileUrl, r.id, r.content)"
+		"SELECT new org.lightnsalt.hikingdom.domain.club.dto.response.MeetupReviewRes(m.id, m.nickname, m.profileUrl, m.level.id, r.id, r.content)"
 			+ "FROM Member m LEFT JOIN MeetupReview r ON m.id = r.member.id "
 			+ "WHERE r.meetup.id = :meetupId AND r.meetup.isDeleted = false")
 	List<MeetupReviewRes> selectMeetupReviewAsMeetupReviewRes(Long meetupId);
