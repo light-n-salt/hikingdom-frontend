@@ -11,7 +11,6 @@ import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -19,10 +18,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.R
+import com.example.hikingdom.data.local.AppDatabase
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.utils.getIsLocationServiceRunning
-import com.example.hikingdom.utils.saveIsLocationServiceRunning
 import net.daum.mf.map.api.*
 import java.time.LocalDateTime
 
@@ -30,6 +29,8 @@ import java.time.LocalDateTime
 class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBinding::inflate)
 //    , MapView.CurrentLocationEventListener
 {
+    lateinit var db: AppDatabase
+
     private var locationService: LocationService? = null
     private val hikingViewModel : HikingViewModel by viewModels()
 
@@ -60,6 +61,8 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 
         mapView = MapView(requireContext())
         mapViewContainer = binding.hikingMapview
+
+        db = AppDatabase.getInstance(requireContext())!!    // 로컬 DB
 
         checkPermission()
     }
@@ -305,7 +308,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
     private fun setServiceAndMapView(){
         setHikingService()
         setMapView()
-        if(locationService != null){
+        if(getIsLocationServiceRunning()){
             Log.d("setServiceAndMapView", "locationService is not null")
             drawPolylineByExistingTrackingData()
         }else{
@@ -390,7 +393,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         val polyline = MapPolyline()
         polyline.lineColor = POLYLINE_COLOR_CODE  // @color/blue 에 해당하는 rgb color
 
-        val existingLocationList = locationService?.locations?.value
+        val existingLocationList = db.userLocationDao().getUserLocations()
 
         if(!existingLocationList.isNullOrEmpty()){
 
@@ -409,12 +412,12 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             lastLat = lastExistingLocation.latitude
             lastLng = lastExistingLocation.longitude
 
-            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
-            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
-            val mapPointBounds = MapPointBounds(polyline.mapPoints)
-            val padding = 100 // px
-
-            mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
+//            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
+//            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
+//            val mapPointBounds = MapPointBounds(polyline.mapPoints)
+//            val padding = 100 // px
+//
+//            mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
         }else{
             Log.d("existingLocationList", "is Null or Empty")
         }
@@ -494,7 +497,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
     override fun onDestroy() {
         super.onDestroy()
         Log.d("fragment lifecycle", "onDestroy")
-
+        mapViewContainer?.removeAllViews()
     }
 
     override fun onDetach() {
