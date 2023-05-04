@@ -19,11 +19,8 @@ import trophy from 'assets/images/trophy.png'
 function MainPage() {
   const navigate = useNavigate()
 
-  const { theme } = useContext(ThemeContext)
-
   function onClickClubMt() {
     const clubId = 1
-
     navigate(`/club/detail/${clubId}`)
   }
 

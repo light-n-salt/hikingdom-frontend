@@ -1,9 +1,12 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/z-index' as *;
 
 .container {
+  @include z-index(content);
   display: flex;
   align-items: center;
   position: relative;
+  margin: 1rem 0;
   width: 100%;
 
   &.dark {

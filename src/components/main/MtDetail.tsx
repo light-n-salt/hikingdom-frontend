@@ -12,7 +12,6 @@ type MtDetailProps = {
 }
 
 function MtDetail({ mtInfo }: MtDetailProps) {
-  const { theme, toggleTheme } = useContext(ThemeContext)
   return (
     <div className={styles.detail}>
       <MtTitle
