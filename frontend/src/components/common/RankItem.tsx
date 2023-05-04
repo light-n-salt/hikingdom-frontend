@@ -7,6 +7,7 @@ import shoe from 'assets/images/shoe.png'
 import marker from 'assets/images/marker.png'
 import styles from './RankItem.module.scss'
 import IconText from './IconText'
+import Button from './Button'
 import { ThemeContext } from 'styles/ThemeProvider'
 import bronzeMedal from 'assets/images/bronze_medal.png'
 import silverMedal from 'assets/images/silver_medal.png'
@@ -15,13 +16,18 @@ import goldMedal from 'assets/images/gold_medal.png'
 type RankItemProps = {
   clubInfo: ClubInfo
   size: 'sm' | 'lg'
+  isButton?: boolean
 }
 
-function RankItem({ clubInfo, size }: RankItemProps) {
+function RankItem({ clubInfo, size, isButton = false }: RankItemProps) {
   const { theme } = useContext(ThemeContext)
 
   const totalMemeber = clubInfo.totalMember.toString() + '명'
   const totalDistance = clubInfo.totalDistance.toString() + 'km'
+
+  function onClickDeleteClub() {
+    console.log(clubInfo.clubId)
+  }
 
   let rankingIcon = null
   switch (clubInfo.ranking) {
@@ -38,7 +44,17 @@ function RankItem({ clubInfo, size }: RankItemProps) {
 
   return (
     <div className={`content ${theme} ${styles['rank-item']} ${styles[size]}`}>
-      <h3>{clubInfo.clubName}</h3>
+      <div className={styles.header}>
+        <span className={styles.title}>{clubInfo.clubName}</span>
+        {isButton && (
+          <Button
+            text="신청 취소"
+            size="sm"
+            color="secondary"
+            onClick={onClickDeleteClub}
+          />
+        )}
+      </div>
       <div className={`${styles['icon-info-box']} ${styles[size]}`}>
         <IconText imgSrc={person} text={totalMemeber} />
         <div className={styles['flex-box']}>

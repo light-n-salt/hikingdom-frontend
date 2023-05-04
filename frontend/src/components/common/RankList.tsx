@@ -6,13 +6,23 @@ import styles from './RankList.module.scss'
 type RankListProps = {
   clubInfoArray: ClubInfo[]
   size?: 'sm' | 'lg'
+  isButton?: boolean
 }
 
-function RankList({ clubInfoArray, size = 'lg' }: RankListProps) {
+function RankList({
+  clubInfoArray,
+  size = 'lg',
+  isButton = false,
+}: RankListProps) {
   return (
     <div className={`${styles['rank-list']} ${styles[size]}`}>
       {clubInfoArray.map((clubInfo, index) => (
-        <RankItem key={`rank-item-${index}`} clubInfo={clubInfo} size={size} />
+        <RankItem
+          key={`rank-item-${index}`}
+          clubInfo={clubInfo}
+          size={size}
+          isButton={isButton}
+        />
       ))}
     </div>
   )
