@@ -7,7 +7,7 @@ type SearchBarProps = {
   value: string
   placeholder: string
   setSelected?: (value: string) => void // selectbox 값 변경 함수
-  onChangeText: (value: string) => void // 검색값
+  onChangeText: (event: React.ChangeEvent<HTMLInputElement>) => void // 검색값
 }
 
 function SearchBar({
@@ -18,10 +18,6 @@ function SearchBar({
 }: SearchBarProps) {
   const { theme } = useContext(ThemeContext)
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChangeText(event.target.value)
-  }
-
   return (
     <div className={`content ${theme} ${styles.searchbar}`}>
       {setSelected ? <>toggle</> : <BsSearch className={`${styles.icon}`} />}
@@ -29,7 +25,7 @@ function SearchBar({
       <input
         id="input"
         value={value}
-        onChange={handleChange}
+        onChange={onChangeText}
         placeholder={placeholder}
       />
     </div>
