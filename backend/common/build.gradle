@@ -10,6 +10,17 @@ jar {
 dependencies {
     implementation project(':entity')
 
+    // jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.vladmihalcea:hibernate-types-55:2.21.1'
+
+    // database
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+
+    // AWS S3
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.385'
+
     // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
