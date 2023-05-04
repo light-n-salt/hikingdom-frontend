@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styles from './ClubHeader.module.scss'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { ClubSimpleInfo } from 'types/club.interface'
 import { clubSimpleInfo } from 'apis/services/clubs'
@@ -18,28 +18,60 @@ function ClubHeader() {
     clubName: '산타마리아',
   }
 
+  const location = useLocation()
+  const type = location.pathname.split('/')[2]
+
   useEffect(() => {
     // clubSimpleInfo(clubId)
     //   .then((res) => {})
     //   .catch(() => {})
-  })
+  }, [])
 
   return (
     <>
       <div className={styles.header}>
         <span className={styles.title}>{ClubInfo.clubName}</span>
-
-        <IconButton
-          imgSrc={Chatting}
-          size="md"
-          onClick={() => console.log('채팅')}
-        />
+        <div className={styles.chat}>
+          <IconButton
+            imgSrc={Chatting}
+            size="md"
+            onClick={() => navigate('/club/chat')}
+          />
+        </div>
       </div>
       <div className={styles.nav}>
-        <TextButton text="모임" size="lg" color="gray" />
-        <TextButton text="일정" size="lg" color="gray" />
-        <TextButton text="멤버" size="lg" color="gray" />
-        <TextButton text="앨범" size="lg" color="gray" />
+        <span
+          className={`${styles.button} ${
+            type === 'main' ? styles.active : styles.disabled
+          }`}
+          onClick={() => navigate('main')}
+        >
+          모임
+        </span>
+        <span
+          className={`${styles.button} ${
+            type === 'meetup' ? styles.active : styles.disabled
+          }`}
+          onClick={() => navigate('meetup')}
+        >
+          일정
+        </span>
+        <span
+          className={`${styles.button} ${
+            type === 'member' ? styles.active : styles.disabled
+          }`}
+          onClick={() => navigate('member')}
+        >
+          멤버
+        </span>
+        <span
+          className={`${styles.button} ${
+            type === 'album' ? styles.active : styles.disabled
+          }`}
+          onClick={() => navigate('album')}
+        >
+          앨범
+        </span>
       </div>
     </>
   )
