@@ -5,10 +5,8 @@ import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './MainPage.module.scss'
 
 import MtList from 'components/common/MtList'
-import SearchBar from 'components/common/SearchBar'
 import RankList from 'components/common/RankList'
 import IconText from 'components/common/IconText'
-// import PageHeader from 'components/common/PageHeader'
 
 import mountain from 'assets/images/mountain.png'
 import clubmountain from 'assets/images/clubmountain.png'
