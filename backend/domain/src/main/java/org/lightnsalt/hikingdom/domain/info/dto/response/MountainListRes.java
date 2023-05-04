@@ -1,7 +1,7 @@
 package org.lightnsalt.hikingdom.domain.info.dto.response;
 
 import org.lightnsalt.hikingdom.domain.info.dto.repository.MountainInfo;
-import org.lightnsalt.hikingdom.domain.info.entity.MountainDailyInfo;
+import org.lightnsalt.hikingdom.entity.info.MountainDailyInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +27,7 @@ public class MountainListRes {
 		this.imgUrl = mountain.getImgUrl();
 	}
 
-	public MountainListRes(org.lightnsalt.hikingdom.domain.info.entity.MountainInfo mountain) {
+	public MountainListRes(org.lightnsalt.hikingdom.entity.info.MountainInfo mountain) {
 		this.id = mountain.getId();
 		this.name = mountain.getName();
 		this.address = mountain.getAddress();

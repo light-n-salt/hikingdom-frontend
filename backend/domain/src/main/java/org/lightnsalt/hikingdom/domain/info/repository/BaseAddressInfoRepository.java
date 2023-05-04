@@ -2,7 +2,7 @@ package org.lightnsalt.hikingdom.domain.info.repository;
 
 import java.util.List;
 
-import org.lightnsalt.hikingdom.domain.info.entity.BaseAddressInfo;
+import org.lightnsalt.hikingdom.entity.info.BaseAddressInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

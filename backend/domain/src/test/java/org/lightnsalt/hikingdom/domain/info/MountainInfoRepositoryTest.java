@@ -3,7 +3,7 @@ package org.lightnsalt.hikingdom.domain.info;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
+import org.lightnsalt.hikingdom.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.domain.info.repository.MountainInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

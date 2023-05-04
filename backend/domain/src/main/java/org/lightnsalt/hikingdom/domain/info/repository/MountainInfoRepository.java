@@ -3,7 +3,7 @@ package org.lightnsalt.hikingdom.domain.info.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
+import org.lightnsalt.hikingdom.entity.info.MountainInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MountainInfoRepository extends JpaRepository<MountainInfo, Long> {

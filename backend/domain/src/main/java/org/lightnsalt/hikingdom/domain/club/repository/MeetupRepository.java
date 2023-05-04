@@ -2,7 +2,7 @@ package org.lightnsalt.hikingdom.domain.club.repository;
 
 import java.util.List;
 
-import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
+import org.lightnsalt.hikingdom.entity.club.meetup.Meetup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

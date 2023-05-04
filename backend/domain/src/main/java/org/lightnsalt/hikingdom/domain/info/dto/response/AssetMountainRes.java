@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.domain.info.dto.response;
 
-import org.lightnsalt.hikingdom.domain.info.entity.AssetInfo;
+import org.lightnsalt.hikingdom.entity.info.AssetInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

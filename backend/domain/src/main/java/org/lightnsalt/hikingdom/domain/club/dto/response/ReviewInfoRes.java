@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.domain.club.dto.response;
 
-import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupReview;
+import org.lightnsalt.hikingdom.entity.club.meetup.MeetupReview;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

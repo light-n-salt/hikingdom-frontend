@@ -4,14 +4,14 @@ import java.time.LocalDateTime;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupAlbum;
-import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupReview;
+import org.lightnsalt.hikingdom.entity.club.meetup.MeetupAlbum;
+import org.lightnsalt.hikingdom.entity.club.meetup.MeetupReview;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupAlbumRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.MeetupReviewRepository;
-import org.lightnsalt.hikingdom.domain.member.entity.Member;
+import org.lightnsalt.hikingdom.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.lightnsalt.hikingdom.domain.report.dto.MemberReportReq;
-import org.lightnsalt.hikingdom.domain.report.entity.MemberReport;
+import org.lightnsalt.hikingdom.entity.report.MemberReport;
 import org.lightnsalt.hikingdom.domain.report.repository.MemberReportRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

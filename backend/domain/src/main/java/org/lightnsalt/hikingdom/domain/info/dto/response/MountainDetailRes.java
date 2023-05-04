@@ -3,7 +3,7 @@ package org.lightnsalt.hikingdom.domain.info.dto.response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
+import org.lightnsalt.hikingdom.entity.info.MountainInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
