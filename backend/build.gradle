@@ -64,6 +64,6 @@ project(':service') {
 
 project(':batch') {
     dependencies {
-        implementation project(':entity')
+        implementation project(':domain')
     }
 }
