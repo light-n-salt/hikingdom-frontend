@@ -55,7 +55,7 @@ class ToastManager {
           { once: true }
         )
       },
-      3000,
+      300000,
       id,
       this // 전달 인자
     )

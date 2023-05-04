@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import sytles from './LoginForm.module.scss'
 import services from 'apis/services'
 import toast from 'components/common/Toast'
+import TextButton from 'components/common/TextButton'
 
 function LoginForm() {
   const navigate = useNavigate()
@@ -24,8 +25,12 @@ function LoginForm() {
   function login() {
     if (!isEmailPass || !password) {
       // 이메일 형식이 틀렸거나 비밀번호가 입력되지 않은 경우
-      console.log(1)
-      toast.addMessage('error', '이메일과 비밀번호를 정확하게 입력해주세요')
+      toast.addMessage(
+        'error',
+        `이메일과 비밀번호를
+      
+      정확하게 입력해주세요`
+      )
       return
     }
     services
@@ -56,7 +61,11 @@ function LoginForm() {
           placeholder="비밀번호를 입력해주세요"
           type="password"
         />
-        비밀번호 찾기
+        <TextButton
+          text="비밀번호 찾기"
+          color="tertiary"
+          onClick={() => navigate('/password')}
+        />
       </div>
       <div className={sytles.buttons}>
         <Button text="로그인" color="primary" size="lg" onClick={login} />
