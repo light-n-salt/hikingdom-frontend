@@ -2,8 +2,8 @@ package org.lightnsalt.hikingdom.domain.info.repository;
 
 import java.util.List;
 
-import org.lightnsalt.hikingdom.domain.info.entity.BaseAddressInfo;
-import org.lightnsalt.hikingdom.domain.info.entity.QBaseAddressInfo;
+import org.lightnsalt.hikingdom.entity.info.BaseAddressInfo;
+import org.lightnsalt.hikingdom.entity.info.QBaseAddressInfo;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;

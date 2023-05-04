@@ -11,7 +11,7 @@ import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.info.dto.request.MountainAddReq;
 import org.lightnsalt.hikingdom.domain.info.dto.response.MountainAddRes;
-import org.lightnsalt.hikingdom.domain.info.entity.MountainInfo;
+import org.lightnsalt.hikingdom.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.domain.info.repository.MountainInfoRepository;
 import org.lightnsalt.hikingdom.domain.info.service.InfoServiceImpl;
 import org.mockito.InjectMocks;

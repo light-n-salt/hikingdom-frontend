@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.lightnsalt.hikingdom.domain.club.dto.response.MeetupReviewRes;
-import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupReview;
+import org.lightnsalt.hikingdom.entity.club.meetup.MeetupReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

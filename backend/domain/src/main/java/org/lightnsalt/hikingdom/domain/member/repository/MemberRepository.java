@@ -2,7 +2,7 @@ package org.lightnsalt.hikingdom.domain.member.repository;
 
 import java.util.Optional;
 
-import org.lightnsalt.hikingdom.domain.member.entity.Member;
+import org.lightnsalt.hikingdom.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

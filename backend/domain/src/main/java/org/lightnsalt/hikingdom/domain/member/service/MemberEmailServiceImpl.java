@@ -14,7 +14,7 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.RedisUtil;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberEmailAuthenticationReq;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberEmailReq;
-import org.lightnsalt.hikingdom.domain.member.entity.Member;
+import org.lightnsalt.hikingdom.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;

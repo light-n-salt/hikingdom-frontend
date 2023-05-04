@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.lightnsalt.hikingdom.common.enumType.JoinRequestStatusType;
-import org.lightnsalt.hikingdom.domain.club.entity.Club;
-import org.lightnsalt.hikingdom.domain.club.entity.ClubJoinRequest;
-import org.lightnsalt.hikingdom.domain.member.entity.Member;
+import org.lightnsalt.hikingdom.entity.common.enumType.JoinRequestStatusType;
+import org.lightnsalt.hikingdom.entity.club.Club;
+import org.lightnsalt.hikingdom.entity.club.ClubJoinRequest;
+import org.lightnsalt.hikingdom.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
