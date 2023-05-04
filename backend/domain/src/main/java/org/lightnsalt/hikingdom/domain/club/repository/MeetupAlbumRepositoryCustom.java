@@ -2,7 +2,7 @@ package org.lightnsalt.hikingdom.domain.club.repository;
 
 import java.util.List;
 
-import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupAlbum;
+import org.lightnsalt.hikingdom.entity.club.meetup.MeetupAlbum;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -13,7 +13,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 
-import static org.lightnsalt.hikingdom.domain.club.entity.meetup.QMeetupAlbum.meetupAlbum;
+import static org.lightnsalt.hikingdom.entity.club.meetup.QMeetupAlbum.meetupAlbum;
 
 @Repository
 @RequiredArgsConstructor

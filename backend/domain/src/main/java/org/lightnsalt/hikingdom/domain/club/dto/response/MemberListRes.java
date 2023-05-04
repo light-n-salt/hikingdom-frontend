@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.domain.club.dto.response;
 
-import org.lightnsalt.hikingdom.domain.member.entity.Member;
+import org.lightnsalt.hikingdom.entity.member.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

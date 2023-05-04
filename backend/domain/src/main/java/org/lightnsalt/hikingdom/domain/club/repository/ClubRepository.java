@@ -3,8 +3,8 @@ package org.lightnsalt.hikingdom.domain.club.repository;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import org.lightnsalt.hikingdom.domain.club.entity.Club;
-import org.lightnsalt.hikingdom.domain.info.entity.BaseAddressInfo;
+import org.lightnsalt.hikingdom.entity.club.Club;
+import org.lightnsalt.hikingdom.entity.info.BaseAddressInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

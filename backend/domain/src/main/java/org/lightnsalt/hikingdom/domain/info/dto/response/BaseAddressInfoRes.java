@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.domain.info.dto.response;
 
-import org.lightnsalt.hikingdom.domain.info.entity.BaseAddressInfo;
+import org.lightnsalt.hikingdom.entity.info.BaseAddressInfo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

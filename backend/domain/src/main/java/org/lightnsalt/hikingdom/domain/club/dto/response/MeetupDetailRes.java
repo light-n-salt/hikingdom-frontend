@@ -3,7 +3,7 @@ package org.lightnsalt.hikingdom.domain.club.dto.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.lightnsalt.hikingdom.domain.club.entity.meetup.Meetup;
+import org.lightnsalt.hikingdom.entity.club.meetup.Meetup;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

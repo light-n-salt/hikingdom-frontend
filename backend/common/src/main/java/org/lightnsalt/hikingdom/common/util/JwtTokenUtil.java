@@ -4,7 +4,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
-import org.lightnsalt.hikingdom.common.enumType.MemberRoleType;
+import org.lightnsalt.hikingdom.entity.common.enumType.MemberRoleType;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.springframework.beans.factory.annotation.Value;

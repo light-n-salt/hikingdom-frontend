@@ -1,11 +1,11 @@
 package org.lightnsalt.hikingdom.domain.member.service;
 
-import org.lightnsalt.hikingdom.common.enumType.MemberRoleType;
+import org.lightnsalt.hikingdom.entity.common.enumType.MemberRoleType;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberSignUpReq;
-import org.lightnsalt.hikingdom.domain.member.entity.Member;
-import org.lightnsalt.hikingdom.domain.member.entity.MemberHikingStatistic;
+import org.lightnsalt.hikingdom.entity.member.Member;
+import org.lightnsalt.hikingdom.entity.member.MemberHikingStatistic;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberLevelInfoRepository;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;

@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.domain.club.service;
 
-import static org.lightnsalt.hikingdom.common.enumType.JoinRequestStatusType.*;
+import static org.lightnsalt.hikingdom.entity.common.enumType.JoinRequestStatusType.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -10,15 +10,15 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.common.enumType.JoinRequestStatusType;
+import org.lightnsalt.hikingdom.entity.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.club.dto.response.MemberListRes;
-import org.lightnsalt.hikingdom.domain.club.entity.Club;
-import org.lightnsalt.hikingdom.domain.club.entity.ClubJoinRequest;
-import org.lightnsalt.hikingdom.domain.club.entity.ClubMember;
+import org.lightnsalt.hikingdom.entity.club.Club;
+import org.lightnsalt.hikingdom.entity.club.ClubJoinRequest;
+import org.lightnsalt.hikingdom.entity.club.ClubMember;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.club.repository.ClubRepository;
-import org.lightnsalt.hikingdom.domain.member.entity.Member;
+import org.lightnsalt.hikingdom.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

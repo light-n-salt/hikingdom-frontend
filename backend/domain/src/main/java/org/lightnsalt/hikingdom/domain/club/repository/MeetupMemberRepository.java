@@ -3,7 +3,7 @@ package org.lightnsalt.hikingdom.domain.club.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.lightnsalt.hikingdom.domain.club.entity.meetup.MeetupMember;
+import org.lightnsalt.hikingdom.entity.club.meetup.MeetupMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MeetupMemberRepository extends JpaRepository<MeetupMember, Long> {
