@@ -1,134 +1,95 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.11'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'java'
+    id 'org.springframework.boot' version '2.7.11'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'org.lightnsalt'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
 repositories {
-	mavenCentral()
-}
-
-ext {
-	set('snippetsDir', file("build/generated-snippets"))
-}
-
-bootJar {
-	dependsOn asciidoctor
-	copy {
-		from "${asciidoctor.outputDir}"
-		into 'BOOT-INF/classes/static/docs'
-	}
+    mavenCentral()
 }
 
 dependencies {
-	// jpa
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'com.vladmihalcea:hibernate-types-55:2.21.1'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	// database
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'mysql:mysql-connector-java:8.0.33'
-//	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-
-	// AWS S3
-	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.385'
-
-	// mail
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-	// security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-	// web
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-
-	// test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	testImplementation 'org.springframework.security:spring-security-test'
-
-	testImplementation "org.assertj:assertj-core:3.20.2"
-	runtimeOnly 'com.h2database:h2'
-	implementation 'com.google.code.gson:gson:2.10'
-
-
-	// swagger
-	implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
-
-	// querydsl
-	implementation 'com.querydsl:querydsl-jpa'
-	implementation 'com.querydsl:querydsl-core'
-	implementation 'com.querydsl:querydsl-collections'
-	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
-
-	// java.lang.NoClassDefFoundError (javax.annotation.Generated) 대응 코드
-	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
-
-	// java.lang.NoClassDefFoundError (javax.annotation.Entity) 대응 코드
-	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
-
+    implementation project(":common") // include common module
 }
 
-tasks.named('test') {
-	outputs.dir snippetsDir
-	useJUnitPlatform()
+test {
+    useJUnitPlatform()
 }
 
-//rest docs
-tasks.named('asciidoctor') {
-	inputs.dir snippetsDir
-	dependsOn test
+bootJar {
+    enabled = false
 }
 
-asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs')
+jar {
+    enabled = true
 }
 
-tasks.register("copyDocument", Copy) {
-	dependsOn("asciidoctor")
-	from(file("build/docs/asciidoc"))
-	into(file("src/main/resources/static/docs"))
+subprojects {
+    group 'org.lightnsalt'
+
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 11
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        // web
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-websocket'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        // java.lang.NoClassDefFoundError (javax.annotation.Generated) 대응 코드
+        annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+
+        // java.lang.NoClassDefFoundError (javax.annotation.Entity) 대응 코드
+        annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+
+        // security
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+        implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+        implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+        // etc
+        implementation 'com.google.code.gson:gson:2.10'
+        implementation 'org.apache.commons:commons-lang3:3.9'
+
+        // jpa
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'com.vladmihalcea:hibernate-types-55:2.21.1'
+
+        // database
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation 'mysql:mysql-connector-java:8.0.33'
+
+        // AWS S3
+        implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.385'
+    }
 }
 
-// querydsl
-// QClass를 저장할 경로
-def generated = "$buildDir/generated/querydsl"
-
-// querydsl QClass 파일 생성 위치를 지정
-tasks.withType(JavaCompile).configureEach {
-	options.getGeneratedSourceOutputDirectory().set(file(generated))
-}
-
-// build 할 때 사용할 sourceSet에 QClass를 추가
-sourceSets {
-	main.java.srcDir generated
-}
-
-// gradle clean 시에 QClass 디렉토리 삭제
-clean {
-	delete file(generated)
-}
-
-build {
-	dependsOn copyDocument
+project(':domain') {
+    dependencies {
+        implementation project(':common')
+    }
 }
