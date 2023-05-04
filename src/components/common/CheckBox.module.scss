@@ -1,39 +1,42 @@
 @use 'src/styles/colors' as *;
 
-.checkbox {
+.container {
   display: flex;
   align-items: center;
+  gap: 0.3rem;
+}
 
-  input[type='checkbox'] {
-    appearance: none;
-    position: relative;
-    height: 1.2rem;
-    width: 1.2rem;
-    margin-right: 0.5rem;
-    border-radius: 50%;
-    border: 2px solid $primary-light;
+.input {
+  appearance: none;
+  position: relative;
+  height: 1.2rem;
+  width: 1.2rem;
+  border-radius: 50%;
+  border: 2px solid clr(primary-clr);
+  cursor: pointer;
 
-    &:checked {
-      &:before {
-        content: '';
-        position: absolute;
-        left: 0.2rem;
-        top: 0.2rem;
-        height: 60%;
-        width: 60%;
-        border-radius: 50%;
-        background-color: $primary-light;
-        z-index: -1;
-      }
-    }
-
-    &:focus {
-      outline: none;
+  &:checked {
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0.2rem;
+      top: 0.2rem;
+      z-index: -1;
+      width: 60%;
+      height: 60%;
+      border-radius: 50%;
+      background-color: clr(primary-clr);
     }
   }
 
-  label {
-    color: $black;
-    font-size: 1.1rem;
+  &:focus {
+    outline: none;
   }
+}
+
+.label {
+  color: clr(tertiary-clr);
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
 }
