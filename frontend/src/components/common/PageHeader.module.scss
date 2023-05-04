@@ -3,27 +3,25 @@
 .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  align-self: flex-start;
   position: relative;
   width: 100%;
 
   &.dark {
-    color: $black;
+    color: clr(tertiary-clr);
   }
 
   &.light {
-    color: clr(white-clr);
+    color: clr(white-clr, light);
   }
 
   &.primary {
-    color: $primary;
+    color: clr(primary-clr);
   }
 }
 
 .icon {
-  position: absolute;
-  left: 0;
+  display: flex;
+  align-items: center;
   font-size: 2rem;
   cursor: pointer;
 }

@@ -3,22 +3,25 @@ import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './CheckBox.module.scss'
 
 type CheckBoxProps = {
+  id: string
   label: string
   isChecked: boolean
-  setIsChecked: (value: boolean) => void
+  onClick: () => void
 }
 
-function CheckBox({ label, isChecked, setIsChecked }: CheckBoxProps) {
-  const { theme } = useContext(ThemeContext)
-
+function CheckBox({ id, label, isChecked, onClick }: CheckBoxProps) {
   return (
-    <div className={`content ${theme} ${styles.checkbox}`}>
+    <div className={styles.container}>
       <input
+        id={`checkbox-${id}`}
         type="checkbox"
         checked={isChecked}
-        onClick={() => setIsChecked(!isChecked)}
+        onClick={onClick}
+        className={styles.input}
       />
-      <label htmlFor="input">{label}</label>
+      <label htmlFor={`checkbox-${id}`} className={styles.label}>
+        {label}
+      </label>
     </div>
   )
 }
