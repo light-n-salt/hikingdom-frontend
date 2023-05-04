@@ -51,13 +51,13 @@ subprojects {
 
 project(':common') {
     dependencies {
-        implementation project(':entity')
+        implementation project(':domain')
     }
 }
 
-project(':domain') {
+project(':service') {
     dependencies {
-        implementation project(':entity')
+        implementation project(':domain')
         implementation project(':common')
     }
 }

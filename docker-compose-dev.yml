@@ -4,7 +4,7 @@ services:
   backend_dev:
     container_name: backend_dev
     build:
-      context: ./backend/domain
+      context: ./backend/service
       dockerfile: Dockerfile
       args:
         SERVER_MODE: dev

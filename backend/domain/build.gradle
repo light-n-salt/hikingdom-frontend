@@ -1,10 +1,12 @@
-plugins {
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }
 
 dependencies {
-    implementation project(':common')
-
     // web
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -33,26 +35,12 @@ dependencies {
     // AWS S3
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.385'
 
-    // mail
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-
     // security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-    // test
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    testImplementation 'org.springframework.security:spring-security-test'
-
-    testImplementation "org.assertj:assertj-core:3.20.2"
-    runtimeOnly 'com.h2database:h2'
-
-    // swagger
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
 
     // querydsl
     implementation 'com.querydsl:querydsl-jpa'
@@ -61,9 +49,7 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
 }
 
-/**
- * QueryDsl config
- */
+// querydsl
 // QClass를 저장할 경로
 def generated = "$buildDir/generated/querydsl"
 
@@ -72,55 +58,9 @@ tasks.withType(JavaCompile).configureEach {
     options.getGeneratedSourceOutputDirectory().set(file(generated))
 }
 
-// build 할 때 사용할 sourceSet에 QClass를 추가
-sourceSets {
-    main.java.srcDir generated
-}
-
 // gradle clean 시에 QClass 디렉토리 삭제
 clean {
     delete file(generated)
 }
 
-/**
- * restdocs config
- */
-ext {
-    set('snippetsDir', file("build/generated-snippets"))
-}
-
-tasks.named('asciidoctor') {
-    inputs.dir snippetsDir
-    dependsOn test
-}
-
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
-}
-
-tasks.register("copyDocument", Copy) {
-    dependsOn("asciidoctor")
-    from(file("build/docs/asciidoc"))
-    into(file("src/main/resources/static/docs"))
-}
-
-bootJar {
-    enabled = true
-    dependsOn asciidoctor
-    copy {
-        from "${asciidoctor.outputDir}"
-        into 'BOOT-INF/classes/static/docs'
-    }
-}
-
-test {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
-}
-
-build {
-    dependsOn copyDocument
-}
-
-// kotlin 에러 해결
-tasks.register("prepareKotlinBuildScriptModel"){}
+tasks.register("prepareKotlinBuildScriptModel") {}

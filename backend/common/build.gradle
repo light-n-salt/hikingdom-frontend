@@ -4,11 +4,11 @@ bootJar {
 
 jar {
     enabled = true
-    from(project(':entity').jar)
+    from(project(':domain').jar)
 }
 
 dependencies {
-    implementation project(':entity')
+    implementation project(':domain')
 
     // web
     implementation 'org.springframework.boot:spring-boot-starter-web'
