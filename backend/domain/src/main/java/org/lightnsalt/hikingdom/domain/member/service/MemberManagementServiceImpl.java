@@ -47,6 +47,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			.nickname(member.getNickname())
 			.profileUrl(member.getProfileUrl())
 			.clubId(clubMember != null ? clubMember.getClub().getId() : null)
+			.level(member.getLevel().getId())
 			.build();
 	}
 

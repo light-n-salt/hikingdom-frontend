@@ -14,6 +14,7 @@ public class ReviewInfoRes {
 	private Long reviewId;
 	private String nickname;
 	private String profileUrl;
+	private Integer level;
 	private String content;
 
 	public ReviewInfoRes(MeetupReview meetupReview) {
@@ -21,6 +22,7 @@ public class ReviewInfoRes {
 		this.reviewId = meetupReview.getId();
 		this.nickname = meetupReview.getMember().getNickname();
 		this.profileUrl = meetupReview.getMember().getProfileUrl();
+		this.level = meetupReview.getMember().getLevel().getId();
 		this.content = meetupReview.getContent();
 	}
 }

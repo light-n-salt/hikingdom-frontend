@@ -9,5 +9,6 @@ public class MemberInfoRes {
 	private String email;
 	private String nickname;
 	private String profileUrl;
+	private Integer level;
 	private Long clubId;
 }
