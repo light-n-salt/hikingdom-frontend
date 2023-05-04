@@ -23,7 +23,6 @@
   left: 92%;
   transform: translate(-50%, 0);
   padding-top: 0.4rem;
-  // padding-right: 0.4rem;
 }
 
 .nav {
@@ -46,8 +45,8 @@
 }
 
 .active {
-  color: clr(primary-clr);
   position: relative;
+  color: clr(primary-clr);
 
   &::after {
     content: '';

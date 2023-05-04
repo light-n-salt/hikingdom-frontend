@@ -5,7 +5,6 @@ import { ThemeContext } from 'styles/ThemeProvider'
 
 import SearchBar from 'components/common/SearchBar'
 
-import styles from './MountainPage.module.scss'
 import SearchMtPage from './SearchMtPage'
 import MainPage from './MainPage'
 
@@ -17,7 +16,7 @@ function MountainPage() {
   const [value, setValue] = useState('')
 
   return (
-    <div className={`page ${theme} p-md ${styles.main}`}>
+    <div className={`page ${theme} p-md`}>
       <SearchBar
         value={value}
         placeholder="산을 검색해보세요"
