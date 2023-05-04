@@ -23,6 +23,7 @@ class LocationService : Service() {
     lateinit var db: AppDatabase
     var isServiceRunning = false    // Foreground 서비스가 실행중인지 여부
     private val binder = LocationBinder()     // Binder given to clients
+    var hikingLocationListener : LocationHelper.HikingLocationListener? = null
     // 현재까지의 이동 거리(m)(누적), 이동 고도(m)(최대고도 - 최소고도), 걸린 시간(초)(종료 시간 - 시작 시간)
     var duration = MutableLiveData<Int>()
     var totalDistance = MutableLiveData<Float>()
@@ -74,12 +75,16 @@ class LocationService : Service() {
             stopSelf()
             isServiceRunning = false
             isHikingStarted.postValue(false)
+            LocationHelper().stopListeningUserLocation(this)
+            hikingLocationListener = null
+            LocationHelper.hikingLocationListener = null
 
             // 로컬 DB에 지금까지 저장된 위치 데이터 불러오기
             val storedUserLocations = db?.userLocationDao().getUserLocations()
             Log.d("storedUserLocations", storedUserLocations.toString())
             // storedUserLocations를 post api로 서버에 전달, success 시 모든 userLocation 데이터 삭제
             db?.userLocationDao().deleteAllUserLocations()  // 나중에 지우기 (api 호출 onSuccess에서 처리해줘야함)
+            Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
         }else{
             Log.d(TAG, "foreground service 시작")
             createNotification()
@@ -92,7 +97,7 @@ class LocationService : Service() {
             locationLooper = locationHandlerThread.looper
             locationHandler = Handler(locationLooper)
 
-            LocationHelper().startListeningUserLocation(this, object : LocationHelper.HikingLocationListener {          // viewModel 코드는 그대로 두고, 로컬에도 저장하도록 수정해야함.
+            hikingLocationListener = object : LocationHelper.HikingLocationListener {          // viewModel 코드는 그대로 두고, 로컬에도 저장하도록 수정해야함.
                 override fun onLocationChanged(location: Location) {
                     locationHandler.post {
                         // Here you got user location :)
@@ -108,7 +113,9 @@ class LocationService : Service() {
                         db!!.userLocationDao().insertUserLocation(UserLocation(location.latitude, location.longitude, location.altitude))
                     }
                 }
-            })
+            }
+
+            LocationHelper().startListeningUserLocation(this, hikingLocationListener)
 
             // 타이머 핸들러스레드 생성
             val timernHandlerThread = HandlerThread("timer_thread")
