@@ -2,19 +2,29 @@ import React from 'react'
 import styles from './IconButton.module.scss'
 
 type IconButtonProps = {
-    imgSrc: string
-    size?: 'sm' | 'md' | 'lg'
-    onClick: () => void
+  imgSrc?: string
+  icon?: React.ReactNode
+  color?: 'dark' | 'light' | 'primary' | 'secondary' | 'gray'
+  size?: 'sm' | 'md' | 'lg'
+  onClick: () => void
 }
 
-function IconButton({ imgSrc, size = 'sm', onClick }: IconButtonProps) {
-    return (
-        <img
-            src={imgSrc}
-            className={`${styles['icon-btn']} ${styles[size]}`}
-            onClick={onClick}
-        />
-    )
+function IconButton({
+  imgSrc,
+  icon,
+  color = 'dark',
+  size = 'sm',
+  onClick,
+}: IconButtonProps) {
+  return (
+    <div
+      className={`${styles.btn} ${styles[size]} ${styles[color]}`}
+      onClick={onClick}
+    >
+      {imgSrc && <img src={imgSrc} className={styles.img} />}
+      {icon && icon}
+    </div>
+  )
 }
 
 export default IconButton

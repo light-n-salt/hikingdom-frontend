@@ -1,0 +1,17 @@
+@use 'src/styles/colors' as *;
+
+.header {
+  // position: absolute;
+
+  padding-top: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: clr(primary-clr);
+}
+
+.nav {
+}

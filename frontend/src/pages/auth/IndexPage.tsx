@@ -7,22 +7,23 @@ import styles from './IndexPage.module.scss'
 import mountain from 'assets/videos/mountain.mp4'
 
 function IndexPage() {
-    const { theme } = useContext(ThemeContext)
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-    function toLogin() {
-        navigate('/login')
-    }
+  function toLogin() {
+    navigate('/login')
+  }
 
-    return (
-        <div className={`page ${styles.container}`}>
-            <Logo size="lg" />
-            <Button text="시작하기" color="primary" onClick={toLogin} />
-            <video className={styles.video} autoPlay loop muted>
-                <source src={mountain} />
-            </video>
-        </div>
-    )
+  return (
+    <>
+      <div className={`page p-lg ${styles.container}`}>
+        <Logo size="lg" />
+        <Button text="시작하기" color="primary" size="lg" onClick={toLogin} />
+      </div>
+      <video className={styles.video} autoPlay loop muted>
+        <source src={mountain} />
+      </video>
+    </>
+  )
 }
 
 export default IndexPage

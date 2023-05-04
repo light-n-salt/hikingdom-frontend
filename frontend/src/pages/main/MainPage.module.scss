@@ -1,1 +1,31 @@
 @use 'src/styles/colors' as *;
+
+.main {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.7rem;
+  width: 100%;
+
+  &.sm {
+    gap: 0.3rem;
+  }
+
+  &.lg {
+    gap: 1.5rem;
+  }
+}
+
+.scroll {
+  padding: 0.7rem;
+  overflow-x: scroll;
+  // 스크롤바 숨기기
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

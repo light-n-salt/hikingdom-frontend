@@ -1,11 +1,12 @@
 $z-index: (
-    modal: 100,
-    navigation: 50,
-    content: 2,
-    page: 0,
-    background: -1,
+  toast: 150,
+  modal: 100,
+  navgation: 50,
+  content: 2,
+  page: 1,
+  background: 0,
 );
 
 @mixin z-index($key) {
-    z-index: map-get($z-index, $key);
+  z-index: map-get($z-index, $key);
 }

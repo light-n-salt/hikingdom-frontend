@@ -1,13 +1,14 @@
 .rank-list {
-    display: flex;
+  display: flex;
+  width: 100%;
 
-    &.sm {
-        flex-direction: row;
-        gap: 0.4rem;
-    }
+  &.sm {
+    flex-direction: row;
+    gap: 0.4rem;
+  }
 
-    &.lg {
-        flex-direction: column;
-        gap: 0.2rem;
-    }
+  &.lg {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
 }

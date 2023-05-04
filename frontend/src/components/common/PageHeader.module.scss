@@ -1,0 +1,44 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+
+  &.dark {
+    color: clr(tertiary-clr);
+  }
+
+  &.light {
+    color: clr(white-clr, light);
+  }
+
+  &.primary {
+    color: clr(primary-clr);
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-weight: 600;
+
+  &.sm {
+    font-size: 1.3rem;
+  }
+  &.md {
+    font-size: 1.5rem;
+  }
+  &.lg {
+    font-size: 1.7rem;
+  }
+}

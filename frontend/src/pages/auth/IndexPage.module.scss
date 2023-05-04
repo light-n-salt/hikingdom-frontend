@@ -1,20 +1,16 @@
 @use 'src/styles/z-index' as *;
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    overflow: hidden;
-    padding: 0 1rem 10rem 1rem;
+  justify-content: center;
+  gap: 15rem;
+  overflow: hidden;
 }
 
 .video {
-    @include z-index(background);
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    object-fit: cover;
-    filter: brightness(0.5);
+  @include z-index(background-image);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  filter: brightness(0.5);
 }

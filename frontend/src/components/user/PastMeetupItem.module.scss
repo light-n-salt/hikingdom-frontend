@@ -1,29 +1,29 @@
 @use 'src/styles/colors' as *;
 
 .meetup-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+  gap: 0.5rem;
+
+  > div {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 1rem;
-    gap: 0.5rem;
+    gap: 1rem;
 
-    > div {
+    &.title {
+      align-items: center;
+      justify-content: space-between;
+
+      > .group {
         display: flex;
-        gap: 1rem;
+        align-items: center;
+        color: $gray;
 
-        &.title {
-            align-items: center;
-            justify-content: space-between;
-
-            > .group {
-                display: flex;
-                align-items: center;
-                color: $gray;
-
-                > svg {
-                    font-size: 1.5rem;
-                }
-            }
+        > svg {
+          font-size: 1.5rem;
         }
+      }
     }
+  }
 }

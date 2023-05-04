@@ -1,0 +1,37 @@
+@use 'src/styles/colors' as *;
+
+.meetup {
+  width: 100%;
+}
+
+.titles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  color: clr(primary-clr);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.members {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.more {
+  width: 2.9rem;
+  height: 2.9rem;
+
+  border-radius: 0.3rem;
+  background-color: clr(secondary-clr);
+  color: clr(primary-clr);
+  font-weight: bold;
+  text-align: center;
+  line-height: 3rem;
+}
