@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -26,9 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-
 public class S3FileUtil {
-	private final AmazonS3Client amazonS3Client;
+	private final AmazonS3 amazonS3;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
@@ -58,16 +58,16 @@ public class S3FileUtil {
 		Pattern tokenPattern = Pattern.compile("(?<=" + path + "/).*");
 		Matcher matcher = tokenPattern.matcher(url);
 
-		String temp = null;
+		String temp = "";
 		if (matcher.find()) {
 			temp = matcher.group();
 		}
 
-		String originalName = URLDecoder.decode(temp);
+		String originalName = URLDecoder.decode(temp, StandardCharsets.UTF_8);
 		String filePath = "profile/" + originalName;
 		log.info("originalName : {}", originalName);
 		try {
-			amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, filePath));
+			amazonS3.deleteObject(new DeleteObjectRequest(bucket, filePath));
 			log.info("deletion complete : {}", filePath);
 			return true;
 		} catch (SdkClientException e) {
@@ -89,9 +89,9 @@ public class S3FileUtil {
 
 	// S3로 파일 업로드 및 파일 url 리턴
 	private String putS3(File uploadFile, String fileName) {
-		amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile)
+		amazonS3.putObject(new PutObjectRequest(bucket, fileName, uploadFile)
 			.withCannedAcl(CannedAccessControlList.PublicRead));
-		return amazonS3Client.getUrl(bucket, fileName).toString();
+		return amazonS3.getUrl(bucket, fileName).toString();
 	}
 
 	// multipartFile -> File 형식으로 변환 및 로컬에 저장
