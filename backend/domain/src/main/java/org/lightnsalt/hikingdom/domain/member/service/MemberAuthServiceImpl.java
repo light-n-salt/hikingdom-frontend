@@ -31,10 +31,10 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 		String email = memberLoginReq.getEmail();
 
 		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
-			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_LOGIN_FAIL));
 
 		if (!passwordEncoder.matches(memberLoginReq.getPassword(), member.getPassword())) {
-			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
+			throw new GlobalException(ErrorCode.MEMBER_LOGIN_FAIL);
 		}
 
 		String accessToken = jwtTokenUtil.createAccessToken(email, member.getRole());
