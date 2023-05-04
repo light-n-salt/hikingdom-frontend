@@ -11,18 +11,31 @@ import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
     companion object{
+        lateinit var baseApplication: ApplicationClass
+
+        fun getInstance(): ApplicationClass {
+            return baseApplication
+        }
+
         const val X_ACCESS_TOKEN: String = "X-ACCESS-TOKEN"         // JWT Token Key
         const val TAG: String = "HIKINGDOM-ANDROID"                      // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
 
-        const val BASE_URL: String = BuildConfig.DEV_URL
-
         lateinit var mSharedPreferences: SharedPreferences
         lateinit var retrofit: Retrofit
+
+        const val BASE_URL: String = BuildConfig.PROD_URL       // 웹뷰나 api 통신 시 사용할 기본 주소. 이를 이용해 한번에 PROD_URL <-> DEV_URL 전환 가능. local.properties를 참조.
+        const val HOME_URL: String = BASE_URL + "/main"         // 메인페이지 URL
+        const val RANKING_URL: String = BASE_URL + "/main"      // 랭킹페이지 URL
+        const val HIKING_URL: String = BASE_URL + "/main"       // 트래킹 URL
+        const val GROUP_URL: String = BASE_URL + "/main"        // 소모임페이지 URL
+        const val MYPAGE_URL: String = BASE_URL + "/main"       // 마이페이지 URL
     }
 
     override fun onCreate() {
         super.onCreate()
+
+        baseApplication = this
 
         val client: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)

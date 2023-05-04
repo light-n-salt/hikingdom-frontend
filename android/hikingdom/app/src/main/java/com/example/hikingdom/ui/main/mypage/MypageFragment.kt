@@ -2,7 +2,7 @@ package com.example.hikingdom.ui.main.mypage
 
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
-import com.example.hikingdom.BuildConfig
+import com.example.hikingdom.ApplicationClass.Companion.MYPAGE_URL
 import com.example.hikingdom.databinding.FragmentMypageBinding
 import com.example.hikingdom.ui.BaseFragment
 
@@ -19,7 +19,7 @@ class MypageFragment(): BaseFragment<FragmentMypageBinding>(FragmentMypageBindin
     fun webViewSetting(){
         val webView = binding.mypageWebview
         webView.webViewClient = WebViewClient()
-        webView.loadUrl(BuildConfig.MYPAGE_URL)
+        webView.loadUrl(MYPAGE_URL)
         webView.settings.javaScriptEnabled = true
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
