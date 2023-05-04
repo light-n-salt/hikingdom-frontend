@@ -6,13 +6,18 @@ import useIsMobile from 'hooks/useIsMobile'
 function WebMargin() {
   const isMobile = useIsMobile()
 
-  console.log(isMobile)
   return (
-    <div className={styles.container}>
-      <div className={isMobile ? styles.mobile : styles.laptop}>
+    <>
+      {isMobile ? (
         <Outlet />
-      </div>
-    </div>
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.mobile}>
+            <Outlet />
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
