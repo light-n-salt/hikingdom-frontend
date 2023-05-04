@@ -1,14 +1,15 @@
 package org.lightnsalt.hikingdom.domain.member.service;
 
+import org.lightnsalt.hikingdom.common.enumType.MemberRoleType;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.common.enumType.MemberRoleType;
 import org.lightnsalt.hikingdom.domain.member.dto.request.MemberSignUpReq;
 import org.lightnsalt.hikingdom.domain.member.entity.Member;
 import org.lightnsalt.hikingdom.domain.member.entity.MemberHikingStatistic;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberLevelInfoRepository;
 import org.lightnsalt.hikingdom.domain.member.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberSignUpServiceImpl implements MemberSignUpService {
 	private final MemberHikingStatisticRepository memberHikingStatisticRepository;
 	private final PasswordEncoder passwordEncoder;
-
 	private final MemberRepository memberRepository;
 	private final MemberLevelInfoRepository memberLevelInfoRepository;
+
+	@Value("${values.profile.default}")
+	private String memberDefaultProfileUrl;
 
 	@Override
 	@Transactional
@@ -45,6 +48,7 @@ public class MemberSignUpServiceImpl implements MemberSignUpService {
 			.role(MemberRoleType.ROLE_USER)
 			.level(memberLevelInfoRepository.findById(1)
 				.orElseThrow(() -> new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR)))
+			.profileUrl(memberDefaultProfileUrl)
 			.build();
 
 		final Member savedMember = memberRepository.save(member);
