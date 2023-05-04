@@ -1,0 +1,29 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+
+  > .content {
+    flex: 1;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0;
+  gap: 0.3rem;
+}
+
+.bold {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.text {
+  font-size: 0.9rem;
+}

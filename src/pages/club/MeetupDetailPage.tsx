@@ -110,7 +110,7 @@ function MeetupDetailPage() {
   }
 
   return (
-    <div className={`page p-sm ${theme} mobile ${styles.page}`}>
+    <div className={`page p-sm ${theme} ${styles.page}`}>
       <Button text="수정" color="secondary" size="xs" />
       <PageHeader title="일정 제목" url="/club/meetup" color="primary" />
       <MeetupDetail mountain="도봉산" date="2023.04.30" time="14:00" />
