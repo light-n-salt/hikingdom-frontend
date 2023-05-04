@@ -6,7 +6,7 @@ import styles from './AgreePage.module.scss'
 function AgreePage() {
   const { theme } = useContext(ThemeContext)
   return (
-    <div className={`page ${theme} p-sm ${styles.container}`}>
+    <div className={`page ${theme} p-lg ${styles.container}`}>
       <AgreeForm />
     </div>
   )
