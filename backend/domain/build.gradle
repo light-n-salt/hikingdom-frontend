@@ -1,0 +1,91 @@
+plugins {
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
+}
+
+dependencies {
+    implementation project(':common')
+
+    // mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    testImplementation "org.assertj:assertj-core:3.20.2"
+    runtimeOnly 'com.h2database:h2'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
+
+    // querydsl
+    implementation 'com.querydsl:querydsl-jpa'
+    implementation 'com.querydsl:querydsl-core'
+    implementation 'com.querydsl:querydsl-collections'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
+}
+
+/**
+ * QueryDsl config
+ */
+// QClass를 저장할 경로
+def generated = "$buildDir/generated/querydsl"
+
+// querydsl QClass 파일 생성 위치를 지정
+tasks.withType(JavaCompile).configureEach {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+// build 할 때 사용할 sourceSet에 QClass를 추가
+sourceSets {
+    main.java.srcDir generated
+}
+
+// gradle clean 시에 QClass 디렉토리 삭제
+clean {
+    delete file(generated)
+}
+
+/**
+ * restdocs config
+ */
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
+
+tasks.named('asciidoctor') {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+tasks.register("copyDocument", Copy) {
+    dependsOn("asciidoctor")
+    from(file("build/docs/asciidoc"))
+    into(file("src/main/resources/static/docs"))
+}
+
+bootJar {
+    enabled = true
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'BOOT-INF/classes/static/docs'
+    }
+}
+
+test {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+build {
+    dependsOn copyDocument
+}
+
+// kotlin 에러 해결
+tasks.register("prepareKotlinBuildScriptModel"){}

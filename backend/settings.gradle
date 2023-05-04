@@ -1,1 +1,3 @@
 rootProject.name = 'hikingdom'
+include 'common'
+include 'domain'
