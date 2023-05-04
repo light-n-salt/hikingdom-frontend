@@ -1,12 +1,12 @@
 @use 'src/styles/colors' as *;
 
-.header {
+.container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   align-self: flex-start;
-  width: 60%;
-  padding: 1rem 0;
+  position: relative;
+  width: 100%;
 
   &.dark {
     color: $black;
@@ -19,12 +19,28 @@
   &.primary {
     color: $primary;
   }
+}
 
-  > svg {
-    font-size: 2rem;
+.icon {
+  position: absolute;
+  left: 0;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-weight: 600;
+
+  &.sm {
+    font-size: 1.3rem;
   }
-
-  > span {
+  &.md {
     font-size: 1.5rem;
+  }
+  &.lg {
+    font-size: 1.7rem;
   }
 }

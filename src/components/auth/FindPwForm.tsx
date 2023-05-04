@@ -5,6 +5,7 @@ import services from 'apis/services'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './FindPwForm.module.scss'
+import toast from 'components/common/Toast'
 
 function FindPwForm() {
   const navigate = useNavigate()
@@ -16,15 +17,19 @@ function FindPwForm() {
   } = useAuthInput({ type: 'email' })
 
   function findPw() {
-    if (!isEmailPass) return
+    if (!isEmailPass) {
+      // 이메일 형식이 틀렸거나 비밀번호가 입력되지 않은 경우
+      toast.addMessage('error', '이메일을 정확하게 입력해주세요')
+      return
+    }
     services
       .findPw(email)
-      .then((res) => {})
-      .catch(() => {})
-  }
-
-  function toLogin() {
-    navigate('/login')
+      .then((res) => {
+        toast.addMessage('success', '해당 이메일로 새비밀번호가 전송되었습니다')
+      })
+      .catch((err) => {
+        toast.addMessage('error', '해당 이메일에 대한 정보가 없습니다')
+      })
   }
 
   return (
@@ -47,7 +52,12 @@ function FindPwForm() {
           size="lg"
           onClick={findPw}
         />
-        <Button text="로그인" color="white" size="lg" onClick={toLogin} />
+        <Button
+          text="로그인"
+          color="white"
+          size="lg"
+          onClick={() => navigate('/login')}
+        />
       </div>
     </div>
   )
