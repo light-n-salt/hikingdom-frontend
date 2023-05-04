@@ -2,7 +2,7 @@ package com.example.hikingdom.ui.main.group
 
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
-import com.example.hikingdom.ApplicationClass.Companion.GROUP_URL
+import com.example.hikingdom.ApplicationClass.Companion.GROUP_WEB_URL
 import com.example.hikingdom.databinding.FragmentGroupBinding
 import com.example.hikingdom.ui.BaseFragment
 
@@ -19,7 +19,7 @@ class GroupFragment(): BaseFragment<FragmentGroupBinding>(FragmentGroupBinding::
     fun webViewSetting(){
         val webView = binding.groupWebview
         webView.webViewClient = WebViewClient()
-        webView.loadUrl(GROUP_URL)
+        webView.loadUrl(GROUP_WEB_URL)
         webView.settings.javaScriptEnabled = true
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {

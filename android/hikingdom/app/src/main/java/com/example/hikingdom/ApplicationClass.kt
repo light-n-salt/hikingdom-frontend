@@ -25,11 +25,12 @@ class ApplicationClass : Application() {
         lateinit var retrofit: Retrofit
 
         const val BASE_URL: String = BuildConfig.PROD_URL       // 웹뷰나 api 통신 시 사용할 기본 주소. 이를 이용해 한번에 PROD_URL <-> DEV_URL 전환 가능. local.properties를 참조.
-        const val HOME_URL: String = BASE_URL + "/main"         // 메인페이지 URL
-        const val RANKING_URL: String = BASE_URL + "/main"      // 랭킹페이지 URL
-        const val HIKING_URL: String = BASE_URL + "/main"       // 트래킹 URL
-        const val GROUP_URL: String = BASE_URL + "/main"        // 소모임페이지 URL
-        const val MYPAGE_URL: String = BASE_URL + "/main"       // 마이페이지 URL
+        const val HOME_WEB_URL: String = BASE_URL + "/main"         // 메인페이지 WebView URL
+        const val RANKING_WEB_URL: String = BASE_URL + "/rank"      // 랭킹페이지 WebView URL
+        const val GROUP_WEB_URL: String = BASE_URL + "/club/main"        // 소모임페이지 WebView URL
+        const val MYPAGE_WEB_URL: String = BASE_URL + "/profile"       // 마이페이지 WebView URL
+
+        const val HIKING_URL: String = BASE_URL + "/hiking"       // 트래킹 API URL
     }
 
     override fun onCreate() {
