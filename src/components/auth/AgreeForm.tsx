@@ -82,7 +82,7 @@ function AgreeForm() {
       <Button
         text="동의 후 가입"
         color="primary"
-        size="md"
+        size="lg"
         onClick={onClickNext}
       />
     </div>
