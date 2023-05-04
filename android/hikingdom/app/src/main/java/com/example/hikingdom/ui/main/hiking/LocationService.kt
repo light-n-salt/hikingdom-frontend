@@ -13,11 +13,14 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.R
+import com.example.hikingdom.data.entities.UserLocation
+import com.example.hikingdom.data.local.AppDatabase
 import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.ui.main.hiking.HikingFragment.Companion.ACTION_STOP
 import com.example.hikingdom.utils.LocationHelper
 
 class LocationService : Service() {
+    lateinit var db: AppDatabase
     var isServiceRunning = false    // Foreground 서비스가 실행중인지 여부
     private val binder = LocationBinder()     // Binder given to clients
     // 현재까지의 이동 거리(m)(누적), 이동 고도(m)(최대고도 - 최소고도), 걸린 시간(초)(종료 시간 - 시작 시간)
@@ -53,6 +56,11 @@ class LocationService : Service() {
         fun getService(): LocationService = this@LocationService
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        db = AppDatabase.getInstance(applicationContext)!!
+    }
+
     override fun onBind(intent: Intent?): IBinder? {
         return binder
     }
@@ -66,6 +74,12 @@ class LocationService : Service() {
             stopSelf()
             isServiceRunning = false
             isHikingStarted.postValue(false)
+
+            // 로컬 DB에 지금까지 저장된 위치 데이터 불러오기
+            val storedUserLocations = db?.userLocationDao().getUserLocations()
+            Log.d("storedUserLocations", storedUserLocations.toString())
+            // storedUserLocations를 post api로 서버에 전달, success 시 모든 userLocation 데이터 삭제
+            db?.userLocationDao().deleteAllUserLocations()  // 나중에 지우기 (api 호출 onSuccess에서 처리해줘야함)
         }else{
             Log.d(TAG, "foreground service 시작")
             createNotification()
@@ -83,14 +97,15 @@ class LocationService : Service() {
                     locationHandler.post {
                         // Here you got user location :)
                         Log.d("Location","" + location.latitude + "," + location.longitude + ","+location.altitude)
-                        Log.d("viewModel", currentLocation.value.toString())
-                        val firstVal = currentLocation.value
                         if (currentLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
                             val distance = location.distanceTo(currentLocation.value)
                             totalDistance.postValue(totalDistance.value?.plus(distance))
                         }
                         currentLocation.postValue(location)
                         locations.value?.add(location)
+
+                        // 위치정보를 RoomDB에 저장
+                        db!!.userLocationDao().insertUserLocation(UserLocation(location.latitude, location.longitude, location.altitude))
                     }
                 }
             })
