@@ -35,7 +35,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 	private final PasswordEncoder passwordEncoder;
 	private final RedisUtil redisUtil;
 	private final MemberRepository memberRepository;
-	@Value("{mail.setFrom}")
+	@Value("${values.mail.setFrom}")
 	private String fromEmail;
 
 	@Transactional
@@ -110,48 +110,47 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 	}
 
 	private String createFindPasswordEmail(String password) {
-		StringBuilder message = new StringBuilder();
-		message.append(
-				"<table align=\"center\" width=\"670\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border: 3px solid #50B06A;\n"
-					+ "    box-shadow: 0px 2px 10px #50B06A;\n"
-					+ "    border-radius: 30px;\">\n"
-					+ "\t\t<tbody>\n"
-					+ "\t\t\t<tr>\n"
-					+ "\t\t\t\t<td style=\"background-color: #ffffff;border-radius: 30px; padding: 40px 30px 0 35px; text-align: center;\">\n"
-					+ "\t\t\t\t\t<table width=\"605\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-align: left; font-family: '맑은 고딕','돋움';\">\n"
-					+ "\t\t\t\t\t\t<tbody>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td\n"
-					+ "\t\t\t\t\t\t\t\t\tstyle=\"color: #065446; font-size: 25px; text-align: left; width: 352px; word-spacing: -1px; vertical-align: top;\">\n"
-					+ "\t\t\t\t\t\t\t\t\t임시 비밀번호 확인 후<br>\n"
-					+ "\t\t\t\t\t\t\t\t\t로그인을 완료해 주세요.\n"
-					+ "\t\t\t\t\t\t\t\t</td>\n"
-					+ "\t\t\t\t\t\t\t\t<td rowspan=\"3\" style=\"text-align: center;\"><img style=\"width: 150px;\"\n"
-					+ "\t\t\t\t\t\t\t\t\t\tsrc=\"https://lightnsalt.s3.ap-northeast-2.amazonaws.com/logo.png\" loading=\"lazy\"></td>\n"
-					+ "\t\t\t\t\t\t\t</tr>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td height=\"39\"><img style=\"width: 60px;\"\n"
-					+ "\t\t\t\t\t\t\t\t\t\tsrc=\"https://lightnsalt.s3.ap-northeast-2.amazonaws.com/bar.png\" loading=\"lazy\"></td>\n"
-					+ "\t\t\t\t\t\t\t</tr>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td style=\"font-size: 17px; vertical-align: bottom; height: 27px;\">안녕하세요? Hikingdom입니다.</td>\n"
-					+ "\t\t\t\t\t\t\t</tr>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td colspan=\"2\" style=\"font-size: 13px; word-spacing: -1px; height: 30px;\">아래 비밀번호를\n"
-					+ "\t\t\t\t\t\t\t\t\t입력하시고 로그인을 계속 진행해 주세요.</td>\n"
-					+ "\t\t\t\t\t\t\t</tr>\n"
-					+ "\t\t\t\t\t\t</tbody>\n"
-					+ "\t\t\t\t\t</table>\n"
-					+ "\t\t\t\t</td>\n"
-					+ "\t\t\t</tr>\n"
-					+ "\t\t\t<tr>\n"
-					+ "\t\t\t\t<td style=\"padding: 39px 196px 70px;\">\n"
-					+ "\t\t\t\t\t<table width=\"278\" style=\"background-color: #065446; font-family: '맑은 고딕','돋움';\">\n"
-					+ "\t\t\t\t\t\t<tbody>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td height=\"49\" style=\"text-align: center; color: #fff\">비밀번호 : <span>")
-			.append(password)
-			.append("</span>\n"
+		return
+			"<table align=\"center\" width=\"670\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border: 3px solid #50B06A;\n"
+				+ "    box-shadow: 0px 2px 10px #50B06A;\n"
+				+ "    border-radius: 30px;\">\n"
+				+ "\t\t<tbody>\n"
+				+ "\t\t\t<tr>\n"
+				+ "\t\t\t\t<td style=\"background-color: #ffffff;border-radius: 30px; padding: 40px 30px 0 35px; text-align: center;\">\n"
+				+ "\t\t\t\t\t<table width=\"605\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-align: left; font-family: '맑은 고딕','돋움';\">\n"
+				+ "\t\t\t\t\t\t<tbody>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td\n"
+				+ "\t\t\t\t\t\t\t\t\tstyle=\"color: #065446; font-size: 25px; text-align: left; width: 352px; word-spacing: -1px; vertical-align: top;\">\n"
+				+ "\t\t\t\t\t\t\t\t\t임시 비밀번호 확인 후<br>\n"
+				+ "\t\t\t\t\t\t\t\t\t로그인을 완료해 주세요.\n"
+				+ "\t\t\t\t\t\t\t\t</td>\n"
+				+ "\t\t\t\t\t\t\t\t<td rowspan=\"3\" style=\"text-align: center;\"><img style=\"width: 150px;\"\n"
+				+ "\t\t\t\t\t\t\t\t\t\tsrc=\"https://lightnsalt.s3.ap-northeast-2.amazonaws.com/logo.png\" loading=\"lazy\"></td>\n"
+				+ "\t\t\t\t\t\t\t</tr>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td height=\"39\"><img style=\"width: 60px;\"\n"
+				+ "\t\t\t\t\t\t\t\t\t\tsrc=\"https://lightnsalt.s3.ap-northeast-2.amazonaws.com/bar.png\" loading=\"lazy\"></td>\n"
+				+ "\t\t\t\t\t\t\t</tr>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td style=\"font-size: 17px; vertical-align: bottom; height: 27px;\">안녕하세요? Hikingdom입니다.</td>\n"
+				+ "\t\t\t\t\t\t\t</tr>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td colspan=\"2\" style=\"font-size: 13px; word-spacing: -1px; height: 30px;\">아래 비밀번호를\n"
+				+ "\t\t\t\t\t\t\t\t\t입력하시고 로그인을 계속 진행해 주세요.</td>\n"
+				+ "\t\t\t\t\t\t\t</tr>\n"
+				+ "\t\t\t\t\t\t</tbody>\n"
+				+ "\t\t\t\t\t</table>\n"
+				+ "\t\t\t\t</td>\n"
+				+ "\t\t\t</tr>\n"
+				+ "\t\t\t<tr>\n"
+				+ "\t\t\t\t<td style=\"padding: 39px 196px 70px;\">\n"
+				+ "\t\t\t\t\t<table width=\"278\" style=\"background-color: #065446; font-family: '맑은 고딕','돋움';\">\n"
+				+ "\t\t\t\t\t\t<tbody>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td height=\"49\" style=\"text-align: center; color: #fff\">비밀번호 : <span>"
+				+ password +
+				"</span>\n"
 				+ "\t\t\t\t\t\t\t\t</td>\n"
 				+ "\t\t\t\t\t\t\t</tr>\n"
 				+ "\t\t\t\t\t\t</tbody>\n"
@@ -159,54 +158,51 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 				+ "\t\t\t\t</td>\n"
 				+ "\t\t\t</tr>\n"
 				+ "\t\t</tbody>\n"
-				+ "\t</table>");
-
-		return message.toString();
+				+ "\t</table>";
 	}
 
 	private String createAuthenticationEmail(String authCode) {
-		StringBuilder message = new StringBuilder();
-		message.append(
-				"<table align=\"center\" width=\"670\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border: 3px solid #50B06A;\n"
-					+ "    box-shadow: 0px 2px 10px #50B06A;\n"
-					+ "    border-radius: 30px;\">\n"
-					+ "\t\t<tbody>\n"
-					+ "\t\t\t<tr>\n"
-					+ "\t\t\t\t<td style=\"background-color: #ffffff;border-radius: 30px; padding: 40px 30px 0 35px; text-align: center;\">\n"
-					+ "\t\t\t\t\t<table width=\"605\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-align: left; font-family: '맑은 고딕','돋움';\">\n"
-					+ "\t\t\t\t\t\t<tbody>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td\n"
-					+ "\t\t\t\t\t\t\t\t\tstyle=\"color: #065446; font-size: 25px; text-align: left; width: 352px; word-spacing: -1px; vertical-align: top;\">\n"
-					+ "\t\t\t\t\t\t\t\t\t인증 번호 확인 후<br>\n"
-					+ "\t\t\t\t\t\t\t\t\t이메일 인증을 완료해 주세요.\n"
-					+ "\t\t\t\t\t\t\t\t</td>\n"
-					+ "\t\t\t\t\t\t\t\t<td rowspan=\"3\" style=\"text-align: center;\"><img style=\"width: 150px;\"\n"
-					+ "\t\t\t\t\t\t\t\t\t\tsrc=\"https://lightnsalt.s3.ap-northeast-2.amazonaws.com/logo.png\" loading=\"lazy\"></td>\n"
-					+ "\t\t\t\t\t\t\t</tr>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td height=\"39\"><img style=\"width: 60px;\"\n"
-					+ "\t\t\t\t\t\t\t\t\t\tsrc=\"https://lightnsalt.s3.ap-northeast-2.amazonaws.com/bar.png\" loading=\"lazy\"></td>\n"
-					+ "\t\t\t\t\t\t\t</tr>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td style=\"font-size: 17px; vertical-align: bottom; height: 27px;\">안녕하세요? Hikingdom입니다.</td>\n"
-					+ "\t\t\t\t\t\t\t</tr>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td colspan=\"2\" style=\"font-size: 13px; word-spacing: -1px; height: 30px;\">아래 인증번호를 입력하시고\n"
-					+ "\t\t\t\t\t\t\t\t\t회원가입을 계속 진행해 주세요.</td>\n"
-					+ "\t\t\t\t\t\t\t</tr>\n"
-					+ "\t\t\t\t\t\t</tbody>\n"
-					+ "\t\t\t\t\t</table>\n"
-					+ "\t\t\t\t</td>\n"
-					+ "\t\t\t</tr>\n"
-					+ "\t\t\t<tr>\n"
-					+ "\t\t\t\t<td style=\"padding: 39px 196px 70px;\">\n"
-					+ "\t\t\t\t\t<table width=\"278\" style=\"background-color: #065446; font-family: '맑은 고딕','돋움';\">\n"
-					+ "\t\t\t\t\t\t<tbody>\n"
-					+ "\t\t\t\t\t\t\t<tr>\n"
-					+ "\t\t\t\t\t\t\t\t<td height=\"49\" style=\"text-align: center; color: #fff\">인증번호 : <span>")
-			.append(authCode)
-			.append("</span>\n"
+		return
+			"<table align=\"center\" width=\"670\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border: 3px solid #50B06A;\n"
+				+ "    box-shadow: 0px 2px 10px #50B06A;\n"
+				+ "    border-radius: 30px;\">\n"
+				+ "\t\t<tbody>\n"
+				+ "\t\t\t<tr>\n"
+				+ "\t\t\t\t<td style=\"background-color: #ffffff;border-radius: 30px; padding: 40px 30px 0 35px; text-align: center;\">\n"
+				+ "\t\t\t\t\t<table width=\"605\" cellpadding=\"0\" cellspacing=\"0\" style=\"text-align: left; font-family: '맑은 고딕','돋움';\">\n"
+				+ "\t\t\t\t\t\t<tbody>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td\n"
+				+ "\t\t\t\t\t\t\t\t\tstyle=\"color: #065446; font-size: 25px; text-align: left; width: 352px; word-spacing: -1px; vertical-align: top;\">\n"
+				+ "\t\t\t\t\t\t\t\t\t인증 번호 확인 후<br>\n"
+				+ "\t\t\t\t\t\t\t\t\t이메일 인증을 완료해 주세요.\n"
+				+ "\t\t\t\t\t\t\t\t</td>\n"
+				+ "\t\t\t\t\t\t\t\t<td rowspan=\"3\" style=\"text-align: center;\"><img style=\"width: 150px;\"\n"
+				+ "\t\t\t\t\t\t\t\t\t\tsrc=\"https://lightnsalt.s3.ap-northeast-2.amazonaws.com/logo.png\" loading=\"lazy\"></td>\n"
+				+ "\t\t\t\t\t\t\t</tr>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td height=\"39\"><img style=\"width: 60px;\"\n"
+				+ "\t\t\t\t\t\t\t\t\t\tsrc=\"https://lightnsalt.s3.ap-northeast-2.amazonaws.com/bar.png\" loading=\"lazy\"></td>\n"
+				+ "\t\t\t\t\t\t\t</tr>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td style=\"font-size: 17px; vertical-align: bottom; height: 27px;\">안녕하세요? Hikingdom입니다.</td>\n"
+				+ "\t\t\t\t\t\t\t</tr>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td colspan=\"2\" style=\"font-size: 13px; word-spacing: -1px; height: 30px;\">아래 인증번호를 입력하시고\n"
+				+ "\t\t\t\t\t\t\t\t\t회원가입을 계속 진행해 주세요.</td>\n"
+				+ "\t\t\t\t\t\t\t</tr>\n"
+				+ "\t\t\t\t\t\t</tbody>\n"
+				+ "\t\t\t\t\t</table>\n"
+				+ "\t\t\t\t</td>\n"
+				+ "\t\t\t</tr>\n"
+				+ "\t\t\t<tr>\n"
+				+ "\t\t\t\t<td style=\"padding: 39px 196px 70px;\">\n"
+				+ "\t\t\t\t\t<table width=\"278\" style=\"background-color: #065446; font-family: '맑은 고딕','돋움';\">\n"
+				+ "\t\t\t\t\t\t<tbody>\n"
+				+ "\t\t\t\t\t\t\t<tr>\n"
+				+ "\t\t\t\t\t\t\t\t<td height=\"49\" style=\"text-align: center; color: #fff\">인증번호 : <span>"
+				+ authCode
+				+ "</span>\n"
 				+ "\t\t\t\t\t\t\t\t</td>\n"
 				+ "\t\t\t\t\t\t\t</tr>\n"
 				+ "\t\t\t\t\t\t</tbody>\n"
@@ -214,11 +210,10 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 				+ "\t\t\t\t</td>\n"
 				+ "\t\t\t</tr>\n"
 				+ "\t\t</tbody>\n"
-				+ "\t</table>");
-
-		return message.toString();
+				+ "\t</table>";
 	}
 
+	@SuppressWarnings("SameParameterValue") // 미래에 다른 길이의 인증코드를 생성할 수도 있음
 	private String createAuthCode(int length) {
 		StringBuilder authCode = new StringBuilder();
 
