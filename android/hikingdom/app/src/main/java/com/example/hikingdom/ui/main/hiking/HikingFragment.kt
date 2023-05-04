@@ -21,6 +21,8 @@ import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.R
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
+import com.example.hikingdom.utils.getIsLocationServiceRunning
+import com.example.hikingdom.utils.saveIsLocationServiceRunning
 import net.daum.mf.map.api.*
 import java.time.LocalDateTime
 
@@ -100,12 +102,26 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 //            Log.d("setHikingService", "false / "+locationService.toString() + "/ "+locationService?.isHikingStarted?.value)
 //        }
 
+        if(getIsLocationServiceRunning()){  // 서비스를 실행중인지 여부를 LocationService에서 처리하여 sharedPreference에 저장해주고있다. 저장되어있는 값을 가져와서 실행중인지 확인 후 버튼을 띄워준다.
+            showToast("등산 기록을 불러오는 중입니다.")
+
+            // LocationService 이미 start된 상태이므로 binding만 해준다.
+            bindHikingService()
+
+            // 사용자의 실시간 위치 정보 화면에 띄워주기
+            loadLocationInfo()
+            hikingFinishBtn.visibility = View.VISIBLE
+            hikingStartBtn.visibility = View.GONE
+        }else{
+            hikingFinishBtn.visibility = View.GONE
+            hikingStartBtn.visibility = View.VISIBLE
+        }
+
         hikingStartBtn.setOnClickListener {
             startHikingService()
             showToast("등산 기록을 시작합니다.")
             hikingFinishBtn.visibility = View.VISIBLE
             hikingStartBtn.visibility = View.GONE
-
         }
 
         hikingFinishBtn.setOnClickListener {
@@ -306,8 +322,13 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
                 intent ->
             activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+    }
 
-        startTime = LocalDateTime.now()     // 시작시간 세팅
+    fun bindHikingService(){
+        Intent(activity, LocationService::class.java).also{
+                intent ->
+            activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
     }
 
     private fun setMapView(){
@@ -473,6 +494,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
     override fun onDestroy() {
         super.onDestroy()
         Log.d("fragment lifecycle", "onDestroy")
+
     }
 
     override fun onDetach() {

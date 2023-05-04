@@ -11,3 +11,12 @@ fun saveJwt(jwtToken: String) {
 }
 
 fun getJwt(): String? = mSharedPreferences.getString(X_ACCESS_TOKEN, null)
+
+fun saveIsLocationServiceRunning(boolean: Boolean){ //
+    val editor = mSharedPreferences.edit()
+    editor.putBoolean("isLocationServiceRunning", boolean)
+    editor.apply()
+}
+
+fun getIsLocationServiceRunning(): Boolean =
+    mSharedPreferences.getBoolean("isLocationServiceRunning", false)

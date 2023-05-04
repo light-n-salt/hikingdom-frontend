@@ -18,6 +18,7 @@ import com.example.hikingdom.data.local.AppDatabase
 import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.ui.main.hiking.HikingFragment.Companion.ACTION_STOP
 import com.example.hikingdom.utils.LocationHelper
+import com.example.hikingdom.utils.saveIsLocationServiceRunning
 
 class LocationService : Service() {
     lateinit var db: AppDatabase
@@ -71,6 +72,7 @@ class LocationService : Service() {
         if (intent?.action != null
             && intent.action.equals(ACTION_STOP, ignoreCase = true)) {
             Log.d(TAG, "foreground service 종료")
+
             stopForeground(true)
             stopSelf()
             isServiceRunning = false
@@ -78,6 +80,9 @@ class LocationService : Service() {
             LocationHelper().stopListeningUserLocation(this)
             hikingLocationListener = null
             LocationHelper.hikingLocationListener = null
+
+            // sharedPreference에 LocationService 실행 상태 저장 (for HikingFragment의 '하이킹 시작/종료'버튼 처리)
+            saveIsLocationServiceRunning(false)
 
             // 로컬 DB에 지금까지 저장된 위치 데이터 불러오기
             val storedUserLocations = db?.userLocationDao().getUserLocations()
@@ -87,6 +92,7 @@ class LocationService : Service() {
             Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
         }else{
             Log.d(TAG, "foreground service 시작")
+
             createNotification()
             isServiceRunning = true
             isHikingStarted.postValue(true)
@@ -122,6 +128,9 @@ class LocationService : Service() {
             timernHandlerThread.start()
             timerLooper = timernHandlerThread.looper
             timerHandler = Handler(timerLooper)
+
+            // sharedPreference에 LocationService 실행 상태 저장 (for HikingFragment의 '하이킹 시작/종료'버튼 처리)
+            saveIsLocationServiceRunning(true)
         }
 
         return START_STICKY
@@ -196,5 +205,6 @@ class LocationService : Service() {
         super.onDestroy()
         stopForeground(true)
         stopSelf()
+        saveIsLocationServiceRunning(false)
     }
 }
