@@ -1,5 +1,5 @@
 rootProject.name = 'hikingdom'
-include 'entity'
-include 'common'
 include 'domain'
+include 'common'
+include 'service'
 include 'batch'
