@@ -35,7 +35,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 	private final PasswordEncoder passwordEncoder;
 	private final RedisUtil redisUtil;
 	private final MemberRepository memberRepository;
-	@Value("{mail.setFrom}")
+	@Value("${values.mail.setFrom}")
 	private String fromEmail;
 
 	@Transactional
