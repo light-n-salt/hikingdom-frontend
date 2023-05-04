@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.hikingdom.ApplicationClass.Companion.APP_DATABASE
 import com.example.hikingdom.data.entities.User
+import com.example.hikingdom.data.entities.UserLocation
 
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class, UserLocation::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun userDao() : UserDao
+    abstract fun userDao(): UserDao
+    abstract fun userLocationDao(): UserLocationDao
 
     companion object {
         private var instance: AppDatabase? = null
