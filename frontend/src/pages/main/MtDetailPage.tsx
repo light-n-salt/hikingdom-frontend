@@ -9,10 +9,10 @@ function MtDetailPage() {
   const { theme } = useContext(ThemeContext)
 
   return (
-    <div className={`page p-sm ${styles.detail}`}>
+    <div className={`page ${theme} p-sm ${styles.detail}`}>
       <PageHeader title="" url="/main/search" color="light" />
-      <img src={mtInfo.imgUrl} className={styles.image} />
       <MtDetail mtInfo={mtInfo} />
+      <img src={mtInfo.imgUrl} className={styles.image} />
     </div>
   )
 }

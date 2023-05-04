@@ -28,9 +28,9 @@
 }
 
 // 아래로 내려오면서 보이는 애니메이션
-@mixin animation-slide-in-down($speed: 'normal', $distance: -100%) {
+@mixin animation-slide-in-down($speed: 'normal', $distance: -100%, $delay: 0) {
   @include animation(
-    0,
+    $delay,
     func-animation-speed($speed),
     animation-slide-in-down,
     ease-in-out
@@ -49,9 +49,9 @@
 }
 
 // 위로 올라오면서 보이는 애니메이션
-@mixin animation-slide-in-up($speed: 'normal', $distance: 100%) {
+@mixin animation-slide-in-up($speed: 'normal', $distance: 100%, $delay: 0) {
   @include animation(
-    0,
+    $delay,
     func-animation-speed($speed),
     animation-slide-in-up,
     ease-in-out
@@ -70,9 +70,9 @@
 }
 
 // 왼쪽으로 들어오면서 보이는 애니메이션
-@mixin animation-slide-in-left($speed: 'normal', $distance: 100%) {
+@mixin animation-slide-in-left($speed: 'normal', $distance: 100%, $delay: 0) {
   @include animation(
-    0,
+    $delay,
     func-animation-speed($speed),
     animation-slide-in-left,
     ease-in
@@ -91,9 +91,9 @@
 }
 
 // 오른쪽으로 들어오면서 보이는 애니메이션
-@mixin animation-slide-in-right($speed: 'normal', $distance: -100%) {
+@mixin animation-slide-in-right($speed: 'normal', $distance: 100%, $delay: 0) {
   @include animation(
-    0,
+    $delay,
     func-animation-speed($speed),
     animation-slide-in-right,
     ease-in
@@ -102,7 +102,7 @@
   @keyframes animation-slide-in-right {
     0% {
       opacity: 0;
-      transform: translateX($distance);
+      transform: translateX(-$distance);
     }
     100% {
       opacity: 1;
@@ -112,9 +112,9 @@
 }
 
 // 아래로 나가면서 안보이는 애니메이션
-@mixin animation-slide-out-down($speed: 'normal', $distance: 100%) {
+@mixin animation-slide-out-down($speed: 'normal', $distance: 100%, $delay: 0) {
   @include animation(
-    0,
+    $delay,
     func-animation-speed($speed),
     animation-slide-out-down,
     ease-out
@@ -133,9 +133,9 @@
 }
 
 // 위로 올라가면서 안보이는 애니메이션
-@mixin animation-slide-out-up($speed: 'normal', $distance: -100%) {
+@mixin animation-slide-out-up($speed: 'normal', $distance: 100%, $delay: 0) {
   @include animation(
-    0,
+    $delay,
     func-animation-speed($speed),
     animation-slide-out-up,
     ease-out
@@ -148,15 +148,15 @@
     }
     100% {
       opacity: 0;
-      transform: translateY($distance);
+      transform: translateY(-$distance);
     }
   }
 }
 
 // 왼쪽으로 나가면서 안보이는 애니메이션
-@mixin animation-slide-out-left($speed: 'normal', $distance: -100%) {
+@mixin animation-slide-out-left($speed: 'normal', $distance: 100%, $delay: 0) {
   @include animation(
-    0,
+    $delay,
     func-animation-speed($speed),
     animation-slide-out-left,
     ease-out
@@ -169,15 +169,15 @@
     }
     100% {
       opacity: 0;
-      transform: translateX($distance);
+      transform: translateX(-$distance);
     }
   }
 }
 
 // 오른쪽으로 나가면서 안보이는 애니메이션
-@mixin animation-slide-out-right($speed: 'normal', $distance: 100%) {
+@mixin animation-slide-out-right($speed: 'normal', $distance: 100%, $delay: 0) {
   @include animation(
-    0,
+    $delay,
     func-animation-speed($speed),
     animation-slide-out-right,
     ease-out
