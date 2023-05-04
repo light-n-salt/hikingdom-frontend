@@ -1,14 +1,15 @@
 import AgreeForm from 'components/auth/AgreeForm'
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
+import styles from './AgreePage.module.scss'
 
 function AgreePage() {
-    const { theme, toggleTheme } = useContext(ThemeContext)
-    return (
-        <div className={`page ${theme} p-sm`}>
-            <AgreeForm />
-        </div>
-    )
+  const { theme } = useContext(ThemeContext)
+  return (
+    <div className={`page ${theme} p-lg ${styles.container}`}>
+      <AgreeForm />
+    </div>
+  )
 }
 
 export default AgreePage

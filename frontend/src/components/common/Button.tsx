@@ -1,27 +1,29 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styles from './Button.module.scss'
-import { ThemeContext } from 'styles/ThemeProvider'
 
 type ButtonProps = {
-    text: string
-    size?: 'sm' | 'md' | 'lg'
-    color: 'primary' | 'secondary' | 'white' | 'red'
-    onClick: () => void
+  text: string
+  size?: 'xs' | 'sm' | 'md' | 'lg'
+  color: 'primary' | 'secondary' | 'white' | 'red' | 'gray'
+  onClick?: () => void
+  disabled?: boolean
 }
 
 export default function Button({
-    text,
-    size = 'lg',
-    color,
-    onClick,
+  text,
+  size = 'lg',
+  color,
+  onClick = () => {},
+  disabled = false,
 }: ButtonProps) {
-    const { theme } = useContext(ThemeContext)
-    return (
-        <button
-            className={`${styles[theme]} ${styles[size]} ${styles[color]}`}
-            onClick={onClick}
-        >
-            {text}
-        </button>
-    )
+  return (
+    <button
+      className={`${styles.button} ${styles[size]} ${styles[color]}`}
+      onClick={onClick}
+      // onTouchEnd={onClick}
+      disabled={disabled}
+    >
+      {text}
+    </button>
+  )
 }
