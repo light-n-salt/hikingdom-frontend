@@ -7,42 +7,45 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Location
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
+import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.R
+import com.example.hikingdom.data.entities.UserLocation
+import com.example.hikingdom.data.local.AppDatabase
 import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.ui.main.hiking.HikingFragment.Companion.ACTION_STOP
 import com.example.hikingdom.utils.LocationHelper
-import java.time.LocalDateTime
 
 class LocationService : Service() {
+    lateinit var db: AppDatabase
     var isServiceRunning = false    // Foreground 서비스가 실행중인지 여부
     private val binder = LocationBinder()     // Binder given to clients
+    var hikingLocationListener : LocationHelper.HikingLocationListener? = null
     // 현재까지의 이동 거리(m)(누적), 이동 고도(m)(최대고도 - 최소고도), 걸린 시간(초)(종료 시간 - 시작 시간)
     var duration = MutableLiveData<Int>()
     var totalDistance = MutableLiveData<Float>()
 
     // 위도, 경도, 고도 list
-    var latitudeList = MutableLiveData<ArrayList<Double>>()
-    var longitudeList = MutableLiveData<ArrayList<Double>>()
-    var altitudeList = MutableLiveData<ArrayList<Double>>()
-//    var locations = MutableLiveData<ArrayList<Location>>()
+    var locations = MutableLiveData<ArrayList<Location>>()
 
-    // 최근 위치
-    var lastLocation = MutableLiveData<Location>()
+    // 현재 위치
+    var currentLocation = MutableLiveData<Location>()
+
+    var isHikingStarted = MutableLiveData<Boolean>()
+
+    private lateinit var locationHandler: Handler
+    private lateinit var locationLooper: Looper
+    private lateinit var timerHandler: Handler
+    private lateinit var timerLooper: Looper
 
     init {
         duration.value = 0
         totalDistance.value = 0.0f
-//        locations.value = ArrayList()
-        latitudeList.value = ArrayList()
-        longitudeList.value = ArrayList()
-        altitudeList.value = ArrayList()
+        locations.value = ArrayList()
+        isHikingStarted.value = false
     }
 
     /*
@@ -54,6 +57,10 @@ class LocationService : Service() {
         fun getService(): LocationService = this@LocationService
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        db = AppDatabase.getInstance(applicationContext)!!
+    }
 
     override fun onBind(intent: Intent?): IBinder? {
         return binder
@@ -62,58 +69,80 @@ class LocationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand 진입")
         if (intent?.action != null
-            && intent.action.equals(ACTION_STOP, ignoreCase = true)) {  // "하이킹 종료" 버튼을 눌렀을 때, foreground 서비스를 종료.
+            && intent.action.equals(ACTION_STOP, ignoreCase = true)) {
             Log.d(TAG, "foreground service 종료")
             stopForeground(true)
             stopSelf()
-
             isServiceRunning = false
+            isHikingStarted.postValue(false)
+            LocationHelper().stopListeningUserLocation(this)
+            hikingLocationListener = null
+            LocationHelper.hikingLocationListener = null
+
+            // 로컬 DB에 지금까지 저장된 위치 데이터 불러오기
+            val storedUserLocations = db?.userLocationDao().getUserLocations()
+            Log.d("storedUserLocations", storedUserLocations.toString())
+            // storedUserLocations를 post api로 서버에 전달, success 시 모든 userLocation 데이터 삭제
+            db?.userLocationDao().deleteAllUserLocations()  // 나중에 지우기 (api 호출 onSuccess에서 처리해줘야함)
+            Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
         }else{
             Log.d(TAG, "foreground service 시작")
             createNotification()
-            mThread?.start()
             isServiceRunning = true
+            isHikingStarted.postValue(true)
 
-            LocationHelper().startListeningUserLocation(this, object : LocationHelper.HikingLocationListener {
+            // 핸들러와 루퍼를 생성합니다.
+            val locationHandlerThread = HandlerThread("location_update_thread")
+            locationHandlerThread.start()
+            locationLooper = locationHandlerThread.looper
+            locationHandler = Handler(locationLooper)
+
+            hikingLocationListener = object : LocationHelper.HikingLocationListener {          // viewModel 코드는 그대로 두고, 로컬에도 저장하도록 수정해야함.
                 override fun onLocationChanged(location: Location) {
-                    // Here you got user location :)
-                    Log.d("Location","" + location.latitude + "," + location.longitude + ","+location.altitude)
-                    if (lastLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
-                        val distance = location.distanceTo(lastLocation.value)
-                        totalDistance.value = totalDistance.value?.plus(distance)
+                    locationHandler.post {
+                        // Here you got user location :)
+                        Log.d("Location","" + location.latitude + "," + location.longitude + ","+location.altitude)
+                        if (currentLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
+                            val distance = location.distanceTo(currentLocation.value)
+                            totalDistance.postValue(totalDistance.value?.plus(distance))
+                        }
+                        currentLocation.postValue(location)
+                        locations.value?.add(location)
+
+                        // 위치정보를 RoomDB에 저장
+                        db!!.userLocationDao().insertUserLocation(UserLocation(location.latitude, location.longitude, location.altitude))
                     }
-                    lastLocation.value = location
-//                    locations.value?.add(location)
-                    latitudeList.value?.add(location.latitude)
-                    longitudeList.value?.add(location.longitude)
-                    altitudeList.value?.add(location.altitude)
-                }
-
-
-            })
-        }
-
-        return START_STICKY // 서비스가 강제로 종료되었을 때 시스템이 자동으로 다시 시작, 사용자의 위치 정보를 계속 추적해야할 때 적합
-                            // https://work2type.tistory.com/entry/STARTSTICKY-STARTNOTSTICKY
-    }
-
-    private var mThread: Thread? = object : Thread("calculate duration") {
-        override fun run() {
-            super.run()
-            while(isServiceRunning){
-
-                try {
-                    sleep(1000)
-                    duration.postValue(duration.value?.plus(1))
-                } catch (e: InterruptedException) {
-                    currentThread().interrupt()
-                    break
                 }
             }
-            Log.d(TAG, "경로 기록 스레드 종료")
-            // while문 빠져나와 run()메서드 종료 => 스레드가 사용 중이던 자원을 정리하고, run()메서드가 끝나게 됨으로써 스레드가 안전하게 종료됨
+
+            LocationHelper().startListeningUserLocation(this, hikingLocationListener)
+
+            // 타이머 핸들러스레드 생성
+            val timernHandlerThread = HandlerThread("timer_thread")
+            timernHandlerThread.start()
+            timerLooper = timernHandlerThread.looper
+            timerHandler = Handler(timerLooper)
         }
+
+        return START_STICKY
     }
+//    private var mThread: Thread? = object : Thread("calculate duration") {
+//        override fun run() {
+//            super.run()
+//            while(isServiceRunning){
+//
+//                try {
+//                    sleep(1000)
+//                    duration.postValue(duration.value?.plus(1))
+//                } catch (e: InterruptedException) {
+//                    currentThread().interrupt()
+//                    break
+//                }
+//            }
+//            Log.d(TAG, "경로 기록 스레드 종료")
+//            // while문 빠져나와 run()메서드 종료 => 스레드가 사용 중이던 자원을 정리하고, run()메서드가 끝나게 됨으로써 스레드가 안전하게 종료됨
+//        }
+//    }
 
     //Notififcation for ON-going
     private var iconNotification: Bitmap? = null
@@ -161,5 +190,11 @@ class LocationService : Service() {
             startForeground(mNotificationId, notification)
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopForeground(true)
+        stopSelf()
     }
 }

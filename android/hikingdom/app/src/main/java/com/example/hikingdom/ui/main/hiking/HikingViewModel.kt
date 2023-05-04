@@ -1,33 +1,35 @@
 package com.example.hikingdom.ui.main.hiking
 
 import android.location.Location
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.round
 import kotlin.math.roundToInt
 
 class HikingViewModel : ViewModel() {
     var duration = MutableLiveData<String>()
     var totalDistance = MutableLiveData<String>()
-    var totalAltitude = MutableLiveData<String>()
-    var altitudeList = MutableLiveData<Double>()
-    var latitude = MutableLiveData<String>()
-    var longitude = MutableLiveData<String>()
-    var altitude = MutableLiveData<String>()
-
+    var latitude = MutableLiveData<Double>()    // 경로 저장과 관련 없음
+    var longitude = MutableLiveData<Double>()
+    var altitude = MutableLiveData<Double>()
+    var isHikingStarted = MutableLiveData<Boolean>()
 
     // 위도, 경도, 고도 list
     var locations = MutableLiveData<ArrayList<Location>>()
 
     init {
         duration.value = "00:00:00"
-        totalDistance.value = "0.00km"
+        totalDistance.value = "00.00km"
         locations.value = ArrayList()
-        latitude.value = "위도"
-        longitude.value = "경도"
-        altitude.value = "고도"
+        latitude.value = 0.0
+        longitude.value = 0.0
+        altitude.value = 0.0
+        isHikingStarted.value = false
+    }
+
+    fun getLocations(){
+
     }
 
     fun setDuration(d: Int){
@@ -38,13 +40,13 @@ class HikingViewModel : ViewModel() {
         totalDistance.value = ((td / 1000f * 100f).roundToInt() / 100f).toString() + "km"
     }
 
-    fun setLastLocation(l : Location){
+    fun setCurrentLocation(l : Location){
         var rLat = round(l.latitude*10000) / 10000
         var rLong = round(l.longitude*10000) / 10000
         var rAlt = round(l.altitude*10000) / 10000
-        latitude.value = rLat.toString()
-        longitude.value = rLong.toString()
-        altitude.value = rAlt.toString()
+        latitude.value = rLat
+        longitude.value = rLong
+        altitude.value = rAlt
     }
 
 //    fun setTotalAltitude(){
@@ -74,5 +76,8 @@ class HikingViewModel : ViewModel() {
             "$minute:$second"
     }
 
-
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("HikingViewModel", "onCleared 호출됨")
+    }
 }

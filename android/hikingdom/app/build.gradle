@@ -23,10 +23,6 @@ android {
 
         buildConfigField("String", "DEV_URL", properties.getProperty("DEV_URL"))
         buildConfigField("String", "PROD_URL", properties.getProperty("PROD_URL"))
-        buildConfigField("String", "HOME_URL", properties.getProperty("HOME_URL"))
-        buildConfigField("String", "RANKING_URL", properties.getProperty("RANKING_URL"))
-        buildConfigField("String", "GROUP_URL", properties.getProperty("GROUP_URL"))
-        buildConfigField("String", "MYPAGE_URL", properties.getProperty("MYPAGE_URL"))
         buildConfigField("String", "KAKAOMAP_NATIVE_APP_KEY", properties.getProperty("KAKAOMAP_NATIVE_APP_KEY"))
 
         manifestPlaceholders["KAKAOMAP_NATIVE_APP_KEY"] = KAKAOMAP_NATIVE_APP_KEY
