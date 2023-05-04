@@ -98,3 +98,9 @@ project(':domain') {
         implementation project(':common')
     }
 }
+
+project(':batch') {
+    dependencies {
+        implementation project(':entity')
+    }
+}
