@@ -1,17 +1,62 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/animations' as *;
 
 .header {
-  // position: absolute;
-
-  padding-top: 1rem;
   display: flex;
   align-items: center;
+  position: relative;
+  width: 100%;
+  margin: 2.5rem;
 }
 
 .title {
-  font-size: 2.5rem;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 2rem;
+  font-weight: bold;
   color: clr(primary-clr);
 }
 
+.chat {
+  position: absolute;
+  left: 92%;
+  transform: translate(-50%, 0);
+  padding-top: 0.4rem;
+  // padding-right: 0.4rem;
+}
+
 .nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  // padding: 0.5rem 0;
+}
+
+.button {
+  padding: 0.8rem 1.3rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: clr(gray-clr);
+}
+
+.disabled {
+  color: clr(gray-clr);
+}
+
+.active {
+  color: clr(primary-clr);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.3rem;
+    width: 100%;
+    height: 0.2rem;
+    background-color: clr(primary-clr);
+    @include animation-slide-in-right(fast, 30%);
+  }
 }
