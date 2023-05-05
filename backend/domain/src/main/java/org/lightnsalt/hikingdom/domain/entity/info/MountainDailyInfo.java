@@ -42,7 +42,7 @@ public class MountainDailyInfo {
 	@JoinColumn(name = "mountain_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private MountainInfo mountain;
 
-	@Column(name = "date")
+	@Column(name = "set_date")
 	private LocalDate setDate;
 
 }
