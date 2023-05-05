@@ -35,8 +35,8 @@ function MemberItem({ memberInfo, isButton }: MemberItemProps) {
         
         {isButton ? (
           <div className={styles.button}>
-            <Button text='거절' color='secondary' size='md' onClick={() => console.log("거절")}/>
-            <Button text='수락' color='primary' size='md' onClick={() => console.log("수락")}/>
+            <Button text='거절' color='secondary' size='md' onClick={() => console.log(memberInfo.memberId, "거절")}/>
+            <Button text='수락' color='primary' size='md' onClick={() => console.log(memberInfo.memberId, "수락")}/>
           </div>
         ) : (
           <>
