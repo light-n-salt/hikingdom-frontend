@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './Image.module.scss'
 
 type ImageProps = {
-  size: 'sm' | 'lg'
+  size: 'sm' | 'md' | 'lg'
   imgUrl: string
   isSquare?: boolean
 }
