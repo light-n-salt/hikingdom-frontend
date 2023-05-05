@@ -30,32 +30,32 @@ function MeetupDetailPage() {
       {
         memberId: 0,
         profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          'https://i.namu.wiki/i/ZeGGZBUYHmppb5RTym8vJmnQulv-UhJygvrUMH_qXurQ08oZzRshu2sToDMet1NFeq4iwnkqY69Y_pKH4C2lmg.webp',
       },
       {
         memberId: 1,
         profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          'https://i.namu.wiki/i/ZeGGZBUYHmppb5RTym8vJmnQulv-UhJygvrUMH_qXurQ08oZzRshu2sToDMet1NFeq4iwnkqY69Y_pKH4C2lmg.webp',
       },
       {
         memberId: 2,
         profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          'https://i.namu.wiki/i/ZeGGZBUYHmppb5RTym8vJmnQulv-UhJygvrUMH_qXurQ08oZzRshu2sToDMet1NFeq4iwnkqY69Y_pKH4C2lmg.webp',
       },
       {
         memberId: 3,
         profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          'https://i.namu.wiki/i/IMJTGYaO0v6OYa5iro8bLfHuxdiXflvRQ4BdsMVOEvhFP2VBF74QAdMc4PFs-dJcYu-b9aRFeEnajUO1nDQeDg.webp',
       },
       {
         memberId: 4,
         profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          'https://i.namu.wiki/i/IMJTGYaO0v6OYa5iro8bLfHuxdiXflvRQ4BdsMVOEvhFP2VBF74QAdMc4PFs-dJcYu-b9aRFeEnajUO1nDQeDg.webp',
       },
       {
         memberId: 5,
         profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          'https://i.namu.wiki/i/IMJTGYaO0v6OYa5iro8bLfHuxdiXflvRQ4BdsMVOEvhFP2VBF74QAdMc4PFs-dJcYu-b9aRFeEnajUO1nDQeDg.webp',
       },
     ],
     photoInfo: [
