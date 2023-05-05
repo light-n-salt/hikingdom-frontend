@@ -59,9 +59,9 @@ public class MountainDailyJobConfig {
 	public Step dailyMountainStep() {
 		return stepBuilderFactory.get("dailyMountainStep")
 			.<MountainInfo, MountainDailyInfo>chunk(100)
-			.reader(reader())
-			.processor(processor())
-			.writer(writer())
+			.reader(mountainIdReader())
+			.processor(mountainDailyProcessor())
+			.writer(mountainDailyWriter())
 			.allowStartIfComplete(true)
 			.build();
 	}
@@ -69,7 +69,7 @@ public class MountainDailyJobConfig {
 	// 랜덤으로 뽑은 id에 해당하는 MountainInfo를 가져오는 함수
 	@Bean
 	@StepScope
-	public JpaPagingItemReader<MountainInfo> reader() {
+	public JpaPagingItemReader<MountainInfo> mountainIdReader() {
 		JpaPagingItemReader<MountainInfo> reader = new JpaPagingItemReader<>();
 		reader.setEntityManagerFactory(entityManagerFactory);
 
@@ -83,7 +83,7 @@ public class MountainDailyJobConfig {
 	// MountainDaily 세팅 후 리턴하는 함수
 	@Bean
 	@StepScope
-	public ItemProcessor<MountainInfo, MountainDailyInfo> processor() {
+	public ItemProcessor<MountainInfo, MountainDailyInfo> mountainDailyProcessor() {
 		return mountain -> MountainDailyInfo.builder()
 			.mountain(mountain)
 			.setDate(LocalDate.now())
@@ -93,7 +93,7 @@ public class MountainDailyJobConfig {
 	// MountainDaily 저장하는 함수
 	@Bean
 	@StepScope
-	public ItemWriter<MountainDailyInfo> writer() {
+	public ItemWriter<MountainDailyInfo> mountainDailyWriter() {
 		JpaItemWriter<MountainDailyInfo> writer = new JpaItemWriter<>();
 		writer.setEntityManagerFactory(entityManagerFactory);
 		return writer;
@@ -111,8 +111,8 @@ public class MountainDailyJobConfig {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		List<Long> ids = em.createQuery("SELECT m.id FROM MountainInfo m", Long.class).getResultList();
 		em.close();
-		Long randomId = (long)(new Random().nextInt(ids.size()) + 1);
+		int randomId = new Random().nextInt(ids.size());
 		log.info("random id is : {}", randomId);
-		return randomId;
+		return ids.get(randomId);
 	}
 }
