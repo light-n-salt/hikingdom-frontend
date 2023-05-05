@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.batch.job;
+package org.lightnsalt.hikingdom.batch.job.info;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
