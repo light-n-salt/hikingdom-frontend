@@ -46,7 +46,7 @@ public class MountainDailyJobConfig {
 	private final EntityManagerFactory entityManagerFactory;
 
 	@Bean
-	public Job dailyMountainJob() throws Exception {
+	public Job dailyMountainJob() {
 		return jobBuilderFactory.get("dailyMountainJob")
 			.incrementer(new RunIdIncrementer()) // 매일 실행시마다 Job Parameter를 증가시키는 JobIncrementer 사용
 			.flow(dailyMountainStep())
@@ -56,7 +56,7 @@ public class MountainDailyJobConfig {
 
 	@Bean
 	@JobScope
-	public Step dailyMountainStep() throws Exception {
+	public Step dailyMountainStep() {
 		return stepBuilderFactory.get("dailyMountainStep")
 			.<MountainInfo, MountainDailyInfo>chunk(100)
 			.reader(reader())

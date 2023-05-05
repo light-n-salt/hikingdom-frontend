@@ -22,7 +22,7 @@ public class RandomMountainTasklet implements Tasklet {
 	private EntityManager entityManager;
 
 	@Override
-	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
 		List<Long> ids = entityManager.createQuery("SELECT m.id FROM MountainInfo m", Long.class)
 			.getResultList();
 		log.info("number of id is : {}", ids.size());

@@ -21,5 +21,4 @@ public interface MountainInfoRepository extends JpaRepository<MountainInfo, Long
 
 	List<MountainInfo> findAllByNameContaining(String name);
 
-	List<Long> findAllIds();
 }
