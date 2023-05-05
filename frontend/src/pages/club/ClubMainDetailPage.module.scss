@@ -1,7 +1,7 @@
 @use 'src/styles/colors' as *;
 
 .page {
-  gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -9,7 +9,7 @@
   font-size: 2rem;
   font-weight: bold;
   color: clr(primary-clr);
-  padding: 1.2rem 0 0.7rem;
+  padding-top: 1.2rem;
 }
 
 .button {
@@ -25,7 +25,8 @@
 }
 
 .image {
+  margin: 3rem;
   width: 80%;
-  height: 80%;
+//   height: 80%;
 }
 
