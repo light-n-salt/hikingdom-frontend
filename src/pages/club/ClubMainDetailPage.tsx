@@ -28,11 +28,6 @@ function ClubMainDetailPage() {
       />
       <div className={styles.intro}>
         <MeetupIntroduction content={'마리아~ 산타마리아'} />
-        <SearchBar
-          value={value}
-          placeholder="등산했던 산을 검색해보세요"
-          onChangeText={setValue}
-        />
       </div>
       <img src={clubmountain} className={styles.image} />
     </div>
