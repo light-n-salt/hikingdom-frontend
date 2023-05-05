@@ -11,7 +11,7 @@ function ClubPage() {
   // const navigate = useNavigate()
 
   return (
-    <div className={`page ${theme} p-md`}>
+    <div className={`page ${theme}`}>
       <ClubHeader />
       <Outlet></Outlet>
     </div>

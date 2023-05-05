@@ -14,19 +14,19 @@ function ClubMainPage() {
   return (
     <div className={`page p-sm ${theme} ${styles.page}`}>
       <ClubRecordInfo
-        participationRate="36.3%"
+        participationRate="36.3"
         totalDuration="24"
         totalDistance={81}
         totalAlt={1580}
       />
       <div className={styles.intro}>
         <MeetupIntroduction content={'마리아~ 산타마리아'} />
+        <SearchBar
+          value={value}
+          placeholder="등산했던 산을 검색해보세요"
+          onChangeText={setValue}
+        />
       </div>
-      <SearchBar
-        value={value}
-        placeholder="등산했던 산을 검색해보세요"
-        onChangeText={setValue}
-      />
       <img src={clubmountain} className={styles.image} />
     </div>
   )
