@@ -88,7 +88,7 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted") // 메서드 의미상 의도된 사용법
 	@Transactional
-	boolean updatePendingJoinRequest(Member candidate, Club club, JoinRequestStatusType status) {
+	public boolean updatePendingJoinRequest(Member candidate, Club club, JoinRequestStatusType status) {
 		return clubJoinRequestRepository.updatePendingJoinRequestByMemberAndClub(candidate, club, status,
 			LocalDateTime.now()) > 0;
 	}

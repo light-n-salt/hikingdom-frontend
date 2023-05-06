@@ -80,7 +80,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	}
 
 	@Transactional
-	boolean retractPendingJoinRequest(Member member, Club club) {
+	public boolean retractPendingJoinRequest(Member member, Club club) {
 		return clubJoinRequestRepository.updatePendingJoinRequestByMemberAndClub(member, club,
 			JoinRequestStatusType.RETRACTED, LocalDateTime.now()) > 0;
 	}

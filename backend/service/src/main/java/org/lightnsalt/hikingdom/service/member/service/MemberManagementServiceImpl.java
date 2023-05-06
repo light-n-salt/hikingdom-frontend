@@ -157,7 +157,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	}
 
 	@Transactional
-	boolean setNickname(String nickname, Long memberId) {
+	public boolean setNickname(String nickname, Long memberId) {
 		return memberRepository.setNicknameById(nickname, memberId) > 0;
 	}
 }
