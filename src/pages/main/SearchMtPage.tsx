@@ -1,25 +1,70 @@
 import MtList from 'components/common/MtList'
 import SearchBar from 'components/common/SearchBar'
 // import RankList from 'components/common/RankList'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import styles from './SearchMtPage.module.scss'
 import { ThemeContext } from 'styles/ThemeProvider'
+import { useNavigate, useOutletContext, useLocation } from 'react-router-dom'
+import useDebounce from 'hooks/useDebounce'
+import { getMountains } from 'apis/services/mountains'
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import Loading from 'components/common/Loading'
+
+type OutletProps = {
+  value: string
+}
 
 function SearchMtPage() {
-  const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
 
-  const [value, setValue] = useState('')
+  const location = useLocation()
+  const query = location.state.query
+  const debouncedQuery = useDebounce(query!)
+
+  const [mtInfoArray, setMtInfoArray] = useState(mtInfoEx)
+  const infiniteRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const toMainPage = () => navigate('/main')
+    window.addEventListener('popstate', toMainPage)
+    return () => window.removeEventListener('popstate', toMainPage)
+  }, [])
+
+  useEffect(() => {
+    if (debouncedQuery) {
+      getMountains(debouncedQuery)
+        .then((res) => {
+          setMtInfoArray(res.data.result)
+        })
+        .catch(() => {})
+    }
+  }, [debouncedQuery])
+
+  function loadMore() {
+    return getMountains(debouncedQuery, mtInfoArray.slice(-1)[0].mountainId)
+      .then((res) => {
+        setMtInfoArray((mtInfoArray) => [...mtInfoArray, ...res.data.result])
+      })
+      .catch(() => {})
+  }
+
+  const { isLoading } = useInfiniteScroll(infiniteRef, loadMore)
 
   return (
-    <div className={styles.search}>
+    <div ref={infiniteRef} className={styles.container}>
       <MtList mtInfoArray={mtInfoArray} size="lg" />
+      {isLoading && (
+        <div className={styles.loading}>
+          <Loading size="sm" />
+        </div>
+      )}
     </div>
   )
 }
 
 export default SearchMtPage
 
-const mtInfoArray = [
+const mtInfoEx = [
   {
     mountainId: 1,
     name: '도봉산',
