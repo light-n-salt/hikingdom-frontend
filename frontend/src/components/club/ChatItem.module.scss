@@ -1,0 +1,46 @@
+@use 'src/styles/colors' as *;
+@use 'src/styles/themes' as *;
+
+.mine {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 0.3rem;
+
+  .content {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: clr(primary-clr, light);
+    color: clr(white-clr, light);
+    box-shadow: -1px 3px 5px 0px clr(shadow-clr);
+  }
+}
+
+.others {
+  display: flex;
+  gap: 0.3rem;
+
+  .content {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    @include light-theme;
+  }
+
+  .chat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .name {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+  }
+
+  .level {
+    width: 1rem;
+    height: 1rem;
+  }
+}
