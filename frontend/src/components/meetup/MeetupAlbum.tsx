@@ -1,7 +1,6 @@
 import React from 'react'
 import styles from './MeetupAlbum.module.scss'
 
-import Image from 'components/common/Image'
 import Button from 'components/common/Button'
 import { Album } from 'types/club.interface'
 
@@ -18,11 +17,10 @@ function MeetupAlbum({ photoInfo }: MeetupAlbumProps) {
       </div>
       <div className={styles.photos}>
         {photoInfo.map((photo) => (
-          <Image
+          <img
             key={photo.photoId}
-            imgUrl={photo.imgUrl}
-            size="lg"
-            isSquare={true}
+            src={photo.imgUrl}
+            className={styles.photo}
           />
         ))}
       </div>
