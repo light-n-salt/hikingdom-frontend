@@ -46,7 +46,7 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		// 일정 참여 여부 확인
-		if (!meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, member.getId()))
+		if (!meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, member.getId(), false))
 			throw new GlobalException(ErrorCode.MEETUP_MEMBER_UNAUTHORIZED);
 
 		MeetupReview meetupReview = MeetupReview.builder()

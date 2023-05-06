@@ -57,7 +57,7 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
-		final boolean isExit = meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, member.getId());
+		final boolean isExit = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, member.getId(), false);
 		if (!isExit) {
 			throw new GlobalException(ErrorCode.MEETUP_MEMBER_UNAUTHORIZED);
 		}

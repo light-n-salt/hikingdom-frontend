@@ -10,15 +10,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface MeetupMemberRepository extends JpaRepository<MeetupMember, Long> {
-	int countByMeetupId(Long id);
+	int countByMeetupIdAndIsWithdraw(Long id, boolean isWithdraw);
 
-	boolean existsByMeetupIdAndMemberId(Long meetupId, Long memberId);
+	boolean existsByMeetupIdAndMemberIdAndIsWithdraw(Long meetupId, Long memberId, boolean isWithdraw);
 
-	Optional<MeetupMember> findByMeetupIdAndMemberId(Long meetupId, Long memberId);
+	Optional<MeetupMember> findByMeetupIdAndMemberIdAndIsWithdraw(Long meetupId, Long memberId, boolean isWithdraw);
 
-	List<MeetupMember> findByMeetupId(Long meetupId);
+	List<MeetupMember> findByMeetupIdAndIsWithdraw(Long meetupId, boolean isWithdraw);
 
-	List<MeetupMember> findTop6ByMeetupId(Long meetupId);
+	List<MeetupMember> findTop6ByMeetupIdAndIsWithdraw(Long meetupId, boolean isWithdraw);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE MeetupMember m "

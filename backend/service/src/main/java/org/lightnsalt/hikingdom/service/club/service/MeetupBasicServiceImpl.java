@@ -112,7 +112,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		// 일정 사진, 리뷰 삭제
 		meetupAlbumRepository.updateMeetupAlbumIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
 		meetupReviewRepository.updateMeetupReviewIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
-		
+
 		// TODO: 일정 통계 삭제
 	}
 
@@ -162,7 +162,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		return meetups.stream().map(meetup -> {
 			MeetupDailyRes dto = new MeetupDailyRes(meetup);
 			// 일정 참여 멤버 가져오기
-			final int totalMember = meetupMemberRepository.countByMeetupId(meetup.getId());
+			final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetup.getId(), false);
 			dto.setTotalMember(totalMember);
 			return dto;
 		}).collect(Collectors.toList());
@@ -179,13 +179,14 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND)).getId();
 
-		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, memberId);
+		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, memberId,
+			false);
 
 		// 일정 참여 멤버 수 조회하기
-		final int totalMember = meetupMemberRepository.countByMeetupId(meetupId);
+		final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetupId, false);
 
 		// 일정 참여멤버 조회하기 6명
-		List<MeetupMember> meetupMembers = meetupMemberRepository.findTop6ByMeetupId(meetupId);
+		List<MeetupMember> meetupMembers = meetupMemberRepository.findTop6ByMeetupIdAndIsWithdraw(meetupId, false);
 		List<MemberInfoRes> memberInfos = meetupMembers.stream().map(MemberInfoRes::new).collect(Collectors.toList());
 
 		// 일정 사진 조회하기 3개
