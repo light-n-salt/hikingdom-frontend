@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import styles from './RankItem.module.scss'
 import { FaMountain } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 import Button from 'components/common/Button'
 import IconText from 'components/common/IconText'
 import shoe from 'assets/images/shoe.png'
@@ -21,6 +22,7 @@ type RankItemProps = {
 
 function RankItem({ clubInfo, size, isButton = false }: RankItemProps) {
   const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
 
   const totalMemeber = clubInfo.totalMember.toString() + '명'
   const totalDistance = clubInfo.totalDistance.toString() + 'km'
@@ -40,12 +42,16 @@ function RankItem({ clubInfo, size, isButton = false }: RankItemProps) {
   }
 
   // 소모임 삭제함수
-  function onClickDeleteClub() {
+  function onClickDeleteClub(e: React.TouchEvent | React.MouseEvent) {
+    e.stopPropagation()
     console.log(clubInfo.clubId)
   }
 
   return (
-    <div className={`content ${theme} ${styles.container} ${styles[size]}`}>
+    <div
+      className={`content ${theme} ${styles.container} ${styles[size]}`}
+      onClick={() => navigate(`/club/detail/${clubInfo.clubId}`)}
+    >
       <div className={styles.header}>
         <span className={styles.title}>{clubInfo.clubName}</span>
         {isButton && (

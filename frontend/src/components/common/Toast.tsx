@@ -96,7 +96,7 @@ function ToastMessages({ messages, deleteMessage }: ToastMessagesProps) {
       case 'success':
         return <FaCheckCircle />
       case 'error':
-        return <FaCheckCircle />
+        return <FaTimesCircle />
       case 'info':
         return <FaInfoCircle />
       case 'warning':

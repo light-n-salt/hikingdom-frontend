@@ -5,7 +5,7 @@ type ButtonProps = {
   text: string // 버튼 텍스트
   size?: 'xs' | 'sm' | 'md' | 'lg' // 사이즈
   color: 'primary' | 'secondary' | 'white' | 'red' | 'gray' // 색깔
-  onClick?: () => void // 클릭 시 동작
+  onClick?: (e: React.TouchEvent | React.MouseEvent) => void // 클릭 시 동작
   disabled?: boolean // disabled 여부
 }
 

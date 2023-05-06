@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './Mtlist.module.scss'
+import styles from './MtList.module.scss'
 import MtItem from 'components/common/MtItem'
 import { MtInfo } from 'types/mt.interface'
 
@@ -11,8 +11,8 @@ type MtListProps = {
 function MtList({ mtInfoArray, size = 'lg' }: MtListProps) {
   return (
     <div className={`${styles.container} ${styles[size]}`}>
-      {mtInfoArray.map((mtInfo, index) => (
-        <MtItem key={`mtinfo-item-${index}`} mtInfo={mtInfo} size={size} />
+      {mtInfoArray.map((mtInfo) => (
+        <MtItem key={mtInfo.mountainId} mtInfo={mtInfo} size={size} />
       ))}
     </div>
   )

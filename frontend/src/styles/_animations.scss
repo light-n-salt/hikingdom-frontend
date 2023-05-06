@@ -28,7 +28,7 @@
 }
 
 // 아래로 내려오면서 보이는 애니메이션
-@mixin animation-slide-in-down($speed: 'normal', $distance: -100%, $delay: 0) {
+@mixin animation-slide-in-down($speed: 'normal', $distance: 100%, $delay: 0) {
   @include animation(
     $delay,
     func-animation-speed($speed),
@@ -39,7 +39,7 @@
   @keyframes animation-slide-in-down {
     0% {
       opacity: 0;
-      transform: translateY($distance);
+      transform: translateY(-$distance);
     }
     100% {
       opacity: 1;

@@ -10,6 +10,9 @@ function IndexPage() {
 
   return (
     <>
+      <video className={styles.video} autoPlay loop muted>
+        <source src={mountainVideo} />
+      </video>
       <div className={`page p-lg ${styles.container}`}>
         <Logo size="lg" />
         <Button
@@ -19,9 +22,6 @@ function IndexPage() {
           onClick={() => navigate('/login')}
         />
       </div>
-      <video className={styles.video} autoPlay loop muted>
-        <source src={mountainVideo} />
-      </video>
     </>
   )
 }
