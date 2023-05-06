@@ -49,6 +49,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			.orElse(null);
 
 		return MemberInfoRes.builder()
+			.memberId(member.getId())
 			.email(member.getEmail())
 			.nickname(member.getNickname())
 			.profileUrl(member.getProfileUrl())
