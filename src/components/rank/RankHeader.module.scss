@@ -1,0 +1,25 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  background-color: clr(secondary-clr, dark);
+  color: clr(primary-clr);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-55%);
+}
+
+.icon {
+  width: 2rem;
+}

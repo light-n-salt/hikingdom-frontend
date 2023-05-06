@@ -2,14 +2,14 @@ import React, { useContext } from 'react'
 import styles from './LabelInput.module.scss'
 
 type LabelInputProps = {
-  label: string
-  value: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  isPass?: boolean
-  isError?: boolean
-  placeholder?: string
-  type?: string
-  disabled?: boolean
+  label: string // 라벨 텍스트
+  value: string // input태그 value
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void // input 변화시 동작할 함수
+  isPass?: boolean // pass 여부 -> border 초록색
+  isError?: boolean // error 여부 -> border 빨간색
+  placeholder?: string // placeholder
+  type?: string // input 태그 type
+  disabled?: boolean // input 태그 dsiabled
 }
 
 function LabelInput({

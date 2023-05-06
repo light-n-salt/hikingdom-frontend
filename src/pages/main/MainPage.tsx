@@ -1,18 +1,13 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { useNavigate, useOutletContext } from 'react-router-dom'
-import { ThemeContext } from 'styles/ThemeProvider'
-
+import React from 'react'
 import styles from './MainPage.module.scss'
-
-import MtList from 'components/common/MtList'
-import RankList from 'components/common/RankList'
-import IconText from 'components/common/IconText'
-
-import mountain from 'assets/images/mountain.png'
-import clubmountain from 'assets/images/clubmountain.png'
+import { useNavigate } from 'react-router-dom'
 import cloud from 'assets/images/cloud.png'
 import trophy from 'assets/images/trophy.png'
-// import { TodayClubMt } from 'types/mt.interface'
+import mountain from 'assets/images/mountain.png'
+import clubmountain from 'assets/images/clubmountain.png'
+import MtList from 'components/common/MtList'
+import IconText from 'components/common/IconText'
+import RankList from 'components/common/RankList'
 
 function MainPage() {
   const navigate = useNavigate()
@@ -68,17 +63,17 @@ const clubInfoArray = [
     ranking: 1,
   },
   {
-    clubId: 1,
+    clubId: 2,
     clubName: '산타마리아',
     location: '서울시 노원구',
     totalMember: 23,
     totalDuration: '12:02',
     totalDistance: 123,
     participationRate: 87,
-    ranking: 2,
+    ranking: 4,
   },
   {
-    clubId: 1,
+    clubId: 3,
     clubName: '산타마리아',
     location: '서울시 노원구',
     totalMember: 23,

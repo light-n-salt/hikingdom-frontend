@@ -1,13 +1,14 @@
 @use 'src/styles/colors' as *;
 
 .btn {
+  cursor: pointer;
+
   &.sm {
     > img {
       width: 2rem;
     }
     font-size: 1.5rem;
   }
-
   &.md {
     > img {
       width: 3rem;
@@ -25,24 +26,20 @@
   &.dark {
     color: clr(black-clr, dark);
   }
-  
+
   &.light {
     color: clr(white-clr, light);
   }
-  
+
   &.primary {
     color: clr(primary-clr);
   }
-  
+
   &.secondary {
     color: clr(secondary-clr);
   }
-  
+
   &.gray {
     color: clr(gray-clr, light);
   }
-}
-
-.btn:hover {
-  cursor: pointer;
 }

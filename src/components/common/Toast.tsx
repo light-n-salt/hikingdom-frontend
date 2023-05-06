@@ -8,12 +8,14 @@ import {
   FaExclamationCircle,
 } from 'react-icons/fa'
 
+// Message 의 타입
 type Message = {
   id: number
   type: 'success' | 'error' | 'info' | 'warning'
   message: string
 }
 
+// Toast 메시지를 관리하는 Manager 클래스
 class ToastManager {
   root
   messages: Message[]
@@ -40,13 +42,13 @@ class ToastManager {
 
   // 3초뒤 자동으로 토스트를 닫는 함수
   autoDeleteMessage(id: number) {
-    //clearTimeout은 반드시 필요하지 않음. https://stackoverflow.com/questions/7391567/when-using-settimeout-do-you-have-to-cleartimeout
+    //clearTimeout은 반드시 필요하지 않음. 참조: https://stackoverflow.com/questions/7391567/when-using-settimeout-do-you-have-to-cleartimeout
     setTimeout(
       () => {
         const toastElem = document.getElementById(
           `toast-message-${id}`
         ) as HTMLElement
-        toastElem.setAttribute('closing', '') // 이름과 값. 이름만 쓸 것이기 때문에, 값은 할당 안함
+        toastElem.setAttribute('closing', '') // (이름, 값) 이름만 쓸 것이기 때문에 값은 할당 안함
         toastElem.addEventListener(
           'animationend',
           () => {
@@ -57,7 +59,7 @@ class ToastManager {
       },
       3000,
       id,
-      this // 전달 인자
+      this // 전달 인자 binding
     )
   }
 
@@ -81,12 +83,14 @@ class ToastManager {
 
 export default new ToastManager()
 
+// 토스트 메시지 리스트
 type ToastMessagesProps = {
-  messages: Message[]
-  deleteMessage: (id: number) => void
+  messages: Message[] // 메시지 배열
+  deleteMessage: (id: number) => void // 토스트 메시지를 삭제하는 함수
 }
 
 function ToastMessages({ messages, deleteMessage }: ToastMessagesProps) {
+  // 아이콘 할당
   function getIcon(type: 'success' | 'error' | 'info' | 'warning') {
     switch (type) {
       case 'success':

@@ -1,33 +1,10 @@
 @use 'src/styles/colors' as *;
 
-.header {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    width: 100%;
-    padding: 1rem;
-    background-color: clr(secondary-clr, dark);
-    color: clr(primary-clr);
-}
-
-.icon {
-    width: 2rem;
-}
-
-.search {
-    position: absolute;
-    right: 0.8rem;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
 .select {
-    align-self: flex-end;
+  align-self: flex-end;
 }
 
 .clubs {
-    width: 100%;
-    overflow-y: auto;
+  width: 100%;
+  overflow-y: auto;
 }

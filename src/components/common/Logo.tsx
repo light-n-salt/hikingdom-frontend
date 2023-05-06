@@ -3,7 +3,7 @@ import styles from './Logo.module.scss'
 import logoPng from 'assets/images/logo.png'
 
 type LogoProps = {
-  size?: 'sm' | 'md' | 'lg' // 크기
+  size?: 'sm' | 'md' | 'lg' // 로고 크기
 }
 
 function Logo({ size = 'md' }: LogoProps) {
