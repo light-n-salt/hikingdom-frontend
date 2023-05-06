@@ -21,8 +21,8 @@ services:
     build:
       context: ./backend/batch
       dockerfile: Dockerfile
-    args:
-      SERVER_MODE: dev
+      args:
+        SERVER_MODE: dev
     ports:
       - 8083:8080
     environment:
