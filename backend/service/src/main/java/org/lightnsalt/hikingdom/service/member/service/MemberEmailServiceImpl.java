@@ -29,14 +29,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberEmailServiceImpl implements MemberEmailService {
 	private static final SecureRandom secureRandom = new SecureRandom();
-	private static final char[] possiblePasswordCharacters =
-		("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()+|=").toCharArray();
 	private final JavaMailSender javaMailSender;
 	private final PasswordEncoder passwordEncoder;
 	private final RedisUtil redisUtil;
 	private final MemberRepository memberRepository;
+
 	@Value("${values.mail.setFrom}")
 	private String fromEmail;
+	@Value("${values.password.possibleChars}")
+	private char[] possiblePasswordCharacters;
 
 	@Transactional
 	@Override
