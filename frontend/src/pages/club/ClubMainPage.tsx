@@ -16,16 +16,20 @@ function ClubMainPage() {
 
   const [isOpen, setIsOpen] = useState(false)
 
+  function onChangeSetValue(event: React.ChangeEvent<HTMLInputElement>) {
+    setValue(event.target.value)
+  }
+
   return (
     <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
-          <DeleteModal 
+          <DeleteModal
             title="모임을 탈퇴하시겠습니까?"
-            content= "탈퇴한 모임은 다시 가입을 신청해야 합니다."
-            buttonText= "모임 탈퇴"
-            onClickDelete= {() => console.log("탈퇴")}
-            onClickCloseModal= {() => setIsOpen(false)}
+            content="탈퇴한 모임은 다시 가입을 신청해야 합니다."
+            buttonText="모임 탈퇴"
+            onClickDelete={() => console.log('탈퇴')}
+            onClickCloseModal={() => setIsOpen(false)}
           />
         </Modal>
       )}
@@ -41,12 +45,17 @@ function ClubMainPage() {
           <SearchBar
             value={value}
             placeholder="등산했던 산을 검색해보세요"
-            onChangeText={setValue}
+            onChange={onChangeSetValue}
           />
         </div>
         <img src={clubmountain} className={styles.image} />
         <div className={styles.button}>
-          <TextButton text="모임탈퇴" size="sm" color="red" onClick={() => setIsOpen(true)}/>
+          <TextButton
+            text="모임탈퇴"
+            size="sm"
+            color="red"
+            onClick={() => setIsOpen(true)}
+          />
         </div>
       </div>
     </>

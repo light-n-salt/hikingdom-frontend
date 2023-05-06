@@ -1,29 +1,33 @@
 import React, { useState, useEffect } from 'react'
-import useDebounce from './useDebounce'
+import useDebounce from 'hooks/useDebounce'
+
+/*
+비밀번호 재확인 커스텀 훅.
+비밀번호 재확인 값을 기존 비밀번호와 비교한다.
+*/
 
 type CheckPwProps = {
-  password: string
+  password: string // 비교할 기존 비밀번호
 }
 
 type CheckPwReturns = {
-  value: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  value: string // 비밀번호 재확인 value
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void // 비밀번호 input태그의 onChange에 따라 value를 djqepdlxm
   isPass: boolean // 비밀번호 일치 여부
 }
 
-// 비밀번호 일치 여부 확인 함수
-// password : 일치 여부 판단 기준 값
 function useCheckPw({ password }: CheckPwProps): CheckPwReturns {
-  const [value, setValue] = useState<string>('') // 실시간 입력값 반영
-  const [isPass, setIsPass] = useState(false)
-  const debouncedValue = useDebounce(value) // delay 후 debouncedValue에 할당
+  const [value, setValue] = useState<string>('') // 비밀번호 재확인 값 useState
+  const [isPass, setIsPass] = useState(false) // 기존 비밀번호와 일치 여부
+  const debouncedValue = useDebounce(value) // debounced value
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // 비밀번호 input태그의 onChange에 따라 value 업데이트 하는 함수
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value)
   }
 
+  // 지연된(debounced) 값이 변화함에 따라서 기존비밀 번호와 일치여부 판단
   useEffect(() => {
-    // 기준 값과 입력 값 일치 여부 판단 (boolean)
     setIsPass(debouncedValue !== '' && password === debouncedValue)
   }, [debouncedValue])
 

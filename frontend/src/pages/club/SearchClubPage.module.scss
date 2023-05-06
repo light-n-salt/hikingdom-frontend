@@ -1,11 +1,18 @@
 @use 'src/styles/colors' as *;
 
-.search {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-items: center;
-  width: 100%;
-  padding-top: 0.5rem;
+.container {
+  padding-top: 1rem;
   gap: 0.5rem;
+}
+
+.search {
+  position: sticky;
+  top: 0rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.clubs {
+  overflow-y: auto;
+  width: 100%;
 }

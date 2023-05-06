@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-// value : 입력값   delay: 지연시킬 시간
+// value: 입력값, delay: 지연시킬 시간
 function useDebounce(value: string, delay?: number): string {
   const [debouncedValue, setDebouncedValue] = useState(value)
 

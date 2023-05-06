@@ -2,12 +2,12 @@ import React from 'react'
 import styles from './LabelTextArea.module.scss'
 
 type LabelTextAreaProps = {
-  label: string
-  value: string
-  placeholder: string
-  size?: 'sm' | 'md' | 'lg'
-  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
-  disabled?: boolean
+  label: string // 라벨 텍스트
+  value: string // textarea 태그의 value
+  placeholder: string // textarea 태그의 placeholder
+  size?: 'sm' | 'md' | 'lg' // textarea 사이즈
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void // textarea의 input 변경시 동작할 함수
+  disabled?: boolean // textarea 태그 disabled
 }
 
 function LabelTextArea({
