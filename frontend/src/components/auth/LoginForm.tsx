@@ -31,7 +31,7 @@ function LoginForm() {
     }
     services
       .login(email, password)
-      .then((res) => {
+      .then(() => {
         navigate('/main')
       })
       .catch((err) => {

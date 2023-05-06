@@ -1,5 +1,4 @@
 @use 'src/styles/colors' as *;
-@use 'src/styles/z-index' as *;
 
 .detail {
   display: flex;
@@ -9,7 +8,6 @@
 }
 
 .image {
-  @include z-index(background);
   position: absolute;
   top: 0;
   left: 0;

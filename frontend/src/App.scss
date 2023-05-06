@@ -1,6 +1,5 @@
 @use 'src/styles/colors' as *;
 @use 'src/styles/themes' as *;
-@use 'src/styles/z-index' as *;
 
 * {
   // 스크롤바 숨기기
@@ -10,7 +9,6 @@
 }
 
 .page {
-  @include z-index(page);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,12 +42,10 @@
   }
 
   &-gradation {
-    @include z-index(page);
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    z-index: z-index(page);
     width: 100%;
     min-height: 100%;
 
@@ -87,10 +83,10 @@
 
   &.light {
     @include light-theme;
-    box-shadow: -1px 3px 5px 0px clr(shadow-clr);
+    box-shadow: -1px 2px 3px 0px clr(shadow-clr);
   }
   &.dark {
     @include dark-theme;
-    box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
+    box-shadow: -1px 2px 3px 0px clr(shadow-clr, light);
   }
 }

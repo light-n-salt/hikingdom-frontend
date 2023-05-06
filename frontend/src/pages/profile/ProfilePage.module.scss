@@ -2,13 +2,12 @@
 
 .profile {
   gap: 1rem;
+}
 
-  > div:first-child {
-    z-index: 1;
-    position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
-  }
+.alarm {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
 }
 
 .title {
