@@ -47,6 +47,12 @@ public class ClubMemberController {
 	@GetMapping("/members")
 	public ResponseEntity<?> clubMemberList(Authentication authentication, @PathVariable Long clubId) {
 		Map<String, List<MemberListRes>> result = clubMemberService.findClubMember(authentication.getName(), clubId);
-		return new ResponseEntity<>(BaseResponseBody.of("모임 멤버 조회에 성공했습니다", result), HttpStatus.OK);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 멤버 조회에 성공했습니다", result), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/members")
+	public ResponseEntity<?> clubMemberWithdraw(Authentication authentication, @PathVariable Long clubId) {
+		clubMemberService.withdrawClubMember(authentication.getName(), clubId);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 탈퇴에 성공했습니다"), HttpStatus.OK);
 	}
 }
