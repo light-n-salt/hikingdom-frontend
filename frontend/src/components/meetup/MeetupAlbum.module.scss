@@ -20,9 +20,14 @@
 
 .photos {
   overflow: scroll;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  gap: 0.5rem;
+}
+
+.photo {
+  aspect-ratio: 1/1;
   width: 100%;
+  border-radius: 0.3rem;
+  object-fit: cover;
 }

@@ -1,6 +1,6 @@
 @use 'src/styles/animations' as *;
 
-.mt-list {
+.container {
   display: flex;
   width: 100%;
 
@@ -12,11 +12,15 @@
   &.lg {
     flex-direction: column;
     gap: 0.5rem;
+  }
+}
 
-    @for $i from 1 through 10 {
-      & > div:nth-child(#{$i}) {
-        @include animation-slide-in-up(normal, 40%, #{($i - 1) * 0.2}s);
-      }
-    }
+.container > div {
+  opacity: 0;
+}
+
+@for $i from 1 through 10 {
+  .container > div:nth-child(#{$i}) {
+    @include animation-slide-in-up(normal, 40%, #{($i - 1) * 0.1}s);
   }
 }

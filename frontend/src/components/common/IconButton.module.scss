@@ -1,48 +1,45 @@
 @use 'src/styles/colors' as *;
 
-.btn:hover {
+.btn {
   cursor: pointer;
-}
 
-.sm {
-  .img {
-    width: 2rem;
+  &.sm {
+    > img {
+      width: 2rem;
+    }
+    font-size: 1.5rem;
   }
-  font-size: 1.5rem;
-}
-
-.md {
-  .img {
-    width: 3rem;
-  }
-
-  font-size: 2.5rem;
-}
-
-.lg {
-  .img {
-    width: 4rem;
+  &.md {
+    > img {
+      width: 3rem;
+    }
+    font-size: 2rem;
   }
 
-  font-size: 3.5rem;
-}
+  &.lg {
+    > img {
+      width: 4rem;
+    }
+    font-size: 2.5rem;
+  }
 
-.dark {
-  color: clr(black-clr, dark);
-}
+  &.dark {
+    color: clr(black-clr, dark);
+  }
 
-.light {
-  color: clr(white-clr, light);
-}
+  &.light {
+    color: clr(white-clr, light);
+  }
 
-.primary {
-  color: clr(primary-clr);
-}
+  &.primary {
+    color: clr(primary-clr);
+  }
 
-.secondary {
-  color: clr(secondary-clr);
-}
+  &.secondary {
+    color: clr(secondary-clr);
+  }
 
-.gray {
-  color: clr(gray-clr, light);
+  &.gray {
+    color: clr(gray-clr, light);
+  }
 }

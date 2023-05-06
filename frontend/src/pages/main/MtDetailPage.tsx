@@ -6,14 +6,16 @@ import { MtInfoDetail } from 'types/mt.interface'
 import styles from './MtDetailPage.module.scss'
 
 function MtDetailPage() {
-  const { theme } = useContext(ThemeContext)
+  // const { theme } = useContext(ThemeContext)
 
   return (
-    <div className={`page ${theme} p-sm ${styles.detail}`}>
-      <PageHeader title="" url="/main/search" color="light" />
-      <MtDetail mtInfo={mtInfo} />
-      <img src={mtInfo.imgUrl} className={styles.image} />
-    </div>
+    <>
+      <div className={`page p-sm ${styles.detail}`}>
+        <img src={mtInfo.imgUrl} className={styles.image} />
+        <PageHeader title="" url="/main/search" color="light" />
+        <MtDetail mtInfo={mtInfo} />
+      </div>
+    </>
   )
 }
 

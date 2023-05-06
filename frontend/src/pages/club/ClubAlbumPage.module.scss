@@ -1,0 +1,8 @@
+@use 'src/styles/colors' as *;
+
+.cnt {
+  align-self: flex-end;
+  margin: 0.1rem;
+  color: clr(primary-clr);
+  font-weight: bold;
+}

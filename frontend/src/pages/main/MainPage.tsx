@@ -1,32 +1,20 @@
-import React, { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { ThemeContext } from 'styles/ThemeProvider'
-
+import React from 'react'
 import styles from './MainPage.module.scss'
-
-import MtList from 'components/common/MtList'
-import SearchBar from 'components/common/SearchBar'
-import RankList from 'components/common/RankList'
-import IconText from 'components/common/IconText'
-// import PageHeader from 'components/common/PageHeader'
-
-import mountain from 'assets/images/mountain.png'
-import clubmountain from 'assets/images/clubmountain.png'
+import { useNavigate } from 'react-router-dom'
 import cloud from 'assets/images/cloud.png'
 import trophy from 'assets/images/trophy.png'
-// import { TodayClubMt } from 'types/mt.interface'
+import mountain from 'assets/images/mountain.png'
+import clubmountain from 'assets/images/clubmountain.png'
+import MtList from 'components/common/MtList'
+import IconText from 'components/common/IconText'
+import RankList from 'components/common/RankList'
 
 function MainPage() {
   const navigate = useNavigate()
 
-  function onClickClubMt() {
-    const clubId = 1
-    navigate(`/club/detail/${clubId}`)
-  }
-
   return (
-    <div className={styles.main}>
-      <div className={`${styles.container} ${styles.sm}`}>
+    <div className={styles.container}>
+      <div className={styles.section}>
         <IconText
           imgSrc={cloud}
           text="여기 등산 어때요"
@@ -37,20 +25,25 @@ function MainPage() {
           <MtList mtInfoArray={mtInfoArray} size="sm" />
         </div>
       </div>
-      <div className={`${styles.container} ${styles.sm}`}>
+      <div className={styles.section}>
         <IconText imgSrc={trophy} text="TOP3" size="md" isBold={true} />
         <div className={styles.scroll}>
           <RankList clubInfoArray={clubInfoArray} size="sm" />
         </div>
       </div>
-      <div className={`${styles.container} ${styles.lg}`}>
+      <div className={styles.section}>
         <IconText
           imgSrc={mountain}
           text="오늘의 모임 산"
           size="md"
           isBold={true}
         />
-        <img src={clubmountain} onClick={onClickClubMt} />
+        <img
+          src={clubmountain}
+          onClick={() => {
+            navigate(`/club/detail/1`)
+          }}
+        />
       </div>
     </div>
   )
@@ -70,17 +63,17 @@ const clubInfoArray = [
     ranking: 1,
   },
   {
-    clubId: 1,
+    clubId: 2,
     clubName: '산타마리아',
     location: '서울시 노원구',
     totalMember: 23,
     totalDuration: '12:02',
     totalDistance: 123,
     participationRate: 87,
-    ranking: 2,
+    ranking: 4,
   },
   {
-    clubId: 1,
+    clubId: 3,
     clubName: '산타마리아',
     location: '서울시 노원구',
     totalMember: 23,

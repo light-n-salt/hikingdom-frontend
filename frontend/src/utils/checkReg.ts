@@ -1,3 +1,4 @@
+// 정규식 모음 객체
 const REG_EXP = {
   email: {
     pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -19,16 +20,17 @@ const REG_EXP = {
 }
 
 type checkExpReturns = {
-  result: boolean
-  condition: string
+  result: boolean // 정규식 테스트 결과
+  condition: string // 정규식 조건
 }
 
+// 정규식 타입과, 테스트할 값을 전달 받음
 export default function checkReg(
   type: 'email' | 'nickname' | 'password' | 'code',
   value: string
 ): checkExpReturns {
   const { pattern, condition } = REG_EXP[type]
-  const result = pattern.test(value)
+  const result = pattern.test(value) //정규식 테스트
 
   return { result, condition }
 }

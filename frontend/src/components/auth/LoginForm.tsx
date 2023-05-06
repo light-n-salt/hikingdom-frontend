@@ -1,12 +1,12 @@
-import Button from 'components/common/Button'
-import LabelInput from 'components/common/LabelInput'
-import useAuthInput from 'hooks/useAuthInput'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 import sytles from './LoginForm.module.scss'
+import { useNavigate } from 'react-router-dom'
 import services from 'apis/services'
 import toast from 'components/common/Toast'
+import Button from 'components/common/Button'
+import LabelInput from 'components/common/LabelInput'
 import TextButton from 'components/common/TextButton'
+import useAuthInput from 'hooks/useAuthInput'
 
 function LoginForm() {
   const navigate = useNavigate()
@@ -15,22 +15,23 @@ function LoginForm() {
     value: email,
     onChange: changeEmail,
     isPass: isEmailPass,
-  } = useAuthInput({ type: 'email' })
+  } = useAuthInput({ type: 'email' }) // 사용자 인증 input 커스텀 훅
   const {
     value: password,
     onChange: changePw,
     isPass: isPwPass,
-  } = useAuthInput({ type: 'password' })
+  } = useAuthInput({ type: 'password' }) // 사용자 인증 input 커스텀 훅
 
+  // 로그인 api 요청
   function login() {
+    // 이메일 형식이 맞고, 비밀번호가 입력된 경우에만 요청을 보냄
     if (!isEmailPass || !password) {
-      // 이메일 형식이 틀렸거나 비밀번호가 입력되지 않은 경우
       toast.addMessage('error', `이메일과 비밀번호를 정확하게 입력해주세요`)
       return
     }
     services
       .login(email, password)
-      .then((res) => {
+      .then(() => {
         navigate('/main')
       })
       .catch((err) => {

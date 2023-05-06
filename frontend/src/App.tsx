@@ -1,22 +1,20 @@
 import './App.scss'
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import ThemeProvider from 'styles/ThemeProvider'
-
+import WebMargin from 'components/common/WebMargin'
+// Auth
+import IndexPage from 'pages/auth/IndexPage'
 import LoginPage from 'pages/auth/LoginPage'
 import AgreePage from 'pages/auth/AgreePage'
 import FindPwPage from 'pages/auth/FindPwPage'
 import SignupPage from 'pages/auth/SignupPage'
-
 // Main
-import MountainPage from 'pages/main/MountainPage'
+import SearchLayout from 'pages/main/SearchLayout'
 import MainPage from 'pages/main/MainPage'
 import SearchMtPage from 'pages/main/SearchMtPage'
 import MtDetailPage from 'pages/main/MtDetailPage'
-
 // Rank
 import RankPage from 'pages/rank/RankPage'
-
 // Club
 import SearchClubPage from 'pages/club/SearchClubPage'
 import MainDetailPage from 'pages/club/ClubMainDetailPage'
@@ -32,14 +30,10 @@ import ClubAlbumPage from 'pages/club/ClubAlbumPage'
 // Club - Meetup
 import MeetupCreatePage from 'pages/club/MeetupCreatePage'
 import MeetupDetailPage from 'pages/club/MeetupDetailPage'
-
 // MyPage
 import ProfilePage from 'pages/profile/ProfilePage'
 import ProfileUpdatePage from 'pages/profile/ProfileUpdatePage'
 import AlarmPage from 'pages/profile/AlarmPage'
-
-import WebMargin from 'components/common/WebMargin'
-import IndexPage from 'pages/auth/IndexPage'
 
 function App() {
   return (
@@ -52,7 +46,7 @@ function App() {
         <Route path="password" element={<FindPwPage />} />
 
         {/* 메인 */}
-        <Route path="/main" element={<MountainPage />}>
+        <Route path="/main" element={<SearchLayout />}>
           <Route path="" element={<MainPage />} />
           <Route path="search" element={<SearchMtPage />} />
         </Route>
@@ -67,7 +61,7 @@ function App() {
         <Route path="/club/detail/:id" element={<MainDetailPage />} />
         <Route path="/club/create" element={<ClubCreatePage />} />
         <Route path="/club/chat" element={<ClubChatPage />} />
-        <Route path="/club/main" element={<ClubNoneExistPage />} />
+        <Route path="/club/none" element={<ClubNoneExistPage />} />
         <Route path="/club" element={<ClubPage />}>
           <Route path="main/:id" element={<ClubMainPage />} />
           <Route path="meetup" element={<ClubMeetupPage />} />

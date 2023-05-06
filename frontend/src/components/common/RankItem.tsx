@@ -1,28 +1,33 @@
 import React, { useContext } from 'react'
-import { ClubInfo } from 'types/club.interface'
+import styles from './RankItem.module.scss'
 import { FaMountain } from 'react-icons/fa'
-import person from 'assets/images/person.png'
-import hourglass from 'assets/images/hourglass.png'
+import { useNavigate } from 'react-router-dom'
+import Button from 'components/common/Button'
+import IconText from 'components/common/IconText'
 import shoe from 'assets/images/shoe.png'
 import marker from 'assets/images/marker.png'
-import styles from './RankItem.module.scss'
-import IconText from './IconText'
-import { ThemeContext } from 'styles/ThemeProvider'
+import person from 'assets/images/person.png'
+import hourglass from 'assets/images/hourglass.png'
+import goldMedal from 'assets/images/gold_medal.png'
 import bronzeMedal from 'assets/images/bronze_medal.png'
 import silverMedal from 'assets/images/silver_medal.png'
-import goldMedal from 'assets/images/gold_medal.png'
+import { ThemeContext } from 'styles/ThemeProvider'
+import { ClubInfo } from 'types/club.interface'
 
 type RankItemProps = {
-  clubInfo: ClubInfo
-  size: 'sm' | 'lg'
+  clubInfo: ClubInfo // 소모임 정보
+  size: 'sm' | 'lg' // 크기
+  isButton?: boolean // 삭제버튼 여부
 }
 
-function RankItem({ clubInfo, size }: RankItemProps) {
+function RankItem({ clubInfo, size, isButton = false }: RankItemProps) {
   const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
 
   const totalMemeber = clubInfo.totalMember.toString() + '명'
   const totalDistance = clubInfo.totalDistance.toString() + 'km'
 
+  // 랭킹 아이콘
   let rankingIcon = null
   switch (clubInfo.ranking) {
     case 1:
@@ -36,24 +41,44 @@ function RankItem({ clubInfo, size }: RankItemProps) {
       break
   }
 
+  // 소모임 삭제함수
+  function onClickDeleteClub(e: React.TouchEvent | React.MouseEvent) {
+    e.stopPropagation()
+    console.log(clubInfo.clubId)
+  }
+
   return (
-    <div className={`content ${theme} ${styles['rank-item']} ${styles[size]}`}>
-      <h3>{clubInfo.clubName}</h3>
-      <div className={`${styles['icon-info-box']} ${styles[size]}`}>
+    <div
+      className={`content ${theme} ${styles.container} ${styles[size]}`}
+      onClick={() => navigate(`/club/detail/${clubInfo.clubId}`)}
+    >
+      <div className={styles.header}>
+        <span className={styles.title}>{clubInfo.clubName}</span>
+        {isButton && (
+          <Button
+            text="신청 취소"
+            size="sm"
+            color="secondary"
+            onClick={onClickDeleteClub}
+          />
+        )}
+      </div>
+      <div className={`${styles.info} ${styles[size]}`}>
         <IconText imgSrc={person} text={totalMemeber} />
-        <div className={styles['flex-box']}>
+        <div className={styles.flexbox}>
           <IconText imgSrc={hourglass} text={clubInfo.totalDuration} />
           <IconText imgSrc={shoe} text={totalDistance} />
         </div>
       </div>
-      <div className={styles['flex-box']}>
+      <div className={styles.flexbox}>
         {size === 'lg' && <IconText imgSrc={marker} text={clubInfo.location} />}
         <MtRating participationRate={clubInfo.participationRate} />
       </div>
+      {/* 랭킹 아이콘 */}
       {rankingIcon ? (
-        <img className={styles['medal']} src={rankingIcon} />
+        <img className={styles.medal} src={rankingIcon} />
       ) : (
-        <div className={styles['rank-box']}>{clubInfo.ranking}</div>
+        <div className={styles.rank}>{clubInfo.ranking}</div>
       )}
     </div>
   )
@@ -61,8 +86,9 @@ function RankItem({ clubInfo, size }: RankItemProps) {
 
 export default RankItem
 
+// 참여도에 따른 산모양 5점 별점 아이콘 컴포넌트 반환
 type MtRatingProps = {
-  participationRate: number
+  participationRate: number // 참여도
 }
 
 function MtRating({ participationRate }: MtRatingProps) {
