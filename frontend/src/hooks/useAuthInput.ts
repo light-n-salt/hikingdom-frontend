@@ -23,7 +23,7 @@ function useAuthInput({
   const [condition, setCondition] = useState('') // 정규식 통과 조건
   const debouncedValue = useDebounce(value)
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value)
   }
 

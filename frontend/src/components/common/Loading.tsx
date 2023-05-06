@@ -10,13 +10,13 @@ interface LoadingProps {
 
 function Loading({ type = 'mountain', size = 'md' }: LoadingProps) {
   return (
-    <div className={styles.container}>
+    <>
       {type === 'circle' ? (
         <Spinner className={`${styles.circle} ${styles[size]}`} />
       ) : (
         <Mountain className={`${styles.mountain} ${styles[size]}`} />
       )}
-    </div>
+    </>
   )
 }
 

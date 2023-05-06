@@ -12,9 +12,13 @@ function SearchClubPage() {
 
   const [value, setValue] = useState('')
 
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setValue(event.target.value)
+  }
+
   return (
     <div className={`page ${theme} p-md ${styles.search}`}>
-      <SearchBar value={value} placeholder="" onChangeText={setValue} />
+      <SearchBar value={value} placeholder="" onChange={onChange} />
       <RankList clubInfoArray={clubInfoArray} size="lg" />
     </div>
   )

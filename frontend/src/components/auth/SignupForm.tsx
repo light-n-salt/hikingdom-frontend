@@ -47,7 +47,9 @@ function SignupForm() {
   function validEmail() {
     services
       .validEmail(email)
-      .then(() => {})
+      .then((res) => {
+        toast.addMessage('success', res.data.message)
+      })
       .catch((err) => {
         toast.addMessage('error', err.data.message)
       })
@@ -56,8 +58,9 @@ function SignupForm() {
   function confirmEmail() {
     services
       .confirmEmail(email, code)
-      .then(() => {
+      .then((res) => {
         setIsAuthStatus(0)
+        toast.addMessage('success', res.data.message)
       })
       .catch((err) => {
         setIsAuthStatus(2)
@@ -68,8 +71,9 @@ function SignupForm() {
   function checkNickname() {
     services
       .checkNickname(nickname)
-      .then(() => {
+      .then((res) => {
         setIsDupStatus(0)
+        toast.addMessage('success', res.data.message)
       })
       .catch((err) => {
         setIsDupStatus(2)
@@ -83,7 +87,7 @@ function SignupForm() {
       .signup(email, nickname, password, checkPassword)
       .then(() => {
         toast.addMessage('success', '회원가입에 성공했습니다!')
-        navigate('login')
+        navigate('/login')
       })
       .catch((err) => {
         toast.addMessage('error', err.data.message)

@@ -9,7 +9,7 @@ import FindPwPage from 'pages/auth/FindPwPage'
 import SignupPage from 'pages/auth/SignupPage'
 
 // Main
-import MountainPage from 'pages/main/MountainPage'
+import SearchLayout from 'pages/main/SearchLayout'
 import MainPage from 'pages/main/MainPage'
 import SearchMtPage from 'pages/main/SearchMtPage'
 import MtDetailPage from 'pages/main/MtDetailPage'
@@ -52,7 +52,7 @@ function App() {
         <Route path="password" element={<FindPwPage />} />
 
         {/* 메인 */}
-        <Route path="/main" element={<MountainPage />}>
+        <Route path="/main" element={<SearchLayout />}>
           <Route path="" element={<MainPage />} />
           <Route path="search" element={<SearchMtPage />} />
         </Route>
