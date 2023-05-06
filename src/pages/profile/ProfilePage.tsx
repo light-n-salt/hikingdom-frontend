@@ -61,10 +61,12 @@ function ProfilePage() {
 
   return (
     <div className={`page p-sm ${theme} ${styles.profile}`}>
-      <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
       <UserProfile />
       <div className={styles.title}>등산기록</div>
       <PastMeetupList />
+      <div className={styles.alarm}>
+        <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
+      </div>
     </div>
   )
 }

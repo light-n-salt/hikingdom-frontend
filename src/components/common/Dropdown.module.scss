@@ -1,5 +1,6 @@
 @use 'src/styles/colors' as *;
 @use 'src/styles/animations' as *;
+@use 'src/styles/z-index' as *;
 
 .container {
   display: flex;
@@ -40,13 +41,14 @@
 }
 
 .options {
+  @include z-index(content);
   position: absolute;
   top: 2.1rem;
   min-width: 100%;
+}
 
-  > div {
-    opacity: 0;
-  }
+.options > div {
+  opacity: 0;
 }
 
 @for $i from 1 through 10 {
@@ -56,12 +58,14 @@
 }
 
 .option {
+  position: relative;
   padding: 0.4rem;
   background-color: clr(white-clr, light);
   color: clr(gray-clr, dark);
   font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
+  box-shadow: 0 2px 3px 0 clr(shadow-clr);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 

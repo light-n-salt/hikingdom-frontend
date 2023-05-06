@@ -4,6 +4,8 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from 'axios'
+import { redirect } from 'react-router-dom'
+import toast from 'components/common/Toast'
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
@@ -44,7 +46,7 @@ axiosInstance.interceptors.response.use(
     // 만료된 JWT access 토큰이 감지되면 자동으로 새로운 JWT access 토큰 발급
     if (
       error.response?.status === 401 &&
-      error.response?.data?.message === 'Token expired'
+      error.response?.data?.message === '토큰이 만료되었습니다'
     ) {
       const refreshToken = localStorage.getItem('refreshToken') // recoil에서 refreshToken 읽어오기
 
@@ -61,10 +63,18 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(originalRequest)
         })
         .catch((error) => {
+          toast.addMessage('error', `다시 로그인 해주세요`)
+          window.location.href =
+            window.location.protocol + '//' + window.location.host + '/login'
           // JWT access 토큰 갱신에 실패한 경우, 로그인 페이지로 리다이렉트 하는 함수 추가
           // 이 코드에서는 단순히 에러를 반환
           return Promise.reject(error)
         })
+    } else if (error.response?.status === 401) {
+      toast.addMessage('error', `로그인 후 이용해주세요`)
+      redirect('/login')
+    } else if (error.response?.status === 500) {
+      toast.addMessage('error', `서버와의 통신 오류가 발생했습니다`)
     }
 
     return Promise.reject(error.response)
