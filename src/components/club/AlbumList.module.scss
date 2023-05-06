@@ -1,0 +1,12 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  gap: 0.5rem;
+}
+
+.img {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border-radius: 0.3rem;
+  object-fit: cover;
+}
