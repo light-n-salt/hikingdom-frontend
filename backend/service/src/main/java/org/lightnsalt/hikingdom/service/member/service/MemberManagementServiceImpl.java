@@ -66,23 +66,25 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
 			.orElse(null);
 
-		// 소모임 모임장 또는 진행 중인 일정이 있을 시 탈퇴 불가능
-		if (clubMember.getClub().getHost().getId().equals(member.getId())) {
-			throw new GlobalException(ErrorCode.CLUB_MEMBER_IS_HOST);
-		}
+		if (clubMember != null) {
+			// 소모임 모임장 또는 진행 중인 일정이 있을 시 탈퇴 불가능
+			if (clubMember.getClub().getHost().getId().equals(member.getId())) {
+				throw new GlobalException(ErrorCode.CLUB_MEMBER_IS_HOST);
+			}
 
-		if (!meetupRepository.findByClubIdAndHostIdAndStartAtAfter(clubMember.getClub().getId(), member.getId(),
-			LocalDateTime.now()).isEmpty()) {
-			throw new GlobalException(ErrorCode.CLUB_MEMBER_HOST_MEETUP_EXISTS);
+			if (!meetupRepository.findByClubIdAndHostIdAndStartAtAfter(clubMember.getClub().getId(), member.getId(),
+				LocalDateTime.now()).isEmpty()) {
+				throw new GlobalException(ErrorCode.CLUB_MEMBER_HOST_MEETUP_EXISTS);
+			}
+
+			// 소모임 탈퇴
+			// TODO: 소모임 일정 참여해둔 것 취소?
+			clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, LocalDateTime.now());
 		}
 
 		// 소모임 가입 신청 취소
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
 			LocalDateTime.now());
-
-		// 소모임 탈퇴
-		// TODO: 소모임 일정 참여해둔 것 취소?
-		clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, LocalDateTime.now());
 
 		memberRepository.updateMemberWithdraw(member.getId(), true, LocalDateTime.now());
 	}
