@@ -105,13 +105,13 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 			List<ClubJoinRequest> list = clubJoinRequestRepository.findByClubIdAndMemberIsWithdrawAndStatus(clubId,
 				false, JoinRequestStatusType.PENDING);
 			List<MemberListRes> result = list.stream()
-				.map((clubJoinRequest) -> new MemberListRes(clubJoinRequest.getMember())).collect(Collectors.toList());
+				.map(clubJoinRequest -> new MemberListRes(clubJoinRequest.getMember())).collect(Collectors.toList());
 			results.put("request", result);
 		}
 
 		// 소모임에 가입되어있는 회원 정보 가져오기
 		List<ClubMember> list = clubMemberRepository.findByClubIdAndIsWithdraw(clubId, false);
-		List<MemberListRes> result = list.stream().map((clubMember) -> new MemberListRes(clubMember.getMember()))
+		List<MemberListRes> result = list.stream().map(clubMember -> new MemberListRes(clubMember.getMember()))
 			.collect(Collectors.toList());
 
 		results.put("member", result);
