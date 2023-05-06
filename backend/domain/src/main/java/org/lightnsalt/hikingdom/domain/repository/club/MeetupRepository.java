@@ -13,7 +13,8 @@ public interface MeetupRepository extends JpaRepository<Meetup, Long> {
 		+ "FROM Meetup m "
 		+ "WHERE m.club.id = :clubId "
 		+ "AND YEAR(m.startAt) = :year "
-		+ "AND MONTH(m.startAt) = :month ")
+		+ "AND MONTH(m.startAt) = :month "
+		+ "AND m.isDeleted = false")
 	List<Meetup> findByClubIdAndStartMonth(@Param("clubId") Long clubId, @Param("year") int year,
 		@Param("month") int month);
 
@@ -22,10 +23,12 @@ public interface MeetupRepository extends JpaRepository<Meetup, Long> {
 		+ "WHERE m.club.id = :clubId "
 		+ "AND YEAR(m.startAt) = :year "
 		+ "AND MONTH(m.startAt) = :month "
-		+ "AND DAYOFMONTH(m.startAt) = :date")
+		+ "AND DAYOFMONTH(m.startAt) = :date "
+		+ "AND m.isDeleted = false")
 	List<Meetup> findByClubIdAndStartDay(@Param("clubId") Long clubId, @Param("year") int year,
 		@Param("month") int month, @Param("date") int date);
 
-	@Query("SELECT m FROM Meetup m WHERE m.club.id = :clubId AND m.host.id = :memberId AND m.startAt > :startAt")
-	List<Meetup> findByClubIdAndMemberIdAndStartAtAfter(Long clubId, Long memberId, LocalDateTime startAt);
+	@Query("SELECT m FROM Meetup m "
+		+ "WHERE m.club.id = :clubId AND m.host.id = :hostId AND m.startAt > :startAt AND m.isDeleted = false")
+	List<Meetup> findByClubIdAndHostIdAndStartAtAfter(Long clubId, Long hostId, LocalDateTime startAt);
 }
