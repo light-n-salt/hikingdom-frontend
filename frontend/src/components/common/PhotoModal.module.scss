@@ -1,0 +1,31 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  position: relative;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.img {
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.siren {
+  position: absolute;
+  padding: 0.3rem;
+  color: clr(gray-clr);
+  font-size: 0.8rem;
+
+  > svg {
+    color: clr(red-clr, dark);
+  }
+}
+
+.delete {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1rem;
+  color: clr(red-clr);
+  font-size: 1.2rem;
+}
