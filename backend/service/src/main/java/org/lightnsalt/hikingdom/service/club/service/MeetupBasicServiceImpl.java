@@ -87,6 +87,35 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		return savedMeetup.getId();
 	}
 
+	@Transactional
+	@Override
+	public void removeMeetup(String email, Long clubId, Long meetupId) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final Meetup meetup = meetupRepository.findById(meetupId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
+
+		// 소모임장 또는 일정 생성자만 삭제할 수 있음
+		if (!meetup.getHost().getId().equals(member.getId()) ||
+			!meetup.getHost().getId().equals(meetup.getClub().getHost().getId())) {
+			throw new GlobalException(ErrorCode.MEETUP_HOST_UNAUTHORIZED);
+		}
+
+		// 이미 지나간 일정인 경우 삭제 X
+		if (meetup.getStartAt().isBefore(LocalDateTime.now())) {
+			throw new GlobalException(ErrorCode.MEETUP_ALREADY_DONE);
+		}
+
+		// 참여자 삭제
+		meetupMemberRepository.updateMeetupMemberIsWithdrawByMeetupId(meetupId, true, LocalDateTime.now());
+
+		// 일정 사진, 리뷰 삭제
+		meetupAlbumRepository.updateMeetupAlbumIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
+		meetupReviewRepository.updateMeetupReviewIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
+		
+		// TODO: 일정 통계 삭제
+	}
+
 	@Override
 	@Transactional
 	public MeetupMonthlyRes findMeetupMonthly(Long clubId, String month) {

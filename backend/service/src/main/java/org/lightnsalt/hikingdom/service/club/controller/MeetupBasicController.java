@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,7 +57,7 @@ public class MeetupBasicController {
 
 	private final MeetupBasicService meetupBasicService;
 
-	@PostMapping("")
+	@PostMapping
 	public ResponseEntity<?> meetupAdd(@PathVariable Long clubId, @RequestBody @Valid MeetupAddReq req,
 		BindingResult bindingResult, Authentication authentication) {
 
@@ -71,6 +72,13 @@ public class MeetupBasicController {
 		result.put("id", id);
 
 		return new ResponseEntity<>(BaseResponseBody.of("일정이 생성되었습니다", result), HttpStatus.CREATED);
+	}
+
+	@DeleteMapping("/{meetupId}")
+	public ResponseEntity<?> meetupRemove(Authentication authentication, @PathVariable Long clubId, @PathVariable Long meetupId) {
+		meetupBasicService.removeMeetup(authentication.getName(), clubId, meetupId);
+
+		return new ResponseEntity<>(BaseResponseBody.of("일정이 삭제되었습니다"), HttpStatus.OK);
 	}
 
 	@GetMapping("/month/{month}")
