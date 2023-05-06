@@ -12,6 +12,7 @@ import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
 import org.lightnsalt.hikingdom.domain.repository.club.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.ClubMemberRepository;
+import org.lightnsalt.hikingdom.domain.repository.club.MeetupRepository;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
@@ -37,6 +38,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
 	private final ClubMemberRepository clubMemberRepository;
+	private final MeetupRepository meetupRepository;
 	private final MemberRepository memberRepository;
 
 	@Override
@@ -63,14 +65,23 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
 			.orElse(null);
 
-		// 소모임 가입 신청 취소
-		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED, LocalDateTime.now());
-		
-		// 소모임 탈퇴
-		if (clubMember != null) {
-			// TODO: 소모임 일정 참여해둔 것 취소?
-			clubMemberRepository.updateClubMemberWithdraw(clubMember.getId(), true, LocalDateTime.now());
+		// 소모임 모임장 또는 진행 중인 일정이 있을 시 탈퇴 불가능
+		if (clubMember.getClub().getHost().getId().equals(member.getId())) {
+			throw new GlobalException(ErrorCode.CLUB_MEMBER_IS_HOST);
 		}
+
+		if (!meetupRepository.findByClubIdAndHostIdAndStartAtAfter(clubMember.getClub().getId(), member.getId(),
+			LocalDateTime.now()).isEmpty()) {
+			throw new GlobalException(ErrorCode.CLUB_MEMBER_HOST_MEETUP_EXISTS);
+		}
+
+		// 소모임 가입 신청 취소
+		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
+			LocalDateTime.now());
+
+		// 소모임 탈퇴
+		// TODO: 소모임 일정 참여해둔 것 취소?
+		clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, LocalDateTime.now());
 
 		memberRepository.updateMemberWithdraw(member.getId(), true, LocalDateTime.now());
 	}

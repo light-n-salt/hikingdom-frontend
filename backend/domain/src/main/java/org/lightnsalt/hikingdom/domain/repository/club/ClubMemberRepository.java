@@ -26,5 +26,5 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
 	@Query("UPDATE ClubMember c "
 		+ "SET c.withdrawAt = :now, c.isWithdraw = :isWithdraw "
 		+ "WHERE c.id = :id")
-	void updateClubMemberWithdraw(Long id, boolean isWithdraw, LocalDateTime now);
+	void updateClubMemberWithdrawById(Long id, boolean isWithdraw, LocalDateTime now);
 }

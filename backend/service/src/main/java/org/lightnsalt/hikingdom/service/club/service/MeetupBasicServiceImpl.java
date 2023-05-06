@@ -87,6 +87,38 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		return savedMeetup.getId();
 	}
 
+	@Transactional
+	@Override
+	public void removeMeetup(String email, Long clubId, Long meetupId) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
+
+		// 소모임장 또는 일정 생성자만 삭제할 수 있음
+		if (!meetup.getHost().getId().equals(member.getId()) ||
+			!meetup.getHost().getId().equals(meetup.getClub().getHost().getId())) {
+			throw new GlobalException(ErrorCode.MEETUP_HOST_UNAUTHORIZED);
+		}
+
+		// 이미 지나간 일정인 경우 삭제 X
+		if (meetup.getStartAt().isBefore(LocalDateTime.now())) {
+			throw new GlobalException(ErrorCode.MEETUP_ALREADY_DONE);
+		}
+
+		// 참여자 삭제
+		meetupMemberRepository.updateMeetupMemberIsWithdrawByMeetupId(meetupId, true, LocalDateTime.now());
+
+		// 일정 사진, 리뷰 삭제
+		meetupAlbumRepository.updateMeetupAlbumIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
+		meetupReviewRepository.updateMeetupReviewIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
+
+		// TODO: 일정 통계 삭제
+
+		// 일정 삭제
+		meetupRepository.updateMeetupIsDeletedByMeetupId(meetup.getId(), true, LocalDateTime.now());
+	}
+
 	@Override
 	@Transactional
 	public MeetupMonthlyRes findMeetupMonthly(Long clubId, String month) {
@@ -133,7 +165,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		return meetups.stream().map(meetup -> {
 			MeetupDailyRes dto = new MeetupDailyRes(meetup);
 			// 일정 참여 멤버 가져오기
-			final int totalMember = meetupMemberRepository.countByMeetupId(meetup.getId());
+			final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetup.getId(), false);
 			dto.setTotalMember(totalMember);
 			return dto;
 		}).collect(Collectors.toList());
@@ -143,20 +175,21 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	@Transactional
 	public MeetupDetailRes findMeetup(String email, Long clubId, Long meetupId) {
 		// 일정 정보 가져오기
-		final Meetup meetup = meetupRepository.findById(meetupId)
+		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		// 일정 참여여부 가져오기
 		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND)).getId();
 
-		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, memberId);
+		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, memberId,
+			false);
 
 		// 일정 참여 멤버 수 조회하기
-		final int totalMember = meetupMemberRepository.countByMeetupId(meetupId);
+		final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetupId, false);
 
 		// 일정 참여멤버 조회하기 6명
-		List<MeetupMember> meetupMembers = meetupMemberRepository.findTop6ByMeetupId(meetupId);
+		List<MeetupMember> meetupMembers = meetupMemberRepository.findTop6ByMeetupIdAndIsWithdraw(meetupId, false);
 		List<MemberInfoRes> memberInfos = meetupMembers.stream().map(MemberInfoRes::new).collect(Collectors.toList());
 
 		// 일정 사진 조회하기 3개
