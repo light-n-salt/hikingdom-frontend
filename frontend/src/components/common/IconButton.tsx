@@ -18,10 +18,10 @@ function IconButton({
 }: IconButtonProps) {
   return (
     <div
-      className={`${styles.btn} ${styles[size]} ${styles[color]}`}
+      className={`${styles.btn} ${styles[size]} ${styles[color]} ${styles[size]}`}
       onClick={onClick}
     >
-      {imgSrc && <img src={imgSrc} className={styles.img} />}
+      {imgSrc && <img src={imgSrc} />}
       {icon && icon}
     </div>
   )
