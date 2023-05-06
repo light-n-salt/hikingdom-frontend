@@ -1,12 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { useNavigate, useOutletContext } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
 
-import styles from './MainPage.module.scss'
+import styles from './MainContent.module.scss'
 
 import MtList from 'components/common/MtList'
+import SearchBar from 'components/common/SearchBar'
 import RankList from 'components/common/RankList'
 import IconText from 'components/common/IconText'
+// import PageHeader from 'components/common/PageHeader'
 
 import mountain from 'assets/images/mountain.png'
 import clubmountain from 'assets/images/clubmountain.png'
@@ -14,8 +16,13 @@ import cloud from 'assets/images/cloud.png'
 import trophy from 'assets/images/trophy.png'
 // import { TodayClubMt } from 'types/mt.interface'
 
-function MainPage() {
+function MainContent() {
   const navigate = useNavigate()
+
+  function onClickClubMt() {
+    const clubId = 1
+    navigate(`/club/detail/${clubId}`)
+  }
 
   return (
     <div className={styles.container}>
@@ -43,18 +50,13 @@ function MainPage() {
           size="md"
           isBold={true}
         />
-        <img
-          src={clubmountain}
-          onClick={() => {
-            navigate(`/club/detail/1`)
-          }}
-        />
+        <img src={clubmountain} onClick={onClickClubMt} />
       </div>
     </div>
   )
 }
 
-export default MainPage
+export default MainContent
 
 const clubInfoArray = [
   {
