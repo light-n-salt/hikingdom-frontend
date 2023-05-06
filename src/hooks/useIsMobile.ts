@@ -1,5 +1,3 @@
-import React from 'react'
-
 /*
 실행환경의 모바일 여부를 판단하는 커스텀 훅
 */

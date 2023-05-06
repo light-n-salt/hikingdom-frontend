@@ -1,11 +1,13 @@
+@use 'src/styles/z-index' as *;
+
 .modal {
+  @include z-index(modal);
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99;
   width: 100vw;
   height: 100vh;
   background-color: #00000063;

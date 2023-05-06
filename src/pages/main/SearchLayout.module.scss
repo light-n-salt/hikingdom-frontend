@@ -1,11 +1,8 @@
-@use 'src/styles/z-index' as *;
-
 .container {
   padding-top: 1rem;
 }
 
 .searchbar {
-  @include z-index(content);
   position: sticky;
   top: 0rem;
   width: 100%;
