@@ -82,7 +82,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 			message.setText(createAuthenticationEmail(authCode), "UTF-8", "html");
 			javaMailSender.send(message);
 
-			redisUtil.setValueWithExpiration("AUTH" + email, authCode, 60 * 5);
+			redisUtil.setValueWithExpiration("AUTH" + email, authCode, (long) 60 * 5);
 		} catch (MessagingException e) {
 			log.error("Failure while sending find authentication email to " + email);
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
