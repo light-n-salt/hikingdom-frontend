@@ -1,19 +1,21 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/z-index' as *;
 
 .bar {
+  @include z-index(content);
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  position: absolute;
+  bottom: 0;
   width: 100%;
-
-  > div:last-child {
-    padding-top: 0.5rem;
-  }
+  padding: 0 0.5rem;
 }
 
 .input {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.6rem 0.7rem;
+  margin-bottom: 0.5rem;
   border-radius: 0.5rem;
   font-size: 1.2rem;
   box-shadow: inset 1px 1px rgba(0, 0, 0, 0.1);

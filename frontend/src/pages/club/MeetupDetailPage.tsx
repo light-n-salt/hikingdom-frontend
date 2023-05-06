@@ -122,7 +122,7 @@ function MeetupDetailPage() {
         <MeetupAlbum photoInfo={info.photoInfo} />
         <MeetupReviewList reviewInfo={info.reviewInfo} />
       </div>
-      <TextSendBar />
+      <TextSendBar placeholder="후기를 입력해주세요" />
     </div>
   )
 }
