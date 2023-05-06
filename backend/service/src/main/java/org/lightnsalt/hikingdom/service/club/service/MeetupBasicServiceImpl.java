@@ -92,7 +92,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	public void removeMeetup(String email, Long clubId, Long meetupId) {
 		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Meetup meetup = meetupRepository.findById(meetupId)
+		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		// 소모임장 또는 일정 생성자만 삭제할 수 있음
@@ -114,6 +114,9 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		meetupReviewRepository.updateMeetupReviewIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
 
 		// TODO: 일정 통계 삭제
+
+		// 일정 삭제
+		meetupRepository.updateMeetupIsDeletedByMeetupId(meetup.getId(), true, LocalDateTime.now());
 	}
 
 	@Override
@@ -172,7 +175,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	@Transactional
 	public MeetupDetailRes findMeetup(String email, Long clubId, Long meetupId) {
 		// 일정 정보 가져오기
-		final Meetup meetup = meetupRepository.findById(meetupId)
+		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		// 일정 참여여부 가져오기

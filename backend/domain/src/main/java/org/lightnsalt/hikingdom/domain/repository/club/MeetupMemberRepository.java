@@ -25,4 +25,11 @@ public interface MeetupMemberRepository extends JpaRepository<MeetupMember, Long
 		+ "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw "
 		+ "WHERE m.meetup.id = :meetupId")
 	void updateMeetupMemberIsWithdrawByMeetupId(Long meetupId, boolean isWithdraw, LocalDateTime now);
+
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Query("UPDATE MeetupMember m "
+		+ "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw "
+		+ "WHERE m.member.id = :memberId AND m.meetup.startAt >= :startAt")
+	void updateMeetupMemberIsWithdrawByMemberIdAndStartAt(Long memberId, boolean isWithdraw, LocalDateTime startAt, LocalDateTime now);
+
 }

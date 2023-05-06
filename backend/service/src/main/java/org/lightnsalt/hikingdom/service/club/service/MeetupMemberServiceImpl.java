@@ -40,7 +40,7 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 		if (meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, member.getId(), false))
 			throw new GlobalException(ErrorCode.MEETUP_ALREADY_JOINED);
 
-		final Meetup meetup = meetupRepository.findById(meetupId)
+		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		meetupMemberRepository.save(MeetupMember.builder()
@@ -65,7 +65,7 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 	@Transactional
 	public List<MemberListRes> findMeetupMember(Long clubId, Long meetupId) {
 		// 존재하는 일정인지 확인
-		final Meetup meetup = meetupRepository.findById(meetupId)
+		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		// 소모임에 포함된 일정인지 확인
