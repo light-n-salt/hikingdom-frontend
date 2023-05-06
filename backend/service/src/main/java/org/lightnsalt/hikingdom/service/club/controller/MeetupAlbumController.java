@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.service.club.service.MeetupAlbumService;
@@ -50,7 +51,7 @@ public class MeetupAlbumController {
 	private final MeetupAlbumService meetupAlbumService;
 
 	@PostMapping("")
-	public ResponseEntity<?> meetupAlbumAdd(@PathVariable Long clubId, @PathVariable Long meetupId,
+	public ResponseEntity<CustomResponseBody> meetupAlbumAdd(@PathVariable Long clubId, @PathVariable Long meetupId,
 		@RequestBody List<MultipartFile> photos, Authentication authentication) {
 
 		List<String> list = meetupAlbumService.saveMeetupAlbum(authentication.getName(), clubId, meetupId, photos);
@@ -61,7 +62,7 @@ public class MeetupAlbumController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<?> meetupAlbumList(@PathVariable Long clubId, @PathVariable Long meetupId,
+	public ResponseEntity<CustomResponseBody> meetupAlbumList(@PathVariable Long clubId, @PathVariable Long meetupId,
 		@RequestParam(defaultValue = "") Long photoId, Pageable pageable) {
 
 		CustomSlice<MeetupAlbumRes> result = meetupAlbumService.findMeetupAlbumList(clubId, meetupId, photoId,
@@ -70,7 +71,7 @@ public class MeetupAlbumController {
 	}
 
 	@DeleteMapping("/{photoId}")
-	public ResponseEntity<?> meetupAlbumRemove(@PathVariable Long clubId, @PathVariable Long meetupId,
+	public ResponseEntity<CustomResponseBody> meetupAlbumRemove(@PathVariable Long clubId, @PathVariable Long meetupId,
 		@PathVariable Long photoId, Authentication authentication) {
 
 		meetupAlbumService.removeMeetupAlbum(authentication.getName(), clubId, meetupId, photoId);

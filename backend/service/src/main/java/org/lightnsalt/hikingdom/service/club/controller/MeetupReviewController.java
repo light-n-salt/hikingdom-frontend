@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.club.dto.request.MeetupReviewReq;
@@ -34,7 +35,7 @@ public class MeetupReviewController {
 	private final MeetupReviewService meetupReviewService;
 
 	@GetMapping
-	public ResponseEntity<?> meetupReviewList(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> meetupReviewList(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long meetupId) {
 		List<MeetupReviewRes> result = meetupReviewService.findMeetupReviewList(authentication.getName(), clubId,
 			meetupId);
@@ -43,7 +44,7 @@ public class MeetupReviewController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> meetupReviewAdd(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> meetupReviewAdd(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long meetupId, @RequestBody @Valid MeetupReviewReq meetupReviewReq, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
@@ -58,7 +59,7 @@ public class MeetupReviewController {
 	}
 
 	@DeleteMapping("/{reviewId}")
-	public ResponseEntity<?> meetupReviewDelete(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> meetupReviewDelete(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long meetupId, @PathVariable Long reviewId) {
 		meetupReviewService.removeMeetupReview(authentication.getName(), clubId, meetupId, reviewId);
 
