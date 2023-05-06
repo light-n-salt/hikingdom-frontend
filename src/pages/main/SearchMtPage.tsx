@@ -8,14 +8,11 @@ import useDebounce from 'hooks/useDebounce'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import { MtInfo } from 'types/mt.interface'
 
-type OutletProps = {
-  value: string
-}
-
 function SearchMtPage() {
   const navigate = useNavigate()
 
   const [mtInfoArray, setMtInfoArray] = useState<MtInfo[]>(mtInfoEx) // 산 정보 배열
+  const [isEnd, setIsEnd] = useState(false) // 무한스크롤 마지막 정보 여부
   const infiniteRef = useRef<HTMLDivElement>(null) // 무한 스크롤 useRef
 
   // 뒤로가기 클릭 시, 메인 페이지로 이동시키는 리스너
@@ -27,15 +24,16 @@ function SearchMtPage() {
 
   // url 주소의 sate로부터 query를 전달 받음
   const location = useLocation()
-  const query = location.state.query
-  const debouncedQuery = useDebounce(query!)
+  const query = location.state?.query || ''
+  const debouncedQuery = useDebounce(query)
 
   // debouncedQuery에 따라서 산 검색 api 요청
   useEffect(() => {
     if (debouncedQuery) {
       getMountains(debouncedQuery)
         .then((res) => {
-          setMtInfoArray(res.data.result)
+          setMtInfoArray(res.data.result.content)
+          setIsEnd(!res.data.result.hasNext)
         })
         .catch(() => {})
     }
@@ -45,13 +43,17 @@ function SearchMtPage() {
   function loadMore() {
     return getMountains(debouncedQuery, mtInfoArray.slice(-1)[0].mountainId)
       .then((res) => {
-        setMtInfoArray((mtInfoArray) => [...mtInfoArray, ...res.data.result])
+        setMtInfoArray((mtInfoArray) => [
+          ...mtInfoArray,
+          ...res.data.result.content,
+        ])
+        setIsEnd(!res.data.result.hasNext)
       })
       .catch(() => {})
   }
 
   // 무한스크롤 커스텀 훅(동작 요소, 동작 함수)
-  const { isLoading } = useInfiniteScroll({ ref: infiniteRef, loadMore })
+  const { isLoading } = useInfiniteScroll({ ref: infiniteRef, loadMore, isEnd })
 
   return (
     <div ref={infiniteRef} className={styles.container}>

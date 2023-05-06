@@ -1,21 +1,23 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/z-index' as *;
 
 .container {
   display: flex;
   flex-direction: column;
   position: relative;
   align-items: flex-start;
-  gap: 0.7rem;
   padding: 1rem 1.5rem;
   font-weight: 600;
   cursor: pointer;
 
   &.sm {
     min-width: 13rem;
+    gap: 0.4rem;
   }
 
   &.lg {
     width: 100%;
+    gap: 0.6rem;
   }
 }
 
@@ -28,8 +30,8 @@
 
 .title {
   margin: 0 0 0 1rem;
-  color: $primary;
-  font-size: 1.4rem;
+  color: clr(primary-clr);
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
@@ -53,7 +55,7 @@
 .medal {
   position: absolute;
   top: 0;
-  transform: translateX(-30%) translateY(-10%);
+  transform: translateX(-20%) translateY(-20%);
   left: 0;
   width: 2.5rem;
 }
@@ -62,12 +64,12 @@
   position: absolute;
   top: 0;
   left: 0;
-  background-color: $primary;
+  background-color: clr(primary-clr);
   min-width: 1.8rem;
   padding: 0.1rem;
   border-radius: 0.7rem 0 0.2rem 0;
-  color: $white;
-  font-size: 1.2rem;
+  color: clr(white-clr, light);
+  font-size: 1rem;
   font-weight: 600;
   text-align: center;
 }
@@ -85,10 +87,10 @@
   }
 
   .green {
-    color: $primary;
+    color: clr(primary-clr);
   }
 
   .gray {
-    color: $gray;
+    color: clr(gray-clr);
   }
 }
