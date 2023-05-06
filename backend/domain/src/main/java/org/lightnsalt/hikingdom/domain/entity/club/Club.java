@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.domain.entity.club;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -67,6 +69,11 @@ public class Club extends BaseTimeEntity {
 
 	@Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
 	private boolean isDeleted;
+
+	@ToString.Exclude
+	@JsonIgnore
+	@OneToMany(mappedBy = "club")
+	private List<ClubAsset> assets;
 
 	@Builder
 	public Club(Member host, BaseAddressInfo baseAddress, String name, String description, Long totalMemberCount,
