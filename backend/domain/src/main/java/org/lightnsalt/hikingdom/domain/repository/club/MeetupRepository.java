@@ -1,5 +1,6 @@
 package org.lightnsalt.hikingdom.domain.repository.club;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
@@ -24,4 +25,7 @@ public interface MeetupRepository extends JpaRepository<Meetup, Long> {
 		+ "AND DAYOFMONTH(m.startAt) = :date")
 	List<Meetup> findByClubIdAndStartDay(@Param("clubId") Long clubId, @Param("year") int year,
 		@Param("month") int month, @Param("date") int date);
+
+	@Query("SELECT m FROM Meetup m WHERE m.club.id = :clubId AND m.host.id = :memberId AND m.startAt > :startAt")
+	List<Meetup> findByClubIdAndMemberIdAndStartAtAfter(Long clubId, Long memberId, LocalDateTime startAt);
 }

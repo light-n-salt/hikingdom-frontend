@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +109,6 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 			throw new GlobalException(ErrorCode.PHOTO_NOT_FOUND);
 		}
 
-		meetupAlbumRepository.updateIsDeleted(photoId);
+		meetupAlbumRepository.updateIsDeleted(photoId, LocalDateTime.now());
 	}
 }

@@ -69,7 +69,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		// 소모임 탈퇴
 		if (clubMember != null) {
 			// TODO: 소모임 일정 참여해둔 것 취소?
-			clubMemberRepository.updateClubMemberWithdraw(clubMember.getId(), true, LocalDateTime.now());
+			clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, LocalDateTime.now());
 		}
 
 		memberRepository.updateMemberWithdraw(member.getId(), true, LocalDateTime.now());

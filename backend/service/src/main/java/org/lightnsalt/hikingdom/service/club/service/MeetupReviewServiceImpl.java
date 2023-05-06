@@ -93,6 +93,6 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 	}
 
 	private boolean deleteMeetupReview(Long reviewId) {
-		return meetupReviewRepository.deleteMeetupReviewById(reviewId, LocalDateTime.now()) > 0;
+		return meetupReviewRepository.updateMeetupReviewIsDeletedById(reviewId, true, LocalDateTime.now()) > 0;
 	}
 }
