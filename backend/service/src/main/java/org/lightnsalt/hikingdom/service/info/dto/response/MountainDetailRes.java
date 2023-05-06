@@ -1,0 +1,44 @@
+package org.lightnsalt.hikingdom.service.info.dto.response;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MountainDetailRes {
+	private Long mountainId;
+	private String name;
+	private String description;
+	private String address;
+	private String imgUrl;
+	private double maxAlt;
+	private String peaks;
+	private int totalDuration;
+	private String transport;
+	private String facility;
+	private List<AssetMountainRes> assets;
+
+	public MountainDetailRes(final MountainInfo mountainInfo) {
+		this.mountainId = mountainInfo.getId();
+		this.name = mountainInfo.getName();
+		this.description = mountainInfo.getDescription();
+		this.address = mountainInfo.getAddress();
+		this.imgUrl = mountainInfo.getImgUrl();
+		this.maxAlt = mountainInfo.getTopAlt();
+		this.peaks = mountainInfo.getPeaks();
+		this.totalDuration = mountainInfo.getTotalDuration();
+		this.transport = mountainInfo.getTransport();
+		this.facility = mountainInfo.getFacility();
+		this.assets = mountainInfo.getAsset().stream().map(AssetMountainRes::new).collect(Collectors.toList());
+		this.totalDuration = mountainInfo.getTotalDuration();
+	}
+}
