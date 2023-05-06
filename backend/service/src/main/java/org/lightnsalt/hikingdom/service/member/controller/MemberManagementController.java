@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.service.member.controller;
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
@@ -36,26 +37,26 @@ public class MemberManagementController {
 	private final MemberManagementService memberManagementService;
 
 	@GetMapping
-	public ResponseEntity<?> memberInfoDetail(Authentication authentication) {
+	public ResponseEntity<CustomResponseBody> memberInfoDetail(Authentication authentication) {
 		MemberInfoRes memberInfoRes = memberManagementService.findMemberInfo(authentication.getName());
 		return new ResponseEntity<>(BaseResponseBody.of("회원 정보 조회에 성공했습니다", memberInfoRes), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/withdraw")
-	public ResponseEntity<?> memberRemove(Authentication authentication) {
+	public ResponseEntity<CustomResponseBody> memberRemove(Authentication authentication) {
 		memberManagementService.removeMember(authentication.getName());
 		return new ResponseEntity<>(BaseResponseBody.of("회원 탈퇴에 성공했습니다"), HttpStatus.OK);
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<?> logout(@RequestHeader("Authorization") String bearerToken) {
+	public ResponseEntity<CustomResponseBody> logout(@RequestHeader("Authorization") String bearerToken) {
 		memberManagementService.logout(bearerToken);
 
 		return new ResponseEntity<>(BaseResponseBody.of("로그아웃에 성공했습니다"), HttpStatus.OK);
 	}
 
 	@PutMapping("/password-change")
-	public ResponseEntity<?> passwordChange(Authentication authentication,
+	public ResponseEntity<CustomResponseBody> passwordChange(Authentication authentication,
 		@RequestBody @Valid MemberChangePasswordReq memberChangePasswordReq, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
@@ -69,7 +70,7 @@ public class MemberManagementController {
 	}
 
 	@PutMapping("/nickname-change")
-	public ResponseEntity<?> nicknameChange(Authentication authentication,
+	public ResponseEntity<CustomResponseBody> nicknameChange(Authentication authentication,
 		@RequestBody @Valid MemberNicknameReq memberNicknameReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -84,7 +85,7 @@ public class MemberManagementController {
 	}
 
 	@PutMapping("/profile-image-change")
-	public ResponseEntity<?> profileImageChange(Authentication authentication, @RequestBody MultipartFile image) {
+	public ResponseEntity<CustomResponseBody> profileImageChange(Authentication authentication, @RequestBody MultipartFile image) {
 		String profileUrl = memberManagementService.changeProfileImage(authentication.getName(), image);
 
 		return new ResponseEntity<>(BaseResponseBody.of("프로필 사진 변경에 성공했습니다", profileUrl), HttpStatus.OK);

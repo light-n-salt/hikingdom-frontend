@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.service.info.controller;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.service.info.service.LocationInfoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class LocationInfoController {
 	private final LocationInfoService locationInfoService;
 
 	@GetMapping
-	public ResponseEntity<?> sidoList(@RequestParam(required = false, defaultValue = "sido") String query,
+	public ResponseEntity<CustomResponseBody> sidoList(@RequestParam(required = false, defaultValue = "sido") String query,
 		@RequestParam(required = false, defaultValue = "0000000000") String word) {
 		return new ResponseEntity<>(
 			BaseResponseBody.of("지역 정보 검색에 성공했습니다", locationInfoService.findBaseAddressInfoList(query, word)),

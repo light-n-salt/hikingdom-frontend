@@ -76,7 +76,7 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 		List<MeetupMember> list = meetupMemberRepository.findByMeetupIdAndIsWithdraw(meetupId, false);
 		// 형 변환
 		return list.stream()
-			.map((meetupMember) -> new MemberListRes(meetupMember.getMember()))
+			.map(meetupMember -> new MemberListRes(meetupMember.getMember()))
 			.collect(Collectors.toList());
 	}
 }

@@ -2,6 +2,7 @@ package org.lightnsalt.hikingdom.service.info.controller;
 
 import javax.validation.Valid;
 
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.springframework.data.domain.Pageable;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
@@ -51,7 +52,7 @@ public class MountainInfoController {
 	private final MountainInfoService mountainInfoService;
 
 	@PostMapping("")
-	public ResponseEntity<?> mountainInfoAdd(@RequestBody @Valid final MountainAddReq mountainCreateReq,
+	public ResponseEntity<CustomResponseBody> mountainInfoAdd(@RequestBody @Valid final MountainAddReq mountainCreateReq,
 		BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
@@ -67,14 +68,14 @@ public class MountainInfoController {
 	}
 
 	@GetMapping("/{mountainId}")
-	public ResponseEntity<?> mountainInfoDetails(@PathVariable Long mountainId) {
+	public ResponseEntity<CustomResponseBody> mountainInfoDetails(@PathVariable Long mountainId) {
 
 		MountainDetailRes response = mountainInfoService.findMountainInfo(mountainId);
 		return new ResponseEntity<>(BaseResponseBody.of("산 상세 정보 조회에 성공했습니다", response), HttpStatus.OK);
 	}
 
 	@GetMapping("")
-	public ResponseEntity<?> mountainInfoList(@RequestParam(defaultValue = "") String query,
+	public ResponseEntity<CustomResponseBody> mountainInfoList(@RequestParam(defaultValue = "") String query,
 		@RequestParam(defaultValue = "") String word, @RequestParam(defaultValue = "0") double lat,
 		@RequestParam(defaultValue = "0") double lng, @RequestParam(defaultValue = "") Long id,
 		Pageable pageable) {
@@ -85,7 +86,7 @@ public class MountainInfoController {
 	}
 
 	@PostMapping("/today/{mountainId}")
-	public ResponseEntity<?> mountainInfoTodayAdd(@PathVariable Long mountainId) {
+	public ResponseEntity<CustomResponseBody> mountainInfoTodayAdd(@PathVariable Long mountainId) {
 
 		mountainInfoService.addMountainInfoDaily(mountainId);
 		return new ResponseEntity<>(BaseResponseBody.of("오늘의 산 등록에 성공했습니다"), HttpStatus.CREATED);

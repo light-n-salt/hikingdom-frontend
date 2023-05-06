@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.club.dto.request.MeetupAddReq;
@@ -58,7 +59,7 @@ public class MeetupBasicController {
 	private final MeetupBasicService meetupBasicService;
 
 	@PostMapping
-	public ResponseEntity<?> meetupAdd(@PathVariable Long clubId, @RequestBody @Valid MeetupAddReq req,
+	public ResponseEntity<CustomResponseBody> meetupAdd(@PathVariable Long clubId, @RequestBody @Valid MeetupAddReq req,
 		BindingResult bindingResult, Authentication authentication) {
 
 		if (bindingResult.hasErrors()) {
@@ -75,21 +76,21 @@ public class MeetupBasicController {
 	}
 
 	@DeleteMapping("/{meetupId}")
-	public ResponseEntity<?> meetupRemove(Authentication authentication, @PathVariable Long clubId, @PathVariable Long meetupId) {
+	public ResponseEntity<CustomResponseBody> meetupRemove(Authentication authentication, @PathVariable Long clubId, @PathVariable Long meetupId) {
 		meetupBasicService.removeMeetup(authentication.getName(), clubId, meetupId);
 
 		return new ResponseEntity<>(BaseResponseBody.of("일정이 삭제되었습니다"), HttpStatus.OK);
 	}
 
 	@GetMapping("/month/{month}")
-	public ResponseEntity<?> meetupMonthlyList(@PathVariable Long clubId, @PathVariable String month) {
+	public ResponseEntity<CustomResponseBody> meetupMonthlyList(@PathVariable Long clubId, @PathVariable String month) {
 
 		MeetupMonthlyRes result = meetupBasicService.findMeetupMonthly(clubId, month);
 		return new ResponseEntity<>(BaseResponseBody.of("모임 일정 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 
 	@GetMapping("/date/{date}")
-	public ResponseEntity<?> meetupDailyList(@PathVariable Long clubId, @PathVariable String date) {
+	public ResponseEntity<CustomResponseBody> meetupDailyList(@PathVariable Long clubId, @PathVariable String date) {
 
 		List<MeetupDailyRes> result = meetupBasicService.findMeetupDaily(clubId, date);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 조회에 성공했습니다", result), HttpStatus.OK);
@@ -97,7 +98,7 @@ public class MeetupBasicController {
 	}
 
 	@GetMapping("{meetupId}/detail")
-	public ResponseEntity<?> meetupDetail(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> meetupDetail(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long meetupId) {
 
 		MeetupDetailRes result = meetupBasicService.findMeetup(authentication.getName(), clubId, meetupId);
