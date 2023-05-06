@@ -11,4 +11,6 @@ public interface ClubMemberService {
 	void retractClubJoinRequest(String email, Long clubId);
 
 	Map<String, List<MemberListRes>> findClubMember(String email, Long clubId);
+
+	void withdrawClubMember(String email, Long clubId);
 }

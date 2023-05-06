@@ -12,9 +12,15 @@ import org.springframework.data.jpa.repository.Query;
 public interface MeetupReviewRepository extends JpaRepository<MeetupReview, Long> {
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE MeetupReview m "
-		+ "SET m.isDeleted = true, m.deletedAt = :now "
+		+ "SET m.isDeleted = :isDeleted, m.deletedAt = :now "
 		+ "WHERE m.id = :id")
-	int deleteMeetupReviewById(Long id, LocalDateTime now);
+	int updateMeetupReviewIsDeletedById(Long id, boolean isDeleted, LocalDateTime now);
+
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Query("UPDATE MeetupReview m "
+		+ "SET m.isDeleted = :isDeleted, m.deletedAt = :now "
+		+ "WHERE m.meetup.id = :meetupId")
+	void updateMeetupReviewIsDeletedByMeetupId(Long meetupId, boolean isDeleted, LocalDateTime now);
 
 	Optional<MeetupReview> findByIdAndIsDeleted(Long id, boolean isDeleted);
 

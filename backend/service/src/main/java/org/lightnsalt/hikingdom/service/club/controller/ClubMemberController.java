@@ -25,29 +25,34 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @Slf4j
-@RequestMapping("/api/v1/clubs/{clubId}/members")
+@RequestMapping("/api/v1/clubs/{clubId}")
 @RequiredArgsConstructor
 public class ClubMemberController {
 	private final ClubMemberService clubMemberService;
 
-	@PostMapping
+	@PostMapping("/join-request")
 	public ResponseEntity<?> clubJoinRequestAdd(Authentication authentication, @PathVariable Long clubId) {
 		clubMemberService.sendClubJoinRequest(authentication.getName(), clubId);
 
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 가입 신청에 성공했습니다"), HttpStatus.CREATED);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/join-request")
 	public ResponseEntity<?> clubJoinRequestRetract(Authentication authentication, @PathVariable Long clubId) {
 		clubMemberService.retractClubJoinRequest(authentication.getName(), clubId);
 
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 가입 신청 취소에 성공했습니다"), HttpStatus.OK);
 	}
 
-	@GetMapping
+	@GetMapping("/members")
 	public ResponseEntity<?> clubMemberList(Authentication authentication, @PathVariable Long clubId) {
-
 		Map<String, List<MemberListRes>> result = clubMemberService.findClubMember(authentication.getName(), clubId);
-		return new ResponseEntity<>(BaseResponseBody.of("모임 멤버 조회에 성공했습니다", result), HttpStatus.OK);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 멤버 조회에 성공했습니다", result), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/members")
+	public ResponseEntity<?> clubMemberWithdraw(Authentication authentication, @PathVariable Long clubId) {
+		clubMemberService.withdrawClubMember(authentication.getName(), clubId);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 탈퇴에 성공했습니다"), HttpStatus.OK);
 	}
 }

@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +54,10 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 일정 데이터 가져오기
-		final Meetup meetup = meetupRepository.findById(meetupId)
+		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
-		final boolean isExit = meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, member.getId());
+		final boolean isExit = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, member.getId(), false);
 		if (!isExit) {
 			throw new GlobalException(ErrorCode.MEETUP_MEMBER_UNAUTHORIZED);
 		}
@@ -108,6 +109,6 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 			throw new GlobalException(ErrorCode.PHOTO_NOT_FOUND);
 		}
 
-		meetupAlbumRepository.updateIsDeleted(photoId);
+		meetupAlbumRepository.updateIsDeleted(photoId, LocalDateTime.now());
 	}
 }

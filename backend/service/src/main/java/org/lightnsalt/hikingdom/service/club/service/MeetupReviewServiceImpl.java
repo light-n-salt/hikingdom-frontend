@@ -42,11 +42,11 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
-		final Meetup meetup = meetupRepository.findById(meetupId)
+		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		// 일정 참여 여부 확인
-		if (!meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, member.getId()))
+		if (!meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, member.getId(), false))
 			throw new GlobalException(ErrorCode.MEETUP_MEMBER_UNAUTHORIZED);
 
 		MeetupReview meetupReview = MeetupReview.builder()
@@ -93,6 +93,6 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 	}
 
 	private boolean deleteMeetupReview(Long reviewId) {
-		return meetupReviewRepository.deleteMeetupReviewById(reviewId, LocalDateTime.now()) > 0;
+		return meetupReviewRepository.updateMeetupReviewIsDeletedById(reviewId, true, LocalDateTime.now()) > 0;
 	}
 }
