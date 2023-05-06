@@ -109,7 +109,8 @@ public class ClubDailyJobConfig {
 
 	public Long getRandomClubId() {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		List<Long> ids = em.createQuery("SELECT c.id FROM Club c", Long.class).getResultList();
+		List<Long> ids = em.createQuery("SELECT c.id FROM Club c WHERE c.isDeleted = FALSE", Long.class)
+			.getResultList();
 		em.close();
 		int randomId = new Random().nextInt(ids.size());
 		log.info("random id is : {}", randomId);
