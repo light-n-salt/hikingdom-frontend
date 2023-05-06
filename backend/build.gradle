@@ -47,6 +47,10 @@ subprojects {
             extendsFrom annotationProcessor
         }
     }
+
+    ext {
+        set('springCloudVersion', "2021.0.4")
+    }
 }
 
 project(':common') {
