@@ -14,7 +14,5 @@ public interface MountainInfoService {
 
 	List<MountainListRes> findAllMountainInfo(String query, String word, double lat, double lng, Long id);
 
-	List<MountainListRes> findMountainInfoToday();
-
 	void addMountainInfoDaily(Long mountainId);
 }
