@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberReportReq {
 	@NotEmpty(message = "신고 타입은 필수 입력값입니다.")
-	@Pattern(regexp = "(ALBUM|REVIEW|CHAT)", message = "신고 타입은 (ALBUM, REVIEW, CHAT)입니다.")
+	@Pattern(regexp = "(ALBUM|REVIEW|MEMBER)", message = "신고 타입은 (ALBUM, REVIEW, MEMBER)입니다.")
 	private String type;
 	@NotNull(message = "컨텐츠 아이디는 필수 입력값입니다.")
-	private Long contentId;
+	private Long id;
 }
