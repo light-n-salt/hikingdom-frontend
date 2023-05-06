@@ -2,11 +2,11 @@ import React from 'react'
 import styles from './TextButton.module.scss'
 
 type TextButtonProps = {
-  text: string
-  size?: 'sm' | 'md' | 'lg'
-  color: 'primary' | 'secondary' | 'tertiary' | 'white' | 'red' | 'gray'
-  onClick?: () => void
-  disabled?: boolean
+  text: string // 버튼 텍스트
+  size?: 'sm' | 'md' | 'lg' // 사이즈
+  color: 'primary' | 'secondary' | 'tertiary' | 'white' | 'red' | 'gray' // 색깔
+  onClick?: () => void // 클릭 시 동작할 함수
+  disabled?: boolean // 버튼 disabled 여부
 }
 
 export default function TextButton({

@@ -1,7 +1,7 @@
-import AgreeForm from 'components/auth/AgreeForm'
 import React, { useContext } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './AgreePage.module.scss'
+import AgreeForm from 'components/auth/AgreeForm'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function AgreePage() {
   const { theme } = useContext(ThemeContext)

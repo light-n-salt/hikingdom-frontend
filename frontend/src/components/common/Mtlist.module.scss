@@ -1,6 +1,6 @@
 @use 'src/styles/animations' as *;
 
-.mt-list {
+.container {
   display: flex;
   width: 100%;
 
@@ -12,6 +12,10 @@
   &.lg {
     flex-direction: column;
     gap: 0.5rem;
+
+    & > div {
+      opacity: 0;
+    }
 
     @for $i from 1 through 10 {
       & > div:nth-child(#{$i}) {

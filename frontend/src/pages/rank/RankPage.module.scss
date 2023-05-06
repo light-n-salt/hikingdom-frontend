@@ -1,0 +1,10 @@
+@use 'src/styles/colors' as *;
+
+.select {
+  align-self: flex-end;
+}
+
+.clubs {
+  width: 100%;
+  overflow-y: auto;
+}

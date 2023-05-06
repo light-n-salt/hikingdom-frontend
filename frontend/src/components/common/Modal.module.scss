@@ -9,10 +9,10 @@
   width: 100vw;
   height: 100vh;
   background-color: #00000063;
+}
 
-  > div {
-    max-width: 90vw;
-    max-height: 80vh;
-    overflow: scroll;
-  }
+.content {
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow: scroll;
 }

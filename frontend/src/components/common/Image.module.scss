@@ -1,33 +1,33 @@
 @use 'src/styles/colors' as *;
 
-.user-img {
+.img {
   object-fit: cover;
   border-radius: 50%;
-}
 
-.sm {
-  width: 2.8rem;
-  height: 2.8rem;
+  &.sm {
+    width: 2.8rem;
+    height: 2.8rem;
 
-  &.square {
-    border-radius: 0.28rem;
+    &.square {
+      border-radius: 0.28rem;
+    }
   }
-}
 
-.md {
-  width: 3.5rem;
-  height: 3.5rem;
+  &.md {
+    width: 3.5rem;
+    height: 3.5rem;
 
-  &.square {
-    border-radius: 0.5rem;
+    &.square {
+      border-radius: 0.5rem;
+    }
   }
-}
 
-.lg {
-  width: 7rem;
-  height: 7rem;
+  &.lg {
+    width: 7rem;
+    height: 7rem;
 
-  &.square {
-    border-radius: 0.5rem;
+    &.square {
+      border-radius: 0.5rem;
+    }
   }
 }
