@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.service.info.dto.repository.MountainDailyInfoRepository;
+import org.lightnsalt.hikingdom.domain.repository.info.MountainDailyInfoRepository;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainAddRes;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddReq;
@@ -122,14 +122,6 @@ public class MountainInfoServiceImpl implements MountainInfoService {
 		}
 
 		return result;
-	}
-
-	@Override
-	public List<MountainListRes> findMountainInfoToday() {
-		// MountainDailyInfo 데이터 가져오기
-		List<MountainDailyInfo> list = mountainDailyInfoRepository.findBySetDate(LocalDate.now());
-
-		return list.stream().map(MountainListRes::new).collect(Collectors.toList());
 	}
 
 	@Override

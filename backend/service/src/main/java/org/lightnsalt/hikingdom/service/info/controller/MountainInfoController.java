@@ -82,13 +82,6 @@ public class MountainInfoController {
 		return new ResponseEntity<>(BaseResponseBody.of("산 검색에 성공했습니다", results), HttpStatus.OK);
 	}
 
-	@GetMapping("/mountains/today")
-	public ResponseEntity<?> mountainInfoToday() {
-
-		List<MountainListRes> results = mountainInfoService.findMountainInfoToday();
-		return new ResponseEntity<>(BaseResponseBody.of("오늘의 산 조회에 성공했습니다", results), HttpStatus.OK);
-	}
-
 	@PostMapping("/mountains/today/{mountainId}")
 	public ResponseEntity<?> mountainInfoTodayAdd(@PathVariable Long mountainId) {
 
