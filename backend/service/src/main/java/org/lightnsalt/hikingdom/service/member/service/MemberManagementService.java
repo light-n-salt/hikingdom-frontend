@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MemberManagementService {
 	MemberInfoRes findMemberInfo(String email);
 
+	void removeMember(String email);
+
 	void logout(String bearerToken);
 
 	void changePassword(String email, MemberChangePasswordReq memberChangePasswordReq);

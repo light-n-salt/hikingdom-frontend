@@ -1,13 +1,16 @@
 package org.lightnsalt.hikingdom.service.member.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.JwtTokenUtil;
 import org.lightnsalt.hikingdom.common.util.RedisUtil;
 import org.lightnsalt.hikingdom.common.util.S3FileUtil;
+import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
+import org.lightnsalt.hikingdom.domain.repository.club.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
@@ -32,6 +35,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	private final RedisUtil redisUtil;
 	private final JwtTokenUtil jwtTokenUtil;
 
+	private final ClubJoinRequestRepository clubJoinRequestRepository;
 	private final ClubMemberRepository clubMemberRepository;
 	private final MemberRepository memberRepository;
 
@@ -49,6 +53,26 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			.clubId(clubMember != null ? clubMember.getClub().getId() : null)
 			.level(member.getLevel().getId())
 			.build();
+	}
+
+	@Transactional
+	@Override
+	public void removeMember(String email) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
+			.orElse(null);
+
+		// 소모임 가입 신청 취소
+		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED, LocalDateTime.now());
+		
+		// 소모임 탈퇴
+		if (clubMember != null) {
+			// TODO: 소모임 일정 참여해둔 것 취소?
+			clubMemberRepository.updateClubMemberWithdraw(clubMember.getId(), true, LocalDateTime.now());
+		}
+
+		memberRepository.updateMemberWithdraw(member.getId(), true, LocalDateTime.now());
 	}
 
 	@Override
