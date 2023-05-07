@@ -7,9 +7,12 @@ import Button from 'components/common/Button'
 import LabelInput from 'components/common/LabelInput'
 import TextButton from 'components/common/TextButton'
 import useAuthInput from 'hooks/useAuthInput'
+import { useSetRecoilState } from 'recoil'
+import { userInfoState } from 'recoil/atoms'
 
 function LoginForm() {
   const navigate = useNavigate()
+  const setUserInfo = useSetRecoilState(userInfoState)
 
   const {
     value: email,
@@ -31,6 +34,7 @@ function LoginForm() {
     }
     login(email, password)
       .then(() => {
+        getUserInfo(setUserInfo)
         navigate('/main')
       })
       .catch((err) => {

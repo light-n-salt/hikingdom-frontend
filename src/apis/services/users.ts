@@ -1,4 +1,5 @@
 import apiRequest from 'apis/axios'
+import { User } from 'types/user.interface'
 
 // GET Request
 export function checkNickname(nickname: string) {
@@ -11,6 +12,10 @@ export function getProfile(nickname: string) {
 
 export function getMember() {
   return apiRequest.get(`/members`).then((res) => res.data.result)
+}
+
+export function getUserInfo(setUserState: (userInfo: User) => void) {
+  return apiRequest.get(`/members`).then((res) => setUserState(res.data.result))
 }
 
 // POST Request
