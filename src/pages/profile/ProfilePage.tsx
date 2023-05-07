@@ -22,7 +22,7 @@ function ProfilePage() {
   const navigate = useNavigate()
   const userInfo = useRecoilValue(userInfoState)
 
-  const { data } = useQuery<UserProfileInfo>(['profile'], () =>
+  const { data } = useQuery<UserProfileInfo>(['userHiking'], () =>
     getProfile(userInfo.nickname)
   )
 
