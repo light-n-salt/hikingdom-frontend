@@ -34,6 +34,7 @@ import MeetupDetailPage from 'pages/club/MeetupDetailPage'
 import ProfilePage from 'pages/profile/ProfilePage'
 import ProfileUpdatePage from 'pages/profile/ProfileUpdatePage'
 import AlarmPage from 'pages/profile/AlarmPage'
+import NotFoundPage from 'pages/NotFoundPage'
 
 function App() {
   return (
@@ -44,18 +45,14 @@ function App() {
         <Route path="signup" element={<SignupPage />} />
         <Route path="agreement" element={<AgreePage />} />
         <Route path="password" element={<FindPwPage />} />
-
         {/* 메인 */}
         <Route path="/main" element={<SearchLayout />}>
           <Route path="" element={<MainPage />} />
           <Route path="search" element={<SearchMtPage />} />
         </Route>
         <Route path="/mountain/detail/:id" element={<MtDetailPage />} />
-        {/* <Route path="/mountain/detail" element={<MtDetailPage />} />  */}
-
         {/* 순위 */}
         <Route path="/rank" element={<RankPage />} />
-
         {/* 모임 */}
         <Route path="/club/search" element={<SearchClubPage />} />
         <Route path="/club/detail/:id" element={<MainDetailPage />} />
@@ -70,11 +67,11 @@ function App() {
         </Route>
         <Route path="/club/meetup/create" element={<MeetupCreatePage />} />
         <Route path="/club/meetup/detail/:id" element={<MeetupDetailPage />} />
-
         {/* 마이페이지 */}
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/update" element={<ProfileUpdatePage />} />
         <Route path="/alarm" element={<AlarmPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   )
