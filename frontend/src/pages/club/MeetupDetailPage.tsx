@@ -16,13 +16,23 @@ import { meetupInfoDetail } from 'types/meetup.interface'
 import { getMeetupDetail } from 'apis/services/meetup'
 import { useQuery } from '@tanstack/react-query'
 
+import { useParams } from 'react-router-dom'
+
 function MeetupDetailPage() {
   const { theme } = useContext(ThemeContext)
-  const clubId = 1
-  const meetupId = 1
-  const { data } = useQuery<meetupInfoDetail>(['meetup'], () =>
-    getMeetupDetail(clubId, meetupId)
-  )
+  const { clubId, meetupId } = useParams()
+
+  // const { data } = useQuery<meetupInfoDetail>(['meetup'], () =>
+  //   getMeetupDetail(parseInt(clubId), parseInt(meetupId))
+  // )
+
+  const { data } =
+    clubId && meetupId
+      ? useQuery<meetupInfoDetail>(
+          ['meetup', String(clubId), String(meetupId)],
+          () => getMeetupDetail(parseInt(clubId), parseInt(meetupId))
+        )
+      : { data: undefined }
 
   return data ? (
     <div className={`page p-sm ${theme} ${styles.page}`}>

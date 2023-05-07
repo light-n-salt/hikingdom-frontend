@@ -12,10 +12,10 @@ import LevelModal from 'components/user/LevelModal'
 import Modal from 'components/common/Modal'
 
 import { BiEdit } from 'react-icons/bi'
-
 import { UserRecord, User } from 'types/user.interface'
-
 import LEVEL_TO_IMG from 'constants/levels'
+
+import { logout } from 'apis/services/users'
 
 interface UserProfileProps extends UserRecord, User {}
 
@@ -35,6 +35,11 @@ export default function UserProfile({
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
 
+  const onClickLogout = () => {
+    logout()
+    navigate('/')
+  }
+
   return (
     <div className={styles.profile}>
       {isOpen && (
@@ -51,7 +56,7 @@ export default function UserProfile({
             text={'로그아웃'}
             size={'sm'}
             color={'secondary'}
-            onClick={() => console.log('로그아웃')}
+            onClick={onClickLogout}
           />
 
           <IconButton
@@ -63,11 +68,13 @@ export default function UserProfile({
         </div>
         <div className={styles.username}>
           {nickname}
-          <IconButton
-            imgSrc={LEVEL_TO_IMG[0]}
-            size={'sm'}
-            onClick={() => setIsOpen(true)}
-          />
+          {level && (
+            <IconButton
+              imgSrc={LEVEL_TO_IMG[level]}
+              size={'sm'}
+              onClick={() => setIsOpen(true)}
+            />
+          )}
         </div>
         <span className={styles.email}>{email}</span>
         <UserInfo
