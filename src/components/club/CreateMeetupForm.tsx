@@ -14,19 +14,11 @@ import { createMeetup } from 'apis/services/clubs'
 import styles from './CreateMeetupForm.module.scss'
 import Button from 'components/common/Button'
 import { useNavigate, useParams } from 'react-router-dom'
-// import { MtInfo } from 'types/mt.interface'
+import { MtInfo } from 'types/mt.interface'
 
 type Option = {
   value: string
   label: string
-}
-
-type MtInfo = {
-  id: number
-  name: string
-  maxAlt: number
-  address: string
-  imgUrl: string
 }
 
 function CreateMeetupForm() {
@@ -52,9 +44,9 @@ function CreateMeetupForm() {
     getMountains(event.target.value).then((res) => {
       const mountainInfoArray: MtInfo[] = res.data.result.content
       const options: Option[] = []
-      mountainInfoArray.map(({ id, name }) => {
+      mountainInfoArray.map(({ mountainId, name }) => {
         options.push({
-          value: id.toString(),
+          value: mountainId.toString(),
           label: name,
         })
       })
@@ -81,10 +73,17 @@ function CreateMeetupForm() {
 
   // 클릭 시, 모임을 생성하는 함수
   function onClickCreateMeetup() {
-    if (!name.trim() || !mountainId || !date || !time || !description.trim())
+    if (
+      !clubId ||
+      !name.trim() ||
+      !mountainId ||
+      !date ||
+      !time ||
+      !description.trim()
+    )
       return
-    const startAt = date.replace('-', '.') + ' ' + time
-    createMeetup(1, name, mountainId, startAt, description).then((res) => {
+    const startAt = date + ' ' + time
+    createMeetup(clubId, name, mountainId, startAt, description).then((res) => {
       const meetupId = res.data.result.id
       navigate(`/club/${clubId}/meetup/${meetupId}/detail`)
     })
