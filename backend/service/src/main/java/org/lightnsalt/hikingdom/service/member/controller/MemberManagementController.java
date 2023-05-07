@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.service.member.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
@@ -10,6 +12,7 @@ import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordR
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
 import org.lightnsalt.hikingdom.service.member.service.MemberManagementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,5 +102,12 @@ public class MemberManagementController {
 
 		MemberProfileRes result = memberManagementService.findProfile(nickname);
 		return new ResponseEntity<>(BaseResponseBody.of("회원 프로필 조회에 성공했습니다", result), HttpStatus.OK);
+	}
+
+	@GetMapping("/clubs/my-requests")
+	public ResponseEntity<CustomResponseBody> requestClubList(Authentication authentication) {
+
+		List<MemberRequestClubRes> result = memberManagementService.findRequestClub(authentication.getName());
+		return new ResponseEntity<>(BaseResponseBody.of("가입 대기중인 모임 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 }
