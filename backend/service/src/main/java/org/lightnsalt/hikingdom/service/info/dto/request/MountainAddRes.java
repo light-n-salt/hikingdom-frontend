@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.info.dto.response;
+package org.lightnsalt.hikingdom.service.info.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
