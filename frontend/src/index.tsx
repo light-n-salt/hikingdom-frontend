@@ -6,17 +6,21 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import ThemeProvider from 'styles/ThemeProvider'
 import { RecoilRoot } from 'recoil'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const queryClient = new QueryClient()
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <RecoilRoot>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </RecoilRoot>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <RecoilRoot>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </RecoilRoot>
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.StrictMode>
 )
 

@@ -34,7 +34,7 @@ function ClubHeader() {
         <div className={styles.chat}>
           <IconButton
             imgSrc={Chatting}
-            size="md"
+            size="sm"
             onClick={() => navigate('/club/chat')}
           />
         </div>
