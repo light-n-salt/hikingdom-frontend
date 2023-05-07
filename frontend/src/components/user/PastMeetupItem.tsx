@@ -64,7 +64,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
           />
 
           {/* 그룹 스케줄일 때 상세보기 버튼 */}
-          {hiking.isGroup && (
+          {hiking.isMeetup && (
             <div className={styles.group} onClick={onClickGroup}>
               {hiking.meetupName} <FiChevronRight />
             </div>

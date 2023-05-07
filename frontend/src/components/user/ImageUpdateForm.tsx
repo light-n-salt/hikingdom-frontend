@@ -6,22 +6,24 @@ import Image from 'components/common/Image'
 
 import IconButton from 'components/common/IconButton'
 import { TbCameraPlus } from 'react-icons/tb'
-// Todo: API 연결
+
+import { User } from 'types/user.interface'
+import { getMember } from 'apis/services/users'
+import { useQuery } from '@tanstack/react-query'
+
 function ImageUpdateForm() {
   const { theme } = useContext(ThemeContext)
 
-  const userInfo = {
-    imgUrl:
-      'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80',
-    username: '이병호리병',
-  }
+  const { data } = useQuery<User>(['user'], getMember)
 
+  // Todo: 이미지 업데이트
   const onClickUpdateImg = () => {
     console.log('프로필 수정')
   }
-  return (
+
+  return data ? (
     <div className={`content ${theme} ${styles.img}`}>
-      <Image imgUrl={userInfo.imgUrl} size="lg" />
+      <Image imgUrl={data.profileUrl} size="lg" />
       <IconButton
         icon={<TbCameraPlus />}
         size="sm"
@@ -29,6 +31,8 @@ function ImageUpdateForm() {
         onClick={onClickUpdateImg}
       />
     </div>
+  ) : (
+    <div>Loading...</div>
   )
 }
 

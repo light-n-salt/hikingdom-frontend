@@ -5,6 +5,14 @@ export function checkNickname(nickname: string) {
   return apiRequest.get(`/members/auth/nickname-check/${nickname}`)
 }
 
+export function getProfile(nickname: string) {
+  return apiRequest.get(`/members/${nickname}`).then((res) => res.data.result)
+}
+
+export function getMember() {
+  return apiRequest.get(`/members`).then((res) => res.data.result)
+}
+
 // POST Request
 export function validEmail(email: string) {
   return apiRequest.post(`/members/auth/email-valid`, {
