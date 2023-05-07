@@ -7,7 +7,7 @@ import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.repository.info.MountainDailyInfoRepository;
 import org.lightnsalt.hikingdom.domain.repository.info.MountainInfoRepositoryCustom;
-import org.lightnsalt.hikingdom.service.info.dto.response.MountainAddRes;
+import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddRes;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddReq;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainListRes;
