@@ -18,7 +18,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 @JsonPropertyOrder({"timestamp", "code", "message"})
-public class ErrorResponseBody {
+public class ErrorResponseBody implements CustomResponseBody {
 	private final String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	private String code;
 	private String message;

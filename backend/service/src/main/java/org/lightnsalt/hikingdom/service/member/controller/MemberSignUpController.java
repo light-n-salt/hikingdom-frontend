@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberEmailAuthenticationReq;
@@ -41,7 +42,7 @@ public class MemberSignUpController {
 	private final MemberEmailService memberEmailService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> signup(@RequestBody @Valid MemberSignUpReq memberSignUpReq, BindingResult bindingResult) {
+	public ResponseEntity<CustomResponseBody> signup(@RequestBody @Valid MemberSignUpReq memberSignUpReq, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
 				bindingResult.getAllErrors().get(0).getDefaultMessage()),
@@ -54,7 +55,7 @@ public class MemberSignUpController {
 	}
 
 	@GetMapping("/nickname-check/{nickname}")
-	public ResponseEntity<?> nicknameCheck(@Valid @NotEmpty(message = "닉네임은 필수 입력값입니다.")
+	public ResponseEntity<CustomResponseBody> nicknameCheck(@Valid @NotEmpty(message = "닉네임은 필수 입력값입니다.")
 	@Pattern(regexp = "[ㄱ-ㅎ가-힣a-zA-Z0-9]{2,16}", message = "닉네임 형식에 맞지 않습니다.") @PathVariable String nickname) {
 		memberSignUpService.checkDuplicateNickname(nickname);
 
@@ -62,7 +63,7 @@ public class MemberSignUpController {
 	}
 
 	@PostMapping("/email-valid")
-	public ResponseEntity<?> emailValid(@RequestBody @Valid MemberEmailReq memberEmailReq,
+	public ResponseEntity<CustomResponseBody> emailValid(@RequestBody @Valid MemberEmailReq memberEmailReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
@@ -76,7 +77,7 @@ public class MemberSignUpController {
 	}
 
 	@DeleteMapping("/email-valid")
-	public ResponseEntity<?> emailConfirm(@RequestBody @Valid MemberEmailAuthenticationReq memberEmailAuthenticationReq,
+	public ResponseEntity<CustomResponseBody> emailConfirm(@RequestBody @Valid MemberEmailAuthenticationReq memberEmailAuthenticationReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,

@@ -35,4 +35,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 		+ "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw "
 		+ "WHERE m.id = :id")
 	void updateMemberWithdraw(Long id, boolean isWithdraw, LocalDateTime now);
+
+	Optional<Member> findByNicknameAndIsWithdraw(@Param("nickname") String nickname,
+		@Param("isWithdraw") boolean isWithdraw);
 }

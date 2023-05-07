@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
@@ -75,6 +76,10 @@ public class MemberHiking {
 
 	@Column(name = "is_summit", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
 	private Boolean isSummit;
+
+	@OneToOne(mappedBy = "hiking")
+	@ToString.Exclude
+	private MemberHikingGps gpsRoute;
 
 	@Builder
 	public MemberHiking(Member member, MountainInfo mountain, Meetup meetup, Boolean isMeetup, LocalDateTime startAt,

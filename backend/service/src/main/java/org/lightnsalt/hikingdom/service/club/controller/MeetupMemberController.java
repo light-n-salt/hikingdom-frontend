@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.service.club.controller;
 import java.util.List;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.service.club.dto.response.MemberListRes;
 import org.lightnsalt.hikingdom.service.club.service.MeetupMemberService;
 import org.springframework.http.HttpStatus;
@@ -27,21 +28,21 @@ public class MeetupMemberController {
 	private final MeetupMemberService meetupMemberService;
 
 	@PostMapping("/join")
-	public ResponseEntity<?> meetupJoinSave(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> meetupJoinSave(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long meetupId) {
 		meetupMemberService.addJoinMeetup(authentication.getName(), clubId, meetupId);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 참여에 성공했습니다"), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/join")
-	public ResponseEntity<?> meetupJoinRemove(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> meetupJoinRemove(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long meetupId) {
 		meetupMemberService.removeJoinMeetup(authentication.getName(), clubId, meetupId);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 참여 취소에 성공했습니다"), HttpStatus.OK);
 	}
 
 	@GetMapping("/members")
-	public ResponseEntity<?> meetupMemberList(@PathVariable Long clubId, @PathVariable Long meetupId) {
+	public ResponseEntity<CustomResponseBody> meetupMemberList(@PathVariable Long clubId, @PathVariable Long meetupId) {
 
 		List<MemberListRes> result = meetupMemberService.findMeetupMember(clubId, meetupId);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 멤버 조회에 성공했습니다", result), HttpStatus.OK);

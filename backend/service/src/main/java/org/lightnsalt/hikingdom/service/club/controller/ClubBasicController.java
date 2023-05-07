@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.club.dto.request.ClubInfoReq;
@@ -32,7 +33,7 @@ public class ClubBasicController {
 	private final ClubBasicService clubBasicService;
 
 	@PostMapping
-	public ResponseEntity<?> clubAdd(Authentication authentication, @RequestBody @Valid ClubInfoReq clubInfoReq,
+	public ResponseEntity<CustomResponseBody> clubAdd(Authentication authentication, @RequestBody @Valid ClubInfoReq clubInfoReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
@@ -46,7 +47,7 @@ public class ClubBasicController {
 	}
 
 	@PutMapping("/{clubId}")
-	public ResponseEntity<?> clubModify(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> clubModify(Authentication authentication, @PathVariable Long clubId,
 		@RequestBody @Valid ClubInfoReq clubInfoReq, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
@@ -60,13 +61,13 @@ public class ClubBasicController {
 	}
 
 	@GetMapping("/{clubId}")
-	public ResponseEntity<?> clubSimpleDetails(@PathVariable Long clubId) {
+	public ResponseEntity<CustomResponseBody> clubSimpleDetails(@PathVariable Long clubId) {
 		ClubSimpleDetailRes clubSimpleDetailRes = clubBasicService.findClubSimpleDetail(clubId);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 정보 조회에 성공했습니다", clubSimpleDetailRes), HttpStatus.OK);
 	}
 
 	@GetMapping("/check-duplicate")
-	public ResponseEntity<?> clubNameCheck(@RequestBody @Valid ClubNameReq clubNameReq, BindingResult bindingResult) {
+	public ResponseEntity<CustomResponseBody> clubNameCheck(@RequestBody @Valid ClubNameReq clubNameReq, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
 				bindingResult.getAllErrors().get(0).getDefaultMessage()),

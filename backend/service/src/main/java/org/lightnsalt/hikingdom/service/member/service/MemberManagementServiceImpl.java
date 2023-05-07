@@ -2,6 +2,8 @@ package org.lightnsalt.hikingdom.service.member.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
@@ -10,14 +12,20 @@ import org.lightnsalt.hikingdom.common.util.RedisUtil;
 import org.lightnsalt.hikingdom.common.util.S3FileUtil;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
+import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
+import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
 import org.lightnsalt.hikingdom.domain.repository.club.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.MeetupRepository;
+import org.lightnsalt.hikingdom.domain.repository.member.MemberHikingRepository;
+import org.lightnsalt.hikingdom.domain.repository.member.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
+import org.lightnsalt.hikingdom.service.member.dto.response.HikingRecordRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +38,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberManagementServiceImpl implements MemberManagementService {
+	private final MemberHikingRepository memberHikingRepository;
+	private final MemberHikingStatisticRepository memberHikingStatisticRepository;
 	private final PasswordEncoder passwordEncoder;
 
 	private final S3FileUtil s3FileUtil;
@@ -66,23 +76,25 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
 			.orElse(null);
 
-		// 소모임 모임장 또는 진행 중인 일정이 있을 시 탈퇴 불가능
-		if (clubMember.getClub().getHost().getId().equals(member.getId())) {
-			throw new GlobalException(ErrorCode.CLUB_MEMBER_IS_HOST);
-		}
+		if (clubMember != null) {
+			// 소모임 모임장 또는 진행 중인 일정이 있을 시 탈퇴 불가능
+			if (clubMember.getClub().getHost().getId().equals(member.getId())) {
+				throw new GlobalException(ErrorCode.CLUB_MEMBER_IS_HOST);
+			}
 
-		if (!meetupRepository.findByClubIdAndHostIdAndStartAtAfter(clubMember.getClub().getId(), member.getId(),
-			LocalDateTime.now()).isEmpty()) {
-			throw new GlobalException(ErrorCode.CLUB_MEMBER_HOST_MEETUP_EXISTS);
+			if (!meetupRepository.findByClubIdAndHostIdAndStartAtAfter(clubMember.getClub().getId(), member.getId(),
+				LocalDateTime.now()).isEmpty()) {
+				throw new GlobalException(ErrorCode.CLUB_MEMBER_HOST_MEETUP_EXISTS);
+			}
+
+			// 소모임 탈퇴
+			// TODO: 소모임 일정 참여해둔 것 취소?
+			clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, LocalDateTime.now());
 		}
 
 		// 소모임 가입 신청 취소
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
 			LocalDateTime.now());
-
-		// 소모임 탈퇴
-		// TODO: 소모임 일정 참여해둔 것 취소?
-		clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, LocalDateTime.now());
 
 		memberRepository.updateMemberWithdraw(member.getId(), true, LocalDateTime.now());
 	}
@@ -157,7 +169,27 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	}
 
 	@Transactional
-	boolean setNickname(String nickname, Long memberId) {
+	public boolean setNickname(String nickname, Long memberId) {
 		return memberRepository.setNicknameById(nickname, memberId) > 0;
+	}
+
+	@Transactional
+	@Override
+	public MemberProfileRes findProfile(String nickname) {
+		// 회원정보 가져오기
+		final Member member = memberRepository.findByNicknameAndIsWithdraw(nickname, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
+		// 회원 등산통계 가져오기
+		final MemberHikingStatistic memberHikingStatistic = memberHikingStatisticRepository.findById(member.getId())
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+
+		// 회원 등산기록 가져오기
+		final List<MemberHiking> memberHikingList = memberHikingRepository.findTop3ByMemberIdOrderByEndAt(
+			member.getId());
+		List<HikingRecordRes> hikingRecordResList = memberHikingList.stream().map(HikingRecordRes::new).collect(
+			Collectors.toList());
+
+		// dto에 담아 리턴
+		return new MemberProfileRes(member, memberHikingStatistic, hikingRecordResList);
 	}
 }

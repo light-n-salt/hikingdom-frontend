@@ -29,14 +29,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberEmailServiceImpl implements MemberEmailService {
 	private static final SecureRandom secureRandom = new SecureRandom();
-	private static final char[] possiblePasswordCharacters =
-		("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()+|=").toCharArray();
 	private final JavaMailSender javaMailSender;
 	private final PasswordEncoder passwordEncoder;
 	private final RedisUtil redisUtil;
 	private final MemberRepository memberRepository;
+
 	@Value("${values.mail.setFrom}")
 	private String fromEmail;
+	@Value("${values.password.possibleChars}")
+	private char[] possiblePasswordCharacters;
 
 	@Transactional
 	@Override
@@ -82,7 +83,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 			message.setText(createAuthenticationEmail(authCode), "UTF-8", "html");
 			javaMailSender.send(message);
 
-			redisUtil.setValueWithExpiration("AUTH" + email, authCode, 60 * 5);
+			redisUtil.setValueWithExpiration("AUTH" + email, authCode, (long) 60 * 5);
 		} catch (MessagingException e) {
 			log.error("Failure while sending find authentication email to " + email);
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);

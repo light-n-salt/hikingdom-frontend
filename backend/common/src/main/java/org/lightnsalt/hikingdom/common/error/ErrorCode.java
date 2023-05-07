@@ -55,7 +55,12 @@ public enum ErrorCode {
 	PHOTO_NOT_FOUND(404, "MP002", "삭제되었거나 존재하지 않는 사진입니다"),
 
 	// meetup review related error codes
-	MEETUP_REVIEW_NOT_FOUND(404, "MR001", "존재하지 않는 일정 후기입니다");
+	MEETUP_REVIEW_NOT_FOUND(404, "MR001", "존재하지 않는 일정 후기입니다"),
+
+	// hiking record related error codes
+	HIKING_RECORD_NOT_FOUND(404, "H001", "존재하지 않는 등산 기록입니다"),
+
+	;
 	private final int status;
 	private final String code;
 	private final String message;
