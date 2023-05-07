@@ -18,7 +18,11 @@ function ProfilePage() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
 
-  const { data: user } = useQuery<User>(['user'], getMember, {
+  const {
+    data: user,
+    isError,
+    isLoading,
+  } = useQuery<User>(['user'], getMember, {
     cacheTime: Infinity,
   })
 

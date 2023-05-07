@@ -74,7 +74,7 @@ function App() {
           element={<MeetupDetailPage />}
         />
         {/* 마이페이지 */}
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/:nickname" element={<ProfilePage />} />
         <Route path="/profile/update" element={<ProfileUpdatePage />} />
         <Route path="/alarm" element={<AlarmPage />} />
         <Route path="*" element={<NotFoundPage />} />
