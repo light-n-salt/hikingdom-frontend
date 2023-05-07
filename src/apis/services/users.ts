@@ -5,6 +5,10 @@ export function checkNickname(nickname: string) {
   return apiRequest.get(`/members/auth/nickname-check/${nickname}`)
 }
 
+export function getUserInfo(nickname: string) {
+  return apiRequest.get(`/members`)
+}
+
 // POST Request
 export function validEmail(email: string) {
   return apiRequest.post(`/members/auth/email-valid`, {
