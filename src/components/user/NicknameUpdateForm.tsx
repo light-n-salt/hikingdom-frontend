@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMutation, QueryClient } from '@tanstack/react-query'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './NicknameUpdateForm.module.scss'
 
 import LabelInput from 'components/common/LabelInput'
 import Button from 'components/common/Button'
-
+import toast from 'components/common/Toast'
 import useAuthInput from 'hooks/useAuthInput'
 
 import { updateNickname } from 'apis/services/users'
@@ -13,9 +14,6 @@ import { updateNickname } from 'apis/services/users'
 function NicknameUpdateForm() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
-
-  // Todo: toast 적용
-  const [errMsg, setErrMsg] = useState('')
 
   // 닉네임 수정
   const {
@@ -25,19 +23,20 @@ function NicknameUpdateForm() {
     condition: nicknameCond,
   } = useAuthInput({ type: 'nickname' })
 
+  // invalidate 할 때 사용하는 함수
+  const queryClient = new QueryClient()
+
   // 닉네임 수정 함수
-  const onClickUpdateNickname = () => {
-    updateNickname(nickname)
-      .then(() => {
-        navigate('/profile')
-        // Todo: Query invalidate 처리
-      })
-      .catch((err) => {
-        if (err.status === 400) {
-          setErrMsg(err.data.message)
-        }
-      })
-  }
+  const onClickUpdate = useMutation(() => updateNickname(nickname), {
+    onSuccess: () => {
+      toast.addMessage('success', '닉네임이 변경되었습니다')
+      queryClient.invalidateQueries(['user'])
+      navigate('/profile')
+    },
+    onError: () => {
+      toast.addMessage('error', '사용할 수 없는 닉네임입니다')
+    },
+  })
 
   return (
     <div className={`content ${theme} ${styles.nickname}`}>
@@ -48,7 +47,6 @@ function NicknameUpdateForm() {
         onClick={() => navigate('/profile')}
       />
 
-      <span className={styles.err}>{errMsg}</span>
       <LabelInput
         label="닉네임"
         value={nickname}
@@ -58,7 +56,7 @@ function NicknameUpdateForm() {
       <Button
         text="닉네임 수정"
         color={isNicknamePass ? 'primary' : 'gray'}
-        onClick={onClickUpdateNickname}
+        onClick={() => onClickUpdate.mutate()}
       />
     </div>
   )

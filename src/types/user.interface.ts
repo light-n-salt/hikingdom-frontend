@@ -4,7 +4,7 @@ export interface User {
   email: string
   nickname: string
   profileUrl: string
-  grouldId?: number | undefined
+  clubId?: number | undefined
   level?: number | undefined
 }
 
@@ -26,13 +26,14 @@ export interface UserHiking {
   totalDuration: string
   totalDistance: number
   maxAlt: number
-  isGroup: boolean
-  meetupId: number | null
-  meetupName: string | null
+  isSummit: boolean
+  isMeetup: boolean
+  meetupId: number
+  meetupName: string
 }
 
 // 회원 프로필 조회
-export interface UserProfile extends User, UserRecord {
+export interface UserProfileInfo extends User, UserRecord {
   hikingRecords: UserHiking[]
 }
 
