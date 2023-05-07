@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.member.dto.response;
+package org.lightnsalt.hikingdom.service.hiking.dto.response;
 
 import java.time.LocalDateTime;
 
@@ -17,8 +17,8 @@ public class HikingRecordRes {
 	private Long hikingRecordId;
 	private String mountainName;
 	private LocalDateTime startAt;
-	private Long totalDuration;
-	private double totalDistance;
+	private int totalDuration;
+	private int totalDistance;
 	private double maxAlt;
 
 	@JsonProperty("isMeetup")
@@ -30,8 +30,8 @@ public class HikingRecordRes {
 		this.hikingRecordId = hiking.getId();
 		this.mountainName = hiking.getMountain().getName();
 		this.startAt = hiking.getStartAt();
-		this.totalDuration = hiking.getTotalDuration();
-		this.totalDistance = hiking.getTotalDistance();
+		this.totalDuration = Math.round(hiking.getTotalDuration());
+		this.totalDistance = Math.round(hiking.getTotalDistance());
 		this.maxAlt = hiking.getTotalAlt();
 		this.isMeetup = hiking.getIsMeetup();
 		if (this.isMeetup) {
