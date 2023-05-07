@@ -1,0 +1,19 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flexbox {
+  display: flex;
+  gap: 1rem;
+}
