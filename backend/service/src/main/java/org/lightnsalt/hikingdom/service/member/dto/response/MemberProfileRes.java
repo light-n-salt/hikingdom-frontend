@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class MemberProfileRes {
 	private String email;
 	private String nickname;
+	private Long level;
 	private String profileUrl;
 	private Long totalHikingCount;
 	private Long totalMountainCount;
@@ -28,6 +29,7 @@ public class MemberProfileRes {
 		List<HikingRecordRes> recordResList) {
 		this.email = member.getEmail();
 		this.nickname = member.getNickname();
+		this.level = Long.valueOf(member.getLevel().getId());
 		this.profileUrl = member.getProfileUrl();
 		this.totalHikingCount = hikingStatistic.getTotalHikingCount();
 		this.totalMountainCount = hikingStatistic.getTotalMountainCount();
