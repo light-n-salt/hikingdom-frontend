@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberHikingRepository extends JpaRepository<MemberHiking, Long> {
 	List<MemberHiking> findTop3ByMemberIdOrderByEndAt(Long id);
+
 }
