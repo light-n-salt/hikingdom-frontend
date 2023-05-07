@@ -70,9 +70,9 @@ axiosInstance.interceptors.response.use(
           // 이 코드에서는 단순히 에러를 반환
           return Promise.reject(error)
         })
-    } else if (error.response?.status === 401) {
-      toast.addMessage('error', `로그인 후 이용해주세요`)
-      redirect('/login')
+      // } else if (error.response?.status === 401) {
+      //   toast.addMessage('error', `로그인 후 이용해주세요`)
+      //   redirect('/login')
     } else if (error.response?.status === 500) {
       toast.addMessage('error', `서버와의 통신 오류가 발생했습니다`)
     }
