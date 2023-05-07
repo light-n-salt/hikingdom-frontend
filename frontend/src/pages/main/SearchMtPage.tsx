@@ -34,6 +34,13 @@ function SearchMtPage() {
         .then((res) => {
           setMtInfoArray(res.data.result.content)
           setIsEnd(!res.data.result.hasNext)
+          if (infiniteRef.current) {
+            infiniteRef.current.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: 'smooth',
+            })
+          }
         })
         .catch(() => {})
     }

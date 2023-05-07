@@ -22,13 +22,20 @@ function RankPage() {
   const [filter, setFilter] = useState('') // 선택된 필터 옵션 value
   const [clubInfoArray, setClubInfoArray] = useState<ClubInfo[]>([]) // 클럽정보 배열
   const [isEnd, setIsEnd] = useState(false) // 무한스크롤 마지막 정보 여부
-  const infiniteRef = useRef(null) // 무한 스크롤 동작시킬 useRef
+  const infiniteRef = useRef<HTMLDivElement>(null) // 무한 스크롤 동작시킬 useRef
 
   // 필터 옵션이나 쿼리가 변할 때마다, 클럽 랭킹 정보 api 요청
   useEffect(() => {
     getRanking(filter).then((res) => {
-      setClubInfoArray(res.data.result)
-      // setIsEnd(!res.data.result.hasNext)
+      setClubInfoArray(res.data.result.content)
+      setIsEnd(!res.data.result.hasNext)
+      if (infiniteRef.current) {
+        infiniteRef.current.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        })
+      }
     })
   }, [filter])
 
@@ -40,7 +47,7 @@ function RankPage() {
           ...clubInfoArray,
           ...res.data.result,
         ])
-        // setIsEnd(!res.data.result.hasNext)
+        setIsEnd(!res.data.result.hasNext)
       })
       .catch(() => {})
   }
