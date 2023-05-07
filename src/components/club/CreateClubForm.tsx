@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom'
 import { checkClubName, getLocationCode, createClub } from 'apis/services/clubs'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
-import Dropdown from 'components/common/Dropdown'
 import PageHeader from 'components/common/PageHeader'
 import LabelInput from 'components/common/LabelInput'
 import LabelTextArea from 'components/common/LabelTextArea'
+import SelectBox from 'components/common/SelectBox'
 
 type locationCode = {
   dongCode: string
@@ -120,12 +120,12 @@ function CreateClubForm() {
         onChange={onChangeSetDescription}
       />
       <div className={styles.dropdown}>
-        <Dropdown
+        <SelectBox
           options={sidoOptions}
           defaultLabel="시/도 선택"
           setValue={setSidoCode}
         />
-        <Dropdown
+        <SelectBox
           options={gugunOptions}
           defaultLabel="구/군 선택"
           setValue={setGugunCode}
