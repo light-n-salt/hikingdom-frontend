@@ -51,3 +51,18 @@ export function createClub(
     dongCode,
   })
 }
+
+export function createMeetup(
+  clubId: number | string,
+  name: string,
+  mountainId: number | string,
+  startAt: string,
+  description: string
+) {
+  return apiRequest.post(`/clubs/${clubId}/meetups`, {
+    name,
+    mountainId,
+    startAt,
+    description,
+  })
+}
