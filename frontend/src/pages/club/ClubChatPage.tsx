@@ -149,7 +149,7 @@ function ClubChatPage() {
 
   return (
     <div className={`page p-sm ${theme} mobile `}>
-      <PageHeader title="모임이름" url={`/club/main/${clubId}`} />
+      <PageHeader title="모임이름" url={`/club/${clubId}/main`} />
       <ChatList chatting={result.chatting} />
       <TextSendBar placeholder="채팅을 입력해주세요" />
     </div>

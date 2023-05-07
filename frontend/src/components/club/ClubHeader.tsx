@@ -19,7 +19,7 @@ function ClubHeader() {
   }
 
   const location = useLocation()
-  const type = location.pathname.split('/')[2]
+  const type = location.pathname.split('/')[3]
 
   useEffect(() => {
     // clubSimpleInfo(clubId)
@@ -35,7 +35,7 @@ function ClubHeader() {
           <IconButton
             imgSrc={Chatting}
             size="sm"
-            onClick={() => navigate('/club/chat')}
+            onClick={() => navigate(`/club/${clubInfo.clubId}/chat`)}
           />
         </div>
       </div>
@@ -44,7 +44,7 @@ function ClubHeader() {
           className={`${styles.button} ${
             type === 'main' ? styles.active : styles.disabled
           }`}
-          onClick={() => navigate(`main/${clubInfo.clubId}`)}
+          onClick={() => navigate(`main`)}
         >
           모임
         </span>
