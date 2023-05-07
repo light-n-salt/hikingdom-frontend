@@ -28,7 +28,7 @@ import ClubMeetupPage from 'pages/club/ClubMeetupPage'
 import ClubMemberPage from 'pages/club/ClubMemberPage'
 import ClubAlbumPage from 'pages/club/ClubAlbumPage'
 // Club - Meetup
-import MeetupCreatePage from 'pages/club/MeetupCreatePage'
+import CreateMeetupPage from 'pages/club/CreateMeetupPage'
 import MeetupDetailPage from 'pages/club/MeetupDetailPage'
 // MyPage
 import ProfilePage from 'pages/profile/ProfilePage'
@@ -50,23 +50,29 @@ function App() {
           <Route path="" element={<MainPage />} />
           <Route path="search" element={<SearchMtPage />} />
         </Route>
-        <Route path="/mountain/detail/:id" element={<MtDetailPage />} />
+        <Route path="/mountain/detail/:mountainId" element={<MtDetailPage />} />
         {/* 순위 */}
         <Route path="/rank" element={<RankPage />} />
         {/* 모임 */}
         <Route path="/club/search" element={<SearchClubPage />} />
-        <Route path="/club/detail/:id" element={<MainDetailPage />} />
         <Route path="/club/create" element={<ClubCreatePage />} />
-        <Route path="/club/chat" element={<ClubChatPage />} />
+        <Route path="/club/:clubId/detail/" element={<MainDetailPage />} />
+        <Route path="/club/:clubId/chat" element={<ClubChatPage />} />
         <Route path="/club/none" element={<ClubNoneExistPage />} />
-        <Route path="/club" element={<ClubPage />}>
-          <Route path="main/:id" element={<ClubMainPage />} />
+        <Route path="/club/:clubId" element={<ClubPage />}>
+          <Route path="main" element={<ClubMainPage />} />
           <Route path="meetup" element={<ClubMeetupPage />} />
           <Route path="member" element={<ClubMemberPage />} />
           <Route path="album" element={<ClubAlbumPage />} />
         </Route>
-        <Route path="/club/meetup/create" element={<MeetupCreatePage />} />
-        <Route path="/club/meetup/detail/:id" element={<MeetupDetailPage />} />
+        <Route
+          path="/club/:clubId/meetup/create"
+          element={<CreateMeetupPage />}
+        />
+        <Route
+          path="/club/:clubId/meetup/:meetupId/detail"
+          element={<MeetupDetailPage />}
+        />
         {/* 마이페이지 */}
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/update" element={<ProfileUpdatePage />} />
