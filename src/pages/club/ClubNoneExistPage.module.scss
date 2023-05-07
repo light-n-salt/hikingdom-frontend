@@ -1,7 +1,7 @@
 @use 'src/styles/colors' as *;
 
 .page {
-  padding-top: 10rem;
+  padding-top: 8rem;
   justify-content: space-between;
 }
 
@@ -12,16 +12,20 @@
   gap: 1.5rem;
 }
 
+.image {
+  height: 8rem;
+}
+
 .text {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   text-align: center;
-  line-height: 2.8rem;
+  line-height: 2rem;
 }
 
 .button {
   width: 90%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   margin-bottom: 2.5rem;
 }
