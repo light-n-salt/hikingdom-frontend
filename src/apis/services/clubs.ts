@@ -23,3 +23,46 @@ export function getClubs(query = '', word = '', clubId: number | null = null) {
     },
   })
 }
+
+export function checkClubName(name: string) {
+  return apiRequest.get(`/clubs/check-duplicate/${name}`)
+}
+
+export function getLocationCode(
+  query: 'sido' | 'gugun',
+  word: string | null = null
+) {
+  return apiRequest.get(`/info/location`, {
+    params: {
+      query,
+      word,
+    },
+  })
+}
+
+export function createClub(
+  name: string,
+  description: string,
+  dongCode: string
+) {
+  return apiRequest.post(`/clubs`, {
+    name,
+    description,
+    dongCode,
+  })
+}
+
+export function createMeetup(
+  clubId: number | string,
+  name: string,
+  mountainId: number | string,
+  startAt: string,
+  description: string
+) {
+  return apiRequest.post(`/clubs/${clubId}/meetups`, {
+    name,
+    mountainId,
+    startAt,
+    description,
+  })
+}
