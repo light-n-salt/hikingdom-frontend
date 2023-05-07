@@ -11,11 +11,14 @@ import org.lightnsalt.hikingdom.common.util.JwtTokenUtil;
 import org.lightnsalt.hikingdom.common.util.RedisUtil;
 import org.lightnsalt.hikingdom.common.util.S3FileUtil;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
+import org.lightnsalt.hikingdom.domain.entity.club.ClubJoinRequest;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
+import org.lightnsalt.hikingdom.domain.entity.club.record.ClubRanking;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
 import org.lightnsalt.hikingdom.domain.repository.club.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.ClubMemberRepository;
+import org.lightnsalt.hikingdom.domain.repository.club.ClubRankingRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.MeetupRepository;
 import org.lightnsalt.hikingdom.domain.repository.hiking.MemberHikingRepository;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberHikingStatisticRepository;
@@ -26,6 +29,7 @@ import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberManagementServiceImpl implements MemberManagementService {
+	private final ClubRankingRepository clubRankingRepository;
 	private final MemberHikingRepository memberHikingRepository;
 	private final MemberHikingStatisticRepository memberHikingStatisticRepository;
 	private final PasswordEncoder passwordEncoder;
@@ -186,10 +191,38 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		// 회원 등산기록 가져오기
 		final List<MemberHiking> memberHikingList = memberHikingRepository.findTop3ByMemberIdOrderByEndAt(
 			member.getId());
-		List<HikingRecordRes> hikingRecordResList = memberHikingList.stream().map(HikingRecordRes::new).collect(
-			Collectors.toList());
+		List<HikingRecordRes> hikingRecordResList = memberHikingList.stream()
+			.map(HikingRecordRes::new)
+			.collect(Collectors.toList());
 
 		// dto에 담아 리턴
 		return new MemberProfileRes(member, memberHikingStatistic, hikingRecordResList);
+	}
+
+	@Transactional
+	@Override
+	public List<MemberRequestClubRes> findRequestClub(String email) {
+		// 회원 정보 가져오기
+		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED))
+			.getId();
+
+		// 가입 신청한 소모임 정보 가져오기
+		final List<ClubJoinRequest> clubMemberList = clubJoinRequestRepository.findByMemberIdAndStatusAndClubIsDeleted(
+			memberId, JoinRequestStatusType.PENDING, false);
+
+		// dto에 담아 리턴
+		return clubMemberList.stream().map(clubJoinRequest -> {
+			int ranking = 0;
+			if (clubJoinRequest.getClub() != null) {
+				ClubRanking var = clubRankingRepository.findTop1ByClubIdOrderBySetDate(
+					clubJoinRequest.getClub().getId());
+				if (var != null) {
+					ranking = Math.toIntExact(var.getRanking());
+				}
+			}
+			assert clubJoinRequest.getClub() != null;
+			return new MemberRequestClubRes(clubJoinRequest.getClub(), ranking);
+		}).collect(Collectors.toList());
 	}
 }

@@ -14,11 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.lightnsalt.hikingdom.domain.common.BaseTimeEntity;
+import org.lightnsalt.hikingdom.domain.entity.club.record.ClubTotalHikingStatistic;
 import org.lightnsalt.hikingdom.domain.entity.info.BaseAddressInfo;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 
@@ -75,9 +77,14 @@ public class Club extends BaseTimeEntity {
 	@OneToMany(mappedBy = "club")
 	private List<ClubAsset> assets;
 
+	@ToString.Exclude
+	@JsonIgnore
+	@OneToOne(mappedBy = "club")
+	private ClubTotalHikingStatistic hikingStatistic;
+
 	@Builder
 	public Club(Member host, BaseAddressInfo baseAddress, String name, String description, Long totalMemberCount,
-		LocalDateTime deletedAt, boolean isDeleted) {
+		LocalDateTime deletedAt, boolean isDeleted, List<ClubAsset> assets, ClubTotalHikingStatistic hikingStatistic) {
 		this.host = host;
 		this.baseAddress = baseAddress;
 		this.name = name;
@@ -85,5 +92,7 @@ public class Club extends BaseTimeEntity {
 		this.totalMemberCount = totalMemberCount;
 		this.deletedAt = deletedAt;
 		this.isDeleted = isDeleted;
+		this.assets = assets;
+		this.hikingStatistic = hikingStatistic;
 	}
 }

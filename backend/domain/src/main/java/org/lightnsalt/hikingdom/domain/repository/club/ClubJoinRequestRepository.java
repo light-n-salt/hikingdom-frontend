@@ -30,4 +30,8 @@ public interface ClubJoinRequestRepository extends JpaRepository<ClubJoinRequest
 
 	List<ClubJoinRequest> findByClubIdAndMemberIsWithdrawAndStatus(Long clubId, boolean isWithdraw,
 		JoinRequestStatusType status);
+
+	List<ClubJoinRequest> findByMemberIdAndStatusAndClubIsDeleted(Long memberId, JoinRequestStatusType status,
+		boolean isWithdraw);
+
 }
