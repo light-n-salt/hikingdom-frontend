@@ -18,7 +18,7 @@ function MainPage() {
         <IconText
           imgSrc={cloud}
           text="여기 등산 어때요"
-          size="md"
+          size="sm"
           isBold={true}
         />
         <div className={styles.scroll}>
@@ -26,7 +26,7 @@ function MainPage() {
         </div>
       </div>
       <div className={styles.section}>
-        <IconText imgSrc={trophy} text="TOP3" size="md" isBold={true} />
+        <IconText imgSrc={trophy} text="TOP3" size="sm" isBold={true} />
         <div className={styles.scroll}>
           <RankList clubInfoArray={clubInfoArray} size="sm" />
         </div>
@@ -35,7 +35,7 @@ function MainPage() {
         <IconText
           imgSrc={mountain}
           text="오늘의 모임 산"
-          size="md"
+          size="sm"
           isBold={true}
         />
         <img

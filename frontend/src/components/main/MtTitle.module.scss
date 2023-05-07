@@ -6,8 +6,13 @@
   align-items: center;
   position: relative;
   width: 90%;
-  padding: 1.7rem 1rem 1rem;
-  gap: 1.3rem;
+  padding: 1.5rem 1rem 1rem;
+  gap: 1.2rem;
+}
+
+.title {
+  font-size: 1.7rem;
+  font-weight: 600;
 }
 
 .container {
@@ -25,17 +30,17 @@
 }
 
 .bold {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
 }
 
 .text {
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .border {
-  font-size: 3rem;
-  color: $gray;
+  font-size: 2rem;
+  color: clr(gray-clr, light);
 }
 
 .img {

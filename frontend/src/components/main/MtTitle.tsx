@@ -13,7 +13,7 @@ function MtTitle({ name, maxAlt, timeDuration, assetUrl }: MtTitleProps) {
   const { theme, toggleTheme } = useContext(ThemeContext)
   return (
     <div className={`content ${theme} ${styles.mttitle}`}>
-      <h1>{name}</h1>
+      <div className={styles.title}>{name}</div>
       <div className={styles.container}>
         {/* 높이 */}
         <div className={styles.content}>

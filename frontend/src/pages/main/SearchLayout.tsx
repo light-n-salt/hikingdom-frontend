@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import styles from './SearchLayout.module.scss'
 import { Outlet } from 'react-router'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import SearchBar from 'components/common/SearchBar'
 import { ThemeContext } from 'styles/ThemeProvider'
 
@@ -9,7 +9,9 @@ function SearchLayout() {
   const navigate = useNavigate()
   const { theme } = useContext(ThemeContext)
 
-  const [value, setValue] = useState('') // 서치바의 값
+  const location = useLocation()
+  const query = location.state?.query || ''
+  const [value, setValue] = useState(query) // 서치바의 값
 
   // 서치바 onChange시 동작할 함수
   // 서치바의 value가 없을 경우, 메인페이지
