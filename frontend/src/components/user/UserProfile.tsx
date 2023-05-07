@@ -63,11 +63,13 @@ export default function UserProfile({
         </div>
         <div className={styles.username}>
           {nickname}
-          <IconButton
-            imgSrc={LEVEL_TO_IMG[0]}
-            size={'sm'}
-            onClick={() => setIsOpen(true)}
-          />
+          {level && (
+            <IconButton
+              imgSrc={LEVEL_TO_IMG[level]}
+              size={'sm'}
+              onClick={() => setIsOpen(true)}
+            />
+          )}
         </div>
         <span className={styles.email}>{email}</span>
         <UserInfo

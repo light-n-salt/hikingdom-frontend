@@ -9,37 +9,30 @@ import IconButton from 'components/common/IconButton'
 
 import bell from 'assets/images/bell.png'
 
-import { UserProfileInfo, User } from 'types/user.interface'
+import { UserProfileInfo } from 'types/user.interface'
 
-import { getProfile, getMember } from 'apis/services/users'
+import { getProfile } from 'apis/services/users'
 import { useQuery } from '@tanstack/react-query'
+
+import { useRecoilValue } from 'recoil'
+import { userInfoState } from 'recoil/atoms'
 
 function ProfilePage() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
+  const userInfo = useRecoilValue(userInfoState)
 
-  const {
-    data: user,
-    isError,
-    isLoading,
-  } = useQuery<User>(['user'], getMember, {
-    cacheTime: Infinity,
-  })
-
-  // Todo: nickname 변수 변경
-  const { data } = useQuery<UserProfileInfo>(
-    ['profile'],
-    () => getProfile('yzii'),
-    { enabled: !!user }
+  const { data } = useQuery<UserProfileInfo>(['profile'], () =>
+    getProfile(userInfo.nickname)
   )
 
-  return user && data ? (
+  return userInfo && data ? (
     <div className={`page p-sm ${theme} ${styles.profile}`}>
       <UserProfile
-        profileUrl={user.profileUrl}
-        nickname={user.nickname}
-        email={user.email}
-        level={0}
+        profileUrl={userInfo.profileUrl}
+        nickname={userInfo.nickname}
+        email={userInfo.email}
+        level={userInfo.level}
         totalAlt={data.totalAlt}
         totalDistance={data.totalDistance}
         totalDuration={data.totalDuration}
