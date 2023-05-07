@@ -11,19 +11,21 @@ import { User } from 'types/user.interface'
 import { getMember } from 'apis/services/users'
 import { useQuery } from '@tanstack/react-query'
 
+import { useRecoilValue } from 'recoil'
+import { userInfoState } from 'recoil/atoms'
+
 function ImageUpdateForm() {
   const { theme } = useContext(ThemeContext)
-
-  const { data } = useQuery<User>(['user'], getMember)
+  const userInfo = useRecoilValue(userInfoState)
 
   // Todo: 이미지 업데이트
   const onClickUpdateImg = () => {
     console.log('프로필 수정')
   }
 
-  return data ? (
+  return userInfo ? (
     <div className={`content ${theme} ${styles.img}`}>
-      <Image imgUrl={data.profileUrl} size="lg" />
+      <Image imgUrl={userInfo.profileUrl} size="lg" />
       <IconButton
         icon={<TbCameraPlus />}
         size="sm"

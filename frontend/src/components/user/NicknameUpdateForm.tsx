@@ -9,11 +9,15 @@ import Button from 'components/common/Button'
 import toast from 'components/common/Toast'
 import useAuthInput from 'hooks/useAuthInput'
 
-import { updateNickname } from 'apis/services/users'
+import { updateNickname, getUserInfo } from 'apis/services/users'
+import { useRecoilState } from 'recoil'
+import { userInfoState } from 'recoil/atoms'
 
 function NicknameUpdateForm() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
+  const queryClient = new QueryClient()
 
   // 닉네임 수정
   const {
@@ -23,15 +27,13 @@ function NicknameUpdateForm() {
     condition: nicknameCond,
   } = useAuthInput({ type: 'nickname' })
 
-  // invalidate 할 때 사용하는 함수
-  const queryClient = new QueryClient()
-
   // 닉네임 수정 함수
   const onClickUpdate = useMutation(() => updateNickname(nickname), {
     onSuccess: () => {
       toast.addMessage('success', '닉네임이 변경되었습니다')
-      queryClient.invalidateQueries(['user'])
-      navigate('/profile')
+      queryClient.invalidateQueries(['profile'])
+      getUserInfo(setUserInfo)
+      navigate(`/profile/${nickname}`)
     },
     onError: () => {
       toast.addMessage('error', '사용할 수 없는 닉네임입니다')
@@ -44,7 +46,7 @@ function NicknameUpdateForm() {
         text="취소"
         color="secondary"
         size="sm"
-        onClick={() => navigate('/profile')}
+        onClick={() => navigate(`/profile/${userInfo.nickname}`)}
       />
 
       <LabelInput

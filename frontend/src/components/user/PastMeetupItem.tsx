@@ -1,5 +1,6 @@
 import React, { useContext, MouseEvent, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
+import { useNavigate } from 'react-router-dom'
 import styles from './PastMeetupItem.module.scss'
 
 import IconText from 'components/common/IconText'
@@ -17,13 +18,15 @@ import TrackingInfo from './TrackingInfo'
 import Modal from 'components/common/Modal'
 
 import { UserHiking } from 'types/user.interface'
-
 import { convertToKm } from 'utils/convertToKm'
+import { useRecoilValue } from 'recoil'
+import { userInfoState } from 'recoil/atoms'
 
 export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   const { theme } = useContext(ThemeContext)
-
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
+  const userInfo = useRecoilValue(userInfoState)
 
   // 일정 상세보기로 이동하는 함수
   const onClickOpenModal = () => {
@@ -38,7 +41,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   // 그룹 일정 상세보기로 이동하는 함수
   const onClickGroup = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation() // 부모 이벤트 버블링 방지
-    console.log(`${hiking.meetupId} 그룹으로 이동하기`)
+    navigate(`/club/${userInfo.clubId}/meetup/${hiking.meetupId}/detail`)
   }
 
   return (
