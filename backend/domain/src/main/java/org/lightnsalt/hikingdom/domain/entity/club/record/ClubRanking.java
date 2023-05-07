@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.domain.entity.club.record;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -45,10 +47,14 @@ public class ClubRanking {
 	@Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
 	private Long score;
 
+	@Column(nullable = false)
+	private LocalDate setDate;
+
 	@Builder
-	public ClubRanking(Club club, Long ranking, Long score) {
+	public ClubRanking(Club club, Long ranking, Long score, LocalDate setDate) {
 		this.club = club;
 		this.ranking = ranking;
 		this.score = score;
+		this.setDate = setDate;
 	}
 }
