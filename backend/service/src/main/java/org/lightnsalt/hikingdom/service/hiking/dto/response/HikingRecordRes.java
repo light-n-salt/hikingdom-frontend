@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.member.dto.response;
+package org.lightnsalt.hikingdom.service.hiking.dto.response;
 
 import java.time.LocalDateTime;
 

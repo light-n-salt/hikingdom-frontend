@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
+import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordRes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

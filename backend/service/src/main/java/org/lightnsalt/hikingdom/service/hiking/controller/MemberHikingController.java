@@ -1,9 +1,9 @@
-package org.lightnsalt.hikingdom.service.member.controller;
+package org.lightnsalt.hikingdom.service.hiking.controller;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
-import org.lightnsalt.hikingdom.service.member.dto.response.HikingRecordDetailRes;
-import org.lightnsalt.hikingdom.service.member.service.MemberHikingService;
+import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordDetailRes;
+import org.lightnsalt.hikingdom.service.hiking.service.MemberHikingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

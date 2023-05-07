@@ -1,11 +1,11 @@
-package org.lightnsalt.hikingdom.service.member.service;
+package org.lightnsalt.hikingdom.service.hiking.service;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
-import org.lightnsalt.hikingdom.domain.repository.member.MemberHikingRepository;
+import org.lightnsalt.hikingdom.domain.repository.hiking.MemberHikingRepository;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
-import org.lightnsalt.hikingdom.service.member.dto.response.HikingRecordDetailRes;
+import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordDetailRes;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

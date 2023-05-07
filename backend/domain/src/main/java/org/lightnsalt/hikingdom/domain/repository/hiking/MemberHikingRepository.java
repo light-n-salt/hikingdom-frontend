@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.domain.repository.member;
+package org.lightnsalt.hikingdom.domain.repository.hiking;
 
 import java.util.List;
 
