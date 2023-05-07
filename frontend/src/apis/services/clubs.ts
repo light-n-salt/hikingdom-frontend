@@ -40,6 +40,14 @@ export function getLocationCode(
   })
 }
 
+export function getMonthMeetups(clubId: string, month: string) {
+  return apiRequest.get(`/clubs/${clubId}/meetups/month/${month}`)
+}
+
+export function getDateMeetups(clubId: string, date: string) {
+  return apiRequest.get(`/clubs/${clubId}/meetups/date/${date}`)
+}
+
 export function createClub(
   name: string,
   description: string,
