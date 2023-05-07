@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.service.member.service;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberManagementService {
@@ -17,4 +18,6 @@ public interface MemberManagementService {
 	void changeNickname(String email, MemberNicknameReq memberNicknameReq);
 
 	String changeProfileImage(String email, MultipartFile photo);
+
+	MemberProfileRes findProfile(String nickname);
 }

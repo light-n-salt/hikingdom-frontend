@@ -9,6 +9,7 @@ import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.lightnsalt.hikingdom.service.member.service.MemberManagementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -85,9 +87,17 @@ public class MemberManagementController {
 	}
 
 	@PutMapping("/profile-image-change")
-	public ResponseEntity<CustomResponseBody> profileImageChange(Authentication authentication, @RequestBody MultipartFile image) {
+	public ResponseEntity<CustomResponseBody> profileImageChange(Authentication authentication,
+		@RequestBody MultipartFile image) {
 		String profileUrl = memberManagementService.changeProfileImage(authentication.getName(), image);
 
 		return new ResponseEntity<>(BaseResponseBody.of("프로필 사진 변경에 성공했습니다", profileUrl), HttpStatus.OK);
+	}
+
+	@GetMapping("{nickname}")
+	public ResponseEntity<CustomResponseBody> profileDetail(@PathVariable String nickname) {
+
+		MemberProfileRes result = memberManagementService.findProfile(nickname);
+		return new ResponseEntity<>(BaseResponseBody.of("회원 프로필 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 }
