@@ -23,8 +23,8 @@ public class HikingRecordDetailRes {
 		this.gpsRoute = memberHiking.getGpsRoute().getGpsRoute().toString();
 		this.mountainName = memberHiking.getMountain().getName();
 		this.startAt = memberHiking.getStartAt();
-		this.totalDistance = (int)Math.ceil(memberHiking.getTotalDistance());
+		this.totalDistance = Math.round(memberHiking.getTotalDistance());
 		this.maxAlt = memberHiking.getTotalAlt();
-		this.totalDuration = (int)Math.ceil(memberHiking.getTotalDuration());
+		this.totalDuration = Math.round(memberHiking.getTotalDuration());
 	}
 }

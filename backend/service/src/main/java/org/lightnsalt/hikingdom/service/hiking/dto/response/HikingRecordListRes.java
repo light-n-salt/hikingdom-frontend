@@ -13,31 +13,29 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HikingRecordRes {
+public class HikingRecordListRes {
 	private Long hikingRecordId;
 	private String mountainName;
 	private LocalDateTime startAt;
 	private int totalDuration;
-	private int totalDistance;
+	private double totalDistance;
 	private double maxAlt;
-
 	@JsonProperty("isMeetup")
 	private boolean isMeetup;
 	private Long meetupId;
 	private String meetupName;
 
-	public HikingRecordRes(MemberHiking hiking) {
-		this.hikingRecordId = hiking.getId();
-		this.mountainName = hiking.getMountain().getName();
-		this.startAt = hiking.getStartAt();
-		this.totalDuration = Math.round(hiking.getTotalDuration());
-		this.totalDistance = Math.round(hiking.getTotalDistance());
-		this.maxAlt = hiking.getTotalAlt();
-		this.isMeetup = hiking.getIsMeetup();
+	public HikingRecordListRes(MemberHiking memberHiking) {
+		this.hikingRecordId = memberHiking.getId();
+		this.mountainName = memberHiking.getMountain().getName();
+		this.startAt = memberHiking.getStartAt();
+		this.totalDuration = Math.round(memberHiking.getTotalDuration());
+		this.totalDistance = memberHiking.getTotalDistance();
+		this.maxAlt = memberHiking.getTotalAlt();
+		this.isMeetup = memberHiking.getIsMeetup();
 		if (this.isMeetup) {
-			this.meetupId = hiking.getMeetup().getId();
-			this.meetupName = hiking.getMeetup().getName();
+			this.meetupId = memberHiking.getMeetup().getId();
+			this.meetupName = memberHiking.getMeetup().getName();
 		}
-
 	}
 }

@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.domain.repository.hiking;
 
-import static org.lightnsalt.hikingdom.domain.entity.club.meetup.QMeetupAlbum.*;
+import static org.lightnsalt.hikingdom.domain.entity.hiking.QMemberHiking.memberHiking;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,12 +19,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberHikingRepositoryCustom {
 
+	private final JPAQueryFactory jpaQueryFactory;
+
+	public Slice<MemberHiking> findByMemberHikingList(Long memberId, Long hikingRecordId, Pageable pageable) {
+		List<MemberHiking> result = jpaQueryFactory.selectFrom(memberHiking)
+			.where(
+				isLast(hikingRecordId),
+				memberHiking.member.id.eq(memberId))
+			.orderBy(memberHiking.startAt.desc())
+			.limit(pageable.getPageSize() + 1)
+			.fetch();
+
+		return checkLastPage(pageable, result);
+	}
+
 	// no-offset 방식 처리하는 메서드
 	private BooleanExpression isLast(Long recordId) {
 		if (recordId == null) {
 			return null;
 		}
-		return meetupAlbum.id.lt(recordId);
+		return memberHiking.id.lt(recordId);
 	}
 
 	// 무한 스크롤 방식 처리하는 메서드

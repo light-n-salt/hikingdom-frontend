@@ -1,11 +1,16 @@
 package org.lightnsalt.hikingdom.service.hiking.service;
 
+import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 import org.lightnsalt.hikingdom.domain.repository.hiking.MemberHikingRepository;
+import org.lightnsalt.hikingdom.domain.repository.hiking.MemberHikingRepositoryCustom;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
 import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordDetailRes;
+import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordListRes;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberHikingServiceImpl implements MemberHikingService {
 	private final MemberHikingRepository memberHikingRepository;
 	private final MemberRepository memberRepository;
+	private final MemberHikingRepositoryCustom memberHikingRepositoryCustom;
 
 	@Override
 	@Transactional
@@ -37,5 +43,20 @@ public class MemberHikingServiceImpl implements MemberHikingService {
 		}
 
 		return new HikingRecordDetailRes(memberHiking);
+	}
+
+	@Override
+	@Transactional
+	public CustomSlice<HikingRecordListRes> findHikingRecordList(String email, Long hikingRecordId, Pageable pageable) {
+		// 회원 확인
+		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND))
+			.getId();
+
+		// 기록 가져오기
+		final Slice<MemberHiking> memberHiking = memberHikingRepositoryCustom.findByMemberHikingList(memberId,
+			hikingRecordId, pageable);
+
+		return new CustomSlice<>(memberHiking.map(HikingRecordListRes::new));
 	}
 }
