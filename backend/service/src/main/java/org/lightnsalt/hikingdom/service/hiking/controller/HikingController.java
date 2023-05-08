@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
+import org.lightnsalt.hikingdom.service.hiking.dto.request.HikingRecordReq;
 import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordDetailRes;
 import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordListRes;
 import org.lightnsalt.hikingdom.service.hiking.dto.response.TodayMeetupRes;
@@ -28,5 +29,11 @@ public class HikingController {
 
 		List<TodayMeetupRes> result = hikingService.findTodayMeetup(authentication.getName());
 		return new ResponseEntity<>(BaseResponseBody.of("오늘 일정 조회에 성공했습니다", result), HttpStatus.OK);
+	}
+
+	@PostMapping
+	public ResponseEntity<CustomResponseBody> hikingRecordAdd(Authentication authentication, @RequestBody HikingRecordReq hikingRecordReq) {
+		Long hikingRecordId = hikingService.saveHikingRecord(authentication.getName(), hikingRecordReq);
+		return new ResponseEntity<>(BaseResponseBody.of("등산 기록 생성에 성공했습니다", hikingRecordId), HttpStatus.CREATED);
 	}
 }
