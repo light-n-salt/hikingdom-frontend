@@ -40,17 +40,21 @@ public class MemberReportServiceImpl implements MemberReportService {
 
 		switch (req.getType()) {
 			case "ALBUM":
-				final MeetupAlbum meetupAlbum = meetupAlbumRepository.findById(req.getContentId())
+				final MeetupAlbum meetupAlbum = meetupAlbumRepository.findById(req.getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.PHOTO_NOT_FOUND));
 
 				reported = memberRepository.findById(meetupAlbum.getMember().getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 				break;
 			case "REVIEW":
-				final MeetupReview meetupReview = meetupReviewRepository.findById(req.getContentId())
+				final MeetupReview meetupReview = meetupReviewRepository.findById(req.getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.PHOTO_NOT_FOUND));
 
 				reported = memberRepository.findById(meetupReview.getMember().getId())
+					.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
+				break;
+			case "MEMBER":
+				reported = memberRepository.findById(req.getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 				break;
 			default:
@@ -63,7 +67,7 @@ public class MemberReportServiceImpl implements MemberReportService {
 			.reported(reported)
 			.reportedAt(LocalDateTime.now())
 			.reportType(req.getType())
-			.reportedContent(req.getContentId())
+			.reportedContent(req.getId())
 			.build();
 
 		return memberReportRepository.save(memberReport).getId();

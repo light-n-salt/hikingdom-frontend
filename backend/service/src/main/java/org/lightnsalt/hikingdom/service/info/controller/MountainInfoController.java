@@ -1,14 +1,15 @@
 package org.lightnsalt.hikingdom.service.info.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
+import org.springframework.data.domain.Pageable;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddReq;
-import org.lightnsalt.hikingdom.service.info.dto.response.MountainAddRes;
+import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddRes;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainListRes;
 import org.lightnsalt.hikingdom.service.info.service.MountainInfoService;
@@ -28,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/v1/info")
+@RequestMapping("/api/v1/info/mountains")
 @RequiredArgsConstructor
 public class MountainInfoController {
 
@@ -50,8 +51,8 @@ public class MountainInfoController {
 
 	private final MountainInfoService mountainInfoService;
 
-	@PostMapping("/mountains")
-	public ResponseEntity<?> mountainInfoAdd(@RequestBody @Valid final MountainAddReq mountainCreateReq,
+	@PostMapping("")
+	public ResponseEntity<CustomResponseBody> mountainInfoAdd(@RequestBody @Valid final MountainAddReq mountainCreateReq,
 		BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
@@ -66,31 +67,26 @@ public class MountainInfoController {
 		return new ResponseEntity<>(BaseResponseBody.of("산 정보 생성에 성공했습니다", response), HttpStatus.CREATED);
 	}
 
-	@GetMapping("/mountains/{mountainId}")
-	public ResponseEntity<?> mountainInfoDetails(@PathVariable Long mountainId) {
+	@GetMapping("/{mountainId}")
+	public ResponseEntity<CustomResponseBody> mountainInfoDetails(@PathVariable Long mountainId) {
 
 		MountainDetailRes response = mountainInfoService.findMountainInfo(mountainId);
 		return new ResponseEntity<>(BaseResponseBody.of("산 상세 정보 조회에 성공했습니다", response), HttpStatus.OK);
 	}
 
-	@GetMapping("/mountains")
-	public ResponseEntity<?> mountainInfoList(@RequestParam(defaultValue = "") String query,
+	@GetMapping("")
+	public ResponseEntity<CustomResponseBody> mountainInfoList(@RequestParam(defaultValue = "") String query,
 		@RequestParam(defaultValue = "") String word, @RequestParam(defaultValue = "0") double lat,
-		@RequestParam(defaultValue = "0") double lng, @RequestParam(defaultValue = "") Long id) {
+		@RequestParam(defaultValue = "0") double lng, @RequestParam(defaultValue = "") Long id,
+		Pageable pageable) {
 
-		List<MountainListRes> results = mountainInfoService.findAllMountainInfo(query, word, lat, lng, id);
+		CustomSlice<MountainListRes> results = mountainInfoService.findAllMountainInfo(query, word, lat, lng, id,
+			pageable);
 		return new ResponseEntity<>(BaseResponseBody.of("산 검색에 성공했습니다", results), HttpStatus.OK);
 	}
 
-	@GetMapping("/mountains/today")
-	public ResponseEntity<?> mountainInfoToday() {
-
-		List<MountainListRes> results = mountainInfoService.findMountainInfoToday();
-		return new ResponseEntity<>(BaseResponseBody.of("오늘의 산 조회에 성공했습니다", results), HttpStatus.OK);
-	}
-
-	@PostMapping("/mountains/today/{mountainId}")
-	public ResponseEntity<?> mountainInfoTodayAdd(@PathVariable Long mountainId) {
+	@PostMapping("/today/{mountainId}")
+	public ResponseEntity<CustomResponseBody> mountainInfoTodayAdd(@PathVariable Long mountainId) {
 
 		mountainInfoService.addMountainInfoDaily(mountainId);
 		return new ResponseEntity<>(BaseResponseBody.of("오늘의 산 등록에 성공했습니다"), HttpStatus.CREATED);

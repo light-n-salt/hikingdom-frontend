@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @JsonPropertyOrder({"message", "result"})
-public class BaseResponseBody {
+public class BaseResponseBody implements CustomResponseBody {
 	private String message;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Object result;

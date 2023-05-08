@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.service.club.dto.response.MemberListRes;
 import org.lightnsalt.hikingdom.service.club.service.ClubMemberService;
 import org.springframework.http.HttpStatus;
@@ -25,29 +26,34 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @Slf4j
-@RequestMapping("/api/v1/clubs/{clubId}/members")
+@RequestMapping("/api/v1/clubs/{clubId}")
 @RequiredArgsConstructor
 public class ClubMemberController {
 	private final ClubMemberService clubMemberService;
 
-	@PostMapping
-	public ResponseEntity<?> clubJoinRequestAdd(Authentication authentication, @PathVariable Long clubId) {
+	@PostMapping("/join-request")
+	public ResponseEntity<CustomResponseBody> clubJoinRequestAdd(Authentication authentication, @PathVariable Long clubId) {
 		clubMemberService.sendClubJoinRequest(authentication.getName(), clubId);
 
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 가입 신청에 성공했습니다"), HttpStatus.CREATED);
 	}
 
-	@DeleteMapping
-	public ResponseEntity<?> clubJoinRequestRetract(Authentication authentication, @PathVariable Long clubId) {
+	@DeleteMapping("/join-request")
+	public ResponseEntity<CustomResponseBody> clubJoinRequestRetract(Authentication authentication, @PathVariable Long clubId) {
 		clubMemberService.retractClubJoinRequest(authentication.getName(), clubId);
 
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 가입 신청 취소에 성공했습니다"), HttpStatus.OK);
 	}
 
-	@GetMapping
-	public ResponseEntity<?> clubMemberList(Authentication authentication, @PathVariable Long clubId) {
-
+	@GetMapping("/members")
+	public ResponseEntity<CustomResponseBody> clubMemberList(Authentication authentication, @PathVariable Long clubId) {
 		Map<String, List<MemberListRes>> result = clubMemberService.findClubMember(authentication.getName(), clubId);
-		return new ResponseEntity<>(BaseResponseBody.of("모임 멤버 조회에 성공했습니다", result), HttpStatus.OK);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 멤버 조회에 성공했습니다", result), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/members")
+	public ResponseEntity<CustomResponseBody> clubMemberWithdraw(Authentication authentication, @PathVariable Long clubId) {
+		clubMemberService.withdrawClubMember(authentication.getName(), clubId);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 탈퇴에 성공했습니다"), HttpStatus.OK);
 	}
 }

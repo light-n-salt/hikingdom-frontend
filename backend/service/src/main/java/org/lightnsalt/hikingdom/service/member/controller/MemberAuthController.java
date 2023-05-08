@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.service.member.controller;
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberEmailReq;
@@ -34,7 +35,7 @@ public class MemberAuthController {
 	private final MemberEmailService memberEmailService;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody @Valid MemberLoginReq memberLoginReq, BindingResult bindingResult) {
+	public ResponseEntity<CustomResponseBody> login(@RequestBody @Valid MemberLoginReq memberLoginReq, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
 				bindingResult.getAllErrors().get(0).getDefaultMessage()),
@@ -47,14 +48,14 @@ public class MemberAuthController {
 	}
 
 	@PostMapping("/refresh-token")
-	public ResponseEntity<?> tokenRefresh(@RequestBody MemberRefreshTokenReq memberRefreshTokenReq) {
+	public ResponseEntity<CustomResponseBody> tokenRefresh(@RequestBody MemberRefreshTokenReq memberRefreshTokenReq) {
 		MemberTokenRes memberTokenRes = memberAuthService.refreshToken(memberRefreshTokenReq);
 
 		return new ResponseEntity<>(BaseResponseBody.of("토큰 재발급에 성공했습니다", memberTokenRes), HttpStatus.OK);
 	}
 
 	@PutMapping("/password-find")
-	public ResponseEntity<?> passwordFind(@RequestBody @Valid MemberEmailReq memberEmailReq,
+	public ResponseEntity<CustomResponseBody> passwordFind(@RequestBody @Valid MemberEmailReq memberEmailReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,

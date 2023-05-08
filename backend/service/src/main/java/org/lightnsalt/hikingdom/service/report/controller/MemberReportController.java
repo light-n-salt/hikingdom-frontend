@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.report.dto.MemberReportReq;
@@ -31,7 +32,7 @@ public class MemberReportController {
 	private final MemberReportService memberReportService;
 
 	@PostMapping
-	public ResponseEntity<?> memberReportAdd(Authentication authentication, @Valid @RequestBody MemberReportReq req,
+	public ResponseEntity<CustomResponseBody> reportAdd(Authentication authentication, @Valid @RequestBody MemberReportReq req,
 		BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
@@ -42,6 +43,6 @@ public class MemberReportController {
 		Long reportedId = memberReportService.saveMemberReport(authentication.getName(), req);
 		Map<String, Long> result = new HashMap<>();
 		result.put("id", reportedId);
-		return new ResponseEntity<>(BaseResponseBody.of("컨텐츠가 신고되었습니다", result), HttpStatus.CREATED);
+		return new ResponseEntity<>(BaseResponseBody.of("신고가 완료되었습니다", result), HttpStatus.CREATED);
 	}
 }

@@ -127,7 +127,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	}
 
 	@Transactional
-	boolean updateClub(Long clubId, ClubInfoReq clubInfoReq, BaseAddressInfo baseAddressInfo) {
+	public boolean updateClub(Long clubId, ClubInfoReq clubInfoReq, BaseAddressInfo baseAddressInfo) {
 		return clubRepository.updateClubProfile(clubId, clubInfoReq.getName(), clubInfoReq.getDescription(),
 			baseAddressInfo, LocalDateTime.now()) > 0;
 	}

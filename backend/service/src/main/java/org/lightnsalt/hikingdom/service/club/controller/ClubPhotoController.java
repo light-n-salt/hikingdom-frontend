@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.service.club.controller;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.service.club.service.ClubPhotoService;
@@ -23,7 +24,7 @@ public class ClubPhotoController {
 	private final ClubPhotoService clubPhotoService;
 
 	@GetMapping
-	public ResponseEntity<?> meetupAlbumList(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> meetupAlbumList(Authentication authentication, @PathVariable Long clubId,
 		@RequestParam(defaultValue = "") Long photoId, Pageable pageable) {
 		CustomSlice<MeetupAlbumRes> result = clubPhotoService.findClubPhotoList(authentication.getName(), clubId,
 			photoId, pageable);

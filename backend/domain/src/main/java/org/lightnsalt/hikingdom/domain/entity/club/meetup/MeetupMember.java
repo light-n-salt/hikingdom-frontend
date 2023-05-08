@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.domain.entity.club.meetup;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -46,9 +48,17 @@ public class MeetupMember extends BaseTimeEntity {
 	@JoinColumn(name = "member_id", nullable = false, columnDefinition = "BIGINT UNSIGNED", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Member member;
 
+	@Column(name = "withdraw_at")
+	private LocalDateTime withdrawAt;
+
+	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT 0")
+	private boolean isWithdraw;
+
 	@Builder
-	public MeetupMember(Meetup meetup, Member member) {
+	public MeetupMember(Meetup meetup, Member member, LocalDateTime withdrawAt, boolean isWithdraw) {
 		this.meetup = meetup;
 		this.member = member;
+		this.withdrawAt = withdrawAt;
+		this.isWithdraw = isWithdraw;
 	}
 }

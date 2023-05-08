@@ -65,7 +65,7 @@ public class Member extends BaseTimeEntity {
 	private LocalDateTime withdrawAt;
 
 	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT 0")
-	private Boolean isWithdraw;
+	private boolean isWithdraw;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 10)
@@ -78,7 +78,7 @@ public class Member extends BaseTimeEntity {
 
 	@Builder
 	public Member(MemberLevelInfo level, String email, String password, String nickname, String profileUrl,
-		LocalDateTime withdrawAt, Boolean isWithdraw, MemberRoleType role, MemberHikingStatistic hikingStatistic) {
+		LocalDateTime withdrawAt, boolean isWithdraw, MemberRoleType role, MemberHikingStatistic hikingStatistic) {
 		this.level = level;
 		this.email = email;
 		this.password = password;

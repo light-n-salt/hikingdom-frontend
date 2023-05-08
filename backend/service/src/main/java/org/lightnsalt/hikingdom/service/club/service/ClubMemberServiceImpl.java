@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
+import org.lightnsalt.hikingdom.domain.repository.club.MeetupMemberRepository;
+import org.lightnsalt.hikingdom.domain.repository.club.MeetupRepository;
 import org.lightnsalt.hikingdom.service.club.dto.response.MemberListRes;
 import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubJoinRequest;
@@ -28,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class ClubMemberServiceImpl implements ClubMemberService {
+	private final MeetupMemberRepository meetupMemberRepository;
+	private final MeetupRepository meetupRepository;
 	private final ClubRepository clubRepository;
 	private final ClubMemberRepository clubMemberRepository;
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
@@ -76,7 +80,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	}
 
 	@Transactional
-	boolean retractPendingJoinRequest(Member member, Club club) {
+	public boolean retractPendingJoinRequest(Member member, Club club) {
 		return clubJoinRequestRepository.updatePendingJoinRequestByMemberAndClub(member, club,
 			JoinRequestStatusType.RETRACTED, LocalDateTime.now()) > 0;
 	}
@@ -98,20 +102,48 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 		// 소모임장일 경우
 		if (memberId.equals(hostId)) {
 			// 신청한 회원 정보 가져오기
-			List<ClubJoinRequest> list = clubJoinRequestRepository.findByClubIdAndMemberIsWithdrawAndStatus(clubId, false,
-				JoinRequestStatusType.PENDING);
+			List<ClubJoinRequest> list = clubJoinRequestRepository.findByClubIdAndMemberIsWithdrawAndStatus(clubId,
+				false, JoinRequestStatusType.PENDING);
 			List<MemberListRes> result = list.stream()
-				.map((clubJoinRequest) -> new MemberListRes(clubJoinRequest.getMember())).collect(Collectors.toList());
+				.map(clubJoinRequest -> new MemberListRes(clubJoinRequest.getMember())).collect(Collectors.toList());
 			results.put("request", result);
 		}
 
 		// 소모임에 가입되어있는 회원 정보 가져오기
 		List<ClubMember> list = clubMemberRepository.findByClubIdAndIsWithdraw(clubId, false);
-		List<MemberListRes> result = list.stream().map((clubMember) -> new MemberListRes(clubMember.getMember()))
+		List<MemberListRes> result = list.stream().map(clubMember -> new MemberListRes(clubMember.getMember()))
 			.collect(Collectors.toList());
 
 		results.put("member", result);
 
 		return results;
+	}
+
+	@Transactional
+	@Override
+	public void withdrawClubMember(String email, Long clubId) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(),
+				false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED));
+
+		// 모임장일 시, 모임 탈퇴 불가능
+		if (clubMember.getClub().getHost().getId().equals(member.getId())) {
+			throw new GlobalException(ErrorCode.CLUB_MEMBER_IS_HOST);
+		}
+
+		// 내가 만든 일정이 있을 시, 끝나야지 탈퇴 가능
+		if (!meetupRepository.findByClubIdAndHostIdAndStartAtAfter(clubId, member.getId(), LocalDateTime.now())
+			.isEmpty()) {
+			throw new GlobalException(ErrorCode.CLUB_MEMBER_HOST_MEETUP_EXISTS);
+		}
+
+		// 참여하고 있는 일정이 있을 시, 자동 참여 취소
+		LocalDateTime now = LocalDateTime.now();
+		meetupMemberRepository.updateMeetupMemberIsWithdrawByMemberIdAndStartAt(member.getId(), true, now, now);
+
+		// 소모임 탈퇴 처리
+		clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, now);
 	}
 }

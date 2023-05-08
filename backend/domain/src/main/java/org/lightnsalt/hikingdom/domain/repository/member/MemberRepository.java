@@ -1,5 +1,6 @@
 package org.lightnsalt.hikingdom.domain.repository.member;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
@@ -28,4 +29,13 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Member m SET m.profileUrl = :profileUrl WHERE m.id = :id")
 	void setProfileUrlById(String profileUrl, Long id);
+
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Query("UPDATE Member m "
+		+ "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw "
+		+ "WHERE m.id = :id")
+	void updateMemberWithdraw(Long id, boolean isWithdraw, LocalDateTime now);
+
+	Optional<Member> findByNicknameAndIsWithdraw(@Param("nickname") String nickname,
+		@Param("isWithdraw") boolean isWithdraw);
 }

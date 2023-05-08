@@ -55,10 +55,10 @@ public class ClubMember extends BaseTimeEntity {
 	private LocalDateTime withdrawAt;
 
 	@Column(name = "is_withdraw", columnDefinition = "BOOLEAN DEFAULT 0")
-	private Boolean isWithdraw;
+	private boolean isWithdraw;
 
 	@Builder
-	public ClubMember(Member member, Club club, LocalDateTime withdrawAt, Boolean isWithdraw) {
+	public ClubMember(Member member, Club club, LocalDateTime withdrawAt, boolean isWithdraw) {
 		this.member = member;
 		this.club = club;
 		this.withdrawAt = withdrawAt;

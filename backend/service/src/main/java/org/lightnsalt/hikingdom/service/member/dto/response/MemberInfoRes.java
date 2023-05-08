@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class MemberInfoRes {
+	private Long memberId;
 	private String email;
 	private String nickname;
 	private String profileUrl;

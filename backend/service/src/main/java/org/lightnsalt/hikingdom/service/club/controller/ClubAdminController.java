@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.service.club.controller;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.service.club.service.ClubAdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class ClubAdminController {
 	private final ClubAdminService clubAdminService;
 
 	@PostMapping("/requests/{memberId}")
-	public ResponseEntity<?> clubJoinRequestAccept(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> clubJoinRequestAccept(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long memberId) {
 		clubAdminService.acceptClubJoinRequest(authentication.getName(), clubId, memberId);
 
@@ -34,7 +35,7 @@ public class ClubAdminController {
 	}
 
 	@DeleteMapping("/requests/{memberId}")
-	public ResponseEntity<?> clubJoinRequestReject(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> clubJoinRequestReject(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long memberId) {
 		clubAdminService.rejectClubJoinRequest(authentication.getName(), clubId, memberId);
 

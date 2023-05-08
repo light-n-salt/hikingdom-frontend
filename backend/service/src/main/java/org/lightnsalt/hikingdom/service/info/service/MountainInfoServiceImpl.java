@@ -1,19 +1,21 @@
 package org.lightnsalt.hikingdom.service.info.service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
+import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.service.info.dto.repository.MountainDailyInfoRepository;
-import org.lightnsalt.hikingdom.service.info.dto.response.MountainAddRes;
+import org.lightnsalt.hikingdom.domain.repository.info.MountainDailyInfoRepository;
+import org.lightnsalt.hikingdom.domain.repository.info.MountainInfoRepositoryCustom;
+import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddRes;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddReq;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainListRes;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainDailyInfo;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.domain.repository.info.MountainInfoRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,9 +41,9 @@ public class MountainInfoServiceImpl implements MountainInfoService {
 		saveOrder() – 등록/수정/삭제 가 동시에 일어나는 유형의 service 메서드
 	* */
 
-
 	private final MountainDailyInfoRepository mountainDailyInfoRepository;
 	private final MountainInfoRepository mountainInfoRepository;
+	private final MountainInfoRepositoryCustom mountainInfoRepositoryCustom;
 
 	@Override
 	public MountainAddRes addMountainInfo(MountainAddReq reqDto) {
@@ -92,14 +94,14 @@ public class MountainInfoServiceImpl implements MountainInfoService {
 
 	// TODO: refactoring
 	@Override
-	public List<MountainListRes> findAllMountainInfo(String query, String word, double lat, double lng, Long id) {
-		List<MountainListRes> result;
+	public CustomSlice<MountainListRes> findAllMountainInfo(String query, String word, double lat, double lng, Long id,
+		Pageable pageable) {
+		Slice<MountainListRes> result;
 		switch (query) {
 			// 전체조회
 			case "": {
-				List<MountainInfo> list = mountainInfoRepository.findAll();
-				result = list.stream().map(MountainListRes::new).sorted().collect(
-					Collectors.toList());
+				Slice<MountainInfo> list = mountainInfoRepositoryCustom.findAll(id, pageable);
+				result = list.map(MountainListRes::new);
 				break;
 			}
 			// 가까운 산 검색
@@ -111,9 +113,8 @@ public class MountainInfoServiceImpl implements MountainInfoService {
 			// }
 			// 이름으로 산 검색
 			case "name": {
-				List<MountainInfo> list = mountainInfoRepository.findAllByNameContaining(word);
-				result = list.stream().map(MountainListRes::new).sorted().collect(
-					Collectors.toList());
+				Slice<MountainInfo> list = mountainInfoRepositoryCustom.findAllByNameContaining(id, word, pageable);
+				result = list.map(MountainListRes::new);
 				break;
 			}
 			// 정해진 query의 입력이 주어지지 않을 때
@@ -121,15 +122,7 @@ public class MountainInfoServiceImpl implements MountainInfoService {
 				throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}
 
-		return result;
-	}
-
-	@Override
-	public List<MountainListRes> findMountainInfoToday() {
-		// MountainDailyInfo 데이터 가져오기
-		List<MountainDailyInfo> list = mountainDailyInfoRepository.findBySetDate(LocalDate.now());
-
-		return list.stream().map(MountainListRes::new).collect(Collectors.toList());
+		return new CustomSlice<>(result);
 	}
 
 	@Override

@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class LocationInfoServiceImpl implements LocationInfoService {
-	private static final String sidoPattern = "^(?=.*\\d)\\d{2}00000000|3611000000$";
+	private static final String sidoPattern = "^(?=(.*\\d))(\\d{2}00000000|3611000000)$";
 
 	private final BaseAddressInfoRepository baseAddressInfoRepository;
 	private final BaseAddressInfoRepositoryCustom baseAddressInfoRepositoryCustom;
