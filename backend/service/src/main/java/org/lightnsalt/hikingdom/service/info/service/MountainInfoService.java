@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.service.info.service;
 
+import java.util.List;
+
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddRes;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainDetailRes;
@@ -16,4 +18,6 @@ public interface MountainInfoService {
 		Pageable pageable);
 
 	void addMountainInfoDaily(Long mountainId);
+
+	List<MountainListRes> findMountainInfoLocation(double lat, double lng);
 }

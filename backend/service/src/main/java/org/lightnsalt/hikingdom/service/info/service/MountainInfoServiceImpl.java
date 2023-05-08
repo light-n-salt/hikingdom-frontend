@@ -1,6 +1,8 @@
 package org.lightnsalt.hikingdom.service.info.service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
@@ -117,5 +119,12 @@ public class MountainInfoServiceImpl implements MountainInfoService {
 			.setDate(LocalDate.now())
 			.build();
 		mountainDailyInfoRepository.save(mountainDailyInfo);
+	}
+
+	@Override
+	public List<MountainListRes> findMountainInfoLocation(double lat, double lng) {
+
+		List<MountainInfo> mountainInfoList = mountainInfoRepository.findByLocation(lng, lat, 30000);
+		return mountainInfoList.stream().map(MountainListRes::new).collect(Collectors.toList());
 	}
 }

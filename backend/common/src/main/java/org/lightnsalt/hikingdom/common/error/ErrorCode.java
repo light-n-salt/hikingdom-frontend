@@ -26,9 +26,10 @@ public enum ErrorCode {
 	MEMBER_LOGIN_FAIL(401, "M004", "이메일 또는 비밀번호가 올바르지 않습니다"),
 
 	// info related error codes
-	DUPLICATED_MOUNTAIN_REGISTER(403, "M001", "이미 등록된 산 이름입니다"),
-	MOUNTAIN_NOT_FOUND(404, "M002", "존재하지 않는 데이터입니다"),
+	DUPLICATED_MOUNTAIN_REGISTER(403, "IM001", "이미 등록된 산 이름입니다"),
+	MOUNTAIN_NOT_FOUND(404, "IM002", "존재하지 않는 데이터입니다"),
 	BASE_ADDRESS_NOT_FOUND(404, "L001", "존재하지 않는 지역 정보입니다"),
+	WRONG_DATA_SCOPE(400, "IM003", "잘못된 위경도 범위입니다"),
 
 	// club related error codes
 	CLUB_ALREADY_JOINED(400, "K001", "이미 소모임에 가입되어 있습니다"),
