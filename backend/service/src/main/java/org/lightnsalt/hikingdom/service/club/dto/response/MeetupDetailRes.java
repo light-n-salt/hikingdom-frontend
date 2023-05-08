@@ -21,11 +21,11 @@ public class MeetupDetailRes {
 	private String description;
 	private int totalMember;
 	private boolean isJoin;
-	private List<MemberInfoRes> memberInfo;
+	private List<MemberShortRes> memberInfo;
 	private List<PhotoInfoRes> photoInfo;
 	private List<ReviewInfoRes> reviewInfo;
 
-	public MeetupDetailRes(Meetup meetup, int totalMember, boolean isJoin, List<MemberInfoRes> memberInfos,
+	public MeetupDetailRes(Meetup meetup, int totalMember, boolean isJoin, List<MemberShortRes> memberInfos,
 		List<PhotoInfoRes> photoInfos, List<ReviewInfoRes> reviewInfos) {
 		this.meetupHostId = meetup.getHost().getId();
 		this.meetupId = meetup.getId();

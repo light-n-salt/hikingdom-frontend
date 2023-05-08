@@ -12,7 +12,7 @@ import org.lightnsalt.hikingdom.service.club.dto.request.MeetupAddReq;
 import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDailyRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDetailRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMonthlyRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MemberInfoRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.PhotoInfoRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ReviewInfoRes;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
@@ -190,7 +190,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 
 		// 일정 참여멤버 조회하기 6명
 		List<MeetupMember> meetupMembers = meetupMemberRepository.findTop6ByMeetupIdAndIsWithdraw(meetupId, false);
-		List<MemberInfoRes> memberInfos = meetupMembers.stream().map(MemberInfoRes::new).collect(Collectors.toList());
+		List<MemberShortRes> memberInfos = meetupMembers.stream().map(MemberShortRes::new).collect(Collectors.toList());
 
 		// 일정 사진 조회하기 3개
 		List<MeetupAlbum> meetupAlbums = meetupAlbumRepository.findTop3ByMeetupIdOrderByCreatedAtDesc(meetupId);
