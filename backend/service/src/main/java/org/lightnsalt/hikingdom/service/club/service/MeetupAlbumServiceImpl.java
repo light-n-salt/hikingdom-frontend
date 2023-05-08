@@ -57,7 +57,8 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
-		final boolean isExit = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, member.getId(), false);
+		final boolean isExit = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, member.getId(),
+			false);
 		if (!isExit) {
 			throw new GlobalException(ErrorCode.MEETUP_MEMBER_UNAUTHORIZED);
 		}
@@ -86,13 +87,17 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 
 	@Override
 	@Transactional
-	public CustomSlice<MeetupAlbumRes> findMeetupAlbumList(Long clubId, Long meetupId, Long photoId,
+	public CustomSlice<MeetupAlbumRes> findMeetupAlbumList(String email, Long clubId, Long meetupId, Long photoId,
 		Pageable pageable) {
+		// 회원 정보 가져오기
+		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
 		// 사진 정보 가져오기
 		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotos(photoId, meetupId, pageable);
 
 		// 형 변환
-		return new CustomSlice<>(list.map(MeetupAlbumRes::new));
+		return new CustomSlice<>(
+			list.map(meetupAlbum -> new MeetupAlbumRes(meetupAlbum, meetupAlbum.getMember().getId().equals(memberId))));
 	}
 
 	@Override

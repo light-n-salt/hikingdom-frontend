@@ -7,7 +7,6 @@ import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;
 import org.lightnsalt.hikingdom.domain.repository.club.ClubMemberRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.MeetupAlbumRepositoryCustom;
-import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -28,14 +27,15 @@ public class ClubPhotoServiceImpl implements ClubPhotoService {
 	@Transactional
 	@Override
 	public CustomSlice<MeetupAlbumRes> findClubPhotoList(String email, Long clubId, Long photoId, Pageable pageable) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
-			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
 
 		// 소모임 가입 여부 확인
-		if (clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(), false).isEmpty())
+		if (clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, memberId, false).isEmpty())
 			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
 
 		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotosByClubId(photoId, clubId, pageable);
-		return new CustomSlice<>(list.map(MeetupAlbumRes::new));
+		return new CustomSlice<>(
+			list.map(meetupAlbum -> new MeetupAlbumRes(meetupAlbum, meetupAlbum.getMember().getId().equals(memberId))));
 	}
 }

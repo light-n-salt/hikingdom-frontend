@@ -10,7 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MeetupAlbumService {
 	List<String> saveMeetupAlbum(String email, Long clubId, Long meetupId, List<MultipartFile> photos);
 
-	CustomSlice<MeetupAlbumRes> findMeetupAlbumList(Long clubId, Long meetupId, Long photoId, Pageable pageable);
+	CustomSlice<MeetupAlbumRes> findMeetupAlbumList(String email, Long clubId, Long meetupId, Long photoId,
+		Pageable pageable);
 
 	void removeMeetupAlbum(String email, Long clubId, Long meetupId, Long photoId);
 }
