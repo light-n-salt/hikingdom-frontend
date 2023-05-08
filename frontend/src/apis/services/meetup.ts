@@ -8,9 +8,16 @@ export function getMeetupDetail(clubId: number, meetupId: number) {
 }
 
 // 일정 멤버 조회
-export function getMeeupMembers(clubId: number, meetupId: number) {
+export function getMeetupMembers(clubId: number, meetupId: number) {
   return apiRequest
     .get(`clubs/${clubId}/meetups/${meetupId}/members`)
+    .then((res) => res.data.result)
+}
+
+// 일정 멤버 상세 조회
+export function getMembersDetail(clubId: number, meetupId: number) {
+  return apiRequest
+    .get(`clubs/${clubId}/meetups/${meetupId}/members/detail`)
     .then((res) => res.data.result)
 }
 

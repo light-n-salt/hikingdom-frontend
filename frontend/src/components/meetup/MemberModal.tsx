@@ -9,7 +9,6 @@ type MemberModalProps = {
 }
 
 function MemberModal({ memberList }: MemberModalProps) {
-  console.log(memberList, ' memberList@')
   return (
     <div className={styles.modal}>
       <MemberList
