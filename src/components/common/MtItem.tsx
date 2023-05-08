@@ -23,7 +23,7 @@ function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
       <h3>{mtInfo.name}</h3>
       <div className={styles.flexbox}>
         <IconText imgSrc={hotAirBalloon} text="높이" />
-        {mtInfo.maxAlt} m
+        {Math.floor(mtInfo.maxAlt)} m
       </div>
       <div className={styles.flexbox}>
         <IconText imgSrc={marker} text="위치" />
