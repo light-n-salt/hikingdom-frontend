@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
@@ -18,14 +19,14 @@ public class TodayMeetupRes {
     private Long mountainId;
     private String mountainName;
     private int totalMember;
-    private LocalDateTime startAt;
+    private String startAt;
 
     public TodayMeetupRes(Meetup meetup){
         this.meetupId = meetup.getId();
         this.meetupName = meetup.getName();
         this.mountainId = meetup.getMountain().getId();
         this.mountainName = meetup.getMountain().getName();
-        this.startAt = meetup.getStartAt();
+        this.startAt = meetup.getStartAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 //    public TodayMeetupRes(Long meetupId, String meetupName, Long mountainId, String mountainName, int totalMember, LocalDateTime startAt) {
 //        this.meetupId = meetupId;
