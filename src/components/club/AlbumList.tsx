@@ -26,7 +26,7 @@ function AlbumList({ photoList }: AlbumListProps) {
     <div className={styles.container}>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
-          {photo && <PhotoModal photo={photo} />}
+          {photo && <PhotoModal photo={photo} setState={setIsOpen} />}
         </Modal>
       )}
       {photoList.map((photo) => (
