@@ -7,8 +7,8 @@ import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubAsset;
-import org.lightnsalt.hikingdom.domain.repository.club.ClubAssetRepository;
-import org.lightnsalt.hikingdom.domain.repository.club.ClubRepository;
+import org.lightnsalt.hikingdom.service.club.repository.ClubAssetRepository;
+import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubAssetRes;
 import org.springframework.stereotype.Service;
 

@@ -15,7 +15,7 @@ import org.lightnsalt.hikingdom.common.util.RedisUtil;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberEmailAuthenticationReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberEmailReq;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
-import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
+import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
