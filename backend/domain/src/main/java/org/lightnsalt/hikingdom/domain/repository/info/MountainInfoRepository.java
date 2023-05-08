@@ -10,12 +10,4 @@ public interface MountainInfoRepository extends JpaRepository<MountainInfo, Long
 
 	Optional<MountainInfo> findById(Long id);
 
-	// TODO: add query
-	// @Query(value =
-	// 	"SELECT *, ST_Distance_Sphere(Point(:lng,:lat), POINT(top_lng, top_lat)) AS diff_distance "
-	// 		+ "FROM MountainInfo "
-	// 		+ "WHERE ST_Distance_Sphere(Point(:lng,:lat), POINT(top_lng, top_lat)) <= :distance ", nativeQuery = true)
-	// List<MountainInfoDto> findDistance(@Param("lat") double lat, @Param("lng") double lng,
-	// 	@Param("distance") double distance);
-
 }

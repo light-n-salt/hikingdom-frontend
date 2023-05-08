@@ -27,20 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MountainInfoServiceImpl implements MountainInfoService {
 
-	/*
-	- 서비스 클래스 안에서 메서드 명을 작성 할 때는 아래와 같은 접두사를 붙인다.
-
-		findOrder() - 조회 유형의 service 메서드
-
-		addOrder() - 등록 유형의 service 메서드
-
-		modifyOrder() - 변경 유형의 service 메서드
-
-		removeOrder() - 삭제 유형의 service 메서드
-
-		saveOrder() – 등록/수정/삭제 가 동시에 일어나는 유형의 service 메서드
-	* */
-
 	private final MountainDailyInfoRepository mountainDailyInfoRepository;
 	private final MountainInfoRepository mountainInfoRepository;
 	private final MountainInfoRepositoryCustom mountainInfoRepositoryCustom;
@@ -104,13 +90,6 @@ public class MountainInfoServiceImpl implements MountainInfoService {
 				result = list.map(MountainListRes::new);
 				break;
 			}
-			// 가까운 산 검색
-			// case "location": {
-			// 	List<MountainInfoDto> list = mountainInfoRepository.findDistance(lat, lng, 3000);
-			// 	result = list.stream().map(MountainListRes::new).sorted().collect(
-			// 		Collectors.toList());
-			// 	break;
-			// }
 			// 이름으로 산 검색
 			case "name": {
 				Slice<MountainInfo> list = mountainInfoRepositoryCustom.findAllByNameContaining(id, word, pageable);
