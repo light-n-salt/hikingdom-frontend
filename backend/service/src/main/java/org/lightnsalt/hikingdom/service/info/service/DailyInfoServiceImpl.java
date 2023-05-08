@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.domain.entity.info.ClubDailyInfo;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainDailyInfo;
-import org.lightnsalt.hikingdom.domain.repository.info.ClubDailyInfoRepository;
-import org.lightnsalt.hikingdom.domain.repository.info.MountainDailyInfoRepository;
+import org.lightnsalt.hikingdom.service.info.repository.ClubDailyInfoRepository;
+import org.lightnsalt.hikingdom.service.info.repository.MountainDailyInfoRepository;
 import org.lightnsalt.hikingdom.service.info.dto.response.ClubDailyRes;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainDailyRes;
 import org.springframework.stereotype.Service;

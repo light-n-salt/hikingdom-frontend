@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.service.info.dto.response.BaseAddressInfoRes;
-import org.lightnsalt.hikingdom.domain.repository.info.BaseAddressInfoRepository;
-import org.lightnsalt.hikingdom.domain.repository.info.BaseAddressInfoRepositoryCustom;
+import org.lightnsalt.hikingdom.service.info.repository.BaseAddressInfoRepository;
+import org.lightnsalt.hikingdom.service.info.repository.BaseAddressInfoRepositoryCustom;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;

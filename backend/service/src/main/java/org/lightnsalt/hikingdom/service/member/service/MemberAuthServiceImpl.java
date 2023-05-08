@@ -8,7 +8,7 @@ import org.lightnsalt.hikingdom.service.member.dto.request.MemberLoginReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberRefreshTokenReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberTokenRes;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
-import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
+import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
