@@ -11,7 +11,7 @@ import { MtInfo } from 'types/mt.interface'
 function SearchMtPage() {
   const navigate = useNavigate()
 
-  const [mtInfoArray, setMtInfoArray] = useState<MtInfo[]>(mtInfoEx) // 산 정보 배열
+  const [mtInfoArray, setMtInfoArray] = useState<MtInfo[]>([]) // 산 정보 배열
   const [isEnd, setIsEnd] = useState(false) // 무한스크롤 마지막 정보 여부
   const infiniteRef = useRef<HTMLDivElement>(null) // 무한 스크롤 useRef
 
