@@ -1,33 +1,34 @@
 import React, { useEffect } from 'react'
 import styles from './ClubHeader.module.scss'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-import { ClubSimpleInfo } from 'types/club.interface'
-import { clubSimpleInfo } from 'apis/services/clubs'
+import { getClubSimpleInfo } from 'apis/services/clubs'
+// import { ClubSimpleInfo } from 'types/club.interface'
+import { clubInfoState } from 'recoil/atoms'
+import { useRecoilState } from 'recoil'
 import Chatting from 'assets/images/airplane.png'
-
 import IconButton from 'components/common/IconButton'
 import TextButton from 'components/common/TextButton'
 
 function ClubHeader() {
   const navigate = useNavigate()
 
-  const clubInfo: ClubSimpleInfo = {
-    hostId: 1,
-    clubId: 1,
-    clubName: '산타마리아',
-  }
+  const [clubInfo, setClubInfo] = useRecoilState(clubInfoState)
 
   const location = useLocation()
   const type = location.pathname.split('/')[3]
 
+  const clubId = useParams<string>().clubId
+
   useEffect(() => {
-    // clubSimpleInfo(clubId)
-    //   .then((res) => {})
-    //   .catch(() => {})
+    getClubSimpleInfo(Number(clubId))
+      .then((res) => {
+        setClubInfo(res.data.result)
+      })
+      .catch(() => {})
   }, [])
 
-  return (
+  return clubInfo.clubName ? (
     <>
       <div className={styles.header}>
         <span className={styles.title}>{clubInfo.clubName}</span>
@@ -74,7 +75,7 @@ function ClubHeader() {
         </span>
       </div>
     </>
-  )
+  ) : null
 }
 
 export default ClubHeader

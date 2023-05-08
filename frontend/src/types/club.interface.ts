@@ -31,9 +31,10 @@ export interface AssetInfo {
 
 // 소모임 상세 조회
 export interface ClubDetailInfo {
+  clubName: string
   isJoin: boolean
-  participationRate: string
-  totalDuration: string
+  participationRate: number
+  totalDuration: number
   totalDistance: number
   totalAlt: number
   description: string

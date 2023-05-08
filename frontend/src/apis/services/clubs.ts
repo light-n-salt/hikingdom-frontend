@@ -1,8 +1,8 @@
 import apiRequest from 'apis/axios'
 
 // 소모임 정보 조회
-export function clubSimpleInfo(clubId: number) {
-  return apiRequest.get(`/clubs/${clubId}`)
+export function getClubSimpleInfo(clubId: number) {
+  return apiRequest.get(`clubs/${clubId}`)
 }
 
 export function getRanking(
@@ -78,4 +78,8 @@ export function createMeetup(
     startAt,
     description,
   })
+}
+
+export function getClubInfo(clubId: number) {
+  return apiRequest.get(`/clubs/${clubId}/detail`)
 }

@@ -56,7 +56,7 @@ function App() {
         {/* 모임 */}
         <Route path="/club/search" element={<SearchClubPage />} />
         <Route path="/club/create" element={<ClubCreatePage />} />
-        <Route path="/club/:clubId/detail/" element={<MainDetailPage />} />
+        <Route path="/club/:clubId/detail" element={<MainDetailPage />} />
         <Route path="/club/:clubId/chat" element={<ClubChatPage />} />
         <Route path="/club/none" element={<ClubNoneExistPage />} />
         <Route path="/club/:clubId" element={<ClubPage />}>
