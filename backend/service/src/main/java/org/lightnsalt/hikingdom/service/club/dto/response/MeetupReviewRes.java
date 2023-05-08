@@ -13,18 +13,13 @@ import lombok.Data;
 public class MeetupReviewRes {
 	@NotNull
 	private Long memberId;
-
 	@NotEmpty
 	private String nickname;
-
 	private String profileUrl;
-
 	@NotNull
 	private Integer level;
-
 	@NotNull
 	private Long reviewId;
-
 	@NotEmpty
 	private String content;
 

@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.service.club.dto.response;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
@@ -17,7 +17,7 @@ public class MeetupDetailRes {
 	private Long meetupId;
 	private String meetupName;
 	private String mountainName;
-	private LocalDateTime startAt;
+	private String startAt;
 	private String description;
 	private int totalMember;
 	private boolean isJoin;
@@ -31,7 +31,7 @@ public class MeetupDetailRes {
 		this.meetupId = meetup.getId();
 		this.meetupName = meetup.getName();
 		this.mountainName = meetup.getMountain().getName();
-		this.startAt = meetup.getStartAt();
+		this.startAt = meetup.getStartAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		this.description = meetup.getDescription();
 		this.totalMember = totalMember;
 		this.isJoin = isJoin;
