@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.service.info.controller;
 
+import java.util.List;
+
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.service.info.dto.response.ClubDailyRes;
@@ -41,7 +43,7 @@ public class DailyInfoController {
 	@GetMapping("/mountain")
 	public ResponseEntity<CustomResponseBody> dailyMountainDetails() {
 
-		MountainDailyRes result = dailyInfoService.findDailyMountain();
+		List<MountainDailyRes> result = dailyInfoService.findDailyMountainList();
 		return new ResponseEntity<>(BaseResponseBody.of("오늘의 산 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 

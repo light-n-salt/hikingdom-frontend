@@ -1,6 +1,8 @@
 package org.lightnsalt.hikingdom.service.info.service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.domain.entity.info.ClubDailyInfo;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainDailyInfo;
@@ -22,9 +24,12 @@ public class DailyInfoServiceImpl implements DailyInfoService {
 	private final ClubDailyInfoRepository clubDailyInfoRepository;
 
 	@Override
-	public MountainDailyRes findDailyMountain() {
-		final MountainDailyInfo mountainDailyInfo = mountainDailyInfoRepository.findBySetDate(LocalDate.now());
-		return new MountainDailyRes(mountainDailyInfo.getMountain());
+	public List<MountainDailyRes> findDailyMountainList() {
+		final List<MountainDailyInfo> mountainDailyInfoList = mountainDailyInfoRepository.findBySetDate(
+			LocalDate.now());
+		return mountainDailyInfoList.stream()
+			.map(mountainDailyInfo -> new MountainDailyRes(mountainDailyInfo.getMountain()))
+			.collect(Collectors.toList());
 	}
 
 	@Override
