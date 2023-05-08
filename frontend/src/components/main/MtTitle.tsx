@@ -17,7 +17,7 @@ function MtTitle({ name, maxAlt, timeDuration, assetUrl }: MtTitleProps) {
       <div className={styles.container}>
         {/* 높이 */}
         <div className={styles.content}>
-          <span className={styles.bold}>{maxAlt}m</span>
+          <span className={styles.bold}>{Math.floor(maxAlt)}m</span>
           <span className={styles.text}>높이</span>
         </div>
 
