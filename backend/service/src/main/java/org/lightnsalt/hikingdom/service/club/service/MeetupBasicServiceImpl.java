@@ -193,12 +193,17 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		List<MemberShortRes> memberInfos = meetupMembers.stream().map(MemberShortRes::new).collect(Collectors.toList());
 
 		// 일정 사진 조회하기 3개
-		List<MeetupAlbum> meetupAlbums = meetupAlbumRepository.findTop3ByMeetupIdOrderByCreatedAtDesc(meetupId);
-		List<PhotoInfoRes> photoInfos = meetupAlbums.stream().map(PhotoInfoRes::new).collect(Collectors.toList());
+		List<MeetupAlbum> meetupAlbums = meetupAlbumRepository.findTop3ByMeetupIdAndIsDeletedOrderByCreatedAtDesc(
+			meetupId, false);
+		List<PhotoInfoRes> photoInfos = meetupAlbums.stream()
+			.map(meetupAlbum -> new PhotoInfoRes(meetupAlbum, meetupAlbum.getMember().getId().equals(memberId)))
+			.collect(Collectors.toList());
 
 		// 일정 리뷰 조회하기 전체
-		List<MeetupReview> meetupReviews = meetupReviewRepository.findByMeetupId(meetupId);
-		List<ReviewInfoRes> reviewInfos = meetupReviews.stream().map(ReviewInfoRes::new).collect(Collectors.toList());
+		List<MeetupReview> meetupReviews = meetupReviewRepository.findByMeetupIdAndIsDeleted(meetupId, false);
+		List<ReviewInfoRes> reviewInfos = meetupReviews.stream()
+			.map(meetupReview -> new ReviewInfoRes(meetupReview, meetupReview.getMember().getId().equals(memberId)))
+			.collect(Collectors.toList());
 
 		return new MeetupDetailRes(meetup, totalMember, isJoin, memberInfos, photoInfos, reviewInfos);
 	}

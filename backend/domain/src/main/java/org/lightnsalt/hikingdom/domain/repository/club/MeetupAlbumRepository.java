@@ -23,6 +23,5 @@ public interface MeetupAlbumRepository extends JpaRepository<MeetupAlbum, Long> 
 		+ "WHERE m.meetup.id = :meetupId")
 	void updateMeetupAlbumIsDeletedByMeetupId(Long meetupId, boolean isDeleted, LocalDateTime now);
 
-
-	List<MeetupAlbum> findTop3ByMeetupIdOrderByCreatedAtDesc(Long meetupId);
+	List<MeetupAlbum> findTop3ByMeetupIdAndIsDeletedOrderByCreatedAtDesc(Long meetupId, boolean isDeleted);
 }

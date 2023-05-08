@@ -24,5 +24,5 @@ public interface MeetupReviewRepository extends JpaRepository<MeetupReview, Long
 
 	Optional<MeetupReview> findByIdAndIsDeleted(Long id, boolean isDeleted);
 
-	List<MeetupReview> findByMeetupId(Long meetupId);
+	List<MeetupReview> findByMeetupIdAndIsDeleted(Long meetupId, boolean isDeleted);
 }
