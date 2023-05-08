@@ -17,26 +17,26 @@ import { getMeetupDetail } from 'apis/services/meetup'
 import { useQuery } from '@tanstack/react-query'
 
 import { useParams } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
+import { userInfoState } from 'recoil/atoms'
 
 function MeetupDetailPage() {
   const { theme } = useContext(ThemeContext)
-  const { clubId, meetupId } = useParams()
+  const { clubId, meetupId } = useParams() as {
+    clubId: string
+    meetupId: string
+  }
+  const userInfo = useRecoilValue(userInfoState)
 
-  // const { data } = useQuery<meetupInfoDetail>(['meetup'], () =>
-  //   getMeetupDetail(parseInt(clubId), parseInt(meetupId))
-  // )
-
-  const { data } =
-    clubId && meetupId
-      ? useQuery<meetupInfoDetail>(
-          ['meetup', String(clubId), String(meetupId)],
-          () => getMeetupDetail(parseInt(clubId), parseInt(meetupId))
-        )
-      : { data: undefined }
+  const { data } = useQuery<meetupInfoDetail>(['meetup'], () =>
+    getMeetupDetail(parseInt(clubId), parseInt(meetupId))
+  )
 
   return data ? (
     <div className={`page p-sm ${theme} ${styles.page}`}>
-      <Button text="수정" color="secondary" size="xs" />
+      {userInfo.memberId === data.meetupHostId ? (
+        <Button text="삭제" color="red" size="xs" />
+      ) : null}
       <PageHeader title={data?.meetupName} url="/club/meetup" color="primary" />
       <MeetupDetail
         mountain={data?.mountainName}
@@ -47,7 +47,7 @@ function MeetupDetailPage() {
         <div className={styles.intro}>
           <MeetupIntroduction content={data?.description} />
         </div>
-        <MeetupMembers memberInfo={data?.memberInfo} />
+        <MeetupMembers memberInfo={data?.memberInfo} join={data?.join} />
         <MeetupAlbum photoInfo={data?.photoInfo} />
         <MeetupReviewList reviewInfo={data?.reviewInfo} />
       </div>

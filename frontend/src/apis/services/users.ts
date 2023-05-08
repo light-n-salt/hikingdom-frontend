@@ -10,10 +10,6 @@ export function getProfile(nickname: string) {
   return apiRequest.get(`/members/${nickname}`).then((res) => res.data.result)
 }
 
-export function getMember() {
-  return apiRequest.get(`/members`).then((res) => res.data.result)
-}
-
 export function getUserInfo(setUserState: (userInfo: User) => void) {
   return apiRequest.get(`/members`).then((res) => setUserState(res.data.result))
 }
@@ -81,6 +77,14 @@ export function updatePw(
     password,
     newPassword,
     checkPassword,
+  })
+}
+
+export function updateProfile(formData: FormData) {
+  return apiRequest.put(`members/profile-image-change`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   })
 }
 

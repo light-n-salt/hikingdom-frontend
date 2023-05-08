@@ -24,7 +24,7 @@ export interface MeetupMember {
 
 // 일정 멤버 조회
 export interface MeetupMemberInfo {
-  totalMmember: number
+  totalMember: number
   isJoin: boolean
   memberInfo: MeetupMember[]
 }
