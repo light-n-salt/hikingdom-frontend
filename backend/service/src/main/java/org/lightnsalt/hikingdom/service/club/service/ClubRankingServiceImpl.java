@@ -6,7 +6,7 @@ import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSearchRes;
-import org.lightnsalt.hikingdom.service.club.repository.ClubRankingRepositoryCustom;
+import org.lightnsalt.hikingdom.service.club.repository.record.ClubRankingRepositoryCustom;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;

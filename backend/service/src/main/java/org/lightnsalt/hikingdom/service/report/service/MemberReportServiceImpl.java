@@ -6,13 +6,13 @@ import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupReview;
-import org.lightnsalt.hikingdom.domain.repository.club.MeetupAlbumRepository;
-import org.lightnsalt.hikingdom.domain.repository.club.MeetupReviewRepository;
+import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupAlbumRepository;
+import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupReviewRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
-import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
+import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.lightnsalt.hikingdom.service.report.dto.MemberReportReq;
 import org.lightnsalt.hikingdom.domain.entity.report.MemberReport;
-import org.lightnsalt.hikingdom.domain.repository.report.MemberReportRepository;
+import org.lightnsalt.hikingdom.service.report.repository.MemberReportRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

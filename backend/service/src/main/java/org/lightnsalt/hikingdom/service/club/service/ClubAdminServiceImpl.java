@@ -7,11 +7,11 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
-import org.lightnsalt.hikingdom.domain.repository.club.ClubJoinRequestRepository;
-import org.lightnsalt.hikingdom.domain.repository.club.ClubMemberRepository;
-import org.lightnsalt.hikingdom.domain.repository.club.ClubRepository;
+import org.lightnsalt.hikingdom.service.club.repository.ClubJoinRequestRepository;
+import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
+import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
-import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
+import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
