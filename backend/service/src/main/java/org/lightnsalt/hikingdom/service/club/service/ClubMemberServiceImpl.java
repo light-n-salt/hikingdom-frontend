@@ -11,7 +11,7 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.repository.club.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.MeetupRepository;
-import org.lightnsalt.hikingdom.service.club.dto.response.MemberListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
 import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubJoinRequest;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
@@ -87,7 +87,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 
 	@Override
 	@Transactional
-	public Map<String, List<MemberListRes>> findClubMember(String email, Long clubId) {
+	public Map<String, List<MeetupMemberDetailListRes>> findClubMember(String email, Long clubId) {
 		// 회원 정보 id 가져오기 -> 소모임장인지 확인하기 위한 용도
 		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
@@ -97,21 +97,21 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND))
 			.getHost().getId();
 
-		Map<String, List<MemberListRes>> results = new HashMap<>();
+		Map<String, List<MeetupMemberDetailListRes>> results = new HashMap<>();
 
 		// 소모임장일 경우
 		if (memberId.equals(hostId)) {
 			// 신청한 회원 정보 가져오기
 			List<ClubJoinRequest> list = clubJoinRequestRepository.findByClubIdAndMemberIsWithdrawAndStatus(clubId,
 				false, JoinRequestStatusType.PENDING);
-			List<MemberListRes> result = list.stream()
-				.map(clubJoinRequest -> new MemberListRes(clubJoinRequest.getMember())).collect(Collectors.toList());
+			List<MeetupMemberDetailListRes> result = list.stream()
+				.map(clubJoinRequest -> new MeetupMemberDetailListRes(clubJoinRequest.getMember())).collect(Collectors.toList());
 			results.put("request", result);
 		}
 
 		// 소모임에 가입되어있는 회원 정보 가져오기
 		List<ClubMember> list = clubMemberRepository.findByClubIdAndIsWithdraw(clubId, false);
-		List<MemberListRes> result = list.stream().map(clubMember -> new MemberListRes(clubMember.getMember()))
+		List<MeetupMemberDetailListRes> result = list.stream().map(clubMember -> new MeetupMemberDetailListRes(clubMember.getMember()))
 			.collect(Collectors.toList());
 
 		results.put("member", result);

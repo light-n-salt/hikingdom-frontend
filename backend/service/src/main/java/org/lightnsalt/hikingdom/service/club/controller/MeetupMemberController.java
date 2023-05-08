@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
-import org.lightnsalt.hikingdom.service.club.dto.response.MemberListRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberListRes;
 import org.lightnsalt.hikingdom.service.club.service.MeetupMemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,14 +46,15 @@ public class MeetupMemberController {
 	public ResponseEntity<CustomResponseBody> meetupMemberDetailList(@PathVariable Long clubId,
 		@PathVariable Long meetupId) {
 
-		List<MemberListRes> result = meetupMemberService.findMeetupMemberDetail(clubId, meetupId);
+		List<MeetupMemberDetailListRes> result = meetupMemberService.findMeetupMemberDetail(clubId, meetupId);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 멤버 상세 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 
 	@GetMapping("/members")
-	public ResponseEntity<CustomResponseBody> meetupMemberList(@PathVariable Long clubId, @PathVariable Long meetupId) {
+	public ResponseEntity<CustomResponseBody> meetupMemberList(Authentication authentication, @PathVariable Long clubId,
+		@PathVariable Long meetupId) {
 
-		List<MemberShortRes> result = meetupMemberService.findMeetupMember(clubId, meetupId);
+		MeetupMemberListRes result = meetupMemberService.findMeetupMember(authentication.getName(), clubId, meetupId);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 멤버 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 }
