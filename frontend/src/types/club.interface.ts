@@ -66,6 +66,7 @@ export interface Album {
   memberId: number
   imgUrl: string
   createdAt: string
+  isOwner?: boolean
 }
 
 // 지역 코드 조회

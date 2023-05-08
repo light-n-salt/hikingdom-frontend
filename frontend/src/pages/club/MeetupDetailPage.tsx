@@ -40,14 +40,14 @@ function MeetupDetailPage() {
       <PageHeader title={data?.meetupName} url="/club/meetup" color="primary" />
       <MeetupDetail
         mountain={data?.mountainName}
-        date={data?.startAt.split('T')[0]}
-        time={data?.startAt.split('T')[1]}
+        date={data?.startAt.split(' ')[0]}
+        time={data?.startAt.split(' ')[1]}
       />
       <div className={`page ${theme} ${styles.content}`}>
         <div className={styles.intro}>
           <MeetupIntroduction content={data?.description} />
         </div>
-        <MeetupMembers memberInfo={data?.memberInfo} join={data?.join} />
+        <MeetupMembers />
         <MeetupAlbum photoInfo={data?.photoInfo} />
         <MeetupReviewList reviewInfo={data?.reviewInfo} />
       </div>
