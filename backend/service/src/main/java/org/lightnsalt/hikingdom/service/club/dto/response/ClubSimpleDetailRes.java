@@ -14,5 +14,5 @@ public class ClubSimpleDetailRes {
 	@NotNull
 	private Long clubId;
 	@NotEmpty
-	private String groupName;
+	private String clubName;
 }
