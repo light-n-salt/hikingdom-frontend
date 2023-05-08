@@ -1,19 +1,21 @@
 package org.lightnsalt.hikingdom.service.club.controller;
 
-import java.awt.print.Pageable;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.club.dto.request.ClubInfoReq;
 import org.lightnsalt.hikingdom.service.club.dto.request.ClubNameReq;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubDetailRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.ClubSearchRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSimpleDetailRes;
 import org.lightnsalt.hikingdom.service.club.service.ClubBasicService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -34,8 +37,16 @@ import lombok.RequiredArgsConstructor;
 public class ClubBasicController {
 	private final ClubBasicService clubBasicService;
 
+	@GetMapping
+	public ResponseEntity<CustomResponseBody> clubList(@RequestParam(defaultValue = "") String query,
+		@RequestParam(defaultValue = "") String word, @RequestParam(defaultValue = "") Long clubId, Pageable pageable) {
+		CustomSlice<ClubSearchRes> clubSearchRes = clubBasicService.findClubList(query, word, clubId, pageable);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 검색에 성공했습니다", clubSearchRes), HttpStatus.OK);
+	}
+
 	@PostMapping
-	public ResponseEntity<CustomResponseBody> clubAdd(Authentication authentication, @RequestBody @Valid ClubInfoReq clubInfoReq,
+	public ResponseEntity<CustomResponseBody> clubAdd(Authentication authentication,
+		@RequestBody @Valid ClubInfoReq clubInfoReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
@@ -75,7 +86,8 @@ public class ClubBasicController {
 	}
 
 	@GetMapping("/check-duplicate")
-	public ResponseEntity<CustomResponseBody> clubNameCheck(@RequestBody @Valid ClubNameReq clubNameReq, BindingResult bindingResult) {
+	public ResponseEntity<CustomResponseBody> clubNameCheck(@RequestBody @Valid ClubNameReq clubNameReq,
+		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
 				bindingResult.getAllErrors().get(0).getDefaultMessage()),

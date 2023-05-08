@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.service.club.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
@@ -23,6 +24,9 @@ import org.lightnsalt.hikingdom.domain.entity.info.BaseAddressInfo;
 import org.lightnsalt.hikingdom.domain.repository.info.BaseAddressInfoRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
+import org.lightnsalt.hikingdom.service.club.repository.ClubSearchRepositoryCustom;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,13 +40,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class ClubBasicServiceImpl implements ClubBasicService {
+	private static final String locationCodePattern = "\\d{10}";
+
 	private final ClubRepository clubRepository;
 	private final ClubAssetRepository clubAssetRepository;
 	private final ClubMemberRepository clubMemberRepository;
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
+	private final ClubSearchRepositoryCustom clubSearchRepositoryCustom;
 	private final ClubTotalHikingStatisticRepository clubTotalHikingStatisticRepository;
 	private final BaseAddressInfoRepository baseAddressInfoRepository;
 	private final MemberRepository memberRepository;
+
+	@Override
+	public CustomSlice<ClubSearchRes> findClubList(String query, String word, Long clubId, Pageable pageable) {
+		if (!(query.matches("^(|name)$") ||
+			query.equals("location") && word.matches(locationCodePattern))) {
+			log.error("ClubBasicService:findClubList: Invalid Query {}, Word {}", query, word);
+			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
+		}
+
+		final Slice<ClubSearchRes> result;
+		if (query.equals("location")) {
+			result = clubSearchRepositoryCustom.findClubsByLocation(word, clubId, pageable);
+		} else {
+			result = clubSearchRepositoryCustom.findClubsByName(word, clubId, pageable);
+		}
+
+		return new CustomSlice<>(result);
+	}
 
 	@Transactional
 	@Override
