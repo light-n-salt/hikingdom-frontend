@@ -9,13 +9,13 @@ import { MeetupInfo } from 'types/meetup.interface'
 function ClubMeetupPage() {
   const { clubId } = useParams()
 
-  const [monthMeetups, setMonthMeetups] = useState(monthEx)
-  const [dateMeetups, setDateMeetups] = useState<MeetupInfo[]>(meetupInfoEx)
+  const [monthMeetups, setMonthMeetups] = useState([])
+  const [dateMeetups, setDateMeetups] = useState<MeetupInfo[]>([])
 
   function onChangeGetMonthMeetups(month: string) {
     if (!clubId) return
     getMonthMeetups(clubId, month).then((res) => {
-      setMonthMeetups(res.data.result)
+      setMonthMeetups(res.data.result.startAt)
     })
   }
 
@@ -50,7 +50,7 @@ const meetupInfoEx = [
     meetupName: '우리 모임',
     mountainName: '관악산',
     startAt: '2014-02-23 12:23',
-    totalMmember: 5,
+    totalMember: 5,
   },
   {
     description: '아주 좋아용 하라랄라라 에그타르트',
@@ -59,7 +59,7 @@ const meetupInfoEx = [
     meetupName: '최고당',
     mountainName: '도봉산',
     startAt: '2014-02-23 2:23',
-    totalMmember: 154,
+    totalMember: 154,
   },
   {
     description: '아주 좋아용 하라랄라라 에그타르트',
@@ -68,6 +68,6 @@ const meetupInfoEx = [
     meetupName: '최고당',
     mountainName: '도봉산',
     startAt: '2014-02-23 2:23',
-    totalMmember: 154,
+    totalMember: 154,
   },
 ]

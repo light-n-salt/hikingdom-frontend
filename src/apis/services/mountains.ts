@@ -1,10 +1,15 @@
 import apiRequest from 'apis/axios'
 
 // GET Request
-export function getMountains(word: string, mountainId: number | null = null) {
+export function getMountains(
+  word: string,
+  mountainId: number | null = null,
+  query = 'name'
+) {
   const params = {
     word,
     mountainId,
+    query,
   }
   return apiRequest.get(`info/mountains`, {
     params,

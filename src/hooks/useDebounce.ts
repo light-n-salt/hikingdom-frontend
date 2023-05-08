@@ -6,7 +6,7 @@ function useDebounce(value: string, delay?: number): string {
 
   useEffect(() => {
     // 2. delay 후 debouncedValue에 value 값 할당
-    const timer = setTimeout(() => setDebouncedValue(value), delay || 200)
+    const timer = setTimeout(() => setDebouncedValue(value), delay || 300)
 
     return () => {
       clearTimeout(timer)

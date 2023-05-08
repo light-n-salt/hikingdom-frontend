@@ -12,8 +12,8 @@ import person from 'assets/images/person.png'
 import shoe from 'assets/images/shoe.png'
 
 type ClubRecordInfoProps = {
-  participationRate: string
-  totalDuration: string
+  participationRate: number
+  totalDuration: number
   totalDistance: number
   totalAlt: number
 }
@@ -29,17 +29,27 @@ function ClubRecordInfo({
   return (
     <div className={`content ${theme} ${styles.container}`}>
       {/* 참여도 */}
-      <Info title="참여도(%)" content={participationRate} imgSrc={person} isBorder={true} />
+      <Info
+        title="참여도(%)"
+        content={`${participationRate}`}
+        imgSrc={person}
+        isBorder={true}
+      />
 
       {/* 시간 */}
-      <Info title="총 시간(h)" content={totalDuration} imgSrc={hourglass} isBorder={true} />
+      <Info
+        title="총 시간(h)"
+        content={`${totalDuration}`}
+        imgSrc={hourglass}
+        isBorder={true}
+      />
 
       {/* 거리 */}
       <Info
         title="총 거리(km)"
         content={convertToKm(totalDistance)}
         imgSrc={shoe}
-        isBorder={true} 
+        isBorder={true}
       />
 
       {/* 높이 */}
@@ -47,7 +57,7 @@ function ClubRecordInfo({
         title="총 높이(km)"
         content={convertToKm(totalAlt)}
         imgSrc={hot_air_balloon}
-        isBorder={false} 
+        isBorder={false}
       />
     </div>
   )
