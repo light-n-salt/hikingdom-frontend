@@ -82,7 +82,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
-		final Club club = clubRepository.findById(clubId)
+		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		if (!club.getHost().getId().equals(host.getId())) {
@@ -110,7 +110,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public ClubSimpleDetailRes findClubSimpleDetail(Long clubId) {
-		final Club club = clubRepository.findById(clubId)
+		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		return ClubSimpleDetailRes.builder()
