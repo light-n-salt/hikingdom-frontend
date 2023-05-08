@@ -107,6 +107,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
 	}
 
+	@Transactional
 	@Override
 	public ClubSimpleDetailRes findClubSimpleDetail(Long clubId) {
 		final Club club = clubRepository.findById(clubId)
@@ -119,6 +120,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			.build();
 	}
 
+	@Transactional
 	@Override
 	public void checkDuplicateClubName(String clubName) {
 		if (clubRepository.findByNameAndIsDeleted(clubName, false).isPresent()) {
@@ -132,7 +134,8 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			baseAddressInfo, LocalDateTime.now()) > 0;
 	}
 
-	private BaseAddressInfo getBaseAddressInfo(ClubInfoReq clubInfoReq) {
+	@Transactional
+	public BaseAddressInfo getBaseAddressInfo(ClubInfoReq clubInfoReq) {
 		if (clubInfoReq.getDongCode() != null) {
 			return baseAddressInfoRepository.findById(clubInfoReq.getDongCode())
 				.orElseThrow(() -> new GlobalException(ErrorCode.BASE_ADDRESS_NOT_FOUND));
