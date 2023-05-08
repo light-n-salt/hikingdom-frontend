@@ -1,11 +1,17 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
+import org.lightnsalt.hikingdom.domain.entity.club.ClubAsset;
+import org.lightnsalt.hikingdom.domain.repository.club.ClubAssetRepository;
 import org.lightnsalt.hikingdom.service.club.dto.request.ClubInfoReq;
+import org.lightnsalt.hikingdom.service.club.dto.response.ClubDetailRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.ClubSearchRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSimpleDetailRes;
 import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
@@ -18,6 +24,9 @@ import org.lightnsalt.hikingdom.domain.entity.info.BaseAddressInfo;
 import org.lightnsalt.hikingdom.domain.repository.info.BaseAddressInfoRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
+import org.lightnsalt.hikingdom.service.club.repository.ClubSearchRepositoryCustom;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,12 +40,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class ClubBasicServiceImpl implements ClubBasicService {
+	private static final String locationCodePattern = "\\d{10}";
+
 	private final ClubRepository clubRepository;
+	private final ClubAssetRepository clubAssetRepository;
 	private final ClubMemberRepository clubMemberRepository;
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
+	private final ClubSearchRepositoryCustom clubSearchRepositoryCustom;
 	private final ClubTotalHikingStatisticRepository clubTotalHikingStatisticRepository;
 	private final BaseAddressInfoRepository baseAddressInfoRepository;
 	private final MemberRepository memberRepository;
+
+	@Override
+	public CustomSlice<ClubSearchRes> findClubList(String query, String word, Long clubId, Pageable pageable) {
+		if (!(query.matches("^(|name)$") ||
+			query.equals("location") && word.matches(locationCodePattern))) {
+			log.error("ClubBasicService:findClubList: Invalid Query {}, Word {}", query, word);
+			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
+		}
+
+		final Slice<ClubSearchRes> result;
+		if (query.equals("location")) {
+			result = clubSearchRepositoryCustom.findClubsByLocation(word, clubId, pageable);
+		} else {
+			result = clubSearchRepositoryCustom.findClubsByName(word, clubId, pageable);
+		}
+
+		return new CustomSlice<>(result);
+	}
 
 	@Transactional
 	@Override
@@ -82,7 +113,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
-		final Club club = clubRepository.findById(clubId)
+		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		if (!club.getHost().getId().equals(host.getId())) {
@@ -107,9 +138,10 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
 	}
 
+	@Transactional
 	@Override
 	public ClubSimpleDetailRes findClubSimpleDetail(Long clubId) {
-		final Club club = clubRepository.findById(clubId)
+		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		return ClubSimpleDetailRes.builder()
@@ -119,6 +151,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			.build();
 	}
 
+	@Transactional
 	@Override
 	public void checkDuplicateClubName(String clubName) {
 		if (clubRepository.findByNameAndIsDeleted(clubName, false).isPresent()) {
@@ -127,12 +160,29 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	}
 
 	@Transactional
+	@Override
+	public ClubDetailRes findClubDetail(String email, Long clubId) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
+		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(club.getId(),
+				member.getId(), false)
+			.orElse(null);
+
+		final List<ClubAsset> clubAssetList = clubAssetRepository.findAllByClubId(club.getId());
+
+		return new ClubDetailRes(clubMember != null, club, clubAssetList);
+	}
+
+	@Transactional
 	public boolean updateClub(Long clubId, ClubInfoReq clubInfoReq, BaseAddressInfo baseAddressInfo) {
 		return clubRepository.updateClubProfile(clubId, clubInfoReq.getName(), clubInfoReq.getDescription(),
 			baseAddressInfo, LocalDateTime.now()) > 0;
 	}
 
-	private BaseAddressInfo getBaseAddressInfo(ClubInfoReq clubInfoReq) {
+	@Transactional
+	public BaseAddressInfo getBaseAddressInfo(ClubInfoReq clubInfoReq) {
 		if (clubInfoReq.getDongCode() != null) {
 			return baseAddressInfoRepository.findById(clubInfoReq.getDongCode())
 				.orElseThrow(() -> new GlobalException(ErrorCode.BASE_ADDRESS_NOT_FOUND));
