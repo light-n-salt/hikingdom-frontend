@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberListRes {
+public class MeetupMemberDetailListRes {
 	private Long memberId;
 	private String nickname;
 	private String profileUrl;
@@ -18,7 +18,7 @@ public class MemberListRes {
 	private Long totalDuration;
 	private Long totalDistance;
 
-	public MemberListRes(Member member) {
+	public MeetupMemberDetailListRes(Member member) {
 		this.memberId = member.getId();
 		this.nickname = member.getNickname();
 		this.profileUrl = member.getProfileUrl();
