@@ -8,7 +8,6 @@ type PastMeetupProps = {
 }
 
 export default function PastMeetupList({ hikingRecords }: PastMeetupProps) {
-  console.log(hikingRecords)
   return hikingRecords.length ? (
     <div className={`${styles['meetup-list']}`}>
       {hikingRecords.map((hiking) => (

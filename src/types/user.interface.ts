@@ -4,6 +4,7 @@ export interface User {
   email: string
   nickname: string
   profileUrl: string
+  memberId?: number
   clubId?: number | undefined
   level?: number | undefined
 }

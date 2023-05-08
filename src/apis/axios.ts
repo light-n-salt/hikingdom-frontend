@@ -63,9 +63,9 @@ axiosInstance.interceptors.response.use(
           // location.replace(location.protocol + '//' + location.host + '/login')
           return Promise.reject(error)
         })
-    } else if (error.response?.status === 401) {
+      // } else if (error.response?.status === 401) {
       // location.replace(location.protocol + '//' + location.host + '/login')
-      toast.addMessage('error', `권한이 없습니다`)
+      // toast.addMessage('error', `권한이 없습니다`)
     } else if (error.response?.status === 500) {
       toast.addMessage('error', `서버와의 통신 오류가 발생했습니다`)
     }
