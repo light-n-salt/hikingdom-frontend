@@ -1,5 +1,7 @@
 package org.lightnsalt.hikingdom.service.info.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
@@ -33,26 +35,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MountainInfoController {
 
-	/*
-	- 컨트롤러 클래스 안에서 메서드 명을 작성 할 때는 아래와 같은 접미사를 붙인다.
-
-		orderList() – 목록 조회 유형의 서비스
-
-		orderDetails() – 단 건 상세 조회 유형의 controller 메서드
-
-		orderSave() – 등록/수정/삭제 가 동시에 일어나는 유형의 controller 메서드
-
-		orderAdd() – 등록만 하는 유형의 controller 메서드
-
-		orderModify() – 수정만 하는 유형의 controller 메서드
-
-		orderRemove() – 삭제만 하는 유형의 controller 메서드
-	* */
-
 	private final MountainInfoService mountainInfoService;
 
 	@PostMapping("")
-	public ResponseEntity<CustomResponseBody> mountainInfoAdd(@RequestBody @Valid final MountainAddReq mountainCreateReq,
+	public ResponseEntity<CustomResponseBody> mountainInfoAdd(
+		@RequestBody @Valid final MountainAddReq mountainCreateReq,
 		BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
@@ -90,6 +77,21 @@ public class MountainInfoController {
 
 		mountainInfoService.addMountainInfoDaily(mountainId);
 		return new ResponseEntity<>(BaseResponseBody.of("오늘의 산 등록에 성공했습니다"), HttpStatus.CREATED);
+	}
+
+	@GetMapping("/location")
+	public ResponseEntity<CustomResponseBody> mountainInfoLocationList(@RequestParam("lat") double lat,
+		@RequestParam("lng") double lng) {
+
+		// 위도 경도 데이터 유효성 체크
+		// 위도 범위 : -90 ~ 90
+		// 경도 범위 : -180 ~ 180
+		if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.WRONG_DATA_SCOPE), HttpStatus.BAD_REQUEST);
+		}
+
+		List<MountainListRes> result = mountainInfoService.findMountainInfoLocation(lat, lng);
+		return new ResponseEntity<>(BaseResponseBody.of("가까운 산 검색에 성공했습니다", result), HttpStatus.OK);
 	}
 
 }
