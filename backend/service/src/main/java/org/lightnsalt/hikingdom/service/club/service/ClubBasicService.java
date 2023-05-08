@@ -1,6 +1,8 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
 import org.lightnsalt.hikingdom.service.club.dto.request.ClubInfoReq;
+import org.lightnsalt.hikingdom.service.club.dto.response.ClubDetailRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.ClubSearchRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSimpleDetailRes;
 
 public interface ClubBasicService {
@@ -11,4 +13,6 @@ public interface ClubBasicService {
 	ClubSimpleDetailRes findClubSimpleDetail(Long clubId);
 
 	void checkDuplicateClubName(String clubName);
+
+	ClubDetailRes findClubDetail(String email, Long clubId);
 }

@@ -1,11 +1,16 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
+import org.lightnsalt.hikingdom.domain.entity.club.ClubAsset;
+import org.lightnsalt.hikingdom.domain.repository.club.ClubAssetRepository;
 import org.lightnsalt.hikingdom.service.club.dto.request.ClubInfoReq;
+import org.lightnsalt.hikingdom.service.club.dto.response.ClubDetailRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.ClubSearchRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSimpleDetailRes;
 import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
@@ -32,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ClubBasicServiceImpl implements ClubBasicService {
 	private final ClubRepository clubRepository;
+	private final ClubAssetRepository clubAssetRepository;
 	private final ClubMemberRepository clubMemberRepository;
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
 	private final ClubTotalHikingStatisticRepository clubTotalHikingStatisticRepository;
@@ -126,6 +132,22 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		if (clubRepository.findByNameAndIsDeleted(clubName, false).isPresent()) {
 			throw new GlobalException(ErrorCode.DUPLICATE_CLUB_NAME);
 		}
+	}
+
+	@Transactional
+	@Override
+	public ClubDetailRes findClubDetail(String email, Long clubId) {
+		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
+		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(club.getId(),
+				member.getId(), false)
+			.orElse(null);
+
+		final List<ClubAsset> clubAssetList = clubAssetRepository.findAllByClubId(club.getId());
+
+		return new ClubDetailRes(clubMember != null, club, clubAssetList);
 	}
 
 	@Transactional
