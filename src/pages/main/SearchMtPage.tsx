@@ -24,7 +24,6 @@ function SearchMtPage() {
 
   // url 주소의 sate로부터 query를 전달 받음
   const location = useLocation()
-  console.log(location.state?.query)
   const debouncedQuery = useDebounce(location.state?.query || '')
 
   // debouncedQuery에 따라서 산 검색 api 요청
