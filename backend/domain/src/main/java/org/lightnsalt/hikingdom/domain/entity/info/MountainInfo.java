@@ -57,12 +57,6 @@ public class MountainInfo {
 	@Column(name = "peaks", length = 128)
 	private String peaks;
 
-	@Column(name = "transport", length = 128)
-	private String transport;
-
-	@Column(name = "facility", length = 128)
-	private String facility;
-
 	@OneToMany(mappedBy = "mountain")
 	@ToString.Exclude
 	private List<AssetInfo> asset;

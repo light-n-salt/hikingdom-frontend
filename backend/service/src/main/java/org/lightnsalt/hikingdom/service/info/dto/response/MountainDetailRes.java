@@ -23,8 +23,6 @@ public class MountainDetailRes {
 	private double maxAlt;
 	private String peaks;
 	private int totalDuration;
-	private String transport;
-	private String facility;
 	private List<AssetMountainRes> assets;
 
 	public MountainDetailRes(final MountainInfo mountainInfo) {
@@ -36,8 +34,6 @@ public class MountainDetailRes {
 		this.maxAlt = mountainInfo.getTopAlt();
 		this.peaks = mountainInfo.getPeaks();
 		this.totalDuration = mountainInfo.getTotalDuration();
-		this.transport = mountainInfo.getTransport();
-		this.facility = mountainInfo.getFacility();
 		this.assets = mountainInfo.getAsset().stream().map(AssetMountainRes::new).collect(Collectors.toList());
 		this.totalDuration = mountainInfo.getTotalDuration();
 	}

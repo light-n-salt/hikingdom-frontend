@@ -20,6 +20,4 @@ public class MountainAddRes {
 	private int totalDuration;
 	private String imgUrl;
 	private String peaks;
-	private String transport;
-	private String facility;
 }
