@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.service.club.dto.response.MemberListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupMember;
 import org.lightnsalt.hikingdom.domain.repository.club.ClubMemberRepository;
@@ -13,6 +13,7 @@ import org.lightnsalt.hikingdom.domain.repository.club.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.MeetupRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
+import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberListRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,20 +61,32 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 
 	@Override
 	@Transactional
-	public List<MemberListRes> findMeetupMemberDetail(Long clubId, Long meetupId) {
+	public List<MeetupMemberDetailListRes> findMeetupMemberDetail(Long clubId, Long meetupId) {
 
 		// 형 변환
 		return getMeetupMember(clubId, meetupId).stream()
-			.map(meetupMember -> new MemberListRes(meetupMember.getMember()))
+			.map(meetupMember -> new MeetupMemberDetailListRes(meetupMember.getMember()))
 			.collect(Collectors.toList());
 	}
 
 	@Override
 	@Transactional
-	public List<MemberShortRes> findMeetupMember(Long clubId, Long meetupId) {
+	public MeetupMemberListRes findMeetupMember(String email, Long clubId, Long meetupId) {
+		// 회원 ID 가져오기
+		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
+		// 일정에 참여 중인지 확인
+		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, memberId,
+			false);
 
-		// 형 변환
-		return getMeetupMember(clubId, meetupId).stream().map(MemberShortRes::new).collect(Collectors.toList());
+		// 일정 참여 멤버 수 조회하기
+		final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetupId, false);
+
+		// 멤버 정보 가져오기
+		List<MemberShortRes> memberInfo = getMeetupMember(clubId, meetupId).stream()
+			.map(MemberShortRes::new)
+			.collect(Collectors.toList());
+		return new MeetupMemberListRes(totalMember, isJoin, memberInfo);
 	}
 
 	private List<MeetupMember> getMeetupMember(Long clubId, Long meetupId) {

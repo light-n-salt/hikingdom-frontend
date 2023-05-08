@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
-import org.lightnsalt.hikingdom.service.club.dto.response.MemberListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
 import org.lightnsalt.hikingdom.service.club.service.ClubMemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +47,7 @@ public class ClubMemberController {
 
 	@GetMapping("/members")
 	public ResponseEntity<CustomResponseBody> clubMemberList(Authentication authentication, @PathVariable Long clubId) {
-		Map<String, List<MemberListRes>> result = clubMemberService.findClubMember(authentication.getName(), clubId);
+		Map<String, List<MeetupMemberDetailListRes>> result = clubMemberService.findClubMember(authentication.getName(), clubId);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 멤버 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 
