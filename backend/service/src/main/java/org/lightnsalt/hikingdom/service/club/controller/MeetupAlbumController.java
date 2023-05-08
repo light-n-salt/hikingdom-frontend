@@ -51,8 +51,8 @@ public class MeetupAlbumController {
 	private final MeetupAlbumService meetupAlbumService;
 
 	@PostMapping("")
-	public ResponseEntity<CustomResponseBody> meetupAlbumAdd(@PathVariable Long clubId, @PathVariable Long meetupId,
-		@RequestBody List<MultipartFile> photos, Authentication authentication) {
+	public ResponseEntity<CustomResponseBody> meetupAlbumAdd(Authentication authentication, @PathVariable Long clubId,
+		@PathVariable Long meetupId, @RequestBody List<MultipartFile> photos) {
 
 		List<String> list = meetupAlbumService.saveMeetupAlbum(authentication.getName(), clubId, meetupId, photos);
 
@@ -62,17 +62,18 @@ public class MeetupAlbumController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<CustomResponseBody> meetupAlbumList(@PathVariable Long clubId, @PathVariable Long meetupId,
+	public ResponseEntity<CustomResponseBody> meetupAlbumList(Authentication authentication, @PathVariable Long clubId,
+		@PathVariable Long meetupId,
 		@RequestParam(defaultValue = "") Long photoId, Pageable pageable) {
 
-		CustomSlice<MeetupAlbumRes> result = meetupAlbumService.findMeetupAlbumList(clubId, meetupId, photoId,
-			pageable);
+		CustomSlice<MeetupAlbumRes> result = meetupAlbumService.findMeetupAlbumList(authentication.getName(), clubId,
+			meetupId, photoId, pageable);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 사진 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{photoId}")
-	public ResponseEntity<CustomResponseBody> meetupAlbumRemove(@PathVariable Long clubId, @PathVariable Long meetupId,
-		@PathVariable Long photoId, Authentication authentication) {
+	public ResponseEntity<CustomResponseBody> meetupAlbumRemove(Authentication authentication,
+		@PathVariable Long clubId, @PathVariable Long meetupId, @PathVariable Long photoId) {
 
 		meetupAlbumService.removeMeetupAlbum(authentication.getName(), clubId, meetupId, photoId);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 사진이 삭제되었습니다"), HttpStatus.OK);
