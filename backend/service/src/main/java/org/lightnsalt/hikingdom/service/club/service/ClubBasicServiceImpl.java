@@ -147,7 +147,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		return ClubSimpleDetailRes.builder()
 			.hostId(club.getHost().getId())
 			.clubId(clubId)
-			.groupName(club.getName())
+			.clubName(club.getName())
 			.build();
 	}
 
