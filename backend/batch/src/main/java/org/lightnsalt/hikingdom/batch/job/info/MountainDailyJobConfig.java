@@ -1,10 +1,13 @@
 package org.lightnsalt.hikingdom.batch.job.info;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -72,8 +75,7 @@ public class MountainDailyJobConfig {
 	public JpaPagingItemReader<MountainInfo> mountainIdReader() {
 		JpaPagingItemReader<MountainInfo> reader = new JpaPagingItemReader<>();
 		reader.setEntityManagerFactory(entityManagerFactory);
-
-		reader.setQueryString("SELECT m FROM MountainInfo m WHERE m.id = :mountainId");
+		reader.setQueryString("SELECT m FROM MountainInfo m WHERE m.id in (:mountainId)");
 		reader.setParameterValues(Collections.singletonMap("mountainId", getRandomMountainId()));
 		reader.setPageSize(100);
 		reader.setSaveState(false);
@@ -84,6 +86,7 @@ public class MountainDailyJobConfig {
 	@Bean
 	@StepScope
 	public ItemProcessor<MountainInfo, MountainDailyInfo> mountainDailyProcessor() {
+
 		return mountain -> MountainDailyInfo.builder()
 			.mountain(mountain)
 			.setDate(LocalDate.now())
@@ -107,12 +110,19 @@ public class MountainDailyJobConfig {
 		return builder.toJobParameters();
 	}
 
-	public Long getRandomMountainId() {
+	// 중복되지 않은 랜덤 숫자 3개 뽑기
+	public List<Long> getRandomMountainId() {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		List<Long> ids = em.createQuery("SELECT m.id FROM MountainInfo m", Long.class).getResultList();
 		em.close();
-		int randomId = new Random().nextInt(ids.size());
-		log.info("random id is : {}", randomId);
-		return ids.get(randomId);
+
+		Random random = new Random();
+		Set<Long> set = new HashSet<>();
+		while (set.size() < 3) {
+			int randomNumber = random.nextInt(ids.size()); // 0에서 9 사이의 정수
+			set.add(ids.get(randomNumber));
+		}
+		log.info("random id is : {}", set);
+		return new ArrayList<>(set);
 	}
 }
