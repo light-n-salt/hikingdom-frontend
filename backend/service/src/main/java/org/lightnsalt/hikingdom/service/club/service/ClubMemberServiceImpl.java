@@ -42,7 +42,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	public void sendClubJoinRequest(String email, Long clubId) {
 		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Club club = clubRepository.findById(clubId)
+		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 현재 소모임에 가입되어 있는지 확인
@@ -93,7 +93,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
 
 		// 소모임장 id 가져오기
-		final Long hostId = clubRepository.findById(clubId)
+		final Long hostId = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND))
 			.getHost().getId();
 
