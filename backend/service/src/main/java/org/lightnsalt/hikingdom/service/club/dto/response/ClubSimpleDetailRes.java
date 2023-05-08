@@ -11,10 +11,8 @@ import lombok.Data;
 public class ClubSimpleDetailRes {
 	@NotNull
 	private Long hostId;
-
 	@NotNull
 	private Long clubId;
-
 	@NotEmpty
 	private String groupName;
 }

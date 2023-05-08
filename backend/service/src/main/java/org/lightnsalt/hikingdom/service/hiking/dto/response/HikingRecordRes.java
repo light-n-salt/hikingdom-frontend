@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.service.hiking.dto.response;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class HikingRecordRes {
 	private Long hikingRecordId;
 	private String mountainName;
-	private LocalDateTime startAt;
+	private String startAt;
 	private int totalDuration;
 	private int totalDistance;
 	private double maxAlt;
@@ -29,7 +29,7 @@ public class HikingRecordRes {
 	public HikingRecordRes(MemberHiking hiking) {
 		this.hikingRecordId = hiking.getId();
 		this.mountainName = hiking.getMountain().getName();
-		this.startAt = hiking.getStartAt();
+		this.startAt = hiking.getStartAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		this.totalDuration = Math.round(hiking.getTotalDuration());
 		this.totalDistance = Math.round(hiking.getTotalDistance());
 		this.maxAlt = hiking.getTotalAlt();
