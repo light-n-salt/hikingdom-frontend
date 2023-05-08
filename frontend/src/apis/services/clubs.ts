@@ -5,11 +5,16 @@ export function clubSimpleInfo(clubId: number) {
   return apiRequest.get(`/clubs/${clubId}`)
 }
 
-export function getRanking(sort = '', clubId: number | null = null) {
+export function getRanking(
+  sort = '',
+  clubId: number | null = null,
+  size: number | null = null
+) {
   return apiRequest.get(`/clubs/ranking`, {
     params: {
       sort,
       clubId,
+      size,
     },
   })
 }
