@@ -13,6 +13,7 @@ import org.lightnsalt.hikingdom.domain.repository.club.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.domain.repository.club.MeetupRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.repository.member.MemberRepository;
+import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,10 +44,7 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
-		meetupMemberRepository.save(MeetupMember.builder()
-			.meetup(meetup)
-			.member(member)
-			.build());
+		meetupMemberRepository.save(MeetupMember.builder().meetup(meetup).member(member).build());
 	}
 
 	@Override
@@ -55,15 +53,30 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final MeetupMember meetupMember = meetupMemberRepository.findByMeetupIdAndMemberIdAndIsWithdraw(meetupId,
-				member.getId(), false)
-			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+			member.getId(), false).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		meetupMemberRepository.delete(meetupMember);
 	}
 
 	@Override
 	@Transactional
-	public List<MemberListRes> findMeetupMember(Long clubId, Long meetupId) {
+	public List<MemberListRes> findMeetupMemberDetail(Long clubId, Long meetupId) {
+
+		// 형 변환
+		return getMeetupMember(clubId, meetupId).stream()
+			.map(meetupMember -> new MemberListRes(meetupMember.getMember()))
+			.collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional
+	public List<MemberShortRes> findMeetupMember(Long clubId, Long meetupId) {
+
+		// 형 변환
+		return getMeetupMember(clubId, meetupId).stream().map(MemberShortRes::new).collect(Collectors.toList());
+	}
+
+	private List<MeetupMember> getMeetupMember(Long clubId, Long meetupId) {
 		// 존재하는 일정인지 확인
 		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
@@ -73,10 +86,6 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 			throw new GlobalException(ErrorCode.CLUB_MEETUP_NOT_FOUND);
 		}
 		// 일정 멤버 조회
-		List<MeetupMember> list = meetupMemberRepository.findByMeetupIdAndIsWithdraw(meetupId, false);
-		// 형 변환
-		return list.stream()
-			.map(meetupMember -> new MemberListRes(meetupMember.getMember()))
-			.collect(Collectors.toList());
+		return meetupMemberRepository.findByMeetupIdAndIsWithdraw(meetupId, false);
 	}
 }
