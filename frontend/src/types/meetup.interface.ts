@@ -13,7 +13,7 @@ export interface MeetupInfo {
   meetupName: string
   mountainName: string
   startAt: string
-  totalMmember: number
+  totalMember: number
 }
 
 // 일정 멤버
