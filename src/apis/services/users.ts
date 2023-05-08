@@ -55,6 +55,11 @@ export function logout() {
   })
 }
 
+// 신고
+export function report(type: string, id: number) {
+  return apiRequest.post(`reports`, { type, id })
+}
+
 // PUT request
 export function findPw(email: string) {
   return apiRequest.put(`/members/auth/password-find`, {
