@@ -12,6 +12,7 @@ import lombok.Data;
 
 @Data
 public class ClubDetailRes {
+	private String clubName;
 	@JsonProperty("isJoin")
 	private boolean isJoin;
 	private double participationRate;
@@ -22,6 +23,7 @@ public class ClubDetailRes {
 	private List<ClubAssetRes> assets;
 
 	public ClubDetailRes(boolean isJoin, Club club, List<ClubAsset> assets) {
+		this.clubName = club.getName();
 		this.isJoin = isJoin;
 		this.participationRate = club.getHikingStatistic().getParticipationRate();
 		this.totalDuration = club.getHikingStatistic().getTotalDuration() / 60; // seconds to minutes
