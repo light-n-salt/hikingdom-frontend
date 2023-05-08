@@ -44,6 +44,11 @@ export function login(email: string, password: string) {
     .then((res) => {
       localStorage.setItem('accessToken', res.data.result.accessToken)
       localStorage.setItem('refreshToken', res.data.result.accessToken)
+      // @ts-expect-error
+      if (window.Token) {
+        // @ts-expect-error
+        window.Token.showToastMessage('Hello Native Callback')
+      }
     })
 }
 
