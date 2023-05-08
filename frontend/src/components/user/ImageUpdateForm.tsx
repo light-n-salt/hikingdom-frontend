@@ -9,7 +9,7 @@ import toast from 'components/common/Toast'
 import { TbCameraPlus } from 'react-icons/tb'
 
 import { getUserInfo, updateProfile } from 'apis/services/users'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 
 import { useRecoilState } from 'recoil'
 import { userInfoState } from 'recoil/atoms'
@@ -58,7 +58,7 @@ function ImageUpdateForm() {
       <Image imgUrl={imgUrl} size="lg" />
       <input
         type="file"
-        accept="image/jpg,impge/png,image/jpeg"
+        accept="image/jpg,image/png,image/jpeg"
         onChange={onChange}
         ref={imgRef}
         style={{ display: 'none' }}
