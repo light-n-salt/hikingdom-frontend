@@ -5,12 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
+import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDailyRes;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
+import org.lightnsalt.hikingdom.service.hiking.dto.request.HikingRecordReq;
+import org.lightnsalt.hikingdom.service.hiking.dto.response.TodayMeetupRes;
 import org.lightnsalt.hikingdom.service.hiking.repository.HikingRepositoryCustom;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
-import org.lightnsalt.hikingdom.service.hiking.dto.response.TodayMeetupRes;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,5 +74,16 @@ public class HikingServiceImpl implements HikingService {
             dto.setTotalMember(totalMember);
             return dto;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public Long saveHikingRecord(String email, HikingRecordReq hikingRecordReq) {
+        // 회원 확인
+        final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+                .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND))
+                .getId();
+
+        return null;
     }
 }
