@@ -22,7 +22,7 @@ function MeetupItem({ meetupInfo }: MeetupItemProps) {
         <h3>{meetupInfo.meetupName}</h3>
         <IconText
           imgSrc={person}
-          text={meetupInfo.totalMmember.toString()}
+          text={meetupInfo.totalMember.toString()}
           size="sm"
           isBold={true}
         />
