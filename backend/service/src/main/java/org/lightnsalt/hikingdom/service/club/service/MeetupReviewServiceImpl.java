@@ -86,7 +86,7 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 		if (clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(), false).isEmpty())
 			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
 
-		return meetupReviewRepository.findByMeetupId(meetupId)
+		return meetupReviewRepository.findByMeetupIdAndIsDeleted(meetupId, false)
 			.stream()
 			.map(MeetupReviewRes::new)
 			.collect(Collectors.toList());
