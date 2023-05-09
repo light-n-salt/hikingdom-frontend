@@ -1,12 +1,12 @@
 package org.lightnsalt.hikingdom.service.hiking.service;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
@@ -14,7 +14,6 @@ import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHikingGps;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDailyRes;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
@@ -29,13 +28,14 @@ import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

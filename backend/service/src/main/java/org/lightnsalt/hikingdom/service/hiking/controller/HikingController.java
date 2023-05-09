@@ -1,22 +1,22 @@
 package org.lightnsalt.hikingdom.service.hiking.controller;
 
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
-import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.service.hiking.dto.request.HikingRecordReq;
-import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordDetailRes;
-import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordListRes;
 import org.lightnsalt.hikingdom.service.hiking.dto.response.TodayMeetupRes;
 import org.lightnsalt.hikingdom.service.hiking.service.HikingService;
-import org.lightnsalt.hikingdom.service.hiking.service.MemberHikingService;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/hiking")
