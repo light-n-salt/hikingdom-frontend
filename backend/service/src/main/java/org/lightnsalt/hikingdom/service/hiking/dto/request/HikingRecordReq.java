@@ -5,13 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class HikingRecordReq {
-    private Boolean isGroup;
+    private Boolean isMeetup;
     private Long clubId;
     private Long meetupId;
-    private int duration;
-    private String gpsRoute;
+    private String startAt;
+    private int totalDistance;
+    private double maxAlt;
+    private int totalDuration;
+    private List<GpsRoute> gpsRoute;
 }
