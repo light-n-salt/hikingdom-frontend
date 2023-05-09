@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class HikingRecordReq {
     private Boolean isMeetup;
-    private Long clubId;
+    private Long mountainId;
     private Long meetupId;
     private String startAt;
     private int totalDistance;
