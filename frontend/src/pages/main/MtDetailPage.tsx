@@ -5,8 +5,9 @@ import { ThemeContext } from 'styles/ThemeProvider'
 import { getMountainInfo } from 'apis/services/mountains'
 import { useQuery } from '@tanstack/react-query'
 import { MtInfoDetail } from 'types/mt.interface'
-import PageHeader from 'components/common/PageHeader'
+import Loading from 'components/common/Loading'
 import MtDetail from 'components/main/MtDetail'
+import PageHeader from 'components/common/PageHeader'
 
 function MtDetailPage() {
   // const { theme } = useContext(ThemeContext)
@@ -29,7 +30,7 @@ function MtDetailPage() {
       <MtDetail mtInfo={mtInfo} />
     </div>
   ) : (
-    <div>loading...</div>
+    <Loading />
   )
 }
 
