@@ -1,10 +1,62 @@
-version: "3.2"
+version: "3.9"
 
 services:
-  backend_main:
-    container_name: backend_main
+  main-frontend:
+    container_name: main-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+
+  main-backend-discovery:
+    container_name: main-backend-discovery
+    build:
+      context: ./backend/discovery
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: main
+    ports:
+      - 6471:8761
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      - main_hikingdom_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  main-backend-service:
+    container_name: main-backend-service
     build:
       context: ./backend/service
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: main
+    ports:
+      - 8001:8080
+    environment:
+      - TZ=Asia/Seoul
+      - EUREKA_SERVER=main-backend-discovery
+    networks:
+      - main_hikingdom_net
+    depends_on:
+      main-backend-discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/members/auth/health-check"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  main-backend-gateway:
+    container_name: main-backend-gateway
+    build:
+      context: ./backend/gateway
       dockerfile: Dockerfile
       args:
         SERVER_MODE: main
@@ -12,14 +64,14 @@ services:
       - 8080:8080
     environment:
       - TZ=Asia/Seoul
-
-  frontend_main:
-    container_name: frontend_main
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
+      - EUREKA_SERVER=main-backend-discovery
+    networks:
+      - main_hikingdom_net
+    depends_on:
+      main-backend-discovery:
+        condition: service_healthy
+      main-backend-service:
+        condition: service_healthy
 
   nginx:
     container_name: nginx
@@ -34,4 +86,8 @@ services:
       - 443:443
     depends_on:
       - backend_main
-      - frontend_main
+      - main-frontend
+
+networks:
+  main_hikingdom_net:
+    driver: bridge
