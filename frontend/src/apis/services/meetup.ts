@@ -33,6 +33,13 @@ export function getMeeupAlbum(
   )
 }
 
+// 일정 후기 조회
+export function getReviews(clubId: number, meetupId: number) {
+  return apiRequest
+    .get(`clubs/${clubId}/meetups/${meetupId}/reviews`)
+    .then((res) => res.data.result)
+}
+
 // 일정 사진 등록
 export function updateMeetupAlbum(
   clubId: number,
@@ -50,9 +57,31 @@ export function updateMeetupAlbum(
   )
 }
 
+// 일정 후기 등록
+export function updateReview(
+  clubtId: number,
+  meetupId: number,
+  content: string
+) {
+  return apiRequest.post(`clubs/${clubtId}/meetups/${meetupId}/reviews`, {
+    content,
+  })
+}
+
 // 일정 참여
 export function updateMeetup(clubId: number, meetupId: number) {
   return apiRequest.post(`clubs/${clubId}/meetups/${meetupId}/join`)
+}
+
+// 일정 후기 삭제
+export function deleteReview(
+  clubId: number,
+  meetupId: number,
+  reviewId: number
+) {
+  return apiRequest.delete(
+    `clubs/${clubId}/meetups/${meetupId}/reviews/${reviewId}`
+  )
 }
 
 // 일정 참여 취소
