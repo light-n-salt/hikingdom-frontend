@@ -23,59 +23,65 @@ function MainPage() {
   }, [])
 
   // data: data의 변수명 지정
-  // const {
-  //   data: mtInfoArray,
-  //   isLoading,
-  //   isError,
-  // } = useQuery<MtInfo[]>(['todayMountain'], getTodayMountains, {
-  //   cacheTime: queryTime,
-  //   staleTime: queryTime,
-  // })
+  const {
+    data: mtInfoArray,
+    isLoading,
+    isError,
+  } = useQuery<MtInfo[]>(['todayMountain'], getTodayMountains, {
+    cacheTime: queryTime,
+    staleTime: queryTime,
+  })
 
   // const { data: clubInfoArray } = useQuery<ClubInfo[]>(['clubRankTop3'], () =>
   //   getRanking('', null, 3).then((res) => res.data.result)
   // )
 
   return (
-    <div className={styles.container}>
-      <div className={styles.section}>
-        <IconText
-          imgSrc={cloud}
-          text="여기 등산 어때요"
-          size="sm"
-          isBold={true}
-        />
-        <div className={styles.scroll}>
-          <MtList mtInfoArray={mtInfoArray} size="sm" />
+    <>
+      {isLoading || isError ? (
+        <Loading />
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.section}>
+            <IconText
+              imgSrc={cloud}
+              text="여기 등산 어때요"
+              size="sm"
+              isBold={true}
+            />
+            <div className={styles.scroll}>
+              <MtList mtInfoArray={mtInfoArray} size="sm" />
+            </div>
+          </div>
+          <div className={styles.section}>
+            <IconText imgSrc={trophy} text="TOP3" size="sm" isBold={true} />
+            <div className={styles.scroll}>
+              <RankList clubInfoArray={clubInfoArrayEx} size="sm" />
+            </div>
+          </div>
+          <div className={styles.section}>
+            <IconText
+              imgSrc={mountain}
+              text="오늘의 모임 산"
+              size="sm"
+              isBold={true}
+            />
+            <img
+              src={clubmountain}
+              onClick={() => {
+                navigate(`/club/1/detail`)
+              }}
+            />
+          </div>
         </div>
-      </div>
-      <div className={styles.section}>
-        <IconText imgSrc={trophy} text="TOP3" size="sm" isBold={true} />
-        <div className={styles.scroll}>
-          <RankList clubInfoArray={clubInfoArray} size="sm" />
-        </div>
-      </div>
-      <div className={styles.section}>
-        <IconText
-          imgSrc={mountain}
-          text="오늘의 모임 산"
-          size="sm"
-          isBold={true}
-        />
-        <img
-          src={clubmountain}
-          onClick={() => {
-            navigate(`/club/1/detail`)
-          }}
-        />
-      </div>
-    </div>
+      )}
+    </>
   )
 }
 
 export default MainPage
 
-const clubInfoArray = [
+const clubInfoArrayEx = [
   {
     clubId: 1,
     clubName: '산타마리아',
@@ -108,7 +114,7 @@ const clubInfoArray = [
   },
 ]
 
-const mtInfoArray = [
+const mtInfoArrayEx = [
   {
     mountainId: 1,
     name: '도봉산',
@@ -118,7 +124,7 @@ const mtInfoArray = [
       'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
   },
   {
-    mountainId: 1,
+    mountainId: 2,
     name: '도봉산',
     maxAlt: 123,
     address: '서울시 노원구',
@@ -126,7 +132,7 @@ const mtInfoArray = [
       'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
   },
   {
-    mountainId: 1,
+    mountainId: 3,
     name: '도봉산',
     maxAlt: 123,
     address: '서울시 노원구',
@@ -134,7 +140,7 @@ const mtInfoArray = [
       'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
   },
   {
-    mountainId: 1,
+    mountainId: 4,
     name: '도봉산',
     maxAlt: 123,
     address: '서울시 노원구',
@@ -142,7 +148,7 @@ const mtInfoArray = [
       'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
   },
   {
-    mountainId: 1,
+    mountainId: 5,
     name: '도봉산',
     maxAlt: 123,
     address: '서울시 노원구',
