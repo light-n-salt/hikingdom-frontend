@@ -20,14 +20,14 @@ services:
       args:
         SERVER_MODE: dev
     ports:
-      - 6472:8080
+      - 6472:8761
     environment:
       - TZ=Asia/Seoul
     networks:
       dev_hikingdom_net:
         ipv4_address: 172.25.0.4
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost:8761"]
       interval: 15s
       timeout: 10s
       retries: 3
