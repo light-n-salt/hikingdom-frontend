@@ -36,7 +36,7 @@ services:
   dev_backend_service:
     container_name: dev_backend_service
     build:
-      context: ./backend/gateway
+      context: ./backend/service
       dockerfile: Dockerfile
       args:
         SERVER_MODE: dev
