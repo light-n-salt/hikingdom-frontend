@@ -25,16 +25,33 @@ function NavigationBar() {
     isError,
   } = useQuery<User>(['userHiking'], () => getUserInfo(setUserInfo))
 
+  function onClickToClub() {
+    if (userInfo?.clubId) {
+      navigate(`/club/${userInfo.clubId}/main`)
+    } else {
+      navigate(`/club/none`)
+    }
+  }
+
   return (
     <>
       {isError || isLoading ? (
         <Loading />
       ) : (
         <div className={styles.nav}>
-          {/* <IconButton icon={<IoPeopleOutline />} />
-        <IconButton icon={<IoPodiumOutline />} />
-        <IconButton icon={<IoHomeOutline />} />
-        <IconButton imgSrc= {userInfo.profileUrl}/>} /> */}
+          <IconButton
+            icon={<IoPodiumOutline />}
+            onClick={() => navigate('/rank')}
+          />
+          <IconButton
+            icon={<IoHomeOutline />}
+            onClick={() => navigate('/main')}
+          />
+          <IconButton icon={<IoPeopleOutline />} onClick={onClickToClub} />
+          <IconButton
+            imgSrc={userInfo.profileUrl}
+            onClick={() => navigate(`/profile/${userInfo.nickname}`)}
+          />
         </div>
       )}
     </>
