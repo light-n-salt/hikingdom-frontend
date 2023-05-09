@@ -27,10 +27,10 @@ public class MemberHikingServiceImpl implements MemberHikingService {
 
 	@Override
 	@Transactional
-	public HikingRecordDetailRes findHikingRecord(String email, Long hikingRecordId) {
+	public HikingRecordDetailRes findHikingRecord(String nickname, Long hikingRecordId) {
 		// 회원 찾기
-		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
-			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED))
+		final Long memberId = memberRepository.findByNicknameAndIsWithdraw(nickname, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND))
 			.getId();
 
 		// 등산 기록 찾기
@@ -39,7 +39,9 @@ public class MemberHikingServiceImpl implements MemberHikingService {
 
 		// 회원 기록 확인
 		if (!memberHiking.getMember().getId().equals(memberId)) {
-			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
+			log.error("MemberHikingService:findHikingRecord: nickname {}, memberId {}, hikingRecordId {}", nickname,
+				memberId, hikingRecordId);
+			throw new GlobalException(ErrorCode.HIKING_RECORD_NOT_FOUND);
 		}
 
 		return new HikingRecordDetailRes(memberHiking);
@@ -47,9 +49,10 @@ public class MemberHikingServiceImpl implements MemberHikingService {
 
 	@Override
 	@Transactional
-	public CustomSlice<HikingRecordListRes> findHikingRecordList(String email, Long hikingRecordId, Pageable pageable) {
+	public CustomSlice<HikingRecordListRes> findHikingRecordList(String nickname, Long hikingRecordId,
+		Pageable pageable) {
 		// 회원 확인
-		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Long memberId = memberRepository.findByNicknameAndIsWithdraw(nickname, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND))
 			.getId();
 

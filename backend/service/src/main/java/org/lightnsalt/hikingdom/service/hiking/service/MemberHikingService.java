@@ -6,7 +6,7 @@ import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordListRes;
 import org.springframework.data.domain.Pageable;
 
 public interface MemberHikingService {
-	HikingRecordDetailRes findHikingRecord(String email, Long hikingRecordId);
+	HikingRecordDetailRes findHikingRecord(String nickname, Long hikingRecordId);
 
-	CustomSlice<HikingRecordListRes> findHikingRecordList(String email, Long hikingRecordId, Pageable pageable);
+	CustomSlice<HikingRecordListRes> findHikingRecordList(String nickname, Long hikingRecordId, Pageable pageable);
 }
