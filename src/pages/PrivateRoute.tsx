@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './PrivateRotue.module.scss'
+import styles from './PrivateRoute.module.scss'
 import { Navigate, Outlet } from 'react-router-dom'
 import useIsMobile from 'hooks/useIsMobile'
 import NavigationBar from 'components/common/NavigationBar'
@@ -10,8 +10,12 @@ import NavigationBar from 'components/common/NavigationBar'
 
 export default function PrivateRoute() {
   // 로그인 여부 체크
-  const isMobile = useIsMobile() // 모바일 여부 판단 커스텀 훅
+  const refreshToken = localStorage.getItem('refreshToken')
+  if (!refreshToken) {
+    return <Navigate to="/login" />
+  }
 
+  const isMobile = useIsMobile() // 모바일 여부 판단 커스텀 훅
   return (
     <>
       {isMobile ? (
