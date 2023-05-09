@@ -1,6 +1,5 @@
 package org.lightnsalt.hikingdom.service.hiking.repository;
 
-import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHikingGps;
 import org.springframework.data.jpa.repository.JpaRepository;
 

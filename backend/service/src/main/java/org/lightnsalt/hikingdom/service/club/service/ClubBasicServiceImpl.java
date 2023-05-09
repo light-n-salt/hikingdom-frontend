@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class ClubBasicServiceImpl implements ClubBasicService {
-	private static final String locationCodePattern = "\\d{10}";
+	private static final String LOCATION_CODE_PATTERN = "\\d{10}";
 
 	private final ClubRepository clubRepository;
 	private final ClubAssetRepository clubAssetRepository;
@@ -55,7 +55,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Override
 	public CustomSlice<ClubSearchRes> findClubList(String query, String word, Long clubId, Pageable pageable) {
 		if (!(query.matches("^(|name)$") ||
-			query.equals("location") && word.matches(locationCodePattern))) {
+			query.equals("location") && word.matches(LOCATION_CODE_PATTERN))) {
 			log.error("ClubBasicService:findClubList: Invalid Query {}, Word {}", query, word);
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}

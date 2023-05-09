@@ -13,7 +13,6 @@ import org.lightnsalt.hikingdom.common.util.S3FileUtil;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubJoinRequest;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
-import org.lightnsalt.hikingdom.domain.entity.club.record.ClubRanking;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
@@ -216,10 +215,10 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		return clubMemberList.stream().map(clubJoinRequest -> {
 			int ranking = 0;
 			if (clubJoinRequest.getClub() != null) {
-				ClubRanking var = clubRankingRepository.findTop1ByClubIdOrderBySetDate(
+				var clubRanking = clubRankingRepository.findTop1ByClubIdOrderBySetDate(
 					clubJoinRequest.getClub().getId());
-				if (var != null) {
-					ranking = Math.toIntExact(var.getRanking());
+				if (clubRanking != null) {
+					ranking = Math.toIntExact(clubRanking.getRanking());
 				}
 			}
 			assert clubJoinRequest.getClub() != null;
