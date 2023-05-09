@@ -1,10 +1,66 @@
-version: "3.2"
+version: "3"
 
 services:
+  dev_frontend:
+    container_name: dev_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3001:3000
+    networks:
+      dev_hikingdom_net:
+        ipv4_address: 172.25.0.2
+
+  dev_backend_discovery:
+    container_name: dev_backend_discovery
+    build:
+      context: ./backend/discovery
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: dev
+    ports:
+      - 6472:8080
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      dev_hikingdom_net:
+        ipv4_address: 172.25.0.4
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 7s
+
   dev_backend_service:
     container_name: dev_backend_service
     build:
-      context: ./backend/service
+      context: ./backend/gateway
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: dev
+    ports:
+      - 9001:8080
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      dev_hikingdom_net:
+        ipv4_address: 172.25.0.5
+    depends_on:
+      dev_backend_discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  dev_backend_gateway:
+    container_name: dev_backend_gateway
+    build:
+      context: ./backend/gateway
       dockerfile: Dockerfile
       args:
         SERVER_MODE: dev
@@ -14,37 +70,16 @@ services:
       - TZ=Asia/Seoul
     networks:
       dev_hikingdom_net:
-        ipv4_address: 172.21.0.3
-  
-  dev_backend_batch:
-    container_name: dev_backend_batch
-    build:
-      context: ./backend/batch
-      dockerfile: Dockerfile
-      args:
-        SERVER_MODE: dev
-    ports:
-      - 8083:8080
-    environment:
-      - TZ=Asia/Seoul
-    networks:
-      dev_hikingdom_net:
-        ipv4_address: 172.21.0.5
-
-  frontend_dev:
-    container_name: frontend_dev
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    ports:
-      - 3001:3000
-    networks:
-      dev_hikingdom_net:
-        ipv4_address: 172.21.0.2
+        ipv4_address: 172.25.0.3
+    depends_on:
+      dev_backend_discovery:
+        condition: service_healthy
+      dev_backend_service:
+        condition: service_healthy
 
 networks:
   dev_hikingdom_net:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.21.0.0/16
+        - subnet: 172.25.0.0/16
