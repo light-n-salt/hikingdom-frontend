@@ -24,6 +24,7 @@ import org.lightnsalt.hikingdom.service.hiking.dto.response.TodayMeetupRes;
 import org.lightnsalt.hikingdom.service.hiking.repository.HikingRepositoryCustom;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingGpsRepository;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
+import org.lightnsalt.hikingdom.service.info.repository.MountainInfoRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,7 @@ public class HikingServiceImpl implements HikingService {
     private final MemberHikingRepository memberHikingRepository;
     private final MemberHikingGpsRepository memberHikingGpsRepository;
     private final HikingRepositoryCustom hikingRepositoryCustom;
+    private final MountainInfoRepository mountainInfoRepository;
 
 //    @Override
 //    @Transactional
@@ -101,27 +103,44 @@ public class HikingServiceImpl implements HikingService {
         final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
                 .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
+        final MountainInfo mountainInfo = mountainInfoRepository.findById(hikingRecordReq.getMountainId())
+                .orElseThrow(() -> new GlobalException(ErrorCode.MOUNTAIN_NOT_FOUND));
+
         LocalDateTime startAt = LocalDateTime.parse(hikingRecordReq.getStartAt(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime endAt = startAt.plusMinutes(hikingRecordReq.getTotalDuration());
 
-        Meetup meetup = meetupRepository.findById(hikingRecordReq.getMeetupId())
-                .orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
-        MountainInfo mountainInfo = meetup.getMountain();
 
-        MemberHiking memberHiking = MemberHiking.builder()
-                .member(member)
-                .mountain(mountainInfo)
-                .meetup(meetup)
-                .isMeetup(hikingRecordReq.getIsMeetup())
-                .startAt(startAt)
-                .endAt(endAt)
-                .totalDuration((long) hikingRecordReq.getTotalDuration())
-                .totalDistance((long) hikingRecordReq.getTotalDistance())
-                .totalAlt((long) hikingRecordReq.getMaxAlt())
-                .isSummit(true) // 완등여부 => 임시로 true
-                .build();
-
+        Meetup meetup;
+        MemberHiking memberHiking;
+        if(hikingRecordReq.getIsMeetup()){
+            meetup = meetupRepository.findById(hikingRecordReq.getMeetupId())
+                    .orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
+            memberHiking = MemberHiking.builder()
+                    .member(member)
+                    .mountain(mountainInfo)
+                    .meetup(meetup)
+                    .isMeetup(hikingRecordReq.getIsMeetup())
+                    .startAt(startAt)
+                    .endAt(endAt)
+                    .totalDuration((long) hikingRecordReq.getTotalDuration())
+                    .totalDistance((long) hikingRecordReq.getTotalDistance())
+                    .totalAlt((long) hikingRecordReq.getMaxAlt())
+                    .isSummit(true) // 완등여부 => 임시로 true
+                    .build();
+        }else{
+            memberHiking = MemberHiking.builder()
+                    .member(member)
+                    .mountain(mountainInfo)
+                    .isMeetup(hikingRecordReq.getIsMeetup())
+                    .startAt(startAt)
+                    .endAt(endAt)
+                    .totalDuration((long) hikingRecordReq.getTotalDuration())
+                    .totalDistance((long) hikingRecordReq.getTotalDistance())
+                    .totalAlt((long) hikingRecordReq.getMaxAlt())
+                    .isSummit(true) // 완등여부 => 임시로 true
+                    .build();
+        }
 
 //        hikingRecordReq.getGpsRoute()
         JsonObject gpsRoute = new JsonObject();
