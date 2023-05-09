@@ -87,3 +87,13 @@ export function getClubInfo(clubId: number) {
 export function postJoinClub(clubId: number) {
   return apiRequest.post(`/clubs/${clubId}/join-request`)
 }
+
+// 소모임 가입 신청 목록 조회
+export function getClubRequest() {
+  return apiRequest.get(`members/clubs/my-requests`)
+}
+
+// 소모임 가입 신청 취소
+export function deleteClubRequest(clubId: number) {
+  return apiRequest.delete(`clubs/${clubId}/join-request`)
+}
