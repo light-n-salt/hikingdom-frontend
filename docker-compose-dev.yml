@@ -9,11 +9,10 @@ services:
     ports:
       - 3001:3000
     networks:
-      dev_hikingdom_net:
-        ipv4_address: 172.25.0.2
-
-  dev_backend_discovery:
-    container_name: dev_backend_discovery
+      - dev_hikingdom_net
+        
+  dev-backend-discovery:
+    container_name: dev-backend-discovery
     build:
       context: ./backend/discovery
       dockerfile: Dockerfile
@@ -24,8 +23,7 @@ services:
     environment:
       - TZ=Asia/Seoul
     networks:
-      dev_hikingdom_net:
-        ipv4_address: 172.25.0.4
+      - dev_hikingdom_net
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8761"]
       interval: 15s
@@ -33,8 +31,8 @@ services:
       retries: 3
       start_period: 7s
 
-  dev_backend_service:
-    container_name: dev_backend_service
+  dev-backend-service:
+    container_name: dev-backend-service
     build:
       context: ./backend/service
       dockerfile: Dockerfile
@@ -44,13 +42,11 @@ services:
       - 9001:8080
     environment:
       - TZ=Asia/Seoul
-      - EUREKA_SERVER=dev_backend_discovery
-      - EUREKA_HOSTNAME=dev_backend_service
+      - EUREKA_SERVER=dev-backend-discovery
     networks:
-      dev_hikingdom_net:
-        ipv4_address: 172.25.0.5
+      - dev_hikingdom_net
     depends_on:
-      dev_backend_discovery:
+      dev-backend-discovery:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/members/auth/health-check"]
@@ -59,8 +55,8 @@ services:
       retries: 3
       start_period: 10s
 
-  dev_backend_gateway:
-    container_name: dev_backend_gateway
+  dev-backend-gateway:
+    container_name: dev-backend-gateway
     build:
       context: ./backend/gateway
       dockerfile: Dockerfile
@@ -70,15 +66,13 @@ services:
       - 8081:8080
     environment:
       - TZ=Asia/Seoul
-      - EUREKA_SERVER=dev_backend_discovery
-      - EUREKA_HOSTNAME=dev_backend_gateway
+      - EUREKA_SERVER=dev-backend-discovery
     networks:
-      dev_hikingdom_net:
-        ipv4_address: 172.25.0.3
+      - dev_hikingdom_net
     depends_on:
-      dev_backend_discovery:
+      dev-backend-discovery:
         condition: service_healthy
-      dev_backend_service:
+      dev-backend-service:
         condition: service_healthy
 
 networks:
