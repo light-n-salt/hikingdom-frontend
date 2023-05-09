@@ -5,6 +5,10 @@ import RankList from 'components/common/RankList'
 import { ClubInfo } from 'types/club.interface'
 
 function WaitingListModal() {
+  // useEffect(() => {
+
+  // })
+
   return (
     <div className={styles.list}>
       <h2>가입 대기 중 모임</h2>

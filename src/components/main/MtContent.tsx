@@ -13,25 +13,17 @@ import descriptionImg from 'assets/images/message.png'
 type MtContentProps = {
   address: string
   peaks: string
-  transport?: string
   description: string
 }
 
-function MtContent({
-  address,
-  peaks,
-  transport = '주변교통 없음',
-  description,
-}: MtContentProps) {
+function MtContent({ address, peaks, description }: MtContentProps) {
   const { theme, toggleTheme } = useContext(ThemeContext)
-
-  const transportInfo = transport ? transport : '-'
 
   return (
     <div className={`${styles.mtcontent}`}>
       <Info imgSrc={addressImg} title="주소" content={address} />
       <Info imgSrc={peaksImg} title="봉우리" content={peaks} />
-      <Info imgSrc={transportImg} title="주변 교통" content={transportInfo} />
+      {/* <Info imgSrc={transportImg} title="주변 교통" content={transportInfo} /> */}
       <div className={styles.description}>
         <IconText
           imgSrc={descriptionImg}
