@@ -51,7 +51,7 @@ services:
       dev_backend_discovery:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/members/auth/health-check"]
       interval: 15s
       timeout: 10s
       retries: 3

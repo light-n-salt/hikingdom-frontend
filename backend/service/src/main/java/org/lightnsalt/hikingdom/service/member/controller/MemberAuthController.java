@@ -15,6 +15,7 @@ import org.lightnsalt.hikingdom.service.member.service.MemberEmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +36,8 @@ public class MemberAuthController {
 	private final MemberEmailService memberEmailService;
 
 	@PostMapping("/login")
-	public ResponseEntity<CustomResponseBody> login(@RequestBody @Valid MemberLoginReq memberLoginReq, BindingResult bindingResult) {
+	public ResponseEntity<CustomResponseBody> login(@RequestBody @Valid MemberLoginReq memberLoginReq,
+		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
 				bindingResult.getAllErrors().get(0).getDefaultMessage()),
@@ -66,5 +68,10 @@ public class MemberAuthController {
 		memberEmailService.sendFindPasswordEmail(memberEmailReq);
 
 		return new ResponseEntity<>(BaseResponseBody.of("임시 비밀번호 발급에 성공했습니다"), HttpStatus.OK);
+	}
+
+	@GetMapping("/health-check")
+	public ResponseEntity<CustomResponseBody> healthCheck() {
+		return new ResponseEntity<>(BaseResponseBody.of("서비스가 정상 작동 상태입니다"), HttpStatus.OK);
 	}
 }
