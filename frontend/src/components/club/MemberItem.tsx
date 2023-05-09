@@ -9,41 +9,49 @@ import { ClubMember } from 'types/club.interface'
 
 type MemberItemProps = {
   memberInfo: ClubMember
-  isButton: boolean
+  onClickJoin?: (params: number) => void
+  onClickDelete?: (params: number) => void
 }
 
-function MemberItem({ memberInfo, isButton }: MemberItemProps) {
+function MemberItem({
+  memberInfo,
+  onClickJoin,
+  onClickDelete,
+}: MemberItemProps) {
   const imgSrc = LEVEL_TO_IMG[memberInfo.level]
 
   return (
     <div className={styles.container}>
       <div className={styles.user}>
-        <Image
-            imgUrl={memberInfo.profileUrl}
-            size="md"
-            isSquare={true}
-        />
+        <Image imgUrl={memberInfo.profileUrl} size="sm" isSquare={true} />
         <span className={styles.nickname}>{memberInfo.nickname}</span>
-        <img src={imgSrc} className={styles.image}/>
+        <img src={imgSrc} className={styles.image} />
       </div>
-      
+
       <div className={styles.record}>
         <Info
           title="등산 거리(km)"
           content={convertToKm(memberInfo.totalDistance)}
         />
-        
-        {isButton ? (
+
+        {onClickJoin && onClickDelete ? (
           <div className={styles.button}>
-            <Button text='거절' color='secondary' size='md' onClick={() => console.log(memberInfo.memberId, "거절")}/>
-            <Button text='수락' color='primary' size='md' onClick={() => console.log(memberInfo.memberId, "수락")}/>
+            <Button
+              text="거절"
+              color="secondary"
+              size="sm"
+              onClick={() => onClickDelete(memberInfo.memberId)}
+            />
+            <Button
+              text="수락"
+              color="primary"
+              size="sm"
+              onClick={() => onClickJoin(memberInfo.memberId)}
+            />
           </div>
         ) : (
           <>
-            <Info
-              title="등산 시간"
-              content={`${memberInfo.totalDuration}`}
-            />
+            <Info title="등산 시간" content={`${memberInfo.totalDuration}`} />
 
             <Info
               title="등산 횟수"

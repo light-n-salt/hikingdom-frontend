@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router'
 
 import styles from './TrackingInfo.module.scss'
-import Button from 'components/common/Button'
-import IconText from 'components/common/IconText'
 
 import { convertToKm } from 'utils/convertToKm'
+import { convertToTime } from 'utils/convertToTime'
 import { UserHikingDetail } from 'types/user.interface'
+import { getTrackingInfo } from 'apis/services/users'
+import { useQuery } from '@tanstack/react-query'
 
+import Button from 'components/common/Button'
+import Loading from 'components/common/Loading'
+import IconText from 'components/common/IconText'
 import { BiCalendarAlt } from 'react-icons/bi'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 
@@ -20,21 +25,23 @@ const { kakao } = window
 
 type TrackingInfoProps = {
   hikingRecordId: number
-  onClickCloseModal: any
 }
 
-function TrackingInfo({
-  hikingRecordId,
-  onClickCloseModal,
-}: TrackingInfoProps) {
-  useEffect(() => {
-    // todo: API 연결
+function TrackingInfo({ hikingRecordId }: TrackingInfoProps) {
+  const { nickname } = useParams() as {
+    nickname: string
+  }
 
-    const route = [
-      { Lat: 37.498085, lng: 127.027545 },
-      { Lat: 37.501394, lng: 127.038489 },
-      { Lat: 37.504493, lng: 127.048877 },
-    ]
+  const { data: detailRecord } = useQuery<UserHikingDetail>(
+    ['hikingInfo', { hikingRecordId: hikingRecordId }],
+    () =>
+      getTrackingInfo(nickname, hikingRecordId).then((res) => res.data.result)
+  )
+
+  useEffect(() => {
+    if (!detailRecord) {
+      return
+    }
 
     const container = document.getElementById('map')
     const options = {
@@ -42,8 +49,6 @@ function TrackingInfo({
       level: 6,
     }
     const map = new kakao.maps.Map(container, options)
-
-    // 선그리기 코드 (빼줄지 고민... => 지도가 이상한데?)
 
     // const linePath: any = []
 
@@ -60,18 +65,9 @@ function TrackingInfo({
     // })
 
     // polyline.setMap(map)
-  }, [])
+  }, [detailRecord])
 
-  const detailRecord: UserHikingDetail = {
-    gpsRoute: '위도경도',
-    mountainName: '도봉산',
-    startAt: 'YYYY.MM.DD HH:mm:ss',
-    totalDuration: '23:00',
-    totalDistance: 402,
-    maxAlt: 203,
-  }
-
-  return (
+  return detailRecord ? (
     <div className={styles.tracking}>
       <h2>{detailRecord.mountainName} 트래킹 기록</h2>
 
@@ -100,25 +96,17 @@ function TrackingInfo({
         />
 
         {/* 높이 */}
-        <Info
-          title="높이"
-          content={convertToKm(detailRecord.totalDistance) + 'km'}
-        />
+        <Info title="높이" content={convertToKm(detailRecord.maxAlt) + 'km'} />
 
         {/* 시간 */}
-        <Info title="시간" content={detailRecord.totalDuration} />
-      </div>
-
-      {/* 하단 버튼 */}
-      <div className={`${styles.container} ${styles.gap}`}>
-        <Button
-          text="종료"
-          size="lg"
-          color="primary"
-          onClick={onClickCloseModal}
+        <Info
+          title="시간"
+          content={convertToTime(detailRecord.totalDuration)}
         />
       </div>
     </div>
+  ) : (
+    <Loading />
   )
 }
 

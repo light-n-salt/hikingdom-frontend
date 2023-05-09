@@ -17,10 +17,10 @@ import { ClubInfo } from 'types/club.interface'
 type RankItemProps = {
   clubInfo: ClubInfo // 소모임 정보
   size: 'sm' | 'lg' // 크기
-  isButton?: boolean // 삭제버튼 여부
+  onClickDeleteClub?: (clubId: number, clubName: string) => void // 삭제버튼 여부
 }
 
-function RankItem({ clubInfo, size, isButton = false }: RankItemProps) {
+function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
 
@@ -41,25 +41,25 @@ function RankItem({ clubInfo, size, isButton = false }: RankItemProps) {
       break
   }
 
-  // 소모임 삭제함수
-  function onClickDeleteClub(e: React.TouchEvent | React.MouseEvent) {
+  // 소모임 신청 취소 함수
+  function onClickCancle(e: React.TouchEvent | React.MouseEvent) {
     e.stopPropagation()
-    console.log(clubInfo.clubId)
+    onClickDeleteClub && onClickDeleteClub(clubInfo.clubId, clubInfo.clubName)
   }
 
   return (
     <div
       className={`content ${theme} ${styles.container} ${styles[size]}`}
-      onClick={() => navigate(`/club/detail/${clubInfo.clubId}`)}
+      onClick={() => navigate(`/club/${clubInfo.clubId}/detail`)}
     >
       <div className={styles.header}>
         <span className={styles.title}>{clubInfo.clubName}</span>
-        {isButton && (
+        {onClickDeleteClub && (
           <Button
             text="신청 취소"
             size="sm"
             color="secondary"
-            onClick={onClickDeleteClub}
+            onClick={onClickCancle}
           />
         )}
       </div>

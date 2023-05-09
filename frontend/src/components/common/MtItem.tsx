@@ -14,20 +14,24 @@ type MtItemProps = {
 function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
   const navigate = useNavigate()
 
+  const address = mtInfo.address
+
   return (
     <div
       className={`${styles.container} ${styles[size]}`}
-      onClick={() => navigate(`/mountain/detail/${mtInfo.mountainId}`)}
+      onClick={() => navigate(`/mountain/${mtInfo.mountainId}/detail`)}
     >
       <img className={styles.img} src={mtInfo.imgUrl} />
       <h3>{mtInfo.name}</h3>
       <div className={styles.flexbox}>
         <IconText imgSrc={hotAirBalloon} text="높이" />
-        {mtInfo.maxAlt} m
+        {Math.floor(mtInfo.maxAlt)} m
       </div>
       <div className={styles.flexbox}>
         <IconText imgSrc={marker} text="위치" />
-        {mtInfo.address}
+        {mtInfo.address.length > 8
+          ? mtInfo.address.slice(0, 8) + '...'
+          : mtInfo.address}
       </div>
     </div>
   )

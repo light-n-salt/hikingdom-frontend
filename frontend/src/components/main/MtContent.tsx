@@ -12,31 +12,23 @@ import descriptionImg from 'assets/images/message.png'
 
 type MtContentProps = {
   address: string
-  peaks: string[]
-  transport: string
-  facility: string
+  peaks: string
   description: string
 }
 
-function MtContent({
-  address,
-  peaks,
-  transport,
-  facility,
-  description,
-}: MtContentProps) {
+function MtContent({ address, peaks, description }: MtContentProps) {
   const { theme, toggleTheme } = useContext(ThemeContext)
+
   return (
     <div className={`${styles.mtcontent}`}>
       <Info imgSrc={addressImg} title="주소" content={address} />
-      <Info imgSrc={peaksImg} title="봉우리" content={peaks[0]} />
-      <Info imgSrc={transportImg} title="지하철역" content={transport} />
-      <Info imgSrc={facilityImg} title="편의시설" content={facility} />
+      <Info imgSrc={peaksImg} title="봉우리" content={peaks} />
+      {/* <Info imgSrc={transportImg} title="주변 교통" content={transportInfo} /> */}
       <div className={styles.description}>
         <IconText
           imgSrc={descriptionImg}
           text="설명"
-          size="md"
+          size="sm"
           isBold={false}
         />
         <span className={styles.text}>{description}</span>
@@ -54,7 +46,7 @@ type InfoProps = {
 function Info({ imgSrc, title, content }: InfoProps) {
   return (
     <div className={styles.content}>
-      <IconText imgSrc={imgSrc} text={title} size="md" isBold={false} />
+      <IconText imgSrc={imgSrc} text={title} size="sm" isBold={false} />
       <span className={styles.text}>{content}</span>
     </div>
   )

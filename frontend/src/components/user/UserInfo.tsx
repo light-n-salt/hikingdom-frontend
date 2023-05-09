@@ -11,26 +11,28 @@ import { UserRecord } from 'types/user.interface'
 
 import { convertToKm } from 'utils/convertToKm'
 
-type UserInfoProps = {
-  userRecord: UserRecord
-}
-
-function UserInfo({ userRecord }: UserInfoProps) {
+function UserInfo({
+  totalAlt,
+  totalDistance,
+  totalDuration,
+  totalHikingCount,
+  totalMountainCount,
+}: UserRecord) {
   const { theme } = useContext(ThemeContext)
 
-  const totalMountain = userRecord.totalMountainCount.toString()
-  const totalDistance = convertToKm(userRecord.totalDistance).toString()
-  const totalAlt = convertToKm(userRecord.totalAlt).toString()
+  const mountainInfo = totalMountainCount.toString()
+  const distanceInfo = convertToKm(totalDistance).toString()
+  const altInfo = convertToKm(totalAlt).toString()
 
   return (
     <div className={`${theme} ${styles['user-info']}`}>
       <div className={styles['info-box']}>
-        <Info imgSrc={mountain} title={'등반한 산'} content={totalMountain} />
-        <Info imgSrc={time} title={'시간'} content={userRecord.totalDuration} />
+        <Info imgSrc={mountain} title={'등반한 산'} content={mountainInfo} />
+        <Info imgSrc={time} title={'시간'} content={totalDuration} />
       </div>
       <div className={styles['info-box']}>
-        <Info imgSrc={distance} title={'거리(km)'} content={totalDistance} />
-        <Info imgSrc={height} title={'높이(km)'} content={totalAlt} />
+        <Info imgSrc={distance} title={'거리(km)'} content={distanceInfo} />
+        <Info imgSrc={height} title={'높이(km)'} content={altInfo} />
       </div>
     </div>
   )

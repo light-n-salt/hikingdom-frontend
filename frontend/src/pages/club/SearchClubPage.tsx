@@ -11,7 +11,6 @@ import Loading from 'components/common/Loading'
 
 // 서치바의 드롭다운  SelectBox에 넘길 옵션 배열
 const filterOptions = [
-  { label: '전체', value: '' },
   { label: '모임이름', value: 'name' },
   { label: '지역', value: 'participation' },
 ]
@@ -23,7 +22,7 @@ function SearchClubPage() {
   const [filter, setFilter] = useState('') // 선택된 필터
   const [clubInfoArray, setClubInfoArray] = useState<ClubInfo[]>(clubInfoEx) // 클럽 정보 배열
   const [isEnd, setIsEnd] = useState(false) // 무한스크롤 마지막 정보 여부
-  const infiniteRef = useRef(null) // 무한스크롤 ref 요소
+  const infiniteRef = useRef<HTMLDivElement>(null) // 무한스크롤 ref 요소
 
   const debouncedQuery = useDebounce(query) // debounced query
 
@@ -37,6 +36,13 @@ function SearchClubPage() {
     getClubs(filter, query).then((res) => {
       setClubInfoArray(res.data.result.content)
       setIsEnd(!res.data.result.hasNext)
+      if (infiniteRef.current) {
+        infiniteRef.current.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        })
+      }
     })
   }, [filter, debouncedQuery])
 

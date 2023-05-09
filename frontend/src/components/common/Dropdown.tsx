@@ -12,10 +12,10 @@ type Props = {
   options: Option[] // 옵션 배열
   defaultLabel?: string // 기본으로 띄울 라벨 명
   setValue?: (value: string) => void // 선택된 옵션의 value로 업데이트 하는 함수
-  isRight?: boolean // 오른쪽 정렬 여부
+  isLeft?: boolean // 왼쪽 정렬 여부
 }
 
-function Dropdown({ options, defaultLabel, setValue, isRight = true }: Props) {
+function Dropdown({ options, defaultLabel, setValue, isLeft = false }: Props) {
   const [label, setLabel] = useState<string>(defaultLabel || options[0].label) // 선택된(표시할) 라벨 값
   const [isShow, setIsShow] = useState(false) // 옵션 표시 여부
 
@@ -36,9 +36,7 @@ function Dropdown({ options, defaultLabel, setValue, isRight = true }: Props) {
   }
 
   return (
-    <div
-      className={`${styles.container} ${styles[isRight ? 'right' : 'left']}`}
-    >
+    <div className={`${styles.container} ${styles[isLeft ? 'left' : 'right']}`}>
       <div className={styles.select} onClick={onClickToggleShow}>
         {label}
         <div className={`${styles.arrow} ${styles[isShow ? 'up' : 'down']}`}>

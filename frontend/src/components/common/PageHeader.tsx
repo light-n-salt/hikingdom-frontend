@@ -20,9 +20,7 @@ function PageHeader({
 
   return (
     <div className={`${styles.container} ${styles[color]}`}>
-      <div className={styles.icon}>
-        <FiChevronLeft onClick={() => navigate(url)} />
-      </div>
+      <FiChevronLeft onClick={() => navigate(url)} className={styles.icon} />
       <div className={`${styles.title} ${styles[size]}`}>{title}</div>
     </div>
   )
