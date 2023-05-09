@@ -10,13 +10,15 @@ export function getRanking(
   clubId: number | null = null,
   size: number | null = null
 ) {
-  return apiRequest.get(`/clubs/ranking`, {
-    params: {
-      sort,
-      clubId,
-      size,
-    },
-  })
+  return apiRequest
+    .get(`/clubs/ranking`, {
+      params: {
+        sort,
+        clubId,
+        size,
+      },
+    })
+    .then((res) => res.data.result)
 }
 
 export function getClubs(query = '', word = '', clubId: number | null = null) {

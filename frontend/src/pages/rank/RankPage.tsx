@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
 import styles from './RankPage.module.scss'
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import { getRanking } from 'apis/services/clubs'
 import Dropdown from 'components/common/Dropdown'
 import RankList from 'components/common/RankList'
@@ -8,6 +9,15 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import { ThemeContext } from 'styles/ThemeProvider'
 import { ClubInfo } from 'types/club.interface'
 import Loading from 'components/common/Loading'
+import { untilMidnight } from 'utils/untilMidnight'
+
+type InfiniteClubInfo = {
+  content: ClubInfo[]
+  hasNext: boolean
+  hasPrev: boolean
+  numberOfElements: number
+  pageSize: number
+}
 
 // 드롭다운 SelectBox에 넘길 옵션 배열
 const filterOptions = [
@@ -19,41 +29,45 @@ const filterOptions = [
 
 function RankPage() {
   const { theme } = useContext(ThemeContext)
+  const queryTime = useMemo(() => {
+    return untilMidnight()
+  }, [])
+
   const [filter, setFilter] = useState('') // 선택된 필터 옵션 value
   const [clubInfoArray, setClubInfoArray] = useState<ClubInfo[]>([]) // 클럽정보 배열
-  const [isEnd, setIsEnd] = useState(false) // 무한스크롤 마지막 정보 여부
   const infiniteRef = useRef<HTMLDivElement>(null) // 무한 스크롤 동작시킬 useRef
 
   // 필터 옵션이나 쿼리가 변할 때마다, 클럽 랭킹 정보 api 요청
-  useEffect(() => {
-    getRanking(filter).then((res) => {
-      setClubInfoArray(res.data.result.content)
-      setIsEnd(!res.data.result.hasNext)
-      if (infiniteRef.current) {
-        infiniteRef.current.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: 'smooth',
-        })
-      }
+  const { isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery<InfiniteClubInfo>({
+      queryKey: ['rank', filter],
+      queryFn: ({ pageParam = null }) => getRanking(filter, pageParam),
+      getNextPageParam: (lastPage) => {
+        return lastPage.hasNext
+          ? lastPage.content.slice(-1)[0].clubId
+          : undefined
+      },
+      onSuccess: (res) => {
+        console.log(res)
+        if (res.pageParams.length === 1) {
+          setClubInfoArray(res.pages.slice(-1)[0].content)
+        } else {
+          setClubInfoArray((clubs) => [
+            ...clubs,
+            ...res.pages.slice(-1)[0].content,
+          ])
+        }
+      },
+      cacheTime: queryTime,
+      staleTime: queryTime,
     })
-  }, [filter])
-
-  // 무한 스크롤 api 요청 함수
-  function loadMore() {
-    return getRanking(filter, clubInfoArray.slice(-1)[0].clubId)
-      .then((res) => {
-        setClubInfoArray((clubInfoArray) => [
-          ...clubInfoArray,
-          ...res.data.result,
-        ])
-        setIsEnd(!res.data.result.hasNext)
-      })
-      .catch(() => {})
-  }
 
   // 무한스크롤 커스텀 훅(동작 요소, 동작 함수)
-  const { isLoading } = useInfiniteScroll({ ref: infiniteRef, loadMore, isEnd })
+  useInfiniteScroll({
+    ref: infiniteRef,
+    loadMore: fetchNextPage,
+    isEnd: !hasNextPage,
+  })
 
   return (
     <div className={`page ${theme}`}>
@@ -61,12 +75,18 @@ function RankPage() {
       <div className={styles.select}>
         <Dropdown options={filterOptions} setValue={setFilter} />
       </div>
-      <div ref={infiniteRef} className={styles.clubs}>
-        <RankList clubInfoArray={clubInfoArray} />
-        {isLoading && (
-          <div className={styles.loading}>
-            <Loading size="sm" />
-          </div>
+      <div ref={infiniteRef} className={`page p-md ${styles.clubs}`}>
+        {isLoading || isError ? (
+          <Loading />
+        ) : (
+          <>
+            <RankList clubInfoArray={clubInfoArray} />
+            {isFetchingNextPage && (
+              <div className={styles.loading}>
+                <Loading size="sm" />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

@@ -14,6 +14,8 @@ type MtItemProps = {
 function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
   const navigate = useNavigate()
 
+  const address = mtInfo.address
+
   return (
     <div
       className={`${styles.container} ${styles[size]}`}
@@ -27,7 +29,9 @@ function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
       </div>
       <div className={styles.flexbox}>
         <IconText imgSrc={marker} text="위치" />
-        {mtInfo.address}
+        {mtInfo.address.length > 8
+          ? mtInfo.address.slice(0, 8) + '...'
+          : mtInfo.address}
       </div>
     </div>
   )

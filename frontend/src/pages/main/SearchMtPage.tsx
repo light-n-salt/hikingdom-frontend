@@ -12,7 +12,7 @@ function SearchMtPage() {
   const navigate = useNavigate()
 
   const [mtInfoArray, setMtInfoArray] = useState<MtInfo[]>([]) // 산 정보 배열
-  const isEnd = useRef(false) // 무한스크롤 마지막 정보 여부
+  const isEnd = useRef(true) // 무한스크롤 마지막 정보 여부
   const infiniteRef = useRef<HTMLDivElement>(null) // 무한 스크롤 useRef
 
   // 뒤로가기 클릭 시, 메인 페이지로 이동시키는 리스너
@@ -23,8 +23,9 @@ function SearchMtPage() {
   }, [])
 
   // url 주소의 sate로부터 query를 전달 받음
-  const location = useLocation()
-  const debouncedQuery = useDebounce(location.state?.query || '')
+  const queryClient = new URLSearchParams(useLocation().search)
+  const query = queryClient.get('query') || ''
+  const debouncedQuery = useDebounce(query)
 
   // debouncedQuery에 따라서 산 검색 api 요청
   useEffect(() => {
@@ -77,7 +78,7 @@ function SearchMtPage() {
   )
 }
 
-export default SearchMtPage
+export default React.memo(SearchMtPage)
 
 const mtInfoEx = [
   {
