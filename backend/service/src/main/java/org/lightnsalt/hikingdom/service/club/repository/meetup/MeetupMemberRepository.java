@@ -20,6 +20,10 @@ public interface MeetupMemberRepository extends JpaRepository<MeetupMember, Long
 
 	List<MeetupMember> findTop6ByMeetupIdAndIsWithdraw(Long meetupId, boolean isWithdraw);
 
+	@Query("SELECT m FROM MeetupMember m JOIN FETCH m.member JOIN FETCH m.meetup "
+		+ "WHERE m.member.id = :memberId AND m.meetup.startAt >= :startAt AND m.isWithdraw = :isWithdraw")
+	List<MeetupMember> findByMemberIdAndStartAtAfterAndIsWithdraw(Long memberId, LocalDateTime startAt, boolean isWithdraw);
+
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE MeetupMember m "
 		+ "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw "
@@ -29,7 +33,7 @@ public interface MeetupMemberRepository extends JpaRepository<MeetupMember, Long
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE MeetupMember m "
 		+ "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw "
-		+ "WHERE m.member.id = :memberId AND m.meetup.startAt >= :startAt")
-	void updateMeetupMemberIsWithdrawByMemberIdAndStartAt(Long memberId, boolean isWithdraw, LocalDateTime startAt, LocalDateTime now);
+		+ "WHERE m in :meetupMembers")
+	void updateMeetupMemberIsWithdraw(List<MeetupMember> meetupMembers, boolean isWithdraw, LocalDateTime now);
 
 }
