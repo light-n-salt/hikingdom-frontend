@@ -27,7 +27,7 @@ public class MemberHikingRepositoryCustom {
 				isLast(hikingRecordId),
 				memberHiking.member.id.eq(memberId))
 			.orderBy(memberHiking.startAt.desc())
-			.limit(pageable.getPageSize() + 1)
+			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 
 		return checkLastPage(pageable, result);

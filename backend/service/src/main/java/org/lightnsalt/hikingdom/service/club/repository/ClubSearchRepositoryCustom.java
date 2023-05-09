@@ -37,7 +37,7 @@ public class ClubSearchRepositoryCustom {
 			.leftJoin(clubRanking).on(club.id.eq(clubRanking.club.id))
 			.where(whereClause)
 			.orderBy(clubRanking.ranking.desc())
-			.limit(pageable.getPageSize() + 1)
+			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 
 		return checkLastPage(pageable, result);

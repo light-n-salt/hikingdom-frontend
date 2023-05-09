@@ -35,7 +35,7 @@ public class ClubRankingRepositoryCustom {
 				isLast(clubId))
 			.orderBy(orderSpecifier,
 				clubRanking.ranking.asc())
-			.limit(pageable.getPageSize() + 1)
+			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 
 		return checkLastPage(pageable, result);
