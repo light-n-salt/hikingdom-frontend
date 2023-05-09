@@ -10,12 +10,14 @@ type MeetupReviewsProps = {
 }
 
 function MeetupReviewList({ reviewInfo }: MeetupReviewsProps) {
-  return (
+  return reviewInfo.length ? (
     <div className={styles.reviews}>
       {reviewInfo.map((review) => (
         <MeetupReviewItem key={review.reviewId} review={review} />
       ))}
     </div>
+  ) : (
+    <div>후기를 등록해주세요</div>
   )
 }
 
