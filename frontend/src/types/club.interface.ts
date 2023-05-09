@@ -7,7 +7,7 @@ export interface ClubSimpleInfo {
 
 // 소모임 랭킹 조회
 // 소모임 검색
-// 소모임 가입 신청 조회
+// 소모임 가입 신청 목록 조회
 export interface ClubInfo {
   clubId: number
   clubName: string
@@ -55,7 +55,7 @@ export interface ClubMember {
 
 // 소모임 멤버 리스트 조회
 export interface ClubMemberList {
-  request: ClubMember[] | undefined
+  request?: ClubMember[] | undefined
   member: ClubMember[]
 }
 

@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubMainPage.module.scss'
 import { getClubInfo } from 'apis/services/clubs'
+import { deleteClub } from 'apis/services/clubs'
 import { ClubDetailInfo } from 'types/club.interface'
 import clubmountain from 'assets/images/clubmountain.png'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
@@ -10,10 +11,12 @@ import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 import SearchBar from 'components/common/SearchBar'
 import TextButton from 'components/common/TextButton'
 import Modal from 'components/common/Modal'
+import Toast from 'components/common/Toast'
 import DeleteModal from 'components/club/DeleteModal'
 
 function ClubMainPage() {
   const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
   const [value, setValue] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [clubInfo, setClubInfo] = useState<ClubDetailInfo>()
@@ -28,15 +31,23 @@ function ClubMainPage() {
     getClubInfo(Number(clubId)).then((res) => setClubInfo(res.data.result))
   }, [])
 
+  function onClickDeleteClub() {
+    deleteClub(Number(clubId)).then(() => {
+      Toast.addMessage('success', `${clubInfo?.clubName}에 탈퇴하셨습니다.`)
+      navigate('/club/none')
+    })
+  }
+
   return clubInfo ? (
     <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
           <DeleteModal
             title="모임을 탈퇴하시겠습니까?"
-            content="탈퇴한 모임은 다시 가입을 신청해야 합니다."
+            content1={`주최한 일정이 존재하면, \n삭제 또는 완료해야 탈퇴가능합니다.`}
+            content2="탈퇴한 모임은 다시 가입을 신청해야 합니다."
             buttonText="모임 탈퇴"
-            onClickDelete={() => console.log('탈퇴')}
+            onClickDelete={onClickDeleteClub}
             onClickCloseModal={() => setIsOpen(false)}
           />
         </Modal>
