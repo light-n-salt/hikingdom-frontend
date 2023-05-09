@@ -1,8 +1,8 @@
 version: "3.9"
 
 services:
-  dev_frontend:
-    container_name: dev_frontend
+  dev-frontend:
+    container_name: dev-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
@@ -29,7 +29,7 @@ services:
       interval: 15s
       timeout: 10s
       retries: 3
-      start_period: 7s
+      start_period: 5s
 
   dev-backend-service:
     container_name: dev-backend-service
@@ -78,6 +78,4 @@ services:
 networks:
   dev_hikingdom_net:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.25.0.0/16
+
