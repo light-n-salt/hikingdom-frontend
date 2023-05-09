@@ -10,6 +10,7 @@ import org.lightnsalt.hikingdom.service.club.repository.record.ClubRankingReposi
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ClubRankingServiceImpl implements ClubRankingService {
 	private final ClubRankingRepositoryCustom clubRankingRepositoryCustom;
 
+	@Transactional
 	@Override
 	public CustomSlice<ClubSearchRes> findRankingList(String sort, Long clubId, Pageable pageable) {
 		if (!sort.matches("^(|participation|distance|time)")) {

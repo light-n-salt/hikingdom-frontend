@@ -51,6 +51,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	private final BaseAddressInfoRepository baseAddressInfoRepository;
 	private final MemberRepository memberRepository;
 
+	@Transactional
 	@Override
 	public CustomSlice<ClubSearchRes> findClubList(String query, String word, Long clubId, Pageable pageable) {
 		if (!(query.matches("^(|name)$") ||
