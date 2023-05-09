@@ -17,7 +17,14 @@ export function getMountains(
 }
 
 export function getTodayMountains() {
-  return apiRequest.get(`info/today/mountain`).then((res) => res.data.result)
+  return apiRequest
+    .get(`info/today/mountain`)
+    .then((res) => {
+      return res.data.result
+    })
+    .catch(() => {
+      return []
+    })
 }
 
 export function getMountainInfo(mountainId: number) {

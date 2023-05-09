@@ -108,12 +108,7 @@ function ToastMessages({ messages, deleteMessage }: ToastMessagesProps) {
     <>
       <div className={styles.container}>
         {messages.map(({ id, type, message }) => (
-          <div
-            key={id}
-            id={`toast-message-${id}`}
-            className={styles.item}
-            onClick={() => deleteMessage(id)}
-          >
+          <div key={id} id={`toast-message-${id}`} className={styles.item}>
             <div className={`${styles.icon} ${styles[type]}`}>
               {getIcon(type)}
             </div>
