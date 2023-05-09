@@ -55,7 +55,7 @@ export interface ClubMember {
 
 // 소모임 멤버 리스트 조회
 export interface ClubMemberList {
-  request: ClubMember[] | undefined
+  request?: ClubMember[] | undefined
   member: ClubMember[]
 }
 
