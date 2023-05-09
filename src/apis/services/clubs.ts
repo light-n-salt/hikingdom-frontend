@@ -97,3 +97,19 @@ export function getClubRequest() {
 export function deleteClubRequest(clubId: number) {
   return apiRequest.delete(`clubs/${clubId}/join-request`)
 }
+
+export function getClubMember(clubId: number) {
+  return apiRequest.get(`clubs/${clubId}/members`)
+}
+
+export function deleteClub(clubId: number) {
+  return apiRequest.delete(`clubs/${clubId}/members`)
+}
+
+export function updateClubMember(clubId: number, memberId: number) {
+  return apiRequest.post(`clubs/${clubId}/admin/requests/${memberId}`)
+}
+
+export function deleteClubMember(clubId: number, memberId: number) {
+  return apiRequest.delete(`clubs/${clubId}/admin/requests/${memberId}`)
+}

@@ -45,7 +45,7 @@ export interface UserHikingDetail {
   startAt: string
   totalDistance: number
   maxAlt: number
-  totalDuration: string
+  totalDuration: number
 }
 
 // 전체 알림 조회
