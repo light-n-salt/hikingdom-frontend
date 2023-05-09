@@ -8,7 +8,7 @@ import { useState, useEffect, RefObject } from 'react'
 
 type InfiniteScrollProps = {
   ref: RefObject<HTMLElement> // 무한스크롤이 동작할 DOM 엘리먼트를 ref로 받음
-  loadMore: () => Promise<void> // 스크롤이 닿았을 시, 동작할 비동기 함수
+  loadMore: () => Promise<any> // 스크롤이 닿았을 시, 동작할 비동기 함수
   isEnd?: boolean // true일 경우 비동기함수 동작하지 않음
   threshold?: number // 스크롤 마진(해당 값 만큼, 미리 스크롤이 닿았다고 판단)
 }
