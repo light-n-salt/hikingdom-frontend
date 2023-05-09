@@ -26,7 +26,7 @@ public class MeetupAlbumRepositoryCustom {
 				meetupAlbum.club.id.eq(clubId),
 				meetupAlbum.isDeleted.eq(false))
 			.orderBy(meetupAlbum.createdAt.desc())
-			.limit(pageable.getPageSize() + 1)
+			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 
 		return checkLastPage(pageable, result);
@@ -43,7 +43,7 @@ public class MeetupAlbumRepositoryCustom {
 				meetupAlbum.isDeleted.eq(false)
 			)
 			.orderBy(meetupAlbum.createdAt.desc())
-			.limit(pageable.getPageSize() + 1)
+			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 		return checkLastPage(pageable, result);
 	}
