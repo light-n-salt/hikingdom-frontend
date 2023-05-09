@@ -13,6 +13,7 @@ import { userInfoState } from 'recoil/atoms'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteReview } from 'apis/services/meetup'
+import { report } from 'apis/services/users'
 import toast from 'components/common/Toast'
 
 type ReviewProps = {
@@ -32,10 +33,16 @@ function MeetupReviewItem({ review }: ReviewProps) {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['reviews'])
-        toast.addMessage('success', '후기가 삭제되었습니다.')
+        toast.addMessage('success', '후기가 삭제되었습니다')
       },
     }
   )
+
+  const onclickReport = useMutation(() => report('REVIEW', review.reviewId), {
+    onSuccess: () => {
+      toast.addMessage('success', '신고가 완료되었습니다')
+    },
+  })
 
   return (
     <div className={styles.review}>
@@ -46,7 +53,10 @@ function MeetupReviewItem({ review }: ReviewProps) {
           <span className={styles.nickname}>{review.nickname}</span>
 
           <div className={styles.btns}>
-            <div className={styles.siren}>
+            <div
+              className={styles.siren}
+              onClick={() => onclickReport.mutate()}
+            >
               <HiLightBulb /> 신고하기
             </div>
             {userInfo.memberId === review.memberId ? (
