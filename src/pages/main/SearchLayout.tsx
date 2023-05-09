@@ -9,8 +9,8 @@ function SearchLayout() {
   const navigate = useNavigate()
   const { theme } = useContext(ThemeContext)
 
-  const location = useLocation()
-  const query = location.state?.query || ''
+  const queryClient = new URLSearchParams(useLocation().search)
+  const query = queryClient.get('query') || ''
   const [value, setValue] = useState(query) // 서치바의 값
 
   // 서치바 onChange시 동작할 함수
@@ -19,9 +19,7 @@ function SearchLayout() {
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value)
     if (event.target.value) {
-      navigate(`/main/search`, {
-        state: { query: event.target.value },
-      })
+      navigate(`/main/search?query=${event.target.value}`)
     } else {
       navigate(`/main`)
     }

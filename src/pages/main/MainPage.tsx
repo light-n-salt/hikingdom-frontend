@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styles from './MainPage.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { getTodayMountains } from 'apis/services/mountains'
@@ -13,21 +13,32 @@ import clubmountain from 'assets/images/clubmountain.png'
 import MtList from 'components/common/MtList'
 import IconText from 'components/common/IconText'
 import RankList from 'components/common/RankList'
+import Loading from 'components/common/Loading'
+import { untilMidnight } from 'utils/untilMidnight'
 
 function MainPage() {
   const navigate = useNavigate()
+  const queryTime = useMemo(() => {
+    return untilMidnight()
+  }, [])
 
   // data: data의 변수명 지정
-  const { data: mtInfoArray } = useQuery<MtInfo[]>(
-    ['todayMountain'],
-    getTodayMountains
-  )
+  const {
+    data: mtInfoArray,
+    isLoading,
+    isError,
+  } = useQuery<MtInfo[]>(['todayMountain'], getTodayMountains, {
+    cacheTime: queryTime,
+    staleTime: queryTime,
+  })
 
   // const { data: clubInfoArray } = useQuery<ClubInfo[]>(['clubRankTop3'], () =>
   //   getRanking('', null, 3).then((res) => res.data.result)
   // )
 
-  return mtInfoArray && clubInfoArray ? (
+  return isError || isLoading ? (
+    <Loading />
+  ) : (
     <div className={styles.container}>
       <div className={styles.section}>
         <IconText
@@ -61,8 +72,6 @@ function MainPage() {
         />
       </div>
     </div>
-  ) : (
-    <div>Loading ...</div>
   )
 }
 
