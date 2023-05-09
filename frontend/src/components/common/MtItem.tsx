@@ -17,7 +17,7 @@ function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
   return (
     <div
       className={`${styles.container} ${styles[size]}`}
-      onClick={() => navigate(`/mountain/detail/${mtInfo.mountainId}`)}
+      onClick={() => navigate(`/mountain/${mtInfo.mountainId}/detail`)}
     >
       <img className={styles.img} src={mtInfo.imgUrl} />
       <h3>{mtInfo.name}</h3>
