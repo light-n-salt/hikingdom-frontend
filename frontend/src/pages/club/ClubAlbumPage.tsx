@@ -1,51 +1,45 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useRef, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubAlbumPage.module.scss'
 import AlbumList from 'components/club/AlbumList'
-
+import Loading from 'components/common/Loading'
 import { Album } from 'types/club.interface'
-
-// Todo: API 연결
+import { getClubAlbum } from 'apis/services/clubs'
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
 function ClubAlbumPage() {
   const { theme } = useContext(ThemeContext)
+  const [photoList, setPhotoList] = useState<Album[]>([])
+  const [isEnd, setIsEnd] = useState(false) // 무한스크롤 마지막 정보 여부
+  const infiniteRef = useRef<HTMLDivElement>(null) // 무한 스크롤 동작시킬 useRef
+  const { clubId } = useParams() as { clubId: string }
 
-  const photoList: Album[] = [
-    {
-      photoId: 0,
-      memberId: 0,
-      imgUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-      createdAt: 'YYYY-MM-DD HH:mm',
-    },
-    {
-      photoId: 1,
-      memberId: 1,
-      imgUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-      createdAt: 'YYYY-MM-DD HH:mm',
-    },
-    {
-      photoId: 2,
-      memberId: 2,
-      imgUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-      createdAt: 'YYYY-MM-DD HH:mm',
-    },
-    {
-      photoId: 3,
-      memberId: 3,
-      imgUrl:
-        'https://i.namu.wiki/i/IMJTGYaO0v6OYa5iro8bLfHuxdiXflvRQ4BdsMVOEvhFP2VBF74QAdMc4PFs-dJcYu-b9aRFeEnajUO1nDQeDg.webp',
-      createdAt: 'YYYY-MM-DD HH:mm',
-    },
-  ]
-  const cnt = 4
+  useEffect(() => {
+    getClubAlbum(parseInt(clubId), 21).then((res) => {
+      setPhotoList(res.data.result.content)
+      setIsEnd(!res.data.result.hasNext)
+    })
+  }, [])
+
+  function loadMore() {
+    return getClubAlbum(parseInt(clubId), 21, photoList.slice(-1)[0].photoId)
+      .then((res) => {
+        setPhotoList((photoList) => [...photoList, ...res.data.result.content])
+        setIsEnd(!res.data.result.hasNext)
+      })
+      .catch(() => {})
+  }
+
+  // 무한스크롤 커스텀 훅(동작 요소, 동작 함수)
+  const { isLoading } = useInfiniteScroll({ ref: infiniteRef, loadMore, isEnd })
 
   return (
     <div className={`page p-sm ${theme}`}>
-      <div className={styles.cnt}>[ {cnt} ]</div>
-      <AlbumList photoList={photoList} />
+      <div ref={infiniteRef} className={styles.page}>
+        <AlbumList photoList={photoList} />
+        {isLoading && <Loading size="sm" />}
+      </div>
     </div>
   )
 }

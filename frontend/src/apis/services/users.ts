@@ -6,12 +6,25 @@ export function checkNickname(nickname: string) {
   return apiRequest.get(`/members/auth/nickname-check/${nickname}`)
 }
 
-export function getProfile(nickname: string) {
-  return apiRequest.get(`/members/${nickname}`).then((res) => res.data.result)
+export function getProfile(nickname: string, size: number | null = null) {
+  return apiRequest
+    .get(`/members/${nickname}`, { params: { size } })
+    .then((res) => res.data.result)
 }
 
 export function getUserInfo(setUserState: (userInfo: User) => void) {
   return apiRequest.get(`/members`).then((res) => setUserState(res.data.result))
+}
+
+export function getPastMeetups(
+  nickname: string,
+  hikingRecordId: number | null = null
+) {
+  return apiRequest.get(`/members/${nickname}/hiking`, {
+    params: {
+      hikingRecordId,
+    },
+  })
 }
 
 // POST Request

@@ -51,7 +51,10 @@ function MeetupDetailPage() {
         <MeetupAlbum photoInfo={data?.photoInfo} />
         <MeetupReviewList reviewInfo={data?.reviewInfo} />
       </div>
-      <TextSendBar placeholder="후기를 입력해주세요" />
+      <TextSendBar
+        placeholder="후기를 입력해주세요"
+        onClick={() => console.log('후기등록!')}
+      />
     </div>
   ) : (
     <div>Loading...</div>

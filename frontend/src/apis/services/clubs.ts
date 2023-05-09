@@ -53,6 +53,19 @@ export function getDateMeetups(clubId: string, date: string) {
   return apiRequest.get(`/clubs/${clubId}/meetups/date/${date}`)
 }
 
+export function getClubAlbum(
+  clubId: number,
+  size: number | null = null,
+  photoId: number | null = null
+) {
+  return apiRequest.get(`/clubs/${clubId}/photos`, {
+    params: {
+      photoId,
+      size,
+    },
+  })
+}
+
 export function createClub(
   name: string,
   description: string,

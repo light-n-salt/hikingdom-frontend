@@ -7,11 +7,12 @@ import airplane from 'assets/images/airplane.png'
 
 type TextSendBarProps = {
   placeholder: string
+  onClick: () => void
 }
 
-function TextSendBar({ placeholder }: TextSendBarProps) {
+function TextSendBar({ placeholder, onClick }: TextSendBarProps) {
   const onClickSubmit = () => {
-    console.log('submit')
+    onClick()
   }
   return (
     <div className={styles.bar}>
