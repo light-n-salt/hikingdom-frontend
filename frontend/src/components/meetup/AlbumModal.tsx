@@ -33,18 +33,27 @@ function AlbumModal() {
   const updateFiles = () => {
     const fileList = albumRef.current?.files
     const formData = new FormData()
+
+    // 선택한 사진이 없을 때
     if (!fileList.length) {
       toast.addMessage('error', '사진을 선택해주세요')
       return
     }
+
+    // 선택한 사진이 있을 때
     if (fileList.length) {
       for (let i = 0; i < fileList.length; i++) {
+        // 용량 초과시 return
         if (fileList[i].size > MAX_FILE_SIZE) {
           toast.addMessage('error', '사진은 1MB이하로 올릴 수 있습니다')
           return
         }
         formData.append('photo', fileList[i])
       }
+    }
+
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value)
     }
 
     updateMeetupAlbum(parseInt(clubId), parseInt(meetupId), formData).then(
