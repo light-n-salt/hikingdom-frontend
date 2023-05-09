@@ -23,22 +23,20 @@ function MainPage() {
   }, [])
 
   // data: data의 변수명 지정
-  const {
-    data: mtInfoArray,
-    isLoading,
-    isError,
-  } = useQuery<MtInfo[]>(['todayMountain'], getTodayMountains, {
-    cacheTime: queryTime,
-    staleTime: queryTime,
-  })
+  // const {
+  //   data: mtInfoArray,
+  //   isLoading,
+  //   isError,
+  // } = useQuery<MtInfo[]>(['todayMountain'], getTodayMountains, {
+  //   cacheTime: queryTime,
+  //   staleTime: queryTime,
+  // })
 
   // const { data: clubInfoArray } = useQuery<ClubInfo[]>(['clubRankTop3'], () =>
   //   getRanking('', null, 3).then((res) => res.data.result)
   // )
 
-  return isError || isLoading ? (
-    <Loading />
-  ) : (
+  return (
     <div className={styles.container}>
       <div className={styles.section}>
         <IconText
@@ -110,45 +108,45 @@ const clubInfoArray = [
   },
 ]
 
-// const mtInfoArray = [
-//   {
-//     mountainId: 1,
-//     name: '도봉산',
-//     maxAlt: 123,
-//     address: '서울시 노원구',
-//     imgUrl:
-//       'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-//   },
-//   {
-//     mountainId: 1,
-//     name: '도봉산',
-//     maxAlt: 123,
-//     address: '서울시 노원구',
-//     imgUrl:
-//       'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-//   },
-//   {
-//     mountainId: 1,
-//     name: '도봉산',
-//     maxAlt: 123,
-//     address: '서울시 노원구',
-//     imgUrl:
-//       'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-//   },
-//   {
-//     mountainId: 1,
-//     name: '도봉산',
-//     maxAlt: 123,
-//     address: '서울시 노원구',
-//     imgUrl:
-//       'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-//   },
-//   {
-//     mountainId: 1,
-//     name: '도봉산',
-//     maxAlt: 123,
-//     address: '서울시 노원구',
-//     imgUrl:
-//       'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-//   },
-// ]
+const mtInfoArray = [
+  {
+    mountainId: 1,
+    name: '도봉산',
+    maxAlt: 123,
+    address: '서울시 노원구',
+    imgUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+  },
+  {
+    mountainId: 1,
+    name: '도봉산',
+    maxAlt: 123,
+    address: '서울시 노원구',
+    imgUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+  },
+  {
+    mountainId: 1,
+    name: '도봉산',
+    maxAlt: 123,
+    address: '서울시 노원구',
+    imgUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+  },
+  {
+    mountainId: 1,
+    name: '도봉산',
+    maxAlt: 123,
+    address: '서울시 노원구',
+    imgUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+  },
+  {
+    mountainId: 1,
+    name: '도봉산',
+    maxAlt: 123,
+    address: '서울시 노원구',
+    imgUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+  },
+]
