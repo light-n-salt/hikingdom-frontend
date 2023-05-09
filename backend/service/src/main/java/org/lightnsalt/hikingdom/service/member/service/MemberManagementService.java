@@ -7,6 +7,7 @@ import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberManagementService {
@@ -22,7 +23,7 @@ public interface MemberManagementService {
 
 	String changeProfileImage(String email, MultipartFile photo);
 
-	MemberProfileRes findProfile(String nickname);
+	MemberProfileRes findProfile(String nickname, Pageable pageable);
 
 	List<MemberRequestClubRes> findRequestClub(String email);
 }

@@ -14,6 +14,8 @@ import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
 import org.lightnsalt.hikingdom.service.member.service.MemberManagementService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -98,9 +100,10 @@ public class MemberManagementController {
 	}
 
 	@GetMapping("{nickname}")
-	public ResponseEntity<CustomResponseBody> profileDetail(@PathVariable String nickname) {
+	public ResponseEntity<CustomResponseBody> profileDetail(@PathVariable String nickname,
+		@PageableDefault(value = 3) Pageable pageable) {
 
-		MemberProfileRes result = memberManagementService.findProfile(nickname);
+		MemberProfileRes result = memberManagementService.findProfile(nickname, pageable);
 		return new ResponseEntity<>(BaseResponseBody.of("회원 프로필 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 
