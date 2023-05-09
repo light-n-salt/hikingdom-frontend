@@ -4,8 +4,9 @@ import styles from './MtDetailPage.module.scss'
 import { getMountainInfo } from 'apis/services/mountains'
 import { useQuery } from '@tanstack/react-query'
 import { MtInfoDetail } from 'types/mt.interface'
-import PageHeader from 'components/common/PageHeader'
+import Loading from 'components/common/Loading'
 import MtDetail from 'components/main/MtDetail'
+import PageHeader from 'components/common/PageHeader'
 import { untilMidnight } from 'utils/untilMidnight'
 
 function MtDetailPage() {
@@ -32,7 +33,7 @@ function MtDetailPage() {
       <MtDetail mtInfo={mtInfo} />
     </div>
   ) : (
-    <div>loading...</div>
+    <Loading />
   )
 }
 

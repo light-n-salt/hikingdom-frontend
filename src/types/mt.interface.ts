@@ -20,8 +20,6 @@ export interface MtInfoDetail extends MtInfo {
   totalDuration: number
   peaks: string
   description: string
-  transport?: string
-  facility?: string
   asset?: MtAssetInfo[]
 }
 

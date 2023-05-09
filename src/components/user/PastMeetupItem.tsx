@@ -33,11 +33,6 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
     setIsOpen(true)
   }
 
-  const onClickCloseModal = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation() // 부모 이벤트 버블링 방지
-    setIsOpen(false)
-  }
-
   // 그룹 일정 상세보기로 이동하는 함수
   const onClickGroup = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation() // 부모 이벤트 버블링 방지
@@ -48,10 +43,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
     <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
-          <TrackingInfo
-            hikingRecordId={hiking.hikingRecordId}
-            onClickCloseModal={onClickCloseModal}
-          />
+          <TrackingInfo hikingRecordId={hiking.hikingRecordId} />
         </Modal>
       )}
       <div

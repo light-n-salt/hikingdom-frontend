@@ -24,7 +24,7 @@ function MtDetail({ mtInfo }: MtDetailProps) {
       <MtContent
         address={mtInfo.address}
         peaks={mtInfo.peaks}
-        transport={mtInfo.transport}
+        // transport={mtInfo.transport}
         description={mtInfo.description}
       />
     </div>
