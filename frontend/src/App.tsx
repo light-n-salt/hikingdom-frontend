@@ -53,7 +53,7 @@ function App() {
             <Route path="search" element={<SearchMtPage />} />
           </Route>
           <Route
-            path="/mountain/detail/:mountainId"
+            path="/mountain/:mountainId/detail"
             element={<MtDetailPage />}
           />
           {/* 순위 */}

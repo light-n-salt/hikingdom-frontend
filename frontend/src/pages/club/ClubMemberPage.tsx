@@ -1,77 +1,67 @@
-import React, { useEffect } from 'react'
-
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router'
 import styles from './ClubMemberPage.module.scss'
-import MemberList from 'components/club/MemberList'
 import { ClubMemberList } from 'types/club.interface'
-
-const clubMemberList: ClubMemberList = {
-  request: [
-    {
-      "memberId": 1,
-      "nickname": "정예지렁이비가오네?",
-      "profileUrl": "https://i.namu.wiki/i/ZeGGZBUYHmppb5RTym8vJmnQulv-UhJygvrUMH_qXurQ08oZzRshu2sToDMet1NFeq4iwnkqY69Y_pKH4C2lmg.webp",
-      "level": 1,
-      "totalHikingCount": 3,
-      "totalDuration": 800,
-      "totalDistance": 730,
-    },
-    {
-      "memberId": 2,
-      "nickname": "이병호루라기",
-      "profileUrl": "https://i.namu.wiki/i/ZeGGZBUYHmppb5RTym8vJmnQulv-UhJygvrUMH_qXurQ08oZzRshu2sToDMet1NFeq4iwnkqY69Y_pKH4C2lmg.webp",
-      "level": 2,
-      "totalHikingCount": 3,
-      "totalDuration": 800,
-      "totalDistance": 730,
-    },
-    {
-      "memberId": 3,
-      "nickname": "조혜진",
-      "profileUrl": "https://i.namu.wiki/i/ZeGGZBUYHmppb5RTym8vJmnQulv-UhJygvrUMH_qXurQ08oZzRshu2sToDMet1NFeq4iwnkqY69Y_pKH4C2lmg.webp",
-      "level": 3,
-      "totalHikingCount": 3,
-      "totalDuration": 800,
-      "totalDistance": 730,
-    },
-  ],
-  member: [
-    {
-      "memberId": 1,
-      "nickname": "정예지렁이비가오네?",
-      "profileUrl": "https://i.namu.wiki/i/ZeGGZBUYHmppb5RTym8vJmnQulv-UhJygvrUMH_qXurQ08oZzRshu2sToDMet1NFeq4iwnkqY69Y_pKH4C2lmg.webp",
-      "level": 1,
-      "totalHikingCount": 3,
-      "totalDuration": 800,
-      "totalDistance": 730,
-    },
-    {
-      "memberId": 2,
-      "nickname": "이병호루라기",
-      "profileUrl": "https://i.namu.wiki/i/ZeGGZBUYHmppb5RTym8vJmnQulv-UhJygvrUMH_qXurQ08oZzRshu2sToDMet1NFeq4iwnkqY69Y_pKH4C2lmg.webp",
-      "level": 2,
-      "totalHikingCount": 3,
-      "totalDuration": 800,
-      "totalDistance": 730,
-    },
-    {
-      "memberId": 3,
-      "nickname": "조혜진",
-      "profileUrl": "https://i.namu.wiki/i/ZeGGZBUYHmppb5RTym8vJmnQulv-UhJygvrUMH_qXurQ08oZzRshu2sToDMet1NFeq4iwnkqY69Y_pKH4C2lmg.webp",
-      "level": 3,
-      "totalHikingCount": 3,
-      "totalDuration": 800,
-      "totalDistance": 730,
-    },
-  ]
-}
-
+import {
+  getClubMember,
+  updateClubMember,
+  deleteClubMember,
+} from 'apis/services/clubs'
+import Toast from 'components/common/Toast'
+import Loading from 'components/common/Loading'
+import MemberList from 'components/club/MemberList'
 
 function ClubMemberPage() {
-  return (
+  const [clubMemberList, setClubMemberList] = useState<ClubMemberList>({
+    member: [],
+  })
+
+  const clubId = useParams<string>().clubId
+
+  useEffect(() => {
+    getClubMemberList(Number(clubId))
+  }, [])
+
+  // 멤버 조회
+  function getClubMemberList(clubId: number) {
+    getClubMember(Number(clubId)).then((res) =>
+      setClubMemberList(res.data.result)
+    )
+  }
+
+  // 수락 함수
+  function onClickJoin(memberId: number) {
+    updateClubMember(Number(clubId), memberId)
+      .then(() => getClubMemberList(Number(clubId)))
+      .catch((err) => Toast.addMessage('error', `${err.data.message}`))
+  }
+
+  // 거절 함수
+  function onClickDelete(memberId: number) {
+    deleteClubMember(Number(clubId), memberId)
+      .then(() => getClubMemberList(Number(clubId)))
+      .catch((err) => Toast.addMessage('error', `${err.data.message}`))
+  }
+
+  return clubMemberList.member[0] ? (
     <div className={styles.page}>
-      {clubMemberList.request && <MemberList title="가입대기" length={clubMemberList.request.length} memberList={clubMemberList.request} isButton={true} />}
-      <MemberList title="모임 멤버" length={clubMemberList.member.length} memberList={clubMemberList.member}/>
+      {clubMemberList.request && (
+        <MemberList
+          title="가입대기"
+          length={clubMemberList.request.length}
+          memberList={clubMemberList.request}
+          onClickJoin={onClickJoin}
+          onClickDelete={onClickDelete}
+        />
+      )}
+      <MemberList
+        title="모임 멤버"
+        length={clubMemberList.member.length}
+        memberList={clubMemberList.member}
+      />
     </div>
+  ) : (
+    <Loading />
   )
 }
 
