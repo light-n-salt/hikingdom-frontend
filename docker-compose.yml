@@ -85,7 +85,7 @@ services:
       - 80:80
       - 443:443
     depends_on:
-      - backend_main
+      - main-backend-gateway
       - main-frontend
 
 networks:
