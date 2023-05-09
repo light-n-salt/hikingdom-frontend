@@ -15,21 +15,22 @@ import org.lightnsalt.hikingdom.domain.entity.club.ClubJoinRequest;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
 import org.lightnsalt.hikingdom.domain.entity.club.record.ClubRanking;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
+import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
 import org.lightnsalt.hikingdom.service.club.repository.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
-import org.lightnsalt.hikingdom.service.club.repository.record.ClubRankingRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
+import org.lightnsalt.hikingdom.service.club.repository.record.ClubRankingRepository;
+import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordRes;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
-import org.lightnsalt.hikingdom.service.member.repository.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
-import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
-import org.lightnsalt.hikingdom.domain.entity.member.Member;
-import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
+import org.lightnsalt.hikingdom.service.member.repository.MemberHikingStatisticRepository;
+import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -180,7 +181,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 	@Transactional
 	@Override
-	public MemberProfileRes findProfile(String nickname) {
+	public MemberProfileRes findProfile(String nickname, Pageable pageable) {
 		// 회원정보 가져오기
 		final Member member = memberRepository.findByNicknameAndIsWithdraw(nickname, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
@@ -189,8 +190,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		// 회원 등산기록 가져오기
-		final List<MemberHiking> memberHikingList = memberHikingRepository.findTop3ByMemberIdOrderByEndAt(
-			member.getId());
+		final List<MemberHiking> memberHikingList = memberHikingRepository.findAllByMemberIdOrderByEndAtDescStartAtDesc(
+			member.getId(), pageable);
 		List<HikingRecordRes> hikingRecordResList = memberHikingList.stream()
 			.map(HikingRecordRes::new)
 			.collect(Collectors.toList());
