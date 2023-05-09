@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
+import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupMember;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
 import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
@@ -105,13 +106,15 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 			List<ClubJoinRequest> list = clubJoinRequestRepository.findByClubIdAndMemberIsWithdrawAndStatus(clubId,
 				false, JoinRequestStatusType.PENDING);
 			List<MeetupMemberDetailListRes> result = list.stream()
-				.map(clubJoinRequest -> new MeetupMemberDetailListRes(clubJoinRequest.getMember())).collect(Collectors.toList());
+				.map(clubJoinRequest -> new MeetupMemberDetailListRes(clubJoinRequest.getMember()))
+				.collect(Collectors.toList());
 			results.put("request", result);
 		}
 
 		// 소모임에 가입되어있는 회원 정보 가져오기
 		List<ClubMember> list = clubMemberRepository.findByClubIdAndIsWithdraw(clubId, false);
-		List<MeetupMemberDetailListRes> result = list.stream().map(clubMember -> new MeetupMemberDetailListRes(clubMember.getMember()))
+		List<MeetupMemberDetailListRes> result = list.stream()
+			.map(clubMember -> new MeetupMemberDetailListRes(clubMember.getMember()))
 			.collect(Collectors.toList());
 
 		results.put("member", result);
@@ -141,7 +144,9 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 
 		// 참여하고 있는 일정이 있을 시, 자동 참여 취소
 		LocalDateTime now = LocalDateTime.now();
-		meetupMemberRepository.updateMeetupMemberIsWithdrawByMemberIdAndStartAt(member.getId(), true, now, now);
+		List<MeetupMember> participatingEvents = meetupMemberRepository.findByMemberIdAndStartAtAfterAndIsWithdraw(
+			member.getId(), now, false);
+		meetupMemberRepository.updateMeetupMemberIsWithdraw(participatingEvents, true, now);
 
 		// 소모임 탈퇴 처리
 		clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, now);

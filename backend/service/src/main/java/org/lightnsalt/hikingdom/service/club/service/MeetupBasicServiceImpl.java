@@ -71,7 +71,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 			.host(member)
 			.name(req.getName())
 			.description(req.getDescription())
-			.startAt(LocalDateTime.parse(req.getStartAt(), DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")))
+			.startAt(LocalDateTime.parse(req.getStartAt(), DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm.000000	")))
 			.build();
 
 		final Meetup savedMeetup = meetupRepository.save(meetup);
