@@ -73,8 +73,8 @@ export function logout() {
   })
 }
 
-// 신고
-export function report(type: string, id: number) {
+// 신고 : ALBUM || REVIEW || MEMBER
+export function report(type: 'ALBUM' | 'REVIEW' | 'MEMBER', id: number) {
   return apiRequest.post(`reports`, { type, id })
 }
 
