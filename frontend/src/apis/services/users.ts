@@ -11,7 +11,10 @@ export function getProfile(nickname: string) {
 }
 
 export function getUserInfo(setUserState: (userInfo: User) => void) {
-  return apiRequest.get(`/members`).then((res) => setUserState(res.data.result))
+  return apiRequest.get(`/members`).then((res) => {
+    setUserState(res.data.result)
+    return res.data.result
+  })
 }
 
 // POST Request

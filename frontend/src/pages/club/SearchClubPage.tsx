@@ -11,7 +11,6 @@ import Loading from 'components/common/Loading'
 
 // 서치바의 드롭다운  SelectBox에 넘길 옵션 배열
 const filterOptions = [
-  { label: '전체', value: '' },
   { label: '모임이름', value: 'name' },
   { label: '지역', value: 'participation' },
 ]

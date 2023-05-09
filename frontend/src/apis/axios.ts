@@ -45,10 +45,11 @@ axiosInstance.interceptors.response.use(
       const refreshToken = localStorage.getItem('refreshToken') // recoil에서 refreshToken 읽어오기
 
       axios
-        .post(`${process.env.REACT_APP_API_BASE_URL}/refresh_token`, {
+        .post(`${process.env.REACT_APP_API_BASE_URL}/refresh-token`, {
           refreshToken,
         })
         .then((response) => {
+          console.log(response)
           const newAccessToken = response.data.result.accessToken
           const newRefreshToken = response.data.result.refreshToken
           localStorage.setItem('accessToken', newAccessToken)
@@ -57,6 +58,7 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(originalRequest)
         })
         .catch((error) => {
+          console.log(error)
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
           toast.addMessage('error', `다시 로그인 해주세요`)

@@ -1,11 +1,12 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
 import './index.scss'
-import App from './App'
+import ReactDOM from 'react-dom/client'
 import reportWebVitals from './reportWebVitals'
-import ThemeProvider from 'styles/ThemeProvider'
+import App from './App'
 import { RecoilRoot } from 'recoil'
+import ThemeProvider from 'styles/ThemeProvider'
+import { BrowserRouter } from 'react-router-dom'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
@@ -20,6 +21,7 @@ root.render(
           </ThemeProvider>
         </RecoilRoot>
       </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
 )

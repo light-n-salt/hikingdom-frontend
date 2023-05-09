@@ -38,7 +38,7 @@ function MeetupItem({ meetupInfo }: MeetupItemProps) {
         <IconText imgSrc={clock} text={time} size="sm" isBold={true} />
       </div>
       {meetupInfo.description.length > 100
-        ? meetupInfo.description.slice(100) + '...'
+        ? meetupInfo.description.slice(0, 100) + '...'
         : meetupInfo.description}
     </div>
   )
