@@ -21,16 +21,10 @@ public class CustomLogFilter implements GatewayFilterFactory<CustomLogFilter.Con
 			ServerHttpRequest request = exchange.getRequest();
 			ServerHttpResponse response = exchange.getResponse();
 
-			if (config.isPreLogger()) {
-				log.info("CustomLogFilter pre-filter: Request Path -> {}", request.getPath());
-			}
+			log.info("CustomLogFilter pre-filter: Request Path -> {}", request.getPath());
 
 			return chain.filter(exchange).then(Mono.fromRunnable(
-				() -> {
-					if (config.isPostLogger()) {
-						log.info("CustomLogFilter post-filter: Response Status -> {}", response.getStatusCode());
-					}
-				}));
+				() -> log.info("CustomLogFilter post-filter: Response Status -> {}", response.getStatusCode())));
 		};
 	}
 
@@ -41,7 +35,5 @@ public class CustomLogFilter implements GatewayFilterFactory<CustomLogFilter.Con
 
 	@Data
 	public static class Config {
-		private boolean preLogger;
-		private boolean postLogger;
 	}
 }
