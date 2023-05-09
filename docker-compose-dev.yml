@@ -44,6 +44,8 @@ services:
       - 9001:8080
     environment:
       - TZ=Asia/Seoul
+      - EUREKA_SERVER=dev_backend_discovery
+      - EUREKA_HOSTNAME=dev_backend_service
     networks:
       dev_hikingdom_net:
         ipv4_address: 172.25.0.5
@@ -68,6 +70,8 @@ services:
       - 8081:8080
     environment:
       - TZ=Asia/Seoul
+      - EUREKA_SERVER=dev_backend_discovery
+      - EUREKA_HOSTNAME=dev_backend_gateway
     networks:
       dev_hikingdom_net:
         ipv4_address: 172.25.0.3
