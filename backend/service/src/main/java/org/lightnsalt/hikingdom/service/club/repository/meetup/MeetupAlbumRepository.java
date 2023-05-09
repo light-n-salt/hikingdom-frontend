@@ -2,6 +2,7 @@ package org.lightnsalt.hikingdom.service.club.repository.meetup;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface MeetupAlbumRepository extends JpaRepository<MeetupAlbum, Long> {
 	boolean existsByIdAndIsDeleted(Long photoId, boolean isDeleted);
+
+	Optional<MeetupAlbum> findByIdAndIsDeleted(Long photoId, boolean isDeleted);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query(value = "UPDATE MeetupAlbum m "

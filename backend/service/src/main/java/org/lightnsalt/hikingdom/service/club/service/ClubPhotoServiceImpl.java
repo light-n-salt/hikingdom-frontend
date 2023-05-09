@@ -1,11 +1,14 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
+import java.time.LocalDateTime;
+
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;
+import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
+import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupAlbumRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupAlbumRepositoryCustom;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ClubPhotoServiceImpl implements ClubPhotoService {
 	private final MemberRepository memberRepository;
 	private final ClubMemberRepository clubMemberRepository;
+	private final MeetupAlbumRepository meetupAlbumRepository;
 	private final MeetupAlbumRepositoryCustom meetupRepositoryCustom;
 
 	@Transactional
@@ -37,5 +41,24 @@ public class ClubPhotoServiceImpl implements ClubPhotoService {
 		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotosByClubId(photoId, clubId, pageable);
 		return new CustomSlice<>(
 			list.map(meetupAlbum -> new MeetupAlbumRes(meetupAlbum, meetupAlbum.getMember().getId().equals(memberId))));
+	}
+
+	@Transactional
+	@Override
+	public void removeClubPhoto(String email, Long clubId, Long photoId) {
+		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
+
+		// 소모임 가입 여부 확인
+		if (clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, memberId, false).isEmpty())
+			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
+
+		final MeetupAlbum meetupAlbum = meetupAlbumRepository.findByIdAndIsDeleted(photoId, false)
+			.orElseThrow(() -> new GlobalException(ErrorCode.PHOTO_NOT_FOUND));
+
+		if (!meetupAlbum.getMember().getId().equals(memberId))
+			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
+
+		meetupAlbumRepository.updateIsDeleted(photoId, LocalDateTime.now());
 	}
 }
