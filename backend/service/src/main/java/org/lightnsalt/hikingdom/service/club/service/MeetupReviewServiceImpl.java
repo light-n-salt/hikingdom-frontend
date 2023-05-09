@@ -61,6 +61,7 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 		return meetupReview.getId();
 	}
 
+	@Transactional
 	@Override
 	public void removeMeetupReview(String email, Long clubId, Long meetupId, Long reviewId) {
 		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
@@ -77,6 +78,7 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
 	}
 
+	@Transactional
 	@Override
 	public List<MeetupReviewRes> findMeetupReviewList(String email, Long clubId, Long meetupId) {
 		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
@@ -92,7 +94,8 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 			.collect(Collectors.toList());
 	}
 
-	private boolean deleteMeetupReview(Long reviewId) {
+	@Transactional
+	public boolean deleteMeetupReview(Long reviewId) {
 		return meetupReviewRepository.updateMeetupReviewIsDeletedById(reviewId, true, LocalDateTime.now()) > 0;
 	}
 }
