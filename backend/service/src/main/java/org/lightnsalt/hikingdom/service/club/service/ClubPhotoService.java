@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ClubPhotoService {
 	CustomSlice<MeetupAlbumRes> findClubPhotoList(String email, Long clubId, Long photoId, Pageable pageable);
+
+	void removeClubPhoto(String email, Long clubId, Long photoId);
 }

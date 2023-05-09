@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +25,19 @@ public class ClubPhotoController {
 	private final ClubPhotoService clubPhotoService;
 
 	@GetMapping
-	public ResponseEntity<CustomResponseBody> meetupAlbumList(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> clubPhotoList(Authentication authentication, @PathVariable Long clubId,
 		@RequestParam(defaultValue = "") Long photoId, Pageable pageable) {
 		CustomSlice<MeetupAlbumRes> result = clubPhotoService.findClubPhotoList(authentication.getName(), clubId,
 			photoId, pageable);
 
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 사진 조회에 성공했습니다", result), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{photoId}")
+	public ResponseEntity<CustomResponseBody> clubPhotoRemove(Authentication authentication,
+		@PathVariable Long clubId, @PathVariable Long photoId) {
+		clubPhotoService.removeClubPhoto(authentication.getName(), clubId, photoId);
+
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 사진 삭제에 성공했습니다"), HttpStatus.OK);
 	}
 }
