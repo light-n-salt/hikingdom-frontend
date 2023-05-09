@@ -43,6 +43,11 @@ function TrackingInfo({ hikingRecordId }: TrackingInfoProps) {
       return
     }
 
+    // console.log(detailRecord.gpsRoute)
+
+    // const routeObject = JSON.parse(detailRecord.gpsRoute)
+    // console.log(routeObject.gpsRoute)
+
     const container = document.getElementById('map')
     const options = {
       center: new kakao.maps.LatLng(37.501394, 127.038489),

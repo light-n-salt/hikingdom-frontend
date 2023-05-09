@@ -40,7 +40,7 @@ export interface UserProfileInfo extends User, UserRecord {
 
 // 등산 기록 상세 조회
 export interface UserHikingDetail {
-  gpsRoute: string
+  gpsRoute: object
   mountainName: string
   startAt: string
   totalDistance: number
