@@ -4,6 +4,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
@@ -13,7 +14,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class BatchApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BatchApplication.class, args);
+		SpringApplication app = new SpringApplication(BatchApplication.class);
+		ApplicationContext context = app.run(args);
+		int exitCode = SpringApplication.exit(context);
+		System.exit(exitCode);
 	}
 
 }
