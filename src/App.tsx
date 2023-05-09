@@ -35,6 +35,7 @@ import ProfilePage from 'pages/profile/ProfilePage'
 import ProfileUpdatePage from 'pages/profile/ProfileUpdatePage'
 import AlarmPage from 'pages/profile/AlarmPage'
 import NotFoundPage from 'pages/NotFoundPage'
+import PrivateRoute from 'pages/PrivateRoute'
 
 function App() {
   return (
@@ -45,39 +46,44 @@ function App() {
         <Route path="signup" element={<SignupPage />} />
         <Route path="agreement" element={<AgreePage />} />
         <Route path="password" element={<FindPwPage />} />
-        {/* 메인 */}
-        <Route path="/main" element={<SearchLayout />}>
-          <Route path="" element={<MainPage />} />
-          <Route path="search" element={<SearchMtPage />} />
+        <Route element={<PrivateRoute />}>
+          {/* 메인 */}
+          <Route path="/main" element={<SearchLayout />}>
+            <Route path="" element={<MainPage />} />
+            <Route path="search" element={<SearchMtPage />} />
+          </Route>
+          <Route
+            path="/mountain/:mountainId/detail"
+            element={<MtDetailPage />}
+          />
+          {/* 순위 */}
+          <Route path="/rank" element={<RankPage />} />
+          {/* 모임 */}
+          <Route path="/club/search" element={<SearchClubPage />} />
+          <Route path="/club/create" element={<ClubCreatePage />} />
+          <Route path="/club/:clubId/detail" element={<MainDetailPage />} />
+          <Route path="/club/:clubId/chat" element={<ClubChatPage />} />
+          <Route path="/club/none" element={<ClubNoneExistPage />} />
+          <Route path="/club/:clubId" element={<ClubPage />}>
+            <Route path="main" element={<ClubMainPage />} />
+            <Route path="meetup" element={<ClubMeetupPage />} />
+            <Route path="member" element={<ClubMemberPage />} />
+            <Route path="album" element={<ClubAlbumPage />} />
+          </Route>
+          <Route
+            path="/club/:clubId/meetup/create"
+            element={<CreateMeetupPage />}
+          />
+          <Route
+            path="/club/:clubId/meetup/:meetupId/detail"
+            element={<MeetupDetailPage />}
+          />
+          {/* 마이페이지 */}
+          <Route path="/profile/:nickname" element={<ProfilePage />} />
+          <Route path="/profile/update" element={<ProfileUpdatePage />} />
+          <Route path="/alarm" element={<AlarmPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-        <Route path="/mountain/:mountainId/detail" element={<MtDetailPage />} />
-        {/* 순위 */}
-        <Route path="/rank" element={<RankPage />} />
-        {/* 모임 */}
-        <Route path="/club/search" element={<SearchClubPage />} />
-        <Route path="/club/create" element={<ClubCreatePage />} />
-        <Route path="/club/:clubId/detail" element={<MainDetailPage />} />
-        <Route path="/club/:clubId/chat" element={<ClubChatPage />} />
-        <Route path="/club/none" element={<ClubNoneExistPage />} />
-        <Route path="/club/:clubId" element={<ClubPage />}>
-          <Route path="main" element={<ClubMainPage />} />
-          <Route path="meetup" element={<ClubMeetupPage />} />
-          <Route path="member" element={<ClubMemberPage />} />
-          <Route path="album" element={<ClubAlbumPage />} />
-        </Route>
-        <Route
-          path="/club/:clubId/meetup/create"
-          element={<CreateMeetupPage />}
-        />
-        <Route
-          path="/club/:clubId/meetup/:meetupId/detail"
-          element={<MeetupDetailPage />}
-        />
-        {/* 마이페이지 */}
-        <Route path="/profile/:nickname" element={<ProfilePage />} />
-        <Route path="/profile/update" element={<ProfileUpdatePage />} />
-        <Route path="/alarm" element={<AlarmPage />} />
-        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   )
