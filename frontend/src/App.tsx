@@ -50,7 +50,7 @@ function App() {
           <Route path="" element={<MainPage />} />
           <Route path="search" element={<SearchMtPage />} />
         </Route>
-        <Route path="/mountain/detail/:mountainId" element={<MtDetailPage />} />
+        <Route path="/mountain/:mountainId/detail" element={<MtDetailPage />} />
         {/* 순위 */}
         <Route path="/rank" element={<RankPage />} />
         {/* 모임 */}
