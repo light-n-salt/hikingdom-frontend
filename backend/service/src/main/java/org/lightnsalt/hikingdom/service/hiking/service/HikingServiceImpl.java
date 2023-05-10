@@ -82,7 +82,7 @@ public class HikingServiceImpl implements HikingService {
     @Transactional
     public List<TodayMeetupRes> findTodayMeetup(String email) {
         // 회원 확인
-        final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+        final Long memberId = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND))
                 .getId();
 
@@ -91,7 +91,7 @@ public class HikingServiceImpl implements HikingService {
         return meetups.stream().map(meetup -> {
             TodayMeetupRes dto = new TodayMeetupRes(meetup);
             // 일정 참여 멤버 가져오기
-            final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetup.getId(), false);
+            final int totalMember = meetupMemberRepository.countByMeetupId(meetup.getId());
             dto.setTotalMember(totalMember);
             return dto;
         }).collect(Collectors.toList());
@@ -100,7 +100,7 @@ public class HikingServiceImpl implements HikingService {
     @Override
     @Transactional
     public Long saveHikingRecord(String email, HikingRecordReq hikingRecordReq) {
-        final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+        final Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
         final MountainInfo mountainInfo = mountainInfoRepository.findById(hikingRecordReq.getMountainId())

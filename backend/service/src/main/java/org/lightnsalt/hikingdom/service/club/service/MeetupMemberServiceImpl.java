@@ -33,13 +33,13 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 	@Override
 	@Transactional
 	public void addJoinMeetup(String email, Long clubId, Long meetupId) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		if (!clubMemberRepository.existsByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(), false))
 			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
 
-		if (meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, member.getId(), false))
+		if (meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, member.getId()))
 			throw new GlobalException(ErrorCode.MEETUP_ALREADY_JOINED);
 
 		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
@@ -51,10 +51,10 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 	@Override
 	@Transactional
 	public void removeJoinMeetup(String email, Long clubId, Long meetupId) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final MeetupMember meetupMember = meetupMemberRepository.findByMeetupIdAndMemberIdAndIsWithdraw(meetupId,
-			member.getId(), false).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final MeetupMember meetupMember = meetupMemberRepository.findByMeetupIdAndMemberId(meetupId,
+			member.getId()).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		meetupMemberRepository.delete(meetupMember);
 	}
@@ -73,14 +73,13 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 	@Transactional
 	public MeetupMemberListRes findMeetupMember(String email, Long clubId, Long meetupId) {
 		// 회원 ID 가져오기
-		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Long memberId = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
 		// 일정에 참여 중인지 확인
-		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, memberId,
-			false);
+		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, memberId);
 
 		// 일정 참여 멤버 수 조회하기
-		final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetupId, false);
+		final int totalMember = meetupMemberRepository.countByMeetupId(meetupId);
 
 		// 멤버 정보 가져오기
 		List<MemberShortRes> memberInfo = getMeetupMember(clubId, meetupId).stream()
@@ -99,6 +98,6 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 			throw new GlobalException(ErrorCode.CLUB_MEETUP_NOT_FOUND);
 		}
 		// 일정 멤버 조회
-		return meetupMemberRepository.findByMeetupIdAndIsWithdraw(meetupId, false);
+		return meetupMemberRepository.findByMeetupId(meetupId);
 	}
 }

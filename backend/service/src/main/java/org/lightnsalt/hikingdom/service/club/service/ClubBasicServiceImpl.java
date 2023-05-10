@@ -73,7 +73,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public Long addClub(String email, ClubInfoReq clubInfoReq) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		checkDuplicateClubName(clubInfoReq.getName());
@@ -111,7 +111,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public void modifyClub(String email, Long clubId, ClubInfoReq clubInfoReq) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
@@ -163,7 +163,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public ClubDetailRes findClubDetail(String email, Long clubId) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));

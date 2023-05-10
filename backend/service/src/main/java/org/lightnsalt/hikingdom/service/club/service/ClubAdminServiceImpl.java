@@ -30,7 +30,7 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	@Transactional
 	@Override
 	public void acceptClubJoinRequest(String email, Long clubId, Long memberId) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Member candidate = memberRepository.findById(memberId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
@@ -71,7 +71,7 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	@Transactional
 	@Override
 	public void rejectClubJoinRequest(String email, Long clubId, Long memberId) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Member candidate = memberRepository.findById(memberId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));

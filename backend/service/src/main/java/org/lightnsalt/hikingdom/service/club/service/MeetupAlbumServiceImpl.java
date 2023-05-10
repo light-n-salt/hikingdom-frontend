@@ -1,7 +1,6 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 	@Transactional
 	public List<String> saveMeetupAlbum(String email, Long clubId, Long meetupId, List<MultipartFile> photos) {
 		// meetup에 가입되어있는 회원인지 확인
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 
 		// 모임 데이터 가져오기
@@ -57,8 +56,7 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
-		final boolean isExit = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, member.getId(),
-			false);
+		final boolean isExit = meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, member.getId());
 		if (!isExit) {
 			throw new GlobalException(ErrorCode.MEETUP_MEMBER_UNAUTHORIZED);
 		}
@@ -90,7 +88,7 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 	public CustomSlice<MeetupAlbumRes> findMeetupAlbumList(String email, Long clubId, Long meetupId, Long photoId,
 		Pageable pageable) {
 		// 회원 정보 가져오기
-		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Long memberId = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
 		// 사진 정보 가져오기
 		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotos(photoId, meetupId, pageable);
@@ -104,16 +102,16 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 	@Transactional
 	public void removeMeetupAlbum(String email, Long clubId, Long meetupId, Long photoId) {
 		// 사진을 올린 사용자인지 확인
-		final boolean isMemberExists = memberRepository.existsByEmailAndIsWithdraw(email, false);
+		final boolean isMemberExists = memberRepository.existsByEmail(email);
 		if (!isMemberExists) {
 			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
 		}
 		// 사진이 존재하는지 확인
-		final boolean isAlbumExists = meetupAlbumRepository.existsByIdAndIsDeleted(photoId, false);
+		final boolean isAlbumExists = meetupAlbumRepository.existsById(photoId);
 		if (!isAlbumExists) {
 			throw new GlobalException(ErrorCode.PHOTO_NOT_FOUND);
 		}
 
-		meetupAlbumRepository.updateIsDeleted(photoId, LocalDateTime.now());
+		meetupAlbumRepository.deleteById(photoId);
 	}
 }

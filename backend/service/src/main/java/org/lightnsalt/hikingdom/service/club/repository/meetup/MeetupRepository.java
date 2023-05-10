@@ -40,5 +40,6 @@ public interface MeetupRepository extends JpaRepository<Meetup, Long> {
 	@Query("UPDATE Meetup m "
 		+ "SET m.isDeleted = :isDeleted, m.deletedAt = :now "
 		+ "WHERE m.id = :meetupId")
-	void updateMeetupIsDeletedByMeetupId(Long meetupId, boolean isDeleted, LocalDateTime now);
+	void updateMeetupIsDeletedByMeetupId(@Param("meetupId") Long meetupId, @Param("isDeleted") boolean isDeleted,
+		@Param("now") LocalDateTime now);
 }
