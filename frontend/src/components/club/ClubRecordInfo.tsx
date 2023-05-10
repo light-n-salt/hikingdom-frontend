@@ -39,7 +39,7 @@ function ClubRecordInfo({
       {/* 시간 */}
       <Info
         title="총 시간(h)"
-        content={`${totalDuration}`}
+        content={`${totalDuration.toFixed()}`}
         imgSrc={hourglass}
         isBorder={true}
       />

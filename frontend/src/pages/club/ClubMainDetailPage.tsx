@@ -8,19 +8,21 @@ import { ClubDetailInfo } from 'types/club.interface'
 
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
+import Loading from 'components/common/Loading'
 import clubmountain from 'assets/images/clubmountain.png'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
+import { useQuery } from '@tanstack/react-query'
 
 function ClubMainDetailPage() {
   const { theme } = useContext(ThemeContext)
-  const [clubInfo, setClubInfo] = useState<ClubDetailInfo>()
 
   const clubId = useParams<string>().clubId
 
-  useEffect(() => {
-    getClubInfo(Number(clubId)).then((res) => setClubInfo(res.data.result))
-  }, [])
+  const { data: clubInfo } = useQuery<ClubDetailInfo>(
+    ['ClubDetailInfo', { clubId: clubId }],
+    () => getClubInfo(Number(clubId))
+  )
 
   function onClickJoinClub() {
     postJoinClub(Number(clubId))
@@ -31,14 +33,14 @@ function ClubMainDetailPage() {
   return clubInfo ? (
     <div className={`page p-sm ${theme} ${styles.page}`}>
       <span className={styles.title}>{clubInfo.clubName}</span>
-      {/* <div className={styles.button}>
+      <div className={styles.button}>
         <Button
           text="가입 신청"
           size="sm"
           color="primary"
           onClick={onClickJoinClub}
         />
-      </div> */}
+      </div>
       <ClubRecordInfo
         participationRate={clubInfo.participationRate}
         totalDuration={clubInfo.totalDuration}
@@ -51,7 +53,7 @@ function ClubMainDetailPage() {
       <img src={clubmountain} className={styles.image} />
     </div>
   ) : (
-    <div>Loading....</div>
+    <Loading />
   )
 }
 
