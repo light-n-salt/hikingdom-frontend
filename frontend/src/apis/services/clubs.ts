@@ -65,12 +65,14 @@ export function getClubAlbum(
   size: number | null = null,
   photoId: number | null = null
 ) {
-  return apiRequest.get(`/clubs/${clubId}/photos`, {
-    params: {
-      photoId,
-      size,
-    },
-  })
+  return apiRequest
+    .get(`/clubs/${clubId}/photos`, {
+      params: {
+        photoId,
+        size,
+      },
+    })
+    .then((res) => res.data.result)
 }
 
 // 소모임 정보 조회

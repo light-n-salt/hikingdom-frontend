@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './MeetupDetailPage.module.scss'
 
@@ -79,7 +79,7 @@ function MeetupDetailPage() {
           <MeetupIntroduction content={meetup?.description} />
         </div>
         <MeetupMembers />
-        <MeetupAlbum photoInfo={meetup?.photoInfo} />
+        <MeetupAlbum />
         {reviews && <MeetupReviewList reviewInfo={reviews} />}
       </div>
       <TextSendBar

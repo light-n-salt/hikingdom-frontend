@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import styles from './AlbumModal.module.scss'
-import { updateMeetupAlbum, getMeeupAlbum } from 'apis/services/meetup'
+import { updateMeetupAlbum, getMeetupAlbum } from 'apis/services/meetup'
 import { useParams } from 'react-router-dom'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
@@ -59,7 +59,7 @@ function AlbumModal() {
     updateMeetupAlbum(parseInt(clubId), parseInt(meetupId), formData).then(
       () => {
         console.log('hi')
-        // getMeeupAlbum(parseInt(clubId), parseInt(meetupId)).then((res) =>
+        // getMeetupAlbum(parseInt(clubId), parseInt(meetupId)).then((res) =>
         //   console.log(res.data.result, '성공이지렁')
         // )
       }

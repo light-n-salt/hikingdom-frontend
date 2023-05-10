@@ -22,15 +22,20 @@ export function getMembersDetail(clubId: number, meetupId: number) {
 }
 
 // 일정 사진 조회
-export function getMeeupAlbum(
+export function getMeetupAlbum(
   clubId: number,
   meetupId: number,
-  photoId?: number,
-  size?: number
+  photoId: number | null = null,
+  size: number | null = null
 ) {
-  return apiRequest.get(
-    `clubs/${clubId}/meetups/${meetupId}/photos?photoId=${photoId}&size=${size}`
-  )
+  return apiRequest
+    .get(`clubs/${clubId}/meetups/${meetupId}/photos`, {
+      params: {
+        photoId,
+        size,
+      },
+    })
+    .then((res) => res.data.result)
 }
 
 // 일정 후기 조회

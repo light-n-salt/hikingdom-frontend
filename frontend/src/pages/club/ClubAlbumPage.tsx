@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useEffect } from 'react'
+import React, { useContext, useRef, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubAlbumPage.module.scss'
@@ -12,37 +12,34 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 type InfiniteAlbumInfo = {
   content: Album[]
   hasNext: boolean
-  hasPrev: boolean
+  hasPrevious: boolean
   numberOfElements: number
   pageSize: number
 }
 
 function ClubAlbumPage() {
   const { theme } = useContext(ThemeContext)
-  const [photoList, setPhotoList] = useState<Album[]>([])
-  const infiniteRef = useRef<HTMLDivElement>(null) // 무한 스크롤 동작시킬 useRef
+  const infiniteRef = useRef<HTMLDivElement>(null)
   const { clubId } = useParams() as { clubId: string }
 
-  const { isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery<any>({
-    queryKey: ['photos'],
-    queryFn: ({ pageParam = null }) => {
-      getClubAlbum(parseInt(clubId), 21, pageParam)
-    },
-    getNextPageParam: (lastPage) => {
-      return lastPage.data.result.hasNext
-        ? lastPage.data.result.content.slice(-1)[0].photoId
-        : undefined
-    },
-    onSuccess: (res) => {
-      console.log('hi')
-      setPhotoList((photoList) => [
-        ...photoList,
-        ...res.pages.slice(-1)[0].data.result.content,
-      ])
-    },
-  })
+  const { data, isLoading, fetchNextPage, hasNextPage } =
+    useInfiniteQuery<InfiniteAlbumInfo>({
+      queryKey: ['photos'],
+      queryFn: ({ pageParam = null }) => {
+        return getClubAlbum(parseInt(clubId), pageParam, 21)
+      },
+      getNextPageParam: (lastPage) => {
+        return lastPage.hasNext
+          ? lastPage.content.slice(-1)[0].photoId
+          : undefined
+      },
+    })
 
-  // 무한스크롤 커스텀 훅(동작 요소, 동작 함수)
+  const photoList = useMemo(() => {
+    if (!data) return []
+    return data.pages.flatMap((page) => page.content)
+  }, [data])
+
   useInfiniteScroll({
     ref: infiniteRef,
     loadMore: fetchNextPage,
