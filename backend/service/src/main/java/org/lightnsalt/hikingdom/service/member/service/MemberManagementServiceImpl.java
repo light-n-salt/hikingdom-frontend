@@ -58,7 +58,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 	@Override
 	public MemberInfoRes findMemberInfo(String email) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
 			.orElse(null);
@@ -76,7 +76,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Transactional
 	@Override
 	public void removeMember(String email) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
 			.orElse(null);
@@ -101,7 +101,9 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
 			LocalDateTime.now());
 
-		memberRepository.updateMemberWithdraw(member.getId(), true, LocalDateTime.now());
+		log.info("before delete");
+		memberRepository.updateMemberWithdraw(member.getId(), false, LocalDateTime.now());
+		log.info("after delete");
 	}
 
 	@Override
@@ -124,7 +126,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}
 
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		boolean isValidPassword = passwordEncoder.matches(memberChangePasswordReq.getPassword(), member.getPassword());
@@ -140,7 +142,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Transactional
 	@Override
 	public void changeNickname(String email, MemberNicknameReq memberNicknameReq) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		String newNickname = memberNicknameReq.getNickname();
@@ -149,7 +151,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			return;
 		}
 
-		if (memberRepository.existsByNicknameAndIsWithdraw(newNickname, false)) {
+		if (memberRepository.existsByNickname(newNickname)) {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 
@@ -160,7 +162,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Transactional
 	@Override
 	public String changeProfileImage(String email, MultipartFile photo) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		try {
@@ -182,7 +184,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Override
 	public MemberProfileRes findProfile(String nickname, Pageable pageable) {
 		// 회원정보 가져오기
-		final Member member = memberRepository.findByNicknameAndIsWithdraw(nickname, false)
+		final Member member = memberRepository.findByNickname(nickname)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 		// 회원 등산통계 가져오기
 		final MemberHikingStatistic memberHikingStatistic = memberHikingStatisticRepository.findById(member.getId())
@@ -203,7 +205,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Override
 	public List<MemberRequestClubRes> findRequestClub(String email) {
 		// 회원 정보 가져오기
-		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Long memberId = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED))
 			.getId();
 
