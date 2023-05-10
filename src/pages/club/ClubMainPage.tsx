@@ -4,6 +4,7 @@ import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubMainPage.module.scss'
 import { getClubInfo } from 'apis/services/clubs'
 import { deleteClub } from 'apis/services/clubs'
+import { useQuery } from '@tanstack/react-query'
 import { ClubDetailInfo } from 'types/club.interface'
 import clubmountain from 'assets/images/clubmountain.png'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
@@ -19,7 +20,6 @@ function ClubMainPage() {
   const navigate = useNavigate()
   const [value, setValue] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-  const [clubInfo, setClubInfo] = useState<ClubDetailInfo>()
 
   function onChangeSetValue(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value)
@@ -27,9 +27,10 @@ function ClubMainPage() {
 
   const clubId = useParams<string>().clubId
 
-  useEffect(() => {
-    getClubInfo(Number(clubId)).then((res) => setClubInfo(res.data.result))
-  }, [])
+  const { data: clubInfo } = useQuery<ClubDetailInfo>(
+    ['ClubDetailInfo', { clubId: clubId }],
+    () => getClubInfo(Number(clubId))
+  )
 
   function onClickDeleteClub() {
     deleteClub(Number(clubId)).then(() => {

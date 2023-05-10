@@ -83,7 +83,9 @@ export function createMeetup(
 }
 
 export function getClubInfo(clubId: number) {
-  return apiRequest.get(`/clubs/${clubId}/detail`)
+  return apiRequest
+    .get(`/clubs/${clubId}/detail`)
+    .then((res) => res.data.result)
 }
 
 export function postJoinClub(clubId: number) {
