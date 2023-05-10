@@ -1,17 +1,47 @@
 import React from 'react'
 import styles from './MeetupReviewItem.module.scss'
+import { useParams } from 'react-router-dom'
 
 import Image from 'components/common/Image'
 import IconButton from 'components/common/IconButton'
 
 import { HiTrash, HiLightBulb } from 'react-icons/hi'
-
 import { MeetupReview } from 'types/meetup.interface'
+
+import useUserQuery from 'hooks/useUserQuery'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { deleteReview } from 'apis/services/meetup'
+import { report } from 'apis/services/users'
+import toast from 'components/common/Toast'
 
 type ReviewProps = {
   review: MeetupReview
 }
+
 function MeetupReviewItem({ review }: ReviewProps) {
+  const { data: userInfo } = useUserQuery()
+  const { clubId, meetupId } = useParams() as {
+    clubId: string
+    meetupId: string
+  }
+  const queryClient = useQueryClient()
+
+  const onClickDelete = useMutation(
+    () => deleteReview(parseInt(clubId), parseInt(meetupId), review.reviewId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['reviews'])
+        toast.addMessage('success', '후기가 삭제되었습니다')
+      },
+    }
+  )
+
+  const onclickReport = useMutation(() => report('REVIEW', review.reviewId), {
+    onSuccess: () => {
+      toast.addMessage('success', '신고가 완료되었습니다')
+    },
+  })
+
   return (
     <div className={styles.review}>
       <Image size="sm" imgUrl={review.profileUrl} isSquare={true} />
@@ -21,18 +51,22 @@ function MeetupReviewItem({ review }: ReviewProps) {
           <span className={styles.nickname}>{review.nickname}</span>
 
           <div className={styles.btns}>
-            <div className={styles.siren}>
+            <div
+              className={styles.siren}
+              onClick={() => onclickReport.mutate()}
+            >
               <HiLightBulb /> 신고하기
             </div>
-            <IconButton
-              icon={<HiTrash />}
-              size="sm"
-              color="gray"
-              onClick={() => console.log('hi')}
-            />
+            {userInfo && userInfo.memberId === review.memberId ? (
+              <IconButton
+                icon={<HiTrash />}
+                size="sm"
+                color="gray"
+                onClick={() => onClickDelete.mutate()}
+              />
+            ) : null}
           </div>
         </div>
-
         <div>{review.content}</div>
       </div>
     </div>

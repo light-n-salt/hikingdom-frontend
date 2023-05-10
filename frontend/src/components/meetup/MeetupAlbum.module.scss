@@ -19,15 +19,16 @@
 }
 
 .photos {
-  overflow: scroll;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: 0.5rem;
+  -webkit-overflow-scrolling: touch; /* 모바일에서 부드러운 스크롤 지원 */
 }
 
 .photo {
   aspect-ratio: 1/1;
-  width: 100%;
+  width: 30%;
   border-radius: 0.3rem;
   object-fit: cover;
 }
