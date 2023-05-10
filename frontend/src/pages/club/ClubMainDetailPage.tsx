@@ -31,7 +31,7 @@ function ClubMainDetailPage() {
   }
 
   return clubInfo ? (
-    <div className={`page p-sm ${theme} ${styles.page}`}>
+    <div className={`page-gradation upside p-sm ${theme} ${styles.page}`}>
       <h1 className={styles.title}>{clubInfo.clubName}</h1>
       <div className={styles.button}>
         <Button
