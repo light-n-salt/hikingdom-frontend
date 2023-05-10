@@ -1,8 +1,7 @@
 @use 'src/styles/colors' as *;
 
-.cnt {
-  align-self: flex-end;
-  margin: 0.1rem;
-  color: clr(primary-clr);
-  font-weight: bold;
+.page {
+  overflow-y: auto;
+  width: 100%;
+  padding-top: 0.5rem;
 }
