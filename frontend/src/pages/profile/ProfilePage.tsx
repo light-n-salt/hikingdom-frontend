@@ -43,7 +43,7 @@ function ProfilePage() {
         totalMountainCount={data?.totalMountainCount}
       />
       <div className={styles.title}>등산기록</div>
-      <PastMeetupList hikingRecords={data?.hikingRecords} />
+      <PastMeetupList />
       <div className={styles.alarm}>
         <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
       </div>
