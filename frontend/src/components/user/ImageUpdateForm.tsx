@@ -24,7 +24,7 @@ function ImageUpdateForm() {
   // 업데이트 mutation
   const updateImg = useMutation(updateProfile, {
     onSuccess: () => {
-      toast.addMessage('success', '프로필이 변경되었습니다.')
+      toast.addMessage('success', '프로필이 변경되었습니다')
       getUserInfo(setUserInfo)
       navigate(`/profile/${userInfo.nickname}`)
     },
@@ -48,13 +48,21 @@ function ImageUpdateForm() {
     const file = imgRef.current?.files?.[0]
     const formData = new FormData()
     formData.append('image', file)
-
+    if (!file) {
+      toast.addMessage('error', '프로필을 선택해주세요')
+      return
+    }
     updateImg.mutate(formData)
   }
 
   return userInfo ? (
     <div className={`content ${theme} ${styles.img}`}>
-      <Button text="완료" color="secondary" size="sm" onClick={onClickUpdate} />
+      <Button
+        text="사진 변경"
+        color="secondary"
+        size="sm"
+        onClick={onClickUpdate}
+      />
       <Image imgUrl={imgUrl} size="lg" />
       <input
         type="file"

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './MeetupDetailPage.module.scss'
 
@@ -10,11 +10,12 @@ import MeetupMembers from 'components/meetup/MeetupMembers'
 import MeetupAlbum from 'components/meetup/MeetupAlbum'
 import MeetupReviewList from 'components/meetup/MeetupReviewList'
 import TextSendBar from 'components/common/TextSendBar'
+import toast from 'components/common/Toast'
 
-import { meetupInfoDetail } from 'types/meetup.interface'
+import { meetupInfoDetail, MeetupReview } from 'types/meetup.interface'
 
-import { getMeetupDetail } from 'apis/services/meetup'
-import { useQuery } from '@tanstack/react-query'
+import { getMeetupDetail, updateReview, getReviews } from 'apis/services/meetup'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { useParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
@@ -27,34 +28,67 @@ function MeetupDetailPage() {
     meetupId: string
   }
   const userInfo = useRecoilValue(userInfoState)
+  const [content, setContent] = useState<string>('') // 후기 내용
+  const queryClient = useQueryClient()
 
-  const { data } = useQuery<meetupInfoDetail>(['meetup'], () =>
+  // 모임 정보
+  const {
+    data: meetup,
+    isLoading,
+    isError,
+  } = useQuery<meetupInfoDetail>(['meetup'], () =>
     getMeetupDetail(parseInt(clubId), parseInt(meetupId))
   )
 
-  return data ? (
+  // 후기 조회
+  const { data: reviews } = useQuery<MeetupReview[]>(['reviews'], () =>
+    getReviews(parseInt(clubId), parseInt(meetupId))
+  )
+
+  // 후기 등록
+  const onClickUpdateReview = useMutation(
+    () => updateReview(parseInt(clubId), parseInt(meetupId), content),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['reviews'])
+        toast.addMessage('success', '후기가 등록되었습니다.')
+        setContent('')
+      },
+    }
+  )
+
+  return isError || isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <div className={`page p-sm ${theme} ${styles.page}`}>
-      {userInfo.memberId === data.meetupHostId ? (
+      {userInfo.memberId === meetup.meetupHostId ? (
         <Button text="삭제" color="red" size="xs" />
       ) : null}
-      <PageHeader title={data?.meetupName} url="/club/meetup" color="primary" />
+      <PageHeader
+        title={meetup?.meetupName}
+        url="/club/meetup"
+        color="primary"
+      />
       <MeetupDetail
-        mountain={data?.mountainName}
-        date={data?.startAt.split(' ')[0]}
-        time={data?.startAt.split(' ')[1]}
+        mountain={meetup?.mountainName}
+        date={meetup?.startAt.split(' ')[0]}
+        time={meetup?.startAt.split(' ')[1]}
       />
       <div className={`page ${theme} ${styles.content}`}>
         <div className={styles.intro}>
-          <MeetupIntroduction content={data?.description} />
+          <MeetupIntroduction content={meetup?.description} />
         </div>
         <MeetupMembers />
-        <MeetupAlbum photoInfo={data?.photoInfo} />
-        <MeetupReviewList reviewInfo={data?.reviewInfo} />
+        <MeetupAlbum />
+        {reviews && <MeetupReviewList reviewInfo={reviews} />}
       </div>
-      <TextSendBar placeholder="후기를 입력해주세요" />
+      <TextSendBar
+        placeholder="후기를 입력해주세요"
+        content={content}
+        setContent={setContent}
+        onClick={() => onClickUpdateReview.mutate()}
+      />
     </div>
-  ) : (
-    <div>Loading...</div>
   )
 }
 

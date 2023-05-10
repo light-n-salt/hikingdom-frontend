@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useMutation, QueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './NicknameUpdateForm.module.scss'
 
@@ -17,8 +17,7 @@ function NicknameUpdateForm() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useRecoilState(userInfoState)
-  const queryClient = new QueryClient()
-
+  const queryClient = useQueryClient()
   // 닉네임 수정
   const {
     value: nickname,
