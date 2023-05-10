@@ -12,7 +12,7 @@ public class ClubSearchRes {
 	private String clubName;
 	private String location;
 	private int totalMember;
-	private Long totalDuration; // in minutes
+	private int totalDuration; // in minutes
 	private Long totalDistance; // in meters
 	private double participationRate;
 	private Long ranking;
@@ -20,7 +20,8 @@ public class ClubSearchRes {
 	public ClubSearchRes(Club club, Long ranking) {
 		this.clubId = club.getId();
 		this.clubName = club.getName();
-		this.totalDuration = club.getHikingStatistic().getTotalDuration() / 60; // seconds to minutes
+		this.totalDuration = Math.round(
+			Math.floorDiv(club.getHikingStatistic().getTotalDuration(), 60)); // seconds to minutes
 		this.totalDistance = club.getHikingStatistic().getTotalDistance();
 		this.participationRate = club.getHikingStatistic().getParticipationRate();
 		this.ranking = ranking;
