@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
+import React, { useContext, useRef, useState, useMemo } from 'react'
 import styles from './RankPage.module.scss'
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import { getRanking } from 'apis/services/clubs'
