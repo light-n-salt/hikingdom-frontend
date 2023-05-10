@@ -13,6 +13,7 @@ import TextButton from 'components/common/TextButton'
 import Modal from 'components/common/Modal'
 import Toast from 'components/common/Toast'
 import DeleteModal from 'components/club/DeleteModal'
+import Loading from 'components/common/Loading'
 
 function ClubMainPage() {
   const { theme } = useContext(ThemeContext)
@@ -79,7 +80,7 @@ function ClubMainPage() {
       </div>
     </>
   ) : (
-    <div>Loading....</div>
+    <Loading />
   )
 }
 
