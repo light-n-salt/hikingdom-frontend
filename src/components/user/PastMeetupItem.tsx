@@ -19,14 +19,13 @@ import Modal from 'components/common/Modal'
 
 import { UserHiking } from 'types/user.interface'
 import { convertToKm } from 'utils/convertToKm'
-import { useRecoilValue } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
+import useUserQuery from 'hooks/useUserQuery'
 
 export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
-  const userInfo = useRecoilValue(userInfoState)
+  const { data: userInfo } = useUserQuery()
 
   // 일정 상세보기로 이동하는 함수
   const onClickOpenModal = () => {
@@ -36,7 +35,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   // 그룹 일정 상세보기로 이동하는 함수
   const onClickGroup = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation() // 부모 이벤트 버블링 방지
-    navigate(`/club/${userInfo.clubId}/meetup/${hiking.meetupId}/detail`)
+    navigate(`/club/${userInfo?.clubId}/meetup/${hiking.meetupId}/detail`)
   }
 
   return (

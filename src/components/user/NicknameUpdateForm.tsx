@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useMutation, QueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './NicknameUpdateForm.module.scss'
 
@@ -9,16 +9,15 @@ import Button from 'components/common/Button'
 import toast from 'components/common/Toast'
 import useAuthInput from 'hooks/useAuthInput'
 
-import { updateNickname, getUserInfo } from 'apis/services/users'
-import { useRecoilState } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
+import { updateNickname } from 'apis/services/users'
+
+import useUserQuery from 'hooks/useUserQuery'
 
 function NicknameUpdateForm() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
-  const queryClient = new QueryClient()
-
+  const { data: userInfo } = useUserQuery()
+  const queryClient = useQueryClient()
   // 닉네임 수정
   const {
     value: nickname,
@@ -31,8 +30,7 @@ function NicknameUpdateForm() {
   const onClickUpdate = useMutation(() => updateNickname(nickname), {
     onSuccess: () => {
       toast.addMessage('success', '닉네임이 변경되었습니다')
-      queryClient.invalidateQueries(['profile'])
-      getUserInfo(setUserInfo)
+      queryClient.invalidateQueries(['user'])
       navigate(`/profile/${nickname}`)
     },
     onError: () => {
@@ -46,7 +44,7 @@ function NicknameUpdateForm() {
         text="취소"
         color="secondary"
         size="sm"
-        onClick={() => navigate(`/profile/${userInfo.nickname}`)}
+        onClick={() => navigate(`/profile/${userInfo?.nickname}`)}
       />
 
       <LabelInput

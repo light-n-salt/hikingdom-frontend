@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './MtTitle.module.scss'
+import { convertToHour } from 'utils/convertToTime'
 
 type MtTitleProps = {
   name: string
@@ -25,7 +26,7 @@ function MtTitle({ name, maxAlt, timeDuration, assetUrl }: MtTitleProps) {
 
         {/* 왕복시간 */}
         <div className={styles.content}>
-          <span className={styles.bold}>약 {timeDuration / 60}시간</span>
+          <span className={styles.bold}>{convertToHour(timeDuration)}</span>
           <span className={styles.text}>왕복시간</span>
         </div>
 

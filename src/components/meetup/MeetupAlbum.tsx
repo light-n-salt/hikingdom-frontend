@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import styles from './MeetupAlbum.module.scss'
 import { useParams } from 'react-router-dom'
 
@@ -7,13 +7,20 @@ import Modal from 'components/common/Modal'
 import PhotoModal from 'components/common/PhotoModal'
 import AlbumModal from 'components/meetup/AlbumModal'
 import { Album } from 'types/club.interface'
-import { updateMeetupAlbum, getMeeupAlbum } from 'apis/services/meetup'
+import { getMeetupAlbum } from 'apis/services/meetup'
 
-type MeetupAlbumProps = {
-  photoInfo: Album[]
+import useInfiniteVerticalScroll from 'hooks/useInfiniteVerticalScroll'
+import { useInfiniteQuery } from '@tanstack/react-query'
+
+type InfiniteAlbumInfo = {
+  content: Album[]
+  hasNext: boolean
+  hasPrevious: boolean
+  numberOfElements: number
+  pageSize: number
 }
 
-function MeetupAlbum({ photoInfo }: MeetupAlbumProps) {
+function MeetupAlbum() {
   const { clubId, meetupId } = useParams() as {
     clubId: string
     meetupId: string
@@ -21,10 +28,40 @@ function MeetupAlbum({ photoInfo }: MeetupAlbumProps) {
   const [isOpen, setIsOpen] = useState(false) // 선택한 사진 모달 on/off
   const [photo, setPhoto] = useState<Album>() // 선택한 사진
   const [isAlbumOpen, setIsAlbumOpen] = useState(false) // 사진 업데이트 모달
+  const infiniteRef = useRef<HTMLDivElement>(null)
+
+  const { data, isLoading, fetchNextPage, hasNextPage } =
+    useInfiniteQuery<InfiniteAlbumInfo>({
+      queryKey: ['meetupPhotos'],
+      queryFn: ({ pageParam = null }) => {
+        return getMeetupAlbum(
+          parseInt(clubId),
+          parseInt(meetupId),
+          pageParam,
+          5
+        )
+      },
+      getNextPageParam: (lastPage) => {
+        return lastPage.hasNext
+          ? lastPage.content.slice(-1)[0].photoId
+          : undefined
+      },
+    })
+
+  const photoInfo = useMemo(() => {
+    if (!data) return []
+    return data.pages.flatMap((page) => page.content)
+  }, [data])
+
+  useInfiniteVerticalScroll({
+    ref: infiniteRef,
+    loadMore: fetchNextPage,
+    isEnd: !hasNextPage,
+  })
 
   // 선택한 사진 모달에 띄우는 함수
   const onClickOpenModal = (photoId: number) => {
-    const selectedPhoto = photoInfo.find((photo) => photo.photoId === photoId)
+    const selectedPhoto = photoInfo?.find((photo) => photo.photoId === photoId)
     if (selectedPhoto) {
       setPhoto(selectedPhoto)
       setIsOpen(true)
@@ -35,7 +72,12 @@ function MeetupAlbum({ photoInfo }: MeetupAlbumProps) {
     <div className={styles.album}>
       {isAlbumOpen && (
         <Modal onClick={() => setIsAlbumOpen(false)}>
-          <AlbumModal />
+          <AlbumModal setIsOpen={() => setIsAlbumOpen(false)} />
+        </Modal>
+      )}
+      {isOpen && (
+        <Modal onClick={() => setIsOpen}>
+          {photo && <PhotoModal photo={photo} setState={setIsOpen} />}
         </Modal>
       )}
       <div className={styles.titles}>
@@ -47,13 +89,8 @@ function MeetupAlbum({ photoInfo }: MeetupAlbumProps) {
           onClick={() => setIsAlbumOpen(true)}
         />
       </div>
-      <div className={styles.photos}>
-        {isOpen && (
-          <Modal onClick={() => setIsOpen(false)}>
-            {photo && <PhotoModal photo={photo} setState={setIsOpen} />}
-          </Modal>
-        )}
-        {photoInfo.map((photo) => (
+      <div ref={infiniteRef} className={styles.photos}>
+        {photoInfo?.map((photo) => (
           <img
             key={photo.photoId}
             src={photo.imgUrl}
