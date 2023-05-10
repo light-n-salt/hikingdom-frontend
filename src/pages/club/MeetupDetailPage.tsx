@@ -37,7 +37,11 @@ function MeetupDetailPage() {
       {userInfo.memberId === data.meetupHostId ? (
         <Button text="삭제" color="red" size="xs" />
       ) : null}
-      <PageHeader title={data?.meetupName} url="/club/meetup" color="primary" />
+      <PageHeader
+        title={data?.meetupName}
+        url={`/club/${clubId}/meetup`}
+        color="primary"
+      />
       <MeetupDetail
         mountain={data?.mountainName}
         date={data?.startAt.split(' ')[0]}
