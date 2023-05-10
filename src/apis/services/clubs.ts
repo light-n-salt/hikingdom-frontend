@@ -64,8 +64,8 @@ export function getDateMeetups(clubId: string, date: string) {
 // 소모임 앨범 조회
 export function getClubAlbum(
   clubId: number,
-  size: number | null = null,
-  photoId: number | null = null
+  photoId: number | null = null,
+  size: number | null = null
 ) {
   return apiRequest
     .get(`/clubs/${clubId}/photos`, {
