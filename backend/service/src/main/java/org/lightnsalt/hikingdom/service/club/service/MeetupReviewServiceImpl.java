@@ -42,7 +42,7 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
-		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
+		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		// 일정 참여 여부 확인

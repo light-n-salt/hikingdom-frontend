@@ -53,7 +53,7 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 일정 데이터 가져오기
-		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
+		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		final boolean isExit = meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, member.getId());

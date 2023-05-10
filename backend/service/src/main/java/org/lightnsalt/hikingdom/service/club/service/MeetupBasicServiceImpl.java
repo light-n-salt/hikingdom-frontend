@@ -92,7 +92,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	public void removeMeetup(String email, Long clubId, Long meetupId) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
+		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		log.info("meetup host id is : {}", meetup.getHost().getId());
@@ -120,7 +120,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		// TODO: 일정 통계 삭제
 
 		// 일정 삭제
-		meetupRepository.updateMeetupIsDeletedByMeetupId(meetup.getId(), true, LocalDateTime.now());
+		meetupRepository.deleteById(meetup.getId());
 	}
 
 	@Override
@@ -179,7 +179,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	@Transactional
 	public MeetupDetailRes findMeetup(String email, Long clubId, Long meetupId) {
 		// 일정 정보 가져오기
-		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
+		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		// 일정 참여여부 가져오기
