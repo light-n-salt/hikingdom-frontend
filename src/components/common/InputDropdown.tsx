@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './SearchBarDropdown.module.scss'
+import styles from './InputDropdown.module.scss'
 import Dropdown from 'components/common/Dropdown'
 
 // 옵션 타입
@@ -8,7 +8,7 @@ type Option = {
   label: string
 }
 
-type SearchBarDropdownProps = {
+type InputDropdownProps = {
   value: string // input 태그의 value
   placeholder?: string // input 태그의 placeholder
   options: Option[] // 옵션으로 띄울 배열
@@ -16,15 +16,15 @@ type SearchBarDropdownProps = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void // input 태그 onChange시 동작할 함수
 }
 
-function SearchBarDropdown({
+function InputDropdown({
   value,
   placeholder = '',
   options,
   setFilter,
   onChange,
-}: SearchBarDropdownProps) {
+}: InputDropdownProps) {
   return (
-    <div className={`${styles.searchbar}`}>
+    <div className={`${styles.container}`}>
       <Dropdown options={options} setValue={setFilter} />
       <input
         id="input"
@@ -37,4 +37,4 @@ function SearchBarDropdown({
   )
 }
 
-export default SearchBarDropdown
+export default InputDropdown
