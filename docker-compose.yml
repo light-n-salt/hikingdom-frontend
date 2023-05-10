@@ -53,6 +53,24 @@ services:
       retries: 3
       start_period: 10s
 
+  main-backend-chat:
+    container_name: main-backend-chat
+    build:
+      context: ./backend/chat
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: main
+    ports:
+      - 8002:8080
+    environment:
+      - TZ=Asia/Seoul
+      - EUREKA_SERVER=main-backend-discovery
+    networks:
+      - main_hikingdom_net
+    depends_on:
+      main-backend-discovery:
+        condition: service_healthy
+
   main-backend-gateway:
     container_name: main-backend-gateway
     build:
