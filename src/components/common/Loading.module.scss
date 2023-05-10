@@ -1,6 +1,14 @@
 @use 'src/styles/colors' as *;
 @use 'src/styles/animations' as *;
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+
 .circle {
   &.sm {
     width: 3rem;
