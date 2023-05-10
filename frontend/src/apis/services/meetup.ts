@@ -74,8 +74,13 @@ export function updateReview(
 }
 
 // 일정 참여
-export function updateMeetup(clubId: number, meetupId: number) {
+export function updateJoin(clubId: number, meetupId: number) {
   return apiRequest.post(`clubs/${clubId}/meetups/${meetupId}/join`)
+}
+
+// 일정 삭제
+export function deleteMeetup(clubId: number, meetupId: number) {
+  return apiRequest.delete(`clubs/${clubId}/meetups/${meetupId}`)
 }
 
 // 일정 후기 삭제
@@ -90,6 +95,6 @@ export function deleteReview(
 }
 
 // 일정 참여 취소
-export function deleteMeetup(clubId: number, meetupId: number) {
+export function deleteJoin(clubId: number, meetupId: number) {
   return apiRequest.delete(`clubs/${clubId}/meetups/${meetupId}/join`)
 }

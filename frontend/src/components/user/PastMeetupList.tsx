@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import styles from './PastMeetupList.module.scss'
 import PastMeetupItem from './PastMeetupItem'
 import Loading from 'components/common/Loading'
@@ -8,31 +8,46 @@ import { useRecoilValue } from 'recoil'
 import { userInfoState } from 'recoil/atoms'
 import { getPastMeetups } from 'apis/services/users'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import { useInfiniteQuery } from '@tanstack/react-query'
+// type PastMeetupProps = {
+//   hikingRecords: UserHiking[]
+// }
 
-type PastMeetupProps = {
-  hikingRecords: UserHiking[]
+type InfiniteMeetupInfo = {
+  content: UserHiking[]
+  hasNext: boolean
+  hasPrevious: boolean
+  numberOfElements: number
+  pageSize: number
 }
 
-export default function PastMeetupList({ hikingRecords }: PastMeetupProps) {
+export default function PastMeetupList() {
   const userInfo = useRecoilValue(userInfoState)
-  const [records, setRecords] = useState<UserHiking[]>(hikingRecords)
-  const [isEnd, setIsEnd] = useState(false) // 무한스크롤 마지막 정보 여부
   const infiniteRef = useRef<HTMLDivElement>(null)
 
-  function loadMore() {
-    return getPastMeetups(
-      userInfo.nickname,
-      records.slice(-1)[0].hikingRecordId
-    )
-      .then((res) => {
-        setRecords((records) => [...records, ...res.data.result.content])
-        setIsEnd(!res.data.result.hasNext)
-      })
-      .catch(() => {})
-  }
+  const { data, isLoading, fetchNextPage, hasNextPage } =
+    useInfiniteQuery<InfiniteMeetupInfo>({
+      queryKey: ['meetupPhotos'],
+      queryFn: ({ pageParam = null }) => {
+        return getPastMeetups(userInfo.nickname, pageParam)
+      },
+      getNextPageParam: (lastPage) => {
+        return lastPage.hasNext
+          ? lastPage.content.slice(-1)[0].meetupId
+          : undefined
+      },
+    })
 
-  // 무한스크롤 커스텀 훅(동작 요소, 동작 함수)
-  const { isLoading } = useInfiniteScroll({ ref: infiniteRef, loadMore, isEnd })
+  const records = useMemo(() => {
+    if (!data) return []
+    return data.pages.flatMap((page) => page.content)
+  }, [data])
+
+  useInfiniteScroll({
+    ref: infiniteRef,
+    loadMore: fetchNextPage,
+    isEnd: !hasNextPage,
+  })
 
   return (
     <div ref={infiniteRef} className={styles.scroll}>

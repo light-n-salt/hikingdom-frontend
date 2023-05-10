@@ -14,10 +14,15 @@ import toast from 'components/common/Toast'
 
 import { meetupInfoDetail, MeetupReview } from 'types/meetup.interface'
 
-import { getMeetupDetail, updateReview, getReviews } from 'apis/services/meetup'
+import {
+  getMeetupDetail,
+  updateReview,
+  getReviews,
+  deleteMeetup,
+} from 'apis/services/meetup'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { userInfoState } from 'recoil/atoms'
 
@@ -30,7 +35,7 @@ function MeetupDetailPage() {
   const userInfo = useRecoilValue(userInfoState)
   const [content, setContent] = useState<string>('') // 후기 내용
   const queryClient = useQueryClient()
-
+  const navigate = useNavigate()
   // 모임 정보
   const {
     data: meetup,
@@ -57,13 +62,27 @@ function MeetupDetailPage() {
     }
   )
 
+  // 일정 삭제
+  const onClickDeleteMeetup = useMutation(
+    () => deleteMeetup(parseInt(clubId), parseInt(meetupId)),
+    {
+      onSuccess: () => {
+        toast.addMessage('success', '일정이 삭제되었습니다')
+        console.log('hi')
+        navigate(`/club/${clubId}/main`)
+      },
+      onError: (err: any) => {
+        if (err.status === 400) {
+          toast.addMessage('error', '완료된 일정은 삭제할 수 없습니다')
+        }
+      },
+    }
+  )
+
   return isError || isLoading ? (
     <div>Loading...</div>
   ) : (
     <div className={`page p-sm ${theme} ${styles.page}`}>
-      {userInfo.memberId === meetup.meetupHostId ? (
-        <Button text="삭제" color="red" size="xs" />
-      ) : null}
       <PageHeader
         title={meetup?.meetupName}
         url="/club/meetup"
@@ -88,6 +107,14 @@ function MeetupDetailPage() {
         setContent={setContent}
         onClick={() => onClickUpdateReview.mutate()}
       />
+      {userInfo.memberId === meetup.meetupHostId ? (
+        <Button
+          text="삭제"
+          color="red"
+          size="xs"
+          onClick={() => onClickDeleteMeetup.mutate()}
+        />
+      ) : null}
     </div>
   )
 }
