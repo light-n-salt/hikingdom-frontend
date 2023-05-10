@@ -14,7 +14,7 @@ import { untilMidnight } from 'utils/untilMidnight'
 type InfiniteClubInfo = {
   content: ClubInfo[]
   hasNext: boolean
-  hasPrev: boolean
+  hasPrevious: boolean
   numberOfElements: number
   pageSize: number
 }
@@ -34,33 +34,31 @@ function RankPage() {
   }, [])
 
   const [filter, setFilter] = useState('') // 선택된 필터 옵션 value
-  const [clubInfoArray, setClubInfoArray] = useState<ClubInfo[]>([]) // 클럽정보 배열
   const infiniteRef = useRef<HTMLDivElement>(null) // 무한 스크롤 동작시킬 useRef
 
   // 필터 옵션이나 쿼리가 변할 때마다, 클럽 랭킹 정보 api 요청
-  const { isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery<InfiniteClubInfo>({
-      queryKey: ['rank', filter],
-      queryFn: ({ pageParam = null }) => getRanking(filter, pageParam),
-      getNextPageParam: (lastPage) => {
-        return lastPage.hasNext
-          ? lastPage.content.slice(-1)[0].clubId
-          : undefined
-      },
-      onSuccess: (res) => {
-        console.log(res)
-        if (res.pageParams.length === 1) {
-          setClubInfoArray(res.pages.slice(-1)[0].content)
-        } else {
-          setClubInfoArray((clubs) => [
-            ...clubs,
-            ...res.pages.slice(-1)[0].content,
-          ])
-        }
-      },
-      cacheTime: queryTime,
-      staleTime: queryTime,
-    })
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<InfiniteClubInfo>({
+    queryKey: ['rank', filter],
+    queryFn: ({ pageParam = null }) => getRanking(filter, pageParam),
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNext ? lastPage.content.slice(-1)[0].clubId : undefined
+    },
+    cacheTime: queryTime,
+    staleTime: queryTime,
+  })
+
+  // infiniteQuery로 받은 배열을 가공
+  const clubInfoArray = useMemo(() => {
+    if (!data) return []
+    return data.pages.flatMap((page: InfiniteClubInfo) => page.content)
+  }, [data])
 
   // 무한스크롤 커스텀 훅(동작 요소, 동작 함수)
   useInfiniteScroll({

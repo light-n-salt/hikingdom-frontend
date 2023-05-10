@@ -62,7 +62,7 @@ axiosInstance.interceptors.response.use(
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
           toast.addMessage('error', `다시 로그인 해주세요`)
-          // location.replace(location.protocol + '//' + location.host + '/login')
+          location.replace(location.protocol + '//' + location.host + '/login')
           return Promise.reject(error)
         })
       // } else if (error.response?.status === 401) {
