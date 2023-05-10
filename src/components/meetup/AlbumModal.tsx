@@ -2,21 +2,27 @@ import React, { useState, useRef } from 'react'
 import styles from './AlbumModal.module.scss'
 import { updateMeetupAlbum, getMeetupAlbum } from 'apis/services/meetup'
 import { useParams } from 'react-router-dom'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
+import { Album } from 'types/club.interface'
 
 const MAX_FILE_SIZE = 1024 * 1024 // 1MB 이하 사진만 업로드
 
-function AlbumModal() {
+type AlbumModalProps = {
+  setIsOpen: () => void
+}
+
+function AlbumModal({ setIsOpen }: AlbumModalProps) {
   const { clubId, meetupId } = useParams() as {
     clubId: string
     meetupId: string
   }
   const [files, setFiles] = useState<string[] | undefined>()
-
   const albumRef = useRef<any>(null)
+  const queryClient = useQueryClient()
 
-  // 프로필 변경 반영
+  // 선택한 사진 모달에 띄우기
   const onChange = () => {
     const fileList = albumRef.current?.files
     const urlList = []
@@ -29,6 +35,19 @@ function AlbumModal() {
       setFiles(urlList)
     }
   }
+
+  // 사진 업로드하기
+  const { mutate } = useMutation(
+    (formData: FormData) =>
+      updateMeetupAlbum(parseInt(clubId), parseInt(meetupId), formData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['meetupPhotos'])
+        toast.addMessage('success', '사진이 추가되었습니다')
+        setIsOpen()
+      },
+    }
+  )
 
   const updateFiles = () => {
     const fileList = albumRef.current?.files
@@ -48,22 +67,11 @@ function AlbumModal() {
           toast.addMessage('error', '사진은 1MB이하로 올릴 수 있습니다')
           return
         }
-        formData.append('photo', fileList[i])
+        formData.append('photos', fileList[i])
       }
     }
 
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value)
-    }
-
-    updateMeetupAlbum(parseInt(clubId), parseInt(meetupId), formData).then(
-      () => {
-        console.log('hi')
-        // getMeetupAlbum(parseInt(clubId), parseInt(meetupId)).then((res) =>
-        //   console.log(res.data.result, '성공이지렁')
-        // )
-      }
-    )
+    mutate(formData)
   }
   return (
     <div className={styles.modal}>
