@@ -16,6 +16,14 @@ import RankList from 'components/common/RankList'
 import Loading from 'components/common/Loading'
 import { untilMidnight } from 'utils/untilMidnight'
 
+type InfiniteClubInfo = {
+  content: ClubInfo[]
+  hasNext: boolean
+  hasPrevious: boolean
+  numberOfElements: number
+  pageSize: number
+}
+
 function MainPage() {
   const navigate = useNavigate()
   const queryTime = useMemo(() => {
@@ -32,11 +40,11 @@ function MainPage() {
     staleTime: queryTime,
   })
 
-  // const { data: clubInfoArray } = useQuery<ClubInfo[]>(['clubRankTop3'], () =>
-  //   getRanking('', null, 3).then((res) => res.data.result)
-  // )
+  const { data: clubInfoArray } = useQuery<InfiniteClubInfo>(['clubRankTop3'], () =>
+    getRanking('', null, 3)
+  )
 
-  return (
+  return mtInfoArray && clubInfoArray ? (
     <>
       {isLoading || isError ? (
         <Loading />
@@ -56,6 +64,7 @@ function MainPage() {
           <div className={styles.section}>
             <IconText imgSrc={trophy} text="TOP3" size="sm" isBold={true} />
             <div className={styles.scroll}>
+              {/* <RankList clubInfoArray={clubInfoArray.content} size="sm" /> */}
               <RankList clubInfoArray={clubInfoArrayEx} size="sm" />
             </div>
           </div>
@@ -76,6 +85,8 @@ function MainPage() {
         </div>
       )}
     </>
+  ) : (
+    <Loading />
   )
 }
 
@@ -85,7 +96,7 @@ const clubInfoArrayEx = [
   {
     clubId: 1,
     clubName: '산타마리아',
-    location: '서울시 노원구',
+    location: '서울특별시 강남구',
     totalMember: 13,
     totalDuration: '12:02',
     totalDistance: 123,
@@ -94,8 +105,8 @@ const clubInfoArrayEx = [
   },
   {
     clubId: 2,
-    clubName: '산타마리오',
-    location: '서울시 강남구',
+    clubName: '싸피 8기 1반',
+    location: '서울특별시 강남구',
     totalMember: 10,
     totalDuration: '9:02',
     totalDistance: 100,
@@ -104,55 +115,12 @@ const clubInfoArrayEx = [
   },
   {
     clubId: 3,
-    clubName: '산타지마',
-    location: '서울시 동작구',
+    clubName: '싸피 8기 전국캠퍼스 등산',
+    location: '전국',
     totalMember: 15,
     totalDuration: '3:02',
     totalDistance: 73,
     participationRate: 67,
     ranking: 3,
-  },
-]
-
-const mtInfoArrayEx = [
-  {
-    mountainId: 1,
-    name: '도봉산',
-    maxAlt: 123,
-    address: '서울시 노원구',
-    imgUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-  },
-  {
-    mountainId: 2,
-    name: '도봉산',
-    maxAlt: 123,
-    address: '서울시 노원구',
-    imgUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-  },
-  {
-    mountainId: 3,
-    name: '도봉산',
-    maxAlt: 123,
-    address: '서울시 노원구',
-    imgUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-  },
-  {
-    mountainId: 4,
-    name: '도봉산',
-    maxAlt: 123,
-    address: '서울시 노원구',
-    imgUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-  },
-  {
-    mountainId: 5,
-    name: '도봉산',
-    maxAlt: 123,
-    address: '서울시 노원구',
-    imgUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
   },
 ]

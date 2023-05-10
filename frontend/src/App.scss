@@ -74,6 +74,16 @@
     &.dark {
       @include dark-gradation-theme;
     }
+
+    &.upside {
+      &.light {
+        @include upside-down-light-gradation-theme
+      }
+
+      &.dark {
+        @include upside-down-dark-gradation-theme
+      }
+    }
   }
 }
 
