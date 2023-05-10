@@ -54,7 +54,7 @@ function ClubMainPage() {
           />
         </Modal>
       )}
-      <div className={`page p-sm ${theme} ${styles.page}`}>
+      <div className={`page-gradation upside p-sm ${theme} ${styles.page}`}>
         <ClubRecordInfo
           participationRate={clubInfo.participationRate}
           totalDuration={clubInfo.totalDuration}

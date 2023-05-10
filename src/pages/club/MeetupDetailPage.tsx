@@ -84,9 +84,6 @@ function MeetupDetailPage() {
     </div>
   ) : (
     <div className={`page p-sm ${theme} ${styles.page}`}>
-      {userInfo.memberId === meetup.meetupHostId ? (
-        <Button text="삭제" color="red" size="xs" />
-      ) : null}
       <PageHeader
         title={meetup?.meetupName}
         url={`/club/${clubId}/meetup`}
