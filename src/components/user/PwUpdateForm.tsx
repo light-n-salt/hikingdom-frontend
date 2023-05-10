@@ -14,14 +14,13 @@ import useCheckPw from 'hooks/useCheckPw'
 
 import { updatePw } from 'apis/services/users'
 
-import { useRecoilValue } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
+import useUserQuery from 'hooks/useUserQuery'
 
 function PwUpdateForm() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
-  const userInfo = useRecoilValue(userInfoState)
 
+  const { data: userInfo } = useUserQuery()
   // 비밀번호 변경
   const {
     value: password,
@@ -48,7 +47,7 @@ function PwUpdateForm() {
     {
       onSuccess: () => {
         toast.addMessage('success', '비밀번호가 변경되었습니다')
-        navigate(`/profile/${userInfo.nickname}`)
+        navigate(`/profile/${userInfo?.nickname}`)
       },
       onError: (err: AxiosError) => {
         if (err.status === 401) {

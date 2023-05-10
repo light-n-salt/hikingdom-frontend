@@ -1,17 +1,13 @@
-import React, { useState, useRef, useMemo } from 'react'
+import React, { useRef, useMemo } from 'react'
 import styles from './PastMeetupList.module.scss'
 import PastMeetupItem from './PastMeetupItem'
 import Loading from 'components/common/Loading'
-
+import { useParams } from 'react-router-dom'
 import { UserHiking } from 'types/user.interface'
-import { useRecoilValue } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
+
 import { getPastMeetups } from 'apis/services/users'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import { useInfiniteQuery } from '@tanstack/react-query'
-// type PastMeetupProps = {
-//   hikingRecords: UserHiking[]
-// }
 
 type InfiniteMeetupInfo = {
   content: UserHiking[]
@@ -22,14 +18,14 @@ type InfiniteMeetupInfo = {
 }
 
 export default function PastMeetupList() {
-  const userInfo = useRecoilValue(userInfoState)
+  const { nickname } = useParams() as { nickname: string }
   const infiniteRef = useRef<HTMLDivElement>(null)
 
   const { data, isLoading, fetchNextPage, hasNextPage } =
     useInfiniteQuery<InfiniteMeetupInfo>({
-      queryKey: ['meetupPhotos'],
+      queryKey: ['pastMeetup'],
       queryFn: ({ pageParam = null }) => {
-        return getPastMeetups(userInfo.nickname, pageParam)
+        return getPastMeetups(nickname, pageParam)
       },
       getNextPageParam: (lastPage) => {
         return lastPage.hasNext
