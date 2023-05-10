@@ -1,11 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 import PageHeader from 'components/common/PageHeader'
 import TextSendBar from 'components/common/TextSendBar'
 import ChatList from 'components/club/ChatList'
+import { Chats, Chat, ChatMember } from 'types/chat.interface'
 
-import { Chats } from 'types/chat.interface'
+import { useQuery } from '@tanstack/react-query'
+import useUserQuery from 'hooks/useUserQuery'
+import sockjs from 'sockjs-client'
+import StompJs from 'stompjs'
+import { send } from 'process'
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
@@ -63,13 +68,85 @@ function ClubChatPage() {
     ],
   }
 
+  // 유저정보
+  const { data: userInfo } = useUserQuery()
+
+  // 웹소켓
+  const [stomp, setStomp] = useState<any>() // 타입 수정 필요
+
+  // 채팅 & 멤버 데이터
+  // useState<{ [key: number]: ChatMember }
+  const [memberList, setMemberList] = useState<ChatMember[]>([])
+  const [chatList, setChatList] = useState<Chat[]>([])
+  const [message, setMessage] = useState<string>('')
+
+  // 초기 데이터 불러오기
+  useEffect(() => {
+    //useQuery
+  }, [])
+
+  // 소켓통신 연결
+  useEffect(() => {}, [])
+
+  function connection() {
+    const socket = new sockjs('연결할 url')
+    const stomp = StompJs.over(socket)
+    setStomp(stomp)
+
+    // 서버에 connect 프레임 전송
+    stomp.connect({}, () => {
+      // 특정 URI 구독
+      stomp.subscribe(`연결할 url`, (chatDTO) => {
+        // 구독 이후 메세지를 받을 때마다 실행할 콜백함수
+        const data = JSON.parse(chatDTO.body)
+
+        // 채팅 데이터
+        if (data.status === 'chat') {
+          const { chatId, memberId, content, sendAt } = data
+          setChatList((chatList) => [
+            { chatId, memberId, content, sendAt },
+            ...chatList,
+          ])
+          return
+        }
+
+        // 멤버 데이터
+        if (data.status === 'member') {
+          const { memberId, nickname, profileUrl, level } = data
+          setMemberList((memberList) => [
+            { memberId, nickname, profileUrl, level },
+            ...memberList,
+          ])
+          return
+        }
+      })
+    })
+  }
+
+  // 채팅 전송
+  function sendChat() {
+    if (!message.trim()) return
+    stomp.send(
+      'url',
+      {},
+      JSON.stringify({
+        status: 'chat',
+        memberId: userInfo?.memberId,
+        content: message,
+      })
+    )
+  }
+
   return (
     <div className={`page p-sm ${theme} mobile `}>
       <PageHeader title="모임이름" url={`/club/${clubId}/main`} />
-      <ChatList chats={chats} members={members} />
-      {/* <TextSendBar
-        onClick={() => console.log('채팅입력@@')}
-      /> */}
+      <ChatList chats={chatList} members={memberList} />
+      <TextSendBar
+        placeholder="내용을 입력해주세요"
+        content={message}
+        setContent={setMessage}
+        onClick={sendChat}
+      />
     </div>
   )
 }
