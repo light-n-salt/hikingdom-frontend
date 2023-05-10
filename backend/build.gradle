@@ -71,3 +71,10 @@ project(':batch') {
         implementation project(':domain')
     }
 }
+
+project(':chat') {
+    dependencies {
+        implementation project(':domain')
+        implementation project(':common')
+    }
+}
