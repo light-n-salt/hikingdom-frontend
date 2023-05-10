@@ -11,138 +11,54 @@ function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
   const clubId = 1
 
-  const result: Chats = {
-    groupId: 1,
-    groupName: '그룹이름',
-    chatting: [
+  const { members, chats }: Chats = {
+    status: 'Members',
+    members: [
       {
-        chattingId: 0,
         memberId: 1,
+        nickname: '이현진진자라',
         profileUrl:
           'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '이현진진자라',
+
         level: 3,
+      },
+      {
+        memberId: 2,
+        nickname: '예지',
+        profileUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+
+        level: 3,
+      },
+    ],
+    chats: [
+      {
+        chatId: '0',
+        memberId: 1,
+        content: 'hi',
+        sendAt: 'YY HH:MM:SS',
+      },
+      {
+        chatId: '1',
+        memberId: 1,
+
         content:
           '이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
+        sendAt: 'YY HH:MM:SS',
       },
       {
-        chattingId: 1,
+        chatId: '2',
         memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content: '이건 내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
+
+        content: 'hi',
+        sendAt: 'YY HH:MM:SS',
       },
       {
-        chattingId: 1,
+        chatId: '3',
         memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content: '이건 내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
-      },
-      {
-        chattingId: 2,
-        memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content: '이건 내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
-      },
-      {
-        chattingId: 3,
-        memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content:
-          '이건 내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
-      },
-      {
-        chattingId: 3,
-        memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content:
-          '이건 내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
-      },
-      {
-        chattingId: 3,
-        memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content:
-          '이건 내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
-      },
-      {
-        chattingId: 3,
-        memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content:
-          '이건 내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
-      },
-      {
-        chattingId: 3,
-        memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content:
-          '이건 내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
-      },
-      {
-        chattingId: 3,
-        memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content:
-          '이건 내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
-      },
-      {
-        chattingId: 3,
-        memberId: 2,
-        profileUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        nickname: '정예지',
-        level: 3,
-        content:
-          '이건 내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다',
-        sendAt: 'HH:MM:SS',
-        isContinue: true,
+
+        content: 'thisisyeji',
+        sendAt: 'YY HH:MM:SS',
       },
     ],
   }
@@ -150,9 +66,8 @@ function ClubChatPage() {
   return (
     <div className={`page p-sm ${theme} mobile `}>
       <PageHeader title="모임이름" url={`/club/${clubId}/main`} />
-      <ChatList chatting={result.chatting} />
+      <ChatList chats={chats} members={members} />
       {/* <TextSendBar
-        placeholder="채팅을 입력해주세요"
         onClick={() => console.log('채팅입력@@')}
       /> */}
     </div>
