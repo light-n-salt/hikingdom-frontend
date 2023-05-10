@@ -9,18 +9,22 @@ import android.graphics.Color
 import android.location.Location
 import android.os.*
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.R
 import com.example.hikingdom.data.entities.UserLocation
 import com.example.hikingdom.data.local.AppDatabase
+import com.example.hikingdom.data.remote.hiking.GpsRoute
+import com.example.hikingdom.data.remote.hiking.HikingService
+import com.example.hikingdom.data.remote.hiking.SaveHikingRecordReq
 import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.ui.main.hiking.HikingFragment.Companion.ACTION_STOP
 import com.example.hikingdom.utils.LocationHelper
 import com.example.hikingdom.utils.saveIsLocationServiceRunning
 
-class LocationService : Service() {
+class LocationService : Service(), SaveHikingRecordView {
     lateinit var db: AppDatabase
     var isServiceRunning = false    // Foreground 서비스가 실행중인지 여부
     private val binder = LocationBinder()     // Binder given to clients
@@ -88,8 +92,12 @@ class LocationService : Service() {
             val storedUserLocations = db?.userLocationDao().getUserLocations()
             Log.d("storedUserLocations", storedUserLocations.toString())
             // storedUserLocations를 post api로 서버에 전달, success 시 모든 userLocation 데이터 삭제
-            db?.userLocationDao().deleteAllUserLocations()  // 나중에 지우기 (api 호출 onSuccess에서 처리해줘야함)
-            Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
+            var gpsRoute = ArrayList<GpsRoute>();
+            for (storedUserLocation in storedUserLocations){
+                gpsRoute.add(GpsRoute(storedUserLocation.latitude, storedUserLocation.longitude, storedUserLocation.altitude))
+            }
+            var saveHikingRecordReq = SaveHikingRecordReq(false, 2, null, "2023-05-10 15:39:20", 322, 95.34, 101, gpsRoute)
+            HikingService.saveHikingRecord(this, saveHikingRecordReq)
         }else{
             Log.d(TAG, "foreground service 시작")
 
@@ -206,5 +214,16 @@ class LocationService : Service() {
         stopForeground(true)
         stopSelf()
         saveIsLocationServiceRunning(false)
+    }
+
+    override fun onSaveHikingRecordSuccess(message: String) {
+        db?.userLocationDao().deleteAllUserLocations()  // 나중에 지우기 (api 호출 onSuccess에서 처리해줘야함)
+        Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
+        Log.d("saveHikingRecordSuccess", message)
+    }
+
+    override fun onSaveHikingRecordFailure(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Log.d("saveHikingRecordFailure", message)
     }
 }
