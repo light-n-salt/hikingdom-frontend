@@ -32,7 +32,7 @@ public class MemberReportServiceImpl implements MemberReportService {
 	@Transactional
 	public Long saveMemberReport(String email, MemberReportReq req) {
 		// 신고하는 사용자 조회
-		final Member reporter = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member reporter = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		// 신고하려는 사용자 조회

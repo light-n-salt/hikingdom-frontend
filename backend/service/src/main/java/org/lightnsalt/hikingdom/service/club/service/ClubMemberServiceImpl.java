@@ -41,7 +41,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	@Transactional
 	@Override
 	public void sendClubJoinRequest(String email, Long clubId) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
@@ -67,7 +67,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	@Transactional
 	@Override
 	public void retractClubJoinRequest(String email, Long clubId) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
@@ -90,7 +90,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	@Transactional
 	public Map<String, List<MeetupMemberDetailListRes>> findClubMember(String email, Long clubId) {
 		// 회원 정보 id 가져오기 -> 소모임장인지 확인하기 위한 용도
-		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Long memberId = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
 
 		// 소모임장 id 가져오기
@@ -125,7 +125,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	@Transactional
 	@Override
 	public void withdrawClubMember(String email, Long clubId) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(),
 				false)
@@ -144,9 +144,9 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 
 		// 참여하고 있는 일정이 있을 시, 자동 참여 취소
 		LocalDateTime now = LocalDateTime.now();
-		List<MeetupMember> participatingEvents = meetupMemberRepository.findByMemberIdAndStartAtAfterAndIsWithdraw(
-			member.getId(), now, false);
-		meetupMemberRepository.updateMeetupMemberIsWithdraw(participatingEvents, true, now);
+		List<MeetupMember> participatingEvents = meetupMemberRepository.findByMemberIdAndStartAtAfter(
+			member.getId(), now);
+		meetupMemberRepository.deleteAll(participatingEvents);
 
 		// 소모임 탈퇴 처리
 		clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, now);

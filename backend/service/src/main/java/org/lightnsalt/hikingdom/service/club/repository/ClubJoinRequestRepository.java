@@ -20,7 +20,8 @@ public interface ClubJoinRequestRepository extends JpaRepository<ClubJoinRequest
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE ClubJoinRequest c SET c.status = :status, c.modifiedAt = :now "
 		+ "WHERE c.member = :member AND  c.status = 'PENDING'")
-	void updatePendingJoinRequestByMember(Member member, JoinRequestStatusType status, LocalDateTime now);
+	void updatePendingJoinRequestByMember(@Param("member") Member member, @Param("status") JoinRequestStatusType status,
+		@Param("now") LocalDateTime now);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE ClubJoinRequest c SET c.status = :status, c.modifiedAt = :now "

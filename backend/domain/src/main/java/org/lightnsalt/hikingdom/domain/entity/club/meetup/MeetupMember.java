@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.lightnsalt.hikingdom.domain.common.BaseTimeEntity;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 
@@ -28,6 +30,8 @@ import lombok.ToString;
 @Entity
 @Getter
 @ToString
+@SQLDelete(sql = "UPDATE meetup_member SET is_withdraw = true, withdraw_at = CURRENT_TIMESTAMP WHERE id = ?")
+@Where(clause = "is_withdraw = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "meetup_member")
 public class MeetupMember extends BaseTimeEntity {
