@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router'
 
 import styles from './TrackingInfo.module.scss'
@@ -8,8 +8,8 @@ import { convertToTime } from 'utils/convertToTime'
 import { UserHikingDetail } from 'types/user.interface'
 import { getTrackingInfo } from 'apis/services/users'
 import { useQuery } from '@tanstack/react-query'
+import { untilMidnight } from 'utils/untilMidnight'
 
-import Button from 'components/common/Button'
 import Loading from 'components/common/Loading'
 import IconText from 'components/common/IconText'
 import { BiCalendarAlt } from 'react-icons/bi'
@@ -32,10 +32,17 @@ function TrackingInfo({ hikingRecordId }: TrackingInfoProps) {
     nickname: string
   }
 
+  const queryTime = useMemo(() => {
+    return untilMidnight()
+  }, [])
+
   const { data: detailRecord } = useQuery<UserHikingDetail>(
     ['hikingInfo', { hikingRecordId: hikingRecordId }],
-    () =>
-      getTrackingInfo(nickname, hikingRecordId).then((res) => res.data.result)
+    () => getTrackingInfo(nickname, hikingRecordId),
+    {
+      cacheTime: queryTime,
+      staleTime: queryTime,
+    }
   )
 
   useEffect(() => {
@@ -43,28 +50,44 @@ function TrackingInfo({ hikingRecordId }: TrackingInfoProps) {
       return
     }
 
+    // 경로 정보
+    const route = detailRecord.gpsRoute.gpsRoute
+
+    const linePath: any = []
+    let totalLat = 0
+    let totalLng = 0
+
+    route.forEach((path) => {
+      linePath.push(new kakao.maps.LatLng(path.lat, path.lng)),
+        (totalLat += path.lat),
+        (totalLng += path.lng)
+    })
+
+    // 좌표 중심 계산?
+    // const midLat: number = totalLat / route.length
+    // const midLng: number = totalLng / route.length
+
+    // 지도 그리는 정보
     const container = document.getElementById('map')
     const options = {
-      center: new kakao.maps.LatLng(37.501394, 127.038489),
+      center: new kakao.maps.LatLng(
+        totalLat / route.length,
+        totalLng / route.length
+      ),
       level: 6,
     }
     const map = new kakao.maps.Map(container, options)
 
-    // const linePath: any = []
+    // 선그리기
+    const polyline: any = new kakao.maps.Polyline({
+      path: linePath, // 선을 구성하는 좌표배열 입니다
+      strokeWeight: 5, // 선의 두께 입니다
+      strokeColor: '#000000', // 선의 색깔입니다
+      strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+      strokeStyle: 'solid', // 선의 스타일입니다
+    })
 
-    // route.map((path, index) =>
-    //   linePath.push(new kakao.maps.LatLng(path.Lat, path.lng))
-    // )
-
-    // const polyline: any = new kakao.maps.Polyline({
-    //   path: linePath, // 선을 구성하는 좌표배열 입니다
-    //   strokeWeight: 5, // 선의 두께 입니다
-    //   strokeColor: '#000000', // 선의 색깔입니다
-    //   strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //   strokeStyle: 'solid', // 선의 스타일입니다
-    // })
-
-    // polyline.setMap(map)
+    polyline.setMap(map)
   }, [detailRecord])
 
   return detailRecord ? (

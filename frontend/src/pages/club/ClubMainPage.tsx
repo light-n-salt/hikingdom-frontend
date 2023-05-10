@@ -1,26 +1,26 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubMainPage.module.scss'
 import { getClubInfo } from 'apis/services/clubs'
 import { deleteClub } from 'apis/services/clubs'
+import { useQuery } from '@tanstack/react-query'
 import { ClubDetailInfo } from 'types/club.interface'
 import clubmountain from 'assets/images/clubmountain.png'
-import ClubRecordInfo from 'components/club/ClubRecordInfo'
-import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
-import SearchBar from 'components/common/SearchBar'
-import TextButton from 'components/common/TextButton'
 import Modal from 'components/common/Modal'
 import Toast from 'components/common/Toast'
-import DeleteModal from 'components/club/DeleteModal'
 import Loading from 'components/common/Loading'
+import SearchBar from 'components/common/SearchBar'
+import TextButton from 'components/common/TextButton'
+import DeleteModal from 'components/club/DeleteModal'
+import ClubRecordInfo from 'components/club/ClubRecordInfo'
+import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 
 function ClubMainPage() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const [value, setValue] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-  const [clubInfo, setClubInfo] = useState<ClubDetailInfo>()
 
   function onChangeSetValue(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value)
@@ -28,9 +28,10 @@ function ClubMainPage() {
 
   const clubId = useParams<string>().clubId
 
-  useEffect(() => {
-    getClubInfo(Number(clubId)).then((res) => setClubInfo(res.data.result))
-  }, [])
+  const { data: clubInfo } = useQuery<ClubDetailInfo>(
+    ['ClubDetailInfo', { clubId: clubId }],
+    () => getClubInfo(Number(clubId))
+  )
 
   function onClickDeleteClub() {
     deleteClub(Number(clubId)).then(() => {
