@@ -13,8 +13,8 @@ import { useParams } from 'react-router-dom'
 import {
   getMeetupMembers,
   getMembersDetail,
-  updateMeetup,
-  deleteMeetup,
+  updateJoin,
+  deleteJoin,
 } from 'apis/services/meetup'
 
 function MeetupMembers() {
@@ -42,7 +42,7 @@ function MeetupMembers() {
 
   // 일정 참여
   const onClickJoin = () => {
-    updateMeetup(parseInt(clubId), parseInt(meetupId)).then(() => {
+    updateJoin(parseInt(clubId), parseInt(meetupId)).then(() => {
       updateMembers()
       toast.addMessage('success', '일정에 참여했습니다')
     })
@@ -50,7 +50,7 @@ function MeetupMembers() {
 
   // 일정 참여 취소
   const onClickWithdraw = () => {
-    deleteMeetup(parseInt(clubId), parseInt(meetupId)).then(() => {
+    deleteJoin(parseInt(clubId), parseInt(meetupId)).then(() => {
       updateMembers()
       toast.addMessage('success', '일정을 취소했습니다')
     })
