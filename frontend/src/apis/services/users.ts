@@ -112,5 +112,7 @@ export function confirmEmail(email: string, authCode: string) {
 }
 
 export function getTrackingInfo(nickname: string, hikingRecordId: number) {
-  return apiRequest.get(`/members/${nickname}/hiking/${hikingRecordId}`)
+  return apiRequest
+    .get(`/members/${nickname}/hiking/${hikingRecordId}`)
+    .then((res) => res.data.result)
 }
