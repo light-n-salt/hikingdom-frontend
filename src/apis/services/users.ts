@@ -23,11 +23,13 @@ export function getPastMeetups(
   nickname: string,
   hikingRecordId: number | null = null
 ) {
-  return apiRequest.get(`/members/${nickname}/hiking`, {
-    params: {
-      hikingRecordId,
-    },
-  })
+  return apiRequest
+    .get(`/members/${nickname}/hiking`, {
+      params: {
+        hikingRecordId,
+      },
+    })
+    .then((res) => res.data.result)
 }
 
 // POST Request
