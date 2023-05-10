@@ -5,9 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MemberInfoRes {
-	private Long memberId;
-	private String nickname;
-	private String profileUrl;
-	private Integer level;
+public class ChatMessageRes {
+	private static final String TYPE = "MESSAGE";
+	private ChatRes chat;
 }
