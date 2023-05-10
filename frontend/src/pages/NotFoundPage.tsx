@@ -14,7 +14,7 @@ function NotFoundPage() {
       <div className={styles.content}>
         <div>
           <Loading />
-          <p>NotFound</p>
+          <p>Page Not Found</p>
         </div>
         <Button
           text="메인으로"

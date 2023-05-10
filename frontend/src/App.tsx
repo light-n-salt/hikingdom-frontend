@@ -8,6 +8,7 @@ import LoginPage from 'pages/auth/LoginPage'
 import AgreePage from 'pages/auth/AgreePage'
 import FindPwPage from 'pages/auth/FindPwPage'
 import SignupPage from 'pages/auth/SignupPage'
+import PolicyPage from 'pages/auth/PolicyPage'
 // Main
 import SearchLayout from 'pages/main/SearchLayout'
 import MainPage from 'pages/main/MainPage'
@@ -46,6 +47,7 @@ function App() {
         <Route path="signup" element={<SignupPage />} />
         <Route path="agreement" element={<AgreePage />} />
         <Route path="password" element={<FindPwPage />} />
+        <Route path="policy" element={<PolicyPage />} />
         <Route element={<PrivateRoute />}>
           {/* 메인 */}
           <Route path="/main" element={<SearchLayout />}>
