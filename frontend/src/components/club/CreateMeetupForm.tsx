@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
-import PageHeader from 'components/common/PageHeader'
 import LabelInput from 'components/common/LabelInput'
 import yellowLabel from 'assets/images/yellow_label.png'
 import mail from 'assets/images/mail.png'
@@ -41,6 +40,7 @@ function CreateMeetupForm() {
   // input태그 변화에 따른 일정날짜(date) 업데이트하는 함수
   function onChangeSetMountain(event: React.ChangeEvent<HTMLInputElement>) {
     setMountain(event.target.value)
+    if (!event.target.value) return
     getMountains(event.target.value).then((res) => {
       const mountainInfoArray: MtInfo[] = res.data.result.content
       const options: Option[] = []
@@ -91,7 +91,6 @@ function CreateMeetupForm() {
 
   return (
     <div className={styles.container}>
-      <PageHeader title="일정 만들기" url="/club/meetup" color="primary" />
       <LabelInput label="일정 이름" value={name} onChange={onChangeSetName} />
       <LabelInputSelect
         label="산 선택"

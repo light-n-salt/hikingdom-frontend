@@ -24,7 +24,7 @@ function ClubPage() {
   return userInfo && isJoin ? (
     <div className={`page ${theme}`}>
       <ClubHeader />
-      <Outlet></Outlet>
+      <Outlet />
     </div>
   ) : null
 }

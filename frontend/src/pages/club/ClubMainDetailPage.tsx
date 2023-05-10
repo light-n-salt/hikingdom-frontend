@@ -32,7 +32,7 @@ function ClubMainDetailPage() {
 
   return clubInfo ? (
     <div className={`page p-sm ${theme} ${styles.page}`}>
-      <span className={styles.title}>{clubInfo.clubName}</span>
+      <h1 className={styles.title}>{clubInfo.clubName}</h1>
       <div className={styles.button}>
         <Button
           text="가입 신청"

@@ -33,7 +33,7 @@ function ClubHeader() {
   return clubInfo ? (
     <>
       <div className={styles.header}>
-        <span className={styles.title}>{clubInfo.clubName}</span>
+        <h1 className={styles.title}>{clubInfo.clubName}</h1>
         <div className={styles.chat}>
           <IconButton
             imgSrc={Chatting}
@@ -45,7 +45,7 @@ function ClubHeader() {
       <div className={styles.nav}>
         <span
           className={`${styles.button} ${
-            type === 'main' ? styles.active : styles.disabled
+            type === 'main' ? styles.active : styles.inactive
           }`}
           onClick={() => navigate(`main`)}
         >
@@ -53,7 +53,7 @@ function ClubHeader() {
         </span>
         <span
           className={`${styles.button} ${
-            type === 'meetup' ? styles.active : styles.disabled
+            type === 'meetup' ? styles.active : styles.inactive
           }`}
           onClick={() => navigate('meetup')}
         >
@@ -61,7 +61,7 @@ function ClubHeader() {
         </span>
         <span
           className={`${styles.button} ${
-            type === 'member' ? styles.active : styles.disabled
+            type === 'member' ? styles.active : styles.inactive
           }`}
           onClick={() => navigate('member')}
         >
@@ -69,14 +69,14 @@ function ClubHeader() {
         </span>
         <span
           className={`${styles.button} ${
-            type === 'album' ? styles.active : styles.disabled
+            type === 'album' ? styles.active : styles.inactive
           }`}
           onClick={() => navigate('album')}
         >
           앨범
         </span>
       </div>
-    </>
+    </div>
   ) : null
 }
 
