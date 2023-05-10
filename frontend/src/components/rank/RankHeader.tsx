@@ -10,15 +10,17 @@ function RankHeader() {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <img className={styles.icon} src={trophy} />
+        <img className={styles.trophy} src={trophy} />
         <h2>모임별 랭킹</h2>
       </div>
-      <IconButton
-        icon={<BiSearch />}
-        color="primary"
-        size="md"
-        onClick={() => navigate('/club/search')}
-      />
+      <div className={styles.search}>
+        <IconButton
+          icon={<BiSearch />}
+          color="primary"
+          size="md"
+          onClick={() => navigate('/club/search')}
+        />
+      </div>
     </div>
   )
 }
