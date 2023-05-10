@@ -25,7 +25,7 @@ public class MountainInfoRepositoryCustom {
 		List<MountainInfo> result = queryFactory.selectFrom(mountainInfo)
 			.where(isLast(mountainId))
 			.orderBy(mountainInfo.name.asc())
-			.limit(pageable.getPageSize() + 1)
+			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 		return checkLastPage(pageable, result);
 	}
@@ -35,7 +35,7 @@ public class MountainInfoRepositoryCustom {
 			.where(isLast(mountainId)
 				, mountainInfo.name.contains(word))
 			.orderBy(mountainInfo.name.asc())
-			.limit(pageable.getPageSize() + 1)
+			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 		return checkLastPage(pageable, result);
 	}
