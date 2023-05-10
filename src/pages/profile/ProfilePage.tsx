@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ProfilePage.module.scss'
 import { useNavigate } from 'react-router-dom'
@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import UserProfile from 'components/user/UserProfile'
 import PastMeetupList from 'components/user/PastMeetupList'
 import IconButton from 'components/common/IconButton'
-
+import Loading from 'components/common/Loading'
 import bell from 'assets/images/bell.png'
 
 import { UserProfileInfo } from 'types/user.interface'
@@ -22,31 +22,32 @@ function ProfilePage() {
   const navigate = useNavigate()
   const userInfo = useRecoilValue(userInfoState)
 
-  const { data } = useQuery<UserProfileInfo>(['userHiking'], () =>
-    getProfile(userInfo.nickname)
+  const { data, isLoading, isError } = useQuery<UserProfileInfo>(
+    ['userHiking'],
+    () => getProfile(userInfo.nickname, 5)
   )
 
-  return userInfo && data ? (
+  return isError || isLoading ? (
+    <Loading size="sm" />
+  ) : (
     <div className={`page p-sm ${theme} ${styles.profile}`}>
       <UserProfile
-        profileUrl={userInfo.profileUrl}
-        nickname={userInfo.nickname}
-        email={userInfo.email}
-        level={userInfo.level}
-        totalAlt={data.totalAlt}
-        totalDistance={data.totalDistance}
-        totalDuration={data.totalDuration}
-        totalHikingCount={data.totalHikingCount}
-        totalMountainCount={data.totalMountainCount}
+        profileUrl={userInfo?.profileUrl}
+        nickname={userInfo?.nickname}
+        email={userInfo?.email}
+        level={userInfo?.level}
+        totalAlt={data?.totalAlt}
+        totalDistance={data?.totalDistance}
+        totalDuration={data?.totalDuration}
+        totalHikingCount={data?.totalHikingCount}
+        totalMountainCount={data?.totalMountainCount}
       />
       <div className={styles.title}>등산기록</div>
-      <PastMeetupList hikingRecords={data.hikingRecords} />
+      <PastMeetupList hikingRecords={data?.hikingRecords} />
       <div className={styles.alarm}>
         <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
       </div>
     </div>
-  ) : (
-    <div>Loading ...</div>
   )
 }
 

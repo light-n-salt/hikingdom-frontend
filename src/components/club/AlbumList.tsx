@@ -16,6 +16,7 @@ function AlbumList({ photoList }: AlbumListProps) {
   // 선택한 사진 모달에 띄우는 함수
   const onClickOpenModal = (photoId: number) => {
     const selectedPhoto = photoList.find((photo) => photo.photoId === photoId)
+
     if (selectedPhoto) {
       setPhoto(selectedPhoto)
       setIsOpen(true)
