@@ -5,7 +5,7 @@ import styles from './ChatItem.module.scss'
 import Image from 'components/common/Image'
 
 import LEVEL_TO_IMG from 'constants/levels'
-import useUserQuery from 'hooks/useUserQuery'
+// import useUserQuery from 'hooks/useUserQuery'
 import { Chat, ChatMember } from 'types/chat.interface'
 
 type ChatItemProps = {
@@ -41,7 +41,7 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
     setUser(tmpUser)
   }, [])
 
-  // 말풍선 스타일 여부
+  // 말풍선 스타일
   const userInfo = 2
   // const chatStyle =
   //   chat.memberId === userInfo?.memberId ? styles.mine : styles.others
