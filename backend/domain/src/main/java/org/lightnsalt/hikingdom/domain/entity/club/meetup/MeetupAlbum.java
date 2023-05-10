@@ -29,12 +29,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "meetup_album")
 @Getter
 @ToString
 @SQLDelete(sql = "UPDATE meetup_album SET is_deleted = true, deleted_at = CURRENT_TIMESTAMP WHERE id=?")
 @Where(clause = "is_deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "meetup_album")
 public class MeetupAlbum extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

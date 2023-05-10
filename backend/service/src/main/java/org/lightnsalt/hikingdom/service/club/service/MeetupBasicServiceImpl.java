@@ -95,9 +95,13 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
+		log.info("meetup host id is : {}", meetup.getHost().getId());
+		log.info("club host id is : {}", meetup.getClub().getHost().getId());
+		log.info("meetup host member equal : {}", !meetup.getHost().getId().equals(member.getId()));
+		log.info("club host member equal : {}", !meetup.getClub().getHost().getId().equals(member.getId()));
 		// 소모임장 또는 일정 생성자만 삭제할 수 있음
-		if (!meetup.getHost().getId().equals(member.getId()) ||
-			!meetup.getHost().getId().equals(meetup.getClub().getHost().getId())) {
+		if (!meetup.getHost().getId().equals(member.getId()) &&
+			!meetup.getClub().getHost().getId().equals(member.getId())) {
 			throw new GlobalException(ErrorCode.MEETUP_HOST_UNAUTHORIZED);
 		}
 
@@ -110,8 +114,8 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		meetupMemberRepository.deleteByMeetupId(meetupId);
 
 		// 일정 사진, 리뷰 삭제
-		meetupAlbumRepository.updateMeetupAlbumIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
-		meetupReviewRepository.updateMeetupReviewIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
+		meetupAlbumRepository.deleteAllByMeetupId(meetupId);
+		meetupReviewRepository.deleteAllByMeetupId(meetupId);
 
 		// TODO: 일정 통계 삭제
 
@@ -199,7 +203,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 			.collect(Collectors.toList());
 
 		// 일정 리뷰 조회하기 전체
-		List<MeetupReview> meetupReviews = meetupReviewRepository.findByMeetupIdAndIsDeleted(meetupId, false);
+		List<MeetupReview> meetupReviews = meetupReviewRepository.findByMeetupId(meetupId);
 		List<ReviewInfoRes> reviewInfos = meetupReviews.stream()
 			.map(meetupReview -> new ReviewInfoRes(meetupReview, meetupReview.getMember().getId().equals(memberId)))
 			.collect(Collectors.toList());

@@ -28,12 +28,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "meetup_member")
 @Getter
 @ToString
 @SQLDelete(sql = "UPDATE meetup_member SET is_withdraw = true, withdraw_at = CURRENT_TIMESTAMP WHERE id = ?")
 @Where(clause = "is_withdraw = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "meetup_member")
 public class MeetupMember extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
