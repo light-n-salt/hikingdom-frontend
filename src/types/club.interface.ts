@@ -63,10 +63,9 @@ export interface ClubMemberList {
 // 일정 사진 조회
 export interface Album {
   photoId: number
-  memberId: number
   imgUrl: string
-  createdAt: string
-  isOwner?: boolean
+  isOwner: boolean
+  createdAt?: string
 }
 
 // 지역 코드 조회

@@ -25,7 +25,9 @@ function PhotoModal({ photo, setState }: PhotoModalProps) {
     () => deleteAlbum(parseInt(clubId), photo.photoId),
     {
       onSuccess: () => {
+        // 모임 앨범, 일정 앨범 query key 모두 무효화
         queryClient.invalidateQueries(['photos'])
+        queryClient.invalidateQueries(['meetupPhotos'])
         setState(false)
         toast.addMessage('success', '사진이 삭제되었습니다')
       },
