@@ -72,11 +72,11 @@ function MeetupAlbum() {
     <div className={styles.album}>
       {isAlbumOpen && (
         <Modal onClick={() => setIsAlbumOpen(false)}>
-          <AlbumModal />
+          <AlbumModal setIsOpen={() => setIsAlbumOpen(false)} />
         </Modal>
       )}
       {isOpen && (
-        <Modal onClick={() => setIsOpen(false)}>
+        <Modal onClick={() => setIsOpen}>
           {photo && <PhotoModal photo={photo} setState={setIsOpen} />}
         </Modal>
       )}
