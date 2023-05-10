@@ -6,11 +6,9 @@ import Image from 'components/common/Image'
 import IconButton from 'components/common/IconButton'
 
 import { HiTrash, HiLightBulb } from 'react-icons/hi'
-
 import { MeetupReview } from 'types/meetup.interface'
-import { useRecoilValue } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
 
+import useUserQuery from 'hooks/useUserQuery'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteReview } from 'apis/services/meetup'
 import { report } from 'apis/services/users'
@@ -21,7 +19,7 @@ type ReviewProps = {
 }
 
 function MeetupReviewItem({ review }: ReviewProps) {
-  const userInfo = useRecoilValue(userInfoState)
+  const { data: userInfo } = useUserQuery()
   const { clubId, meetupId } = useParams() as {
     clubId: string
     meetupId: string
@@ -59,7 +57,7 @@ function MeetupReviewItem({ review }: ReviewProps) {
             >
               <HiLightBulb /> 신고하기
             </div>
-            {userInfo.memberId === review.memberId ? (
+            {userInfo && userInfo.memberId === review.memberId ? (
               <IconButton
                 icon={<HiTrash />}
                 size="sm"

@@ -5,12 +5,11 @@ import { UserAlarm } from 'types/user.interface'
 import PageHeader from 'components/common/PageHeader'
 import AlarmList from 'components/user/AlarmList'
 
-import { useRecoilValue } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
+import useUserQuery from 'hooks/useUserQuery'
 
 function AlarmPage() {
   const { theme } = useContext(ThemeContext)
-  const userInfo = useRecoilValue(userInfoState)
+  const { data: userInfo } = useUserQuery()
 
   const alarmList: UserAlarm[] = [
     {
@@ -31,7 +30,7 @@ function AlarmPage() {
 
   return (
     <div className={`page p-sm ${theme} mobile `}>
-      <PageHeader title="알림 내역" url={`/profile/${userInfo.nickname}`} />
+      <PageHeader title="알림 내역" url={`/profile/${userInfo?.nickname}`} />
       <AlarmList alarmList={alarmList} />
     </div>
   )

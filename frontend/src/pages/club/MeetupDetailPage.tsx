@@ -11,7 +11,7 @@ import MeetupAlbum from 'components/meetup/MeetupAlbum'
 import MeetupReviewList from 'components/meetup/MeetupReviewList'
 import TextSendBar from 'components/common/TextSendBar'
 import toast from 'components/common/Toast'
-
+import Loading from 'components/common/Loading'
 import { meetupInfoDetail, MeetupReview } from 'types/meetup.interface'
 
 import {
@@ -23,8 +23,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
+import useUserQuery from 'hooks/useUserQuery'
 
 function MeetupDetailPage() {
   const { theme } = useContext(ThemeContext)
@@ -32,7 +31,7 @@ function MeetupDetailPage() {
     clubId: string
     meetupId: string
   }
-  const userInfo = useRecoilValue(userInfoState)
+  const { data: userInfo } = useUserQuery()
   const [content, setContent] = useState<string>('') // 후기 내용
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -68,7 +67,7 @@ function MeetupDetailPage() {
     {
       onSuccess: () => {
         toast.addMessage('success', '일정이 삭제되었습니다')
-        console.log('hi')
+
         navigate(`/club/${clubId}/main`)
       },
       onError: (err: any) => {
@@ -80,7 +79,9 @@ function MeetupDetailPage() {
   )
 
   return isError || isLoading ? (
-    <div>Loading...</div>
+    <div>
+      <Loading />
+    </div>
   ) : (
     <div className={`page p-sm ${theme} ${styles.page}`}>
       <PageHeader
@@ -107,7 +108,7 @@ function MeetupDetailPage() {
         setContent={setContent}
         onClick={() => onClickUpdateReview.mutate()}
       />
-      {userInfo.memberId === meetup.meetupHostId ? (
+      {userInfo?.memberId === meetup.meetupHostId ? (
         <Button
           text="삭제"
           color="red"

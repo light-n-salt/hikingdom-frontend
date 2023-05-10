@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useContext, useState, useRef, useEffect } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ImageUpdateForm.module.scss'
 import { useNavigate } from 'react-router'
@@ -6,27 +6,36 @@ import Image from 'components/common/Image'
 import Button from 'components/common/Button'
 import IconButton from 'components/common/IconButton'
 import toast from 'components/common/Toast'
+import Loading from 'components/common/Loading'
 import { TbCameraPlus } from 'react-icons/tb'
 
-import { getUserInfo, updateProfile } from 'apis/services/users'
-import { useMutation } from '@tanstack/react-query'
+import { updateProfile } from 'apis/services/users'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { useRecoilState } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
+import useUserQuery from 'hooks/useUserQuery'
 
 function ImageUpdateForm() {
   const { theme } = useContext(ThemeContext)
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
-  const [imgUrl, setImgUrl] = useState(userInfo.profileUrl)
+  const [imgUrl, setImgUrl] = useState('')
   const imgRef = useRef<any>(null)
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  // 유저 정보
+  const { data: userInfo } = useUserQuery()
+
+  // 처음 가져오는 이미지는 유저 정보에서
+  useEffect(() => {
+    if (!userInfo) return
+    setImgUrl(userInfo.profileUrl)
+  }, [])
 
   // 업데이트 mutation
   const updateImg = useMutation(updateProfile, {
     onSuccess: () => {
       toast.addMessage('success', '프로필이 변경되었습니다')
-      getUserInfo(setUserInfo)
-      navigate(`/profile/${userInfo.nickname}`)
+      queryClient.invalidateQueries(['user'])
+      navigate(`/profile/${userInfo?.nickname}`)
     },
   })
 
@@ -81,7 +90,9 @@ function ImageUpdateForm() {
       )}
     </div>
   ) : (
-    <div>Loading...</div>
+    <div>
+      <Loading />
+    </div>
   )
 }
 
