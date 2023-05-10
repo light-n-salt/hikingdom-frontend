@@ -31,14 +31,14 @@ function ClubMainDetailPage() {
   return clubInfo ? (
     <div className={`page p-sm ${theme} ${styles.page}`}>
       <span className={styles.title}>{clubInfo.clubName}</span>
-      <div className={styles.button}>
+      {/* <div className={styles.button}>
         <Button
           text="가입 신청"
           size="sm"
           color="primary"
           onClick={onClickJoinClub}
         />
-      </div>
+      </div> */}
       <ClubRecordInfo
         participationRate={clubInfo.participationRate}
         totalDuration={clubInfo.totalDuration}

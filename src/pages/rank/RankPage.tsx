@@ -14,7 +14,7 @@ import { untilMidnight } from 'utils/untilMidnight'
 type InfiniteClubInfo = {
   content: ClubInfo[]
   hasNext: boolean
-  hasPrev: boolean
+  hasPrevious: boolean
   numberOfElements: number
   pageSize: number
 }
