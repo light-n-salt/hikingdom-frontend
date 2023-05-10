@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import styles from './Modal.module.scss'
 import { ThemeContext } from 'styles/ThemeProvider'
+import ReactDOM from 'react-dom'
 
 type ModalProps = {
   onClick: () => void // 닫는 함수
@@ -11,14 +12,19 @@ function Modal({ onClick, children }: ModalProps) {
   const { theme } = useContext(ThemeContext)
 
   return (
-    <div onClick={onClick} className={`${styles.modal}`}>
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className={`content ${theme} ${styles.content}`}
-      >
-        {children}
-      </div>
-    </div>
+    <>
+      {ReactDOM.createPortal(
+        <div onClick={onClick} className={`${styles.modal}`}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`content ${theme} ${styles.content}`}
+          >
+            {children}
+          </div>
+        </div>,
+        document.getElementById('modal-root')!
+      )}
+    </>
   )
 }
 
