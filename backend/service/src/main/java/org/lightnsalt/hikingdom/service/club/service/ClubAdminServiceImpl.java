@@ -14,6 +14,7 @@ import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,8 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	private final ClubMemberRepository clubMemberRepository;
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
 	private final MemberRepository memberRepository;
+
+	private final RestTemplate restTemplate;
 
 	@Transactional
 	@Override
@@ -65,6 +68,8 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 
 		// 가입 신청자의 다른 가입 요청 취소
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(candidate, LocalDateTime.now());
+
+		sendClubMemberUpdateAlert(candidate);
 	}
 
 	@Transactional
@@ -90,5 +95,15 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	public boolean updatePendingJoinRequest(Member candidate, Club club) {
 		return clubJoinRequestRepository
 			.updatePendingJoinRequestByMemberAndClub(candidate, club, LocalDateTime.now()) > 0;
+	}
+
+	private void sendClubMemberUpdateAlert(Member candidate) {
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(candidate.getId()).orElse(null);
+
+		if (clubMember == null)
+			return;
+
+		restTemplate.postForObject("https://hikingdom.kr/chat/clubs/" + clubMember.getClub().getId() + "/member-update",
+			null, Void.class);
 	}
 }

@@ -22,7 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Member m SET m.nickname = :nickname WHERE m.id = :id")
-	int setNicknameById(@Param("nickname") String nickname, @Param("id") Long id);
+	void setNicknameById(@Param("nickname") String nickname, @Param("id") Long id);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Member m SET m.profileUrl = :profileUrl WHERE m.id = :id")

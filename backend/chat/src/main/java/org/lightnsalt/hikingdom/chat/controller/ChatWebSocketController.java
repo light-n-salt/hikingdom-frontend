@@ -23,7 +23,7 @@ public class ChatWebSocketController {
 		log.info("clubId {} ", clubId);
 		log.info("chatReq {} ", chatReq);
 		MessageRes message = chatService.saveMessage(chatReq);
-		log.info("enter chat : {} ", message);
+		log.info("send chat : {} ", message);
 		template.convertAndSend("/sub/clubs/" + clubId, message);
 	}
 }
