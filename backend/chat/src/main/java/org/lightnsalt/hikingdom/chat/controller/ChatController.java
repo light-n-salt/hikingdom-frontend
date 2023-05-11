@@ -22,18 +22,19 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatController {
 	private final ChatService chatService;
 
-	@GetMapping("/clubs/{clubId}/enter")
-	public ResponseEntity<CustomResponseBody> enterChat(@PathVariable Long clubId) {
+	@GetMapping("/clubs/{clubId}/members")
+	public ResponseEntity<CustomResponseBody> memberList(@PathVariable Long clubId) {
 		log.info("clubId {} ", clubId);
-		ListMessageRes message = chatService.findInitialChatInfo(clubId);
-		log.info("enter chat : {} ", message);
-		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 입장에 성공했습니다", message), HttpStatus.OK);
+		ListMessageRes message = chatService.findClubMemberInfo(clubId);
+		log.info("get members : {} ", message);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 회원 조회에 성공했습니다", message), HttpStatus.OK);
 	}
 
-	@GetMapping("/clubs/{clubId}/prev-chats")
-	public ResponseEntity<CustomResponseBody> prevChats(@PathVariable Long clubId, @RequestParam String chatId) {
+	@GetMapping("/clubs/{clubId}/chats")
+	public ResponseEntity<CustomResponseBody> prevChats(@PathVariable Long clubId, @RequestParam(required = false) String chatId,
+		@RequestParam(required = false, defaultValue = "20") Integer size) {
 		log.info("clubId {} ", clubId);
-		ListMessageRes message = chatService.findPrevChatInfo(clubId, chatId);
+		ListMessageRes message = chatService.findPrevChatInfo(clubId, chatId, size);
 		log.info("prev chats  : {} ", message);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 이전 대화 조회에 성공했습니다", message), HttpStatus.OK);
 	}

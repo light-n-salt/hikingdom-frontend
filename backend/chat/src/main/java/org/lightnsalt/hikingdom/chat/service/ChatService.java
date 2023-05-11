@@ -7,9 +7,7 @@ import org.lightnsalt.hikingdom.chat.dto.response.ListMessageRes;
 public interface ChatService {
 	ChatRes saveMessage(ChatReq chatReq);
 
-	ListMessageRes findInitialChatInfo(Long clubId);
-
-	ListMessageRes findPrevChatInfo(Long clubId, String chatId);
+	ListMessageRes findPrevChatInfo(Long clubId, String chatId, Integer size);
 
 	ListMessageRes findClubMemberInfo(Long clubId);
 }
