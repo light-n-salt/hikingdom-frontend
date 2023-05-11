@@ -7,13 +7,11 @@ import java.util.stream.Collectors;
 import org.lightnsalt.hikingdom.chat.dto.CustomPage;
 import org.lightnsalt.hikingdom.chat.dto.request.ChatReq;
 import org.lightnsalt.hikingdom.chat.dto.response.ChatRes;
-import org.lightnsalt.hikingdom.chat.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.chat.dto.response.ListMessageRes;
+import org.lightnsalt.hikingdom.chat.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.chat.entity.Chat;
 import org.lightnsalt.hikingdom.chat.repository.mongo.ChatRepository;
 import org.lightnsalt.hikingdom.chat.repository.mysql.ClubMemberRepository;
-import org.lightnsalt.hikingdom.common.error.ErrorCode;
-import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,36 +43,24 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public ListMessageRes findInitialChatInfo(Long clubId) {
-		// 소모임 채팅방 내 회원 목록
-		List<MemberInfoRes> members = clubMemberRepository.findByClubId(clubId);
-
-		// 최근 N개 채팅 반환
-		Pageable pageable = PageRequest.of(0, 20, Sort.by("sendAt").descending());
-		Page<Chat> chatPage = chatRepository.findByClubIdOrderBySendAtDesc(clubId, pageable);
-		System.out.println(chatPage);
-		CustomPage<ChatRes> chats = new CustomPage<>(
-			chatPage.getContent().stream().map(ChatRes::new).collect(Collectors.toList()),
-			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), chatPage.hasNext());
-
-		return ListMessageRes.of("ENTER", members, chats);
-	}
-
-	@Override
-	public ListMessageRes findPrevChatInfo(Long clubId, String chatId) {
+	public ListMessageRes findPrevChatInfo(Long clubId, String chatId, Integer size) {
 		Chat chat = chatRepository.findById(chatId).orElse(null);
+		Pageable pageable = PageRequest.of(0, size, Sort.by("sendAt").descending());
 
-		if (chat == null)
-			throw new GlobalException(ErrorCode.CHAT_NOT_FOUND);
+		Page<Chat> chatPage;
+		if (chat == null) {
+			chatPage  = chatRepository.findByClubIdOrderBySendAtDesc(clubId, pageable);
+		} else {
+			chatPage = chatRepository.findByClubIdAndSendAtBeforeOrderBySendAtDesc(clubId, chat.getSendAt(),
+				pageable);
+		}
 
-		Pageable pageable = PageRequest.of(0, 20, Sort.by("sendAt").descending());
-		Page<Chat> chatPage = chatRepository.findByClubIdAndSendAtBeforeOrderBySendAtDesc(clubId, chat.getSendAt(),
-			pageable);
+
 		CustomPage<ChatRes> chats = new CustomPage<>(
 			chatPage.getContent().stream().map(ChatRes::new).collect(Collectors.toList()),
 			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), !chatPage.hasNext());
 
-		return ListMessageRes.of("MESSAGE_LIST", chats);
+		return ListMessageRes.of("MESSAGES", chats);
 	}
 
 	@Override

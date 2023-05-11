@@ -19,7 +19,7 @@ public class ChatWebSocketController {
 	private final SimpMessagingTemplate template;
 	private final ChatService chatService;
 
-	@MessageMapping("/clubs/{clubId}/chats")
+	@MessageMapping("/clubs/{clubId}")
 	public void messageSave(@DestinationVariable Long clubId, ChatReq chatReq) {
 		log.info("clubId {} ", clubId);
 		log.info("chatReq {} ", chatReq);
