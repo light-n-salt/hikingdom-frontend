@@ -3,21 +3,21 @@ import apiRequest from 'apis/axios'
 // 일정 상세 조회
 export function getMeetupDetail(clubId: number, meetupId: number) {
   return apiRequest
-    .get(`clubs/${clubId}/meetups/${meetupId}/detail`)
+    .get(`/clubs/${clubId}/meetups/${meetupId}/detail`)
     .then((res) => res.data.result)
 }
 
 // 일정 멤버 조회
 export function getMeetupMembers(clubId: number, meetupId: number) {
   return apiRequest
-    .get(`clubs/${clubId}/meetups/${meetupId}/members`)
+    .get(`/clubs/${clubId}/meetups/${meetupId}/members`)
     .then((res) => res.data.result)
 }
 
 // 일정 멤버 상세 조회
 export function getMembersDetail(clubId: number, meetupId: number) {
   return apiRequest
-    .get(`clubs/${clubId}/meetups/${meetupId}/members/detail`)
+    .get(`/clubs/${clubId}/meetups/${meetupId}/members/detail`)
     .then((res) => res.data.result)
 }
 
@@ -29,7 +29,7 @@ export function getMeetupAlbum(
   size: number | null = null
 ) {
   return apiRequest
-    .get(`clubs/${clubId}/meetups/${meetupId}/photos`, {
+    .get(`/clubs/${clubId}/meetups/${meetupId}/photos`, {
       params: {
         photoId,
         size,
@@ -41,7 +41,7 @@ export function getMeetupAlbum(
 // 일정 후기 조회
 export function getReviews(clubId: number, meetupId: number) {
   return apiRequest
-    .get(`clubs/${clubId}/meetups/${meetupId}/reviews`)
+    .get(`/clubs/${clubId}/meetups/${meetupId}/reviews`)
     .then((res) => res.data.result)
 }
 
@@ -52,7 +52,7 @@ export function updateMeetupAlbum(
   formData: FormData
 ) {
   return apiRequest.post(
-    `clubs/${clubId}/meetups/${meetupId}/photos`,
+    `/clubs/${clubId}/meetups/${meetupId}/photos`,
     formData,
     {
       headers: {
@@ -68,19 +68,19 @@ export function updateReview(
   meetupId: number,
   content: string
 ) {
-  return apiRequest.post(`clubs/${clubtId}/meetups/${meetupId}/reviews`, {
+  return apiRequest.post(`/clubs/${clubtId}/meetups/${meetupId}/reviews`, {
     content,
   })
 }
 
 // 일정 참여
 export function updateJoin(clubId: number, meetupId: number) {
-  return apiRequest.post(`clubs/${clubId}/meetups/${meetupId}/join`)
+  return apiRequest.post(`/clubs/${clubId}/meetups/${meetupId}/join`)
 }
 
 // 일정 삭제
 export function deleteMeetup(clubId: number, meetupId: number) {
-  return apiRequest.delete(`clubs/${clubId}/meetups/${meetupId}`)
+  return apiRequest.delete(`/clubs/${clubId}/meetups/${meetupId}`)
 }
 
 // 일정 후기 삭제
@@ -90,11 +90,11 @@ export function deleteReview(
   reviewId: number
 ) {
   return apiRequest.delete(
-    `clubs/${clubId}/meetups/${meetupId}/reviews/${reviewId}`
+    `/clubs/${clubId}/meetups/${meetupId}/reviews/${reviewId}`
   )
 }
 
 // 일정 참여 취소
 export function deleteJoin(clubId: number, meetupId: number) {
-  return apiRequest.delete(`clubs/${clubId}/meetups/${meetupId}/join`)
+  return apiRequest.delete(`/clubs/${clubId}/meetups/${meetupId}/join`)
 }

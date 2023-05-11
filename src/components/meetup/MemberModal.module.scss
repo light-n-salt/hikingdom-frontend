@@ -1,7 +1,6 @@
 @use 'src/styles/colors' as *;
 
 .modal {
-  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
