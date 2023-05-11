@@ -27,10 +27,14 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
 
   useEffect(() => {
     // 멤버ID 대조 => 해당 프로필, 닉네임 반환
-    const chatMember: ChatMember | undefined = members.find(
-      (member) => member.memberId === chat.memberId
-    )
 
+    // const chatMember: ChatMember | undefined = members.find(
+    //   (member) => member.memberId === chat.memberId
+    // )
+
+    const chatMember: ChatMember | undefined = members[chat.memberId]
+    console.log('chat', chat)
+    console.log('memberId', members[chat.memberId])
     if (!chatMember) return
     const { nickname, profileUrl, level } = chatMember
     const tmpUser = {
