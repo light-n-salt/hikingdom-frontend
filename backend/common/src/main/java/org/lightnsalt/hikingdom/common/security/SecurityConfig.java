@@ -49,7 +49,7 @@ public class SecurityConfig {
 
 		configuration.setAllowedOrigins(
 			List.of("http://localhost:3000", "http://localhost:8080", "https://hikingdom.kr",
-				"http://hikingdom.kr:3001", "https://k8a102.p.ssafy.io"));
+				"http://hikingdom.kr:3001", "http://hikingdom.kr:8081", "http://hikingdom.kr:8080", "https://k8a102.p.ssafy.io"));
 		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
 		configuration.setAllowCredentials(true);
 		configuration.addAllowedHeader("*");
