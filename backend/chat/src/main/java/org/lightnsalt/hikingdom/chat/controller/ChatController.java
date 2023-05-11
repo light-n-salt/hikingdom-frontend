@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.chat.controller;
 
-import org.lightnsalt.hikingdom.chat.dto.response.ListMessageRes;
+import org.lightnsalt.hikingdom.chat.dto.response.message.MessageRes;
 import org.lightnsalt.hikingdom.chat.service.ChatService;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
@@ -25,16 +25,17 @@ public class ChatController {
 	@GetMapping("/clubs/{clubId}/members")
 	public ResponseEntity<CustomResponseBody> memberList(@PathVariable Long clubId) {
 		log.info("clubId {} ", clubId);
-		ListMessageRes message = chatService.findClubMemberInfo(clubId);
+		MessageRes message = chatService.findClubMemberInfo(clubId);
 		log.info("get members : {} ", message);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 회원 조회에 성공했습니다", message), HttpStatus.OK);
 	}
 
 	@GetMapping("/clubs/{clubId}/chats")
-	public ResponseEntity<CustomResponseBody> prevChats(@PathVariable Long clubId, @RequestParam(required = false) String chatId,
+	public ResponseEntity<CustomResponseBody> prevChats(@PathVariable Long clubId,
+		@RequestParam(required = false) String chatId,
 		@RequestParam(required = false, defaultValue = "20") Integer size) {
 		log.info("clubId {} ", clubId);
-		ListMessageRes message = chatService.findPrevChatInfo(clubId, chatId, size);
+		MessageRes message = chatService.findPrevChatInfo(clubId, chatId, size);
 		log.info("prev chats  : {} ", message);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 이전 대화 조회에 성공했습니다", message), HttpStatus.OK);
 	}
