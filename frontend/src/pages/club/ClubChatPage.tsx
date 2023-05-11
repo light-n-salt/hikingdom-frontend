@@ -15,62 +15,8 @@ import TextSendBar from 'components/common/TextSendBar'
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
-
-  // const { members, chats }: Chats = {
-  //   status: 'Members',
-  //   members: [
-  //     {
-  //       memberId: 1,
-  //       nickname: '이현진진자라',
-  //       profileUrl:
-  //         'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-
-  //       level: 3,
-  //     },
-  //     {
-  //       memberId: 2,
-  //       nickname: '예지',
-  //       profileUrl:
-  //         'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-
-  //       level: 3,
-  //     },
-  //   ],
-  //   chats: [
-  //     {
-  //       chatId: '0',
-  //       memberId: 1,
-  //       content: 'hi',
-  //       sendAt: 'YY HH:MM:SS',
-  //     },
-  //     {
-  //       chatId: '1',
-  //       memberId: 1,
-
-  //       content:
-  //         '이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다이건 내용입니다',
-  //       sendAt: 'YY HH:MM:SS',
-  //     },
-  //     {
-  //       chatId: '2',
-  //       memberId: 2,
-
-  //       content: 'hi',
-  //       sendAt: 'YY HH:MM:SS',
-  //     },
-  //     {
-  //       chatId: '3',
-  //       memberId: 2,
-
-  //       content: 'thisisyeji',
-  //       sendAt: 'YY HH:MM:SS',
-  //     },
-  //   ],
-  // }
-
   const { clubId } = useParams() as { clubId: string }
-  // 유저정보
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserQuery() // 유저 정보
 
   // 모임정보
   const { data: clubInfo } = useQuery(['clubInfo'], () =>
@@ -86,7 +32,7 @@ function ClubChatPage() {
   const [chatList, setChatList] = useState<Chat[]>([])
   const [message, setMessage] = useState<string>('')
 
-  // 초기 데이터
+  // 초기 데이터 Todo: https로 변경
   // const { isLoading, isError } = useQuery<Chats>(
   //   ['chats'],
   //   () => getChats(parseInt(clubId)),
@@ -99,11 +45,22 @@ function ClubChatPage() {
   // )
   const { isLoading, isError } = useQuery(
     ['chats'],
-    () => axios.get(`http://hikingdom.kr:8081/chat/clubs/1/enter`),
+    () =>
+      axios.get(`http://hikingdom.kr:8081/chat/clubs/${clubId}/chats?size=20`),
+    {
+      onSuccess: (res) => {
+        // console.log(res.data.result.chats.content)
+        setChatList(res.data.result.chats.content)
+      },
+    }
+  )
+
+  const { data: memberInfo } = useQuery(
+    ['members'],
+    () => axios.get(`http://hikingdom.kr:8081/chat/clubs/${clubId}/members`),
     {
       onSuccess: (res) => {
         setMemberList(res.data.result.members)
-        setChatList(res.data.result.chats.content)
       },
     }
   )
@@ -121,10 +78,9 @@ function ClubChatPage() {
 
   const connection = () => {
     const socket = new sockjs('http://hikingdom.kr:8081/chat')
-    // console.log('socket', socket)
+    console.log('socket', socket)
     const stomp = Stomp.over(socket)
     setStomp(stomp)
-    // console.log('stomp', stomp)
 
     // 서버에 연결
     stomp.connect({}, () => {
@@ -134,18 +90,13 @@ function ClubChatPage() {
         const data = JSON.parse(chatDTO.body)
 
         // 채팅 데이터
-        if (data.status === 'chat') {
-          const { chatId, memberId, content, sendAt } = data
-          setChatList((chatList) => [
-            { chatId, memberId, content, sendAt },
-            ...chatList,
-          ])
+        if (data.type === 'MESSAGE') {
+          setChatList((chatList) => [data.chat, ...chatList])
           return
         }
-
         // 멤버 데이터
-        if (data.status === 'member') {
-          const { memberId, nickname, profileUrl, level } = data
+        if (data.type === 'MEMBERS') {
+          const { memberId, nickname, profileUrl, level } = data.member
           setMemberList((memberList) => [
             { memberId, nickname, profileUrl, level },
             ...memberList,
@@ -164,10 +115,12 @@ function ClubChatPage() {
       {},
       JSON.stringify({
         status: 'chat',
+        clubId: clubId,
         memberId: userInfo?.memberId,
         content: message,
       })
     )
+    setMessage('')
   }
 
   return (

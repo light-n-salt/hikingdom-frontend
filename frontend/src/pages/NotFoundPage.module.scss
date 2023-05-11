@@ -1,4 +1,10 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/z-index' as *;
+
+.page {
+  background-color: #0b0c10;
+  background-image: linear-gradient(to bottom, #0b0c10, #1f2833);
+}
 
 .content {
   display: flex;
@@ -11,4 +17,42 @@
   font-size: 1.2rem;
   font-weight: 600;
   color: clr(primary-clr);
+
+  > button,
+  .msg {
+    @include z-index(content);
+  }
+}
+
+.star1,
+.star2,
+.star3,
+.star4 {
+  position: absolute;
+  width: 8rem;
+}
+
+.star1 {
+  animation: shooting-star 4.5s linear infinite;
+}
+
+.star2 {
+  animation: shooting-star 5.5s linear infinite;
+}
+
+.star3 {
+  animation: shooting-star 6.5s linear infinite;
+}
+
+.star4 {
+  animation: shooting-star 7.5s linear infinite;
+}
+
+@keyframes shooting-star {
+  0% {
+    transform: translate(20rem, -20rem);
+  }
+  100% {
+    transform: translate(-30rem, 30rem);
+  }
 }
