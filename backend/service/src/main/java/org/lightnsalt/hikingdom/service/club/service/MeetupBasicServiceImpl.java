@@ -56,8 +56,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 
-		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(),
-				false)
+		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, member.getId())
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED));
 
 		// 산 데이터 가져오기

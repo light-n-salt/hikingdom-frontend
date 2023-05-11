@@ -24,12 +24,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "club_total_hiking_statistic")
 @Getter
 @ToString
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "club_total_hiking_statistic")
 public class ClubTotalHikingStatistic {
 	@Id
 	private Long id;

@@ -31,6 +31,7 @@ public interface MeetupRepository extends JpaRepository<Meetup, Long> {
 
 	@Query("SELECT m FROM Meetup m "
 		+ "WHERE m.club.id = :clubId AND m.host.id = :hostId AND m.startAt > :startAt AND m.isDeleted = false")
-	List<Meetup> findByClubIdAndHostIdAndStartAtAfter(Long clubId, Long hostId, LocalDateTime startAt);
+	List<Meetup> findByClubIdAndHostIdAndStartAtAfter(@Param("clubId") Long clubId, @Param("hostId") Long hostId,
+		@Param("startAt") LocalDateTime startAt);
 
 }

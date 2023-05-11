@@ -40,7 +40,7 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 	public Long saveMeetupReview(String email, Long clubId, Long meetupId, MeetupReviewReq meetupReviewReq) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
@@ -85,7 +85,7 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		// 소모임 가입 여부 확인
-		if (clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(), false).isEmpty())
+		if (clubMemberRepository.findByClubIdAndMemberId(clubId, member.getId()).isEmpty())
 			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
 
 		return meetupReviewRepository.findByMeetupId(meetupId)

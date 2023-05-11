@@ -24,7 +24,7 @@ public class ClubAssetServiceImpl implements ClubAssetService {
 
 	@Override
 	public List<ClubAssetRes> findClubMountainList(Long clubId) {
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 		final List<ClubAsset> clubAssetList = clubAssetRepository.findAllByClubId(club.getId());
 

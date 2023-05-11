@@ -60,7 +60,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	public MemberInfoRes findMemberInfo(String email) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
 			.orElse(null);
 
 		return MemberInfoRes.builder()
@@ -78,7 +78,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	public void removeMember(String email) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
 			.orElse(null);
 
 		if (clubMember != null) {
@@ -94,7 +94,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 			// 소모임 탈퇴
 			// TODO: 소모임 일정 참여해둔 것 취소?
-			clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, LocalDateTime.now());
+			clubMemberRepository.deleteById(clubMember.getId());
 		}
 
 		// 소모임 가입 신청 취소

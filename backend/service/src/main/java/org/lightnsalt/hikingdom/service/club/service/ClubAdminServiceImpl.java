@@ -34,7 +34,7 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Member candidate = memberRepository.findById(memberId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 소모임 관리자인지 확인
@@ -47,7 +47,7 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 			throw new GlobalException(ErrorCode.CLUB_JOIN_REQUEST_NOT_FOUND);
 
 		// 가입 신청자가 다른 소모임에 가입되어 있는지 확인
-		if (clubMemberRepository.findByMemberIdAndIsWithdraw(memberId, false).isPresent())
+		if (clubMemberRepository.findByMemberId(memberId).isPresent())
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 
 		// 가입 신청 처리
@@ -75,7 +75,7 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Member candidate = memberRepository.findById(memberId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 소모임 관리자인지 확인

@@ -33,7 +33,7 @@ public class ClubPhotoServiceImpl implements ClubPhotoService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
 
 		// 소모임 가입 여부 확인
-		if (clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, memberId, false).isEmpty())
+		if (clubMemberRepository.findByClubIdAndMemberId(clubId, memberId).isEmpty())
 			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
 
 		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotosByClubId(photoId, clubId, pageable);
@@ -48,7 +48,7 @@ public class ClubPhotoServiceImpl implements ClubPhotoService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
 
 		// 소모임 가입 여부 확인
-		if (clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, memberId, false).isEmpty())
+		if (clubMemberRepository.findByClubIdAndMemberId(clubId, memberId).isEmpty())
 			throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
 
 		final MeetupAlbum meetupAlbum = meetupAlbumRepository.findById(photoId)

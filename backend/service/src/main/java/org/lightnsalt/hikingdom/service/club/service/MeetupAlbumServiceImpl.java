@@ -49,7 +49,7 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 
 		// 모임 데이터 가져오기
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 일정 데이터 가져오기
