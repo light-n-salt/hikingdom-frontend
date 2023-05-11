@@ -87,7 +87,16 @@ export function getClubInfo(clubId: number) {
 // 소모임 채팅 조회
 export function getChats(clubId: number) {
   return apiRequest
-    .get(`/chat/clubs/${clubId}/enter`)
+    .get(`/clubs/${clubId}/chats?size=20`, {
+      baseURL: 'https://hikingdom.kr/chat',
+    })
+    .then((res) => res.data.result)
+}
+
+// 소모임 채팅 멤버 조회
+export function getMembers(clubId: number) {
+  return apiRequest
+    .get(`/clubs/${clubId}/members`, { baseURL: 'https://hikingdom.kr/chat' })
     .then((res) => res.data.result)
 }
 

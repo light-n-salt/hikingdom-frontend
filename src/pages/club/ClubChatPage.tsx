@@ -5,7 +5,7 @@ import PageHeader from 'components/common/PageHeader'
 import ChatList from 'components/club/ChatList'
 import Loading from 'components/common/Loading'
 import { Chats, Chat, ChatMember } from 'types/chat.interface'
-import { getChats, getClubSimpleInfo } from 'apis/services/clubs'
+import { getChats, getMembers, getClubSimpleInfo } from 'apis/services/clubs'
 import { useQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
 import sockjs from 'sockjs-client'
@@ -31,45 +31,30 @@ function ClubChatPage() {
 
   // 채팅 & 멤버 데이터
   // useState<{ [key: number]: ChatMember }
-  const [memberList, setMemberList] = useState<ChatMember[]>([])
+  const [members, setMembers] = useState<any>({})
   const [chatList, setChatList] = useState<Chat[]>([])
   const [message, setMessage] = useState<string>('')
 
-  // 초기 데이터 Todo: https로 변경
-  // const { isLoading, isError } = useQuery<Chats>(
-  //   ['chats'],
-  //   () => getChats(parseInt(clubId)),
-  //   {
-  //     onSuccess: (res) => {
-  //       setMemberList(res.members)
-  //       setChatList(res.chats)
-  //     },
-  //   }
-  // )
-  const { isLoading, isError } = useQuery(
+  // 초기 데이터
+  const { isLoading, isError } = useQuery<any>(
     ['chats'],
-    () =>
-      axios.get(
-        `http://hikingdom.kr:8081/chat/clubs/${userInfo?.clubId}/chats?size=20`
-      ),
+    () => getChats(Number(userInfo?.clubId)),
     {
       onSuccess: (res) => {
-        // console.log(res.data.result.chats.content)
-        setChatList(res.data.result.chats.content)
+        setChatList(res.chats.content)
       },
+      enabled: !!userInfo,
     }
   )
 
   const { data: memberInfo } = useQuery(
     ['members'],
-    () =>
-      axios.get(
-        `http://hikingdom.kr:8081/chat/clubs/${userInfo?.clubId}/members`
-      ),
+    () => getMembers(Number(userInfo?.clubId)),
     {
       onSuccess: (res) => {
-        setMemberList(res.data.result.members)
+        setMembers(res.members)
       },
+      enabled: !!userInfo,
     }
   )
 
@@ -104,11 +89,7 @@ function ClubChatPage() {
         }
         // 멤버 데이터
         if (data.type === 'MEMBERS') {
-          const { memberId, nickname, profileUrl, level } = data.member
-          setMemberList((memberList) => [
-            { memberId, nickname, profileUrl, level },
-            ...memberList,
-          ])
+          setMembers(data.members)
           return
         }
       })
@@ -140,7 +121,7 @@ function ClubChatPage() {
       {isError || isLoading ? (
         <Loading />
       ) : (
-        <ChatList chats={chatList} members={memberList} />
+        <ChatList chats={chatList} members={members} />
       )}
       <TextSendBar
         placeholder="내용을 입력해주세요"
