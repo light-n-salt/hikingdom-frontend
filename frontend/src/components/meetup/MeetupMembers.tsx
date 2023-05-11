@@ -16,33 +16,36 @@ import {
   updateJoin,
   deleteJoin,
 } from 'apis/services/meetup'
+import useUserQuery from 'hooks/useUserQuery'
 
 function MeetupMembers() {
   const [isOpen, setIsOpen] = useState(false)
   const [members, setMembers] = useState<MeetupMemberInfo>()
   const [memberDetail, setMemberDetail] = useState<ClubMember[]>()
-  const { clubId, meetupId } = useParams() as {
-    clubId: string
+  const { meetupId } = useParams() as {
     meetupId: string
   }
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
 
   const updateMembers = () => {
-    getMeetupMembers(parseInt(clubId), parseInt(meetupId)).then((res) =>
-      setMembers(res)
-    )
+    if (!clubId) return
+    getMeetupMembers(clubId, parseInt(meetupId)).then((res) => setMembers(res))
   }
 
   // 모달 ON OFF
   const onClickDetail = () => {
+    if (!clubId) return
     setIsOpen(true)
-    getMembersDetail(parseInt(clubId), parseInt(meetupId)).then((res) =>
+    getMembersDetail(clubId, parseInt(meetupId)).then((res) =>
       setMemberDetail(res)
     )
   }
 
   // 일정 참여
   const onClickJoin = () => {
-    updateJoin(parseInt(clubId), parseInt(meetupId)).then(() => {
+    if (!clubId) return
+    updateJoin(clubId, parseInt(meetupId)).then(() => {
       updateMembers()
       toast.addMessage('success', '일정에 참여했습니다')
     })
@@ -50,7 +53,8 @@ function MeetupMembers() {
 
   // 일정 참여 취소
   const onClickWithdraw = () => {
-    deleteJoin(parseInt(clubId), parseInt(meetupId)).then(() => {
+    if (!clubId) return
+    deleteJoin(clubId, parseInt(meetupId)).then(() => {
       updateMembers()
       toast.addMessage('success', '일정을 취소했습니다')
     })

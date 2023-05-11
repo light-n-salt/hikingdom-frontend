@@ -1,5 +1,4 @@
 import React, { forwardRef, ForwardedRef, useState } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './SelectBox.module.scss'
 
 import { BsFillCaretDownFill } from 'react-icons/bs'

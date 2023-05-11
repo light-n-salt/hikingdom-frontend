@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+import React from 'react'
 import styles from './MtDetail.module.scss'
 
 import MtTitle from './MtTitle'

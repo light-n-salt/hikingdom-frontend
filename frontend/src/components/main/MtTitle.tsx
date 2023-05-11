@@ -11,7 +11,7 @@ type MtTitleProps = {
 }
 
 function MtTitle({ name, maxAlt, timeDuration, assetUrl }: MtTitleProps) {
-  const { theme, toggleTheme } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
   return (
     <div className={`content ${theme} ${styles.mttitle}`}>
       <div className={styles.title}>{name}</div>
