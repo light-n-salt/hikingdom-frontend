@@ -26,12 +26,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "club_daily_info")
 @Getter
 @ToString
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "club_daily_info")
 public class ClubDailyInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,4 +45,10 @@ public class ClubDailyInfo {
 
 	@Column(name = "set_date")
 	private LocalDate setDate;
+
+	@Builder
+	public ClubDailyInfo(Club club, LocalDate setDate) {
+		this.club = club;
+		this.setDate = setDate;
+	}
 }
