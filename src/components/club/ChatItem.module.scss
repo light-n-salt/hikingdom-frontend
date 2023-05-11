@@ -1,7 +1,9 @@
 @use 'src/styles/colors' as *;
 @use 'src/styles/themes' as *;
+@use 'src/styles/animations' as *;
 
 .mine {
+  @include animation-slide-in-left(fast, 20%);
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
@@ -28,16 +30,21 @@
     border-radius: 0.5rem;
     background-color: clr(primary-clr, light);
     color: clr(white-clr, light);
+    box-shadow: -1px 2px 3px 0px clr(shadow-clr, light);
   }
 }
 
 .others {
+  @include animation-slide-in-right(fast, 20%);
   display: flex;
   gap: 0.3rem;
   width: 100%;
 
   .discontinued {
     visibility: hidden;
+    > img {
+      height: 0;
+    }
   }
 
   .content {
@@ -48,6 +55,16 @@
   .chatContent {
     width: fit-content;
     padding: 0.5rem;
+    border-radius: 0.5rem;
+
+    &.light {
+      @include light-theme;
+      box-shadow: -1px 2px 3px 0px clr(shadow-clr);
+    }
+    &.dark {
+      @include dark-theme;
+      box-shadow: -1px 2px 3px 0px clr(shadow-clr, light);
+    }
   }
 
   .chat {
@@ -71,6 +88,7 @@
 
 .time {
   align-self: flex-end;
+  padding-bottom: 0.2rem;
   color: clr(gray-clr, light);
   font-size: 0.5rem;
 }

@@ -14,8 +14,8 @@ function ChatList({ chats, members }: ChatListProps) {
   return (
     <div className={styles.chats}>
       {chats.map((chat, index) => {
-        const prevChat = index > 0 ? chats[index - 1] : null // 이전 채팅
-        const isContinued = prevChat?.memberId === chat.memberId // memberId 비교
+        const nextChat = index < chats.length - 1 ? chats[index + 1] : null // 다음 채팅
+        const isContinued = nextChat?.memberId === chat.memberId // memberId 비교
 
         return (
           <ChatItem

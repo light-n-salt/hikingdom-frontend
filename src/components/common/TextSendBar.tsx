@@ -26,8 +26,8 @@ function TextSendBar({
     <div className={styles.bar}>
       <input
         onChange={onChange}
-        type="text"
         value={content}
+        type="text"
         placeholder={placeholder}
         className={styles.input}
       />
