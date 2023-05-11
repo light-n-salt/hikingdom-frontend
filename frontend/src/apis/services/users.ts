@@ -91,7 +91,7 @@ export function logout() {
 
 // 신고 : ALBUM || REVIEW || MEMBER
 export function report(type: 'ALBUM' | 'REVIEW' | 'MEMBER', id: number) {
-  return apiRequest.post(`reports`, { type, id })
+  return apiRequest.post(`/reports`, { type, id })
 }
 
 // 비밀번호 찾기
@@ -123,7 +123,7 @@ export function updatePw(
 
 // 프로필 사진 변경
 export function updateProfile(formData: FormData) {
-  return apiRequest.put(`members/profile-image-change`, formData, {
+  return apiRequest.put(`/members/profile-image-change`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -142,5 +142,5 @@ export function confirmEmail(email: string, authCode: string) {
 
 // 회원탈퇴
 export function signout() {
-  return apiRequest.delete(`members/withdraw`)
+  return apiRequest.delete(`/members/withdraw`)
 }
