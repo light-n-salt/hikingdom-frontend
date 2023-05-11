@@ -8,12 +8,14 @@ import lombok.Data;
 
 @Data
 public class ChatRes {
+	private String type;
 	private String chatId;
 	private Long memberId;
 	private String content;
 	private String sendAt;
 
 	public ChatRes(Chat chat) {
+		this.type = "MESSAGE";
 		this.chatId = chat.getId();
 		this.memberId = chat.getMemberId();
 		this.content = chat.getContent();
