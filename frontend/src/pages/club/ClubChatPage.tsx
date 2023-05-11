@@ -100,11 +100,23 @@ function ClubChatPage() {
   // )
   const { isLoading, isError } = useQuery(
     ['chats'],
-    () => axios.get(`http://hikingdom.kr:8081/chat/clubs/1/enter`),
+    () =>
+      axios.get(`http://hikingdom.kr:8081/chat/clubs/${clubId}/chats?size=20`),
     {
       onSuccess: (res) => {
-        setMemberList(res.data.result.members)
+        // console.log(res.data.result.chats.content)
         setChatList(res.data.result.chats.content)
+      },
+    }
+  )
+
+  const { data: memberInfo } = useQuery(
+    ['members'],
+    () => axios.get(`http://hikingdom.kr:8081/chat/clubs/${clubId}/members`),
+    {
+      onSuccess: (res) => {
+        // console.log(res.data.result.members)
+        setMemberList(res.data.result.members)
       },
     }
   )
@@ -122,10 +134,9 @@ function ClubChatPage() {
 
   const connection = () => {
     const socket = new sockjs('http://hikingdom.kr:8081/chat')
-    // console.log('socket', socket)
+    console.log('socket', socket)
     const stomp = Stomp.over(socket)
     setStomp(stomp)
-    // console.log('stomp', stomp)
 
     // 서버에 연결
     stomp.connect({}, () => {
@@ -135,18 +146,13 @@ function ClubChatPage() {
         const data = JSON.parse(chatDTO.body)
 
         // 채팅 데이터
-        if (data.status === 'chat') {
-          const { chatId, memberId, content, sendAt } = data
-          setChatList((chatList) => [
-            { chatId, memberId, content, sendAt },
-            ...chatList,
-          ])
+        if (data.type === 'MESSAGE') {
+          setChatList((chatList) => [data.chat, ...chatList])
           return
         }
-
         // 멤버 데이터
-        if (data.status === 'member') {
-          const { memberId, nickname, profileUrl, level } = data
+        if (data.type === 'MEMBERS') {
+          const { memberId, nickname, profileUrl, level } = data.member
           setMemberList((memberList) => [
             { memberId, nickname, profileUrl, level },
             ...memberList,
@@ -165,10 +171,12 @@ function ClubChatPage() {
       {},
       JSON.stringify({
         status: 'chat',
+        clubId: clubId,
         memberId: userInfo?.memberId,
         content: message,
       })
     )
+    setMessage('')
   }
 
   return (

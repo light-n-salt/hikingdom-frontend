@@ -5,7 +5,7 @@ import styles from './ChatItem.module.scss'
 import Image from 'components/common/Image'
 
 import LEVEL_TO_IMG from 'constants/levels'
-// import useUserQuery from 'hooks/useUserQuery'
+import useUserQuery from 'hooks/useUserQuery'
 import { Chat, ChatMember } from 'types/chat.interface'
 
 type ChatItemProps = {
@@ -22,7 +22,7 @@ type User = {
 
 function ChatItem({ chat, members, isContinued }: ChatItemProps) {
   const { theme } = useContext(ThemeContext)
-  // const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserQuery()
   const [user, setUser] = useState<User>()
 
   useEffect(() => {
@@ -42,12 +42,12 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
   }, [])
 
   // 말풍선 스타일
-  const userInfo = 2
-  // const chatStyle =
-  //   chat.memberId === userInfo?.memberId ? styles.mine : styles.others
-
-  const chatStyle = chat.memberId === userInfo ? styles.mine : styles.others
+  const chatStyle =
+    chat.memberId === userInfo?.memberId ? styles.mine : styles.others
   const imgStyle = isContinued ? styles.discontinued : ''
+
+  // 전송 시간
+  const time = chat.sendAt.split(' ')[1].split(':')
 
   return user ? (
     <div className={chatStyle}>
@@ -63,10 +63,10 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
           </div>
         )}
         <div className={styles.content}>
-          <div className={`${styles.chatContent} ${theme} content`}>
+          <div className={`${styles.chatContent} ${styles[`${theme}`]}`}>
             {chat.content}
           </div>
-          <div className={styles.time}>{chat.sendAt.split(' ')[1]}</div>
+          <div className={styles.time}>{`${time[0]}:${time[1]}`}</div>
         </div>
       </div>
     </div>
