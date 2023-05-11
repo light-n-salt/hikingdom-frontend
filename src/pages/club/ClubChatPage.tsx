@@ -15,12 +15,15 @@ import TextSendBar from 'components/common/TextSendBar'
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
-  const { clubId } = useParams() as { clubId: string }
   const { data: userInfo } = useUserQuery() // 유저 정보
 
   // 모임정보
-  const { data: clubInfo } = useQuery(['clubInfo'], () =>
-    getClubSimpleInfo(parseInt(clubId))
+  const { data: clubInfo } = useQuery(
+    ['clubInfo'],
+    () => getClubSimpleInfo(Number(userInfo?.clubId)),
+    {
+      enabled: !!userInfo,
+    }
   )
 
   // 소켓 통신
@@ -46,7 +49,9 @@ function ClubChatPage() {
   const { isLoading, isError } = useQuery(
     ['chats'],
     () =>
-      axios.get(`http://hikingdom.kr:8081/chat/clubs/${clubId}/chats?size=20`),
+      axios.get(
+        `http://hikingdom.kr:8081/chat/clubs/${userInfo?.clubId}/chats?size=20`
+      ),
     {
       onSuccess: (res) => {
         // console.log(res.data.result.chats.content)
@@ -57,7 +62,10 @@ function ClubChatPage() {
 
   const { data: memberInfo } = useQuery(
     ['members'],
-    () => axios.get(`http://hikingdom.kr:8081/chat/clubs/${clubId}/members`),
+    () =>
+      axios.get(
+        `http://hikingdom.kr:8081/chat/clubs/${userInfo?.clubId}/members`
+      ),
     {
       onSuccess: (res) => {
         setMemberList(res.data.result.members)
@@ -85,7 +93,7 @@ function ClubChatPage() {
     // 서버에 연결
     stomp.connect({}, () => {
       // 특정 URI 구독
-      stomp.subscribe(`/sub/clubs/${clubId}`, (chatDTO) => {
+      stomp.subscribe(`/sub/clubs/${userInfo?.clubId}`, (chatDTO) => {
         // 구독후 메세지를 받을 때마다 실행할 함수
         const data = JSON.parse(chatDTO.body)
 
@@ -111,11 +119,11 @@ function ClubChatPage() {
   const sendChat = () => {
     if (!message.trim()) return
     stomp.send(
-      `/pub/clubs/${clubId}`,
+      `/pub/clubs/${userInfo?.clubId}`,
       {},
       JSON.stringify({
         status: 'chat',
-        clubId: clubId,
+        clubId: userInfo?.clubId,
         memberId: userInfo?.memberId,
         content: message,
       })
@@ -125,7 +133,10 @@ function ClubChatPage() {
 
   return (
     <div className={`page p-sm ${theme} mobile `}>
-      <PageHeader title={clubInfo?.clubName} url={`/club/${clubId}/main`} />
+      <PageHeader
+        title={clubInfo?.clubName}
+        url={`/club/${userInfo?.clubId}/main`}
+      />
       {isError || isLoading ? (
         <Loading />
       ) : (
