@@ -78,7 +78,7 @@ function MeetupDetailPage() {
     }
   )
 
-  return isError || isLoading ? (
+  return !userInfo || !meetup ? (
     <div>
       <Loading />
     </div>
@@ -86,7 +86,7 @@ function MeetupDetailPage() {
     <div className={`page p-sm ${theme} ${styles.page}`}>
       <PageHeader
         title={meetup?.meetupName}
-        url="/club/meetup"
+        url={`/club/${clubId}/meetup`}
         color="primary"
       />
       <MeetupDetail

@@ -13,11 +13,15 @@ function WebMargin() {
   return (
     <>
       {isMobile ? (
-        <Outlet />
+        <>
+          <Outlet />
+          <div id="modal-root" />
+        </>
       ) : (
-        <div className={styles.container}>
+        <div className={styles.background}>
           <div className={styles.mobile}>
             <Outlet />
+            <div id="modal-root" />
           </div>
         </div>
       )}

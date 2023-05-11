@@ -16,15 +16,15 @@ function ClubPage() {
   const isJoin = userInfo?.clubId === Number(clubId)
 
   useEffect(() => {
-    if (!isJoin) {
+    if (userInfo && !isJoin) {
       navigate(`/club/${clubId}/detail`)
     }
   }, [])
 
-  return isJoin ? (
+  return userInfo && isJoin ? (
     <div className={`page ${theme}`}>
       <ClubHeader />
-      <Outlet></Outlet>
+      <Outlet />
     </div>
   ) : null
 }

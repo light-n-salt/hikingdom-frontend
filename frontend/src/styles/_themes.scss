@@ -18,6 +18,12 @@
   color: clr(white-clr, light);
 }
 
+// upside down 그라데이션 다크모드 테마
+@mixin upside-down-dark-gradation-theme() {
+  background: linear-gradient(clr(tertiary-clr) 30%, clr(lime-clr, dark));
+  color: clr(white-clr, light);
+}
+
 // 짙은 라이트모드 테마(백그라운드)
 @mixin deep-light-theme() {
   background-color: clr(white-clr);
@@ -33,5 +39,11 @@
 // 그라데이션 라이트모드 테마
 @mixin light-gradation-theme() {
   background: linear-gradient(clr(lime-clr), clr(white-clr));
+  color: clr(black-clr);
+}
+
+// upside down 그라데이션 라이트모드 테마
+@mixin upside-down-light-gradation-theme() {
+  background: linear-gradient(clr(white-clr) 30%, clr(lime-clr));
   color: clr(black-clr);
 }

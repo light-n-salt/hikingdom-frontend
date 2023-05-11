@@ -53,6 +53,7 @@
   left: 0rem;
   min-width: 100%;
   max-height: 13rem;
+  box-shadow: 0 2px 3px 0 clr(shadow-clr);
 }
 
 .options {
@@ -75,7 +76,6 @@
   font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
-  box-shadow: 0 2px 3px 0 clr(shadow-clr);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 

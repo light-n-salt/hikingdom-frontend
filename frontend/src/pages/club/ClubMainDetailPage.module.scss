@@ -1,15 +1,15 @@
 @use 'src/styles/colors' as *;
 
 .page {
-  gap: 1rem;
   align-items: center;
+  gap: 1rem;
 }
 
 .title {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.6rem;
+  font-weight: 800;
   color: clr(primary-clr);
-  padding-top: 1.2rem;
+  padding-top: 1.5rem;
 }
 
 .button {
@@ -20,13 +20,11 @@
 
 .intro {
   margin-top: 1.2rem;
-  padding: 0 0.5rem;
   width: 100%;
 }
 
 .image {
   margin: 3rem;
   width: 80%;
-//   height: 80%;
+    // height: 80%;
 }
-

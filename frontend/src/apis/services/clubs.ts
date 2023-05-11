@@ -2,7 +2,7 @@ import apiRequest from 'apis/axios'
 
 // 소모임 정보 조회
 export function getClubSimpleInfo(clubId: number) {
-  return apiRequest.get(`/clubs/${clubId}`)
+  return apiRequest.get(`clubs/${clubId}`).then((res) => res.data.result)
 }
 
 // 소모임 랭킹 조회
@@ -79,7 +79,9 @@ export function getClubAlbum(
 
 // 소모임 정보 조회
 export function getClubInfo(clubId: number) {
-  return apiRequest.get(`/clubs/${clubId}/detail`)
+  return apiRequest
+    .get(`/clubs/${clubId}/detail`)
+    .then((res) => res.data.result)
 }
 
 // 소모임 채팅 조회

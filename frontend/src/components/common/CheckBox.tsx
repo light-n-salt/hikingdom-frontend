@@ -17,6 +17,7 @@ function CheckBox({ id, label, isChecked, onClick }: CheckBoxProps) {
         checked={isChecked}
         onClick={onClick}
         className={styles.input}
+        readOnly={true}
       />
       <label htmlFor={`checkbox-${id}`} className={styles.label}>
         {label}
