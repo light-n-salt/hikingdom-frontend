@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "base_address_info")
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "base_address_info")
 public class BaseAddressInfo {
 	@Id
 	@Column(name = "dong_code", length = 10)
