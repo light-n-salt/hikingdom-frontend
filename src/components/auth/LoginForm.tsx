@@ -36,7 +36,8 @@ function LoginForm() {
         navigate('/main')
       })
       .catch((err) => {
-        toast.addMessage('error', err.data.message)
+        console.log(err)
+        // toast.addMessage('error', err.data.message)
       })
   }
 
