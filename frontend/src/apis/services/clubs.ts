@@ -84,6 +84,13 @@ export function getClubInfo(clubId: number) {
     .then((res) => res.data.result)
 }
 
+// 소모임 채팅 조회
+export function getChats(clubId: number) {
+  return apiRequest
+    .get(`/chat/clubs/${clubId}/enter`)
+    .then((res) => res.data.result)
+}
+
 // 소모임 생성
 export function createClub(
   name: string,
@@ -115,7 +122,7 @@ export function createMeetup(
 
 // 소모임 앨범 사진 삭제
 export function deleteAlbum(clubId: number, photoId: number) {
-  return apiRequest.delete(`clubs/${clubId}/photos/${photoId}`)
+  return apiRequest.delete(`/clubs/${clubId}/photos/${photoId}`)
 }
 
 export function postJoinClub(clubId: number) {
@@ -124,26 +131,26 @@ export function postJoinClub(clubId: number) {
 
 // 소모임 가입 신청 목록 조회
 export function getClubRequest() {
-  return apiRequest.get(`members/clubs/my-requests`)
+  return apiRequest.get(`/members/clubs/my-requests`)
 }
 
 // 소모임 가입 신청 취소
 export function deleteClubRequest(clubId: number) {
-  return apiRequest.delete(`clubs/${clubId}/join-request`)
+  return apiRequest.delete(`/clubs/${clubId}/join-request`)
 }
 
 export function getClubMember(clubId: number) {
-  return apiRequest.get(`clubs/${clubId}/members`)
+  return apiRequest.get(`/clubs/${clubId}/members`)
 }
 
 export function deleteClub(clubId: number) {
-  return apiRequest.delete(`clubs/${clubId}/members`)
+  return apiRequest.delete(`/clubs/${clubId}/members`)
 }
 
 export function updateClubMember(clubId: number, memberId: number) {
-  return apiRequest.post(`clubs/${clubId}/admin/requests/${memberId}`)
+  return apiRequest.post(`/clubs/${clubId}/admin/requests/${memberId}`)
 }
 
 export function deleteClubMember(clubId: number, memberId: number) {
-  return apiRequest.delete(`clubs/${clubId}/admin/requests/${memberId}`)
+  return apiRequest.delete(`/clubs/${clubId}/admin/requests/${memberId}`)
 }

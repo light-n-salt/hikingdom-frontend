@@ -50,7 +50,7 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
   return (
     <div
       className={`content ${theme} ${styles.container} ${styles[size]}`}
-      onClick={() => navigate(`/club/${clubInfo.clubId}/detail`)}
+      onClick={() => navigate(`/club/${clubInfo.clubId}/main`)}
     >
       <div className={styles.header}>
         <span className={styles.title}>
