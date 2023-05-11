@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.lightnsalt.hikingdom.domain.common.BaseTimeEntity;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 
@@ -26,12 +28,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "club_member")
 @Getter
 @ToString
 @DynamicInsert
 @DynamicUpdate
+@SQLDelete(sql = "UPDATE club_member SET is_withdraw = true, withdraw_at = CURRENT_TIMESTAMP WHERE id = ?")
+@Where(clause = "is_withdraw = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "club_member")
 public class ClubMember extends BaseTimeEntity {
 
 	@Id

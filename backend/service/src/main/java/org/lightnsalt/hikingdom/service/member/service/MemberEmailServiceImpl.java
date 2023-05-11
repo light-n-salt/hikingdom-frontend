@@ -43,7 +43,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 	@Override
 	public void sendFindPasswordEmail(MemberEmailReq memberEmailReq) {
 		String email = memberEmailReq.getEmail();
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.INVALID_INPUT_VALUE));
 
 		String tempPassword = RandomStringUtils.random(10, 0, possiblePasswordCharacters.length - 1, false, false,
@@ -68,7 +68,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 
 	@Override
 	public void sendAuthenticationEmail(MemberEmailReq memberEmailReq) {
-		if (memberRepository.existsByEmailAndIsWithdraw(memberEmailReq.getEmail(), false)) {
+		if (memberRepository.existsByEmail(memberEmailReq.getEmail())) {
 			throw new GlobalException(ErrorCode.DUPLICATE_EMAIL);
 		}
 

@@ -55,6 +55,24 @@ services:
       retries: 3
       start_period: 10s
 
+  dev-backend-chat:
+    container_name: dev-backend-chat
+    build:
+      context: ./backend/chat
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: dev
+    ports:
+      - 9002:8080
+    environment:
+      - TZ=Asia/Seoul
+      - EUREKA_SERVER=dev-backend-discovery
+    networks:
+      - dev_hikingdom_net
+    depends_on:
+      dev-backend-discovery:
+        condition: service_healthy
+
   dev-backend-gateway:
     container_name: dev-backend-gateway
     build:
@@ -74,7 +92,7 @@ services:
         condition: service_healthy
       dev-backend-service:
         condition: service_healthy
-
+        
 networks:
   dev_hikingdom_net:
     driver: bridge

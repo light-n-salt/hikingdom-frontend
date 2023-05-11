@@ -21,10 +21,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "asset_info")
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "asset_info")
 public class AssetInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

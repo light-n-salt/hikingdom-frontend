@@ -53,11 +53,10 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	@Transactional
 	public Long saveMeetup(String email, Long clubId, MeetupAddReq req) {
 		// club에 속해있는 멤버인지 확인
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 
-		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(),
-				false)
+		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, member.getId())
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED));
 
 		// 산 데이터 가져오기
@@ -90,14 +89,18 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	@Transactional
 	@Override
 	public void removeMeetup(String email, Long clubId, Long meetupId) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
+		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
+		log.info("meetup host id is : {}", meetup.getHost().getId());
+		log.info("club host id is : {}", meetup.getClub().getHost().getId());
+		log.info("meetup host member equal : {}", !meetup.getHost().getId().equals(member.getId()));
+		log.info("club host member equal : {}", !meetup.getClub().getHost().getId().equals(member.getId()));
 		// 소모임장 또는 일정 생성자만 삭제할 수 있음
-		if (!meetup.getHost().getId().equals(member.getId()) ||
-			!meetup.getHost().getId().equals(meetup.getClub().getHost().getId())) {
+		if (!meetup.getHost().getId().equals(member.getId()) &&
+			!meetup.getClub().getHost().getId().equals(member.getId())) {
 			throw new GlobalException(ErrorCode.MEETUP_HOST_UNAUTHORIZED);
 		}
 
@@ -107,16 +110,16 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		}
 
 		// 참여자 삭제
-		meetupMemberRepository.updateMeetupMemberIsWithdrawByMeetupId(meetupId, true, LocalDateTime.now());
+		meetupMemberRepository.deleteByMeetupId(meetupId);
 
 		// 일정 사진, 리뷰 삭제
-		meetupAlbumRepository.updateMeetupAlbumIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
-		meetupReviewRepository.updateMeetupReviewIsDeletedByMeetupId(meetupId, true, LocalDateTime.now());
+		meetupAlbumRepository.deleteAllByMeetupId(meetupId);
+		meetupReviewRepository.deleteAllByMeetupId(meetupId);
 
 		// TODO: 일정 통계 삭제
 
 		// 일정 삭제
-		meetupRepository.updateMeetupIsDeletedByMeetupId(meetup.getId(), true, LocalDateTime.now());
+		meetupRepository.deleteById(meetup.getId());
 	}
 
 	@Override
@@ -165,7 +168,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		return meetups.stream().map(meetup -> {
 			MeetupDailyRes dto = new MeetupDailyRes(meetup);
 			// 일정 참여 멤버 가져오기
-			final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetup.getId(), false);
+			final int totalMember = meetupMemberRepository.countByMeetupId(meetup.getId());
 			dto.setTotalMember(totalMember);
 			return dto;
 		}).collect(Collectors.toList());
@@ -175,32 +178,31 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	@Transactional
 	public MeetupDetailRes findMeetup(String email, Long clubId, Long meetupId) {
 		// 일정 정보 가져오기
-		final Meetup meetup = meetupRepository.findByIdAndIsDeleted(meetupId, false)
+		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
 		// 일정 참여여부 가져오기
-		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Long memberId = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND)).getId();
 
-		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberIdAndIsWithdraw(meetupId, memberId,
-			false);
+		final boolean isJoin = meetupMemberRepository.existsByMeetupIdAndMemberId(meetupId, memberId);
 
 		// 일정 참여 멤버 수 조회하기
-		final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetupId, false);
+		final int totalMember = meetupMemberRepository.countByMeetupId(meetupId);
 
 		// 일정 참여멤버 조회하기 6명
-		List<MeetupMember> meetupMembers = meetupMemberRepository.findTop6ByMeetupIdAndIsWithdraw(meetupId, false);
+		List<MeetupMember> meetupMembers = meetupMemberRepository.findTop6ByMeetupId(meetupId);
 		List<MemberShortRes> memberInfos = meetupMembers.stream().map(MemberShortRes::new).collect(Collectors.toList());
 
 		// 일정 사진 조회하기 3개
-		List<MeetupAlbum> meetupAlbums = meetupAlbumRepository.findTop3ByMeetupIdAndIsDeletedOrderByCreatedAtDesc(
-			meetupId, false);
+		List<MeetupAlbum> meetupAlbums = meetupAlbumRepository.findTop3ByMeetupIdOrderByCreatedAtDesc(
+			meetupId);
 		List<PhotoInfoRes> photoInfos = meetupAlbums.stream()
 			.map(meetupAlbum -> new PhotoInfoRes(meetupAlbum, meetupAlbum.getMember().getId().equals(memberId)))
 			.collect(Collectors.toList());
 
 		// 일정 리뷰 조회하기 전체
-		List<MeetupReview> meetupReviews = meetupReviewRepository.findByMeetupIdAndIsDeleted(meetupId, false);
+		List<MeetupReview> meetupReviews = meetupReviewRepository.findByMeetupId(meetupId);
 		List<ReviewInfoRes> reviewInfos = meetupReviews.stream()
 			.map(meetupReview -> new ReviewInfoRes(meetupReview, meetupReview.getMember().getId().equals(memberId)))
 			.collect(Collectors.toList());

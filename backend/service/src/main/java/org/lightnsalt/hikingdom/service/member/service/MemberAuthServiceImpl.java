@@ -30,7 +30,7 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 	public MemberTokenRes login(MemberLoginReq memberLoginReq) {
 		String email = memberLoginReq.getEmail();
 
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_LOGIN_FAIL));
 
 		if (!passwordEncoder.matches(memberLoginReq.getPassword(), member.getPassword())) {
@@ -60,7 +60,7 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 			throw new GlobalException(ErrorCode.INVALID_TOKEN);
 		}
 
-		Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		String accessToken = jwtTokenUtil.createAccessToken(email, member.getRole());

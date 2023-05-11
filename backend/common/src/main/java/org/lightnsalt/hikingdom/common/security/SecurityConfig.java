@@ -49,7 +49,8 @@ public class SecurityConfig {
 
 		configuration.setAllowedOrigins(
 			List.of("http://localhost:3000", "http://localhost:8080", "https://hikingdom.kr",
-				"http://hikingdom.kr:3001", "https://k8a102.p.ssafy.io"));
+				"http://hikingdom.kr:3001", "http://hikingdom.kr:8081", "http://hikingdom.kr:8080",
+				"https://k8a102.p.ssafy.io", "http://70.12.246.181:3000"));
 		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
 		configuration.setAllowCredentials(true);
 		configuration.addAllowedHeader("*");
@@ -62,19 +63,29 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-		return httpSecurity
-			.authenticationProvider(jwtAuthenticationProvider)
-			.cors().and()
-			.csrf().disable()
-			.formLogin().disable()
-			.httpBasic().disable()
-			.authorizeRequests()
-			.antMatchers("/api/v1/members/auth/**").permitAll()
-			.antMatchers("/v3/api-docs/**").permitAll()
-			.antMatchers("/swagger-ui/**").permitAll()
-			.anyRequest().authenticated()
+		return httpSecurity.authenticationProvider(jwtAuthenticationProvider)
+			.cors()
 			.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.csrf()
+			.disable()
+			.formLogin()
+			.disable()
+			.httpBasic()
+			.disable()
+			.authorizeRequests()
+			.antMatchers("/api/v1/members/auth/**")
+			.permitAll()
+			.antMatchers("/v3/api-docs/**")
+			.permitAll()
+			.antMatchers("/swagger-ui/**")
+			.permitAll()
+			.antMatchers("/chat/**")
+			.permitAll()
+			.anyRequest()
+			.authenticated()
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.exceptionHandling()
 			.accessDeniedHandler(jwtAccessDeniedHandler)

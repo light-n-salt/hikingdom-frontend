@@ -16,6 +16,7 @@ public enum ErrorCode {
 	INVALID_TOKEN(401, "C005", "토큰이 유효하지 않습니다"),
 	EXPIRED_TOKEN(401, "C006", "토큰이 만료되었습니다"),
 	MISSING_REQUEST_BODY(400, "C007", "응답 요청 내용이 없습니다"),
+	MISSING_REQUEST_PARAMETER(400, "C008", "응답 요청 파라미터가 없습니다"),
 
 	// business error codes //
 
@@ -61,7 +62,8 @@ public enum ErrorCode {
 	// hiking record related error codes
 	HIKING_RECORD_NOT_FOUND(404, "H001", "존재하지 않는 등산 기록입니다"),
 
-	;
+	// chat related error codes
+	CHAT_NOT_FOUND(404, "CH001", "존재하지 않는 채팅 기록입니다");
 	private final int status;
 	private final String code;
 	private final String message;

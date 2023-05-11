@@ -25,10 +25,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 @Table(name = "club_ranking")
+@Getter
+@ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClubRanking {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "member_level_info")
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member_level_info")
 public class MemberLevelInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
