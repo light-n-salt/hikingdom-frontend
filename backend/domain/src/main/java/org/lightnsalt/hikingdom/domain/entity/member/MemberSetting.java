@@ -19,10 +19,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "member_setting")
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member_setting")
 public class MemberSetting extends BaseTimeEntity {
 	@Id
 	private Long id;

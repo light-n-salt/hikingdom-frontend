@@ -28,10 +28,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "member_hiking")
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member_hiking")
 public class MemberHiking {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

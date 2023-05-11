@@ -101,9 +101,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
 			LocalDateTime.now());
 
-		log.info("before delete");
 		memberRepository.updateMemberWithdraw(member.getId(), false, LocalDateTime.now());
-		log.info("after delete");
 	}
 
 	@Override
