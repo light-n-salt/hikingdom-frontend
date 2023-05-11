@@ -6,8 +6,10 @@ import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/chat")
 @RequiredArgsConstructor
 public class ChatController {
+	private final SimpMessagingTemplate template;
 	private final ChatService chatService;
 
 	@GetMapping("/clubs/{clubId}/members")
@@ -38,5 +41,14 @@ public class ChatController {
 		MessageRes message = chatService.findPrevChatInfo(clubId, chatId, size);
 		log.info("prev chats  : {} ", message);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 이전 대화 조회에 성공했습니다", message), HttpStatus.OK);
+	}
+
+	@PostMapping("/clubs/{clubId}/member-update")
+	public ResponseEntity<CustomResponseBody> memberUpdate(@PathVariable Long clubId) {
+		log.info("clubId {} ", clubId);
+		MessageRes message = chatService.findClubMemberInfo(clubId);
+		log.info("update member: {} ", message);
+		template.convertAndSend("/sub/clubs/" + clubId, message);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 멤버 업데이트에 성공했습니다"), HttpStatus.OK);
 	}
 }
