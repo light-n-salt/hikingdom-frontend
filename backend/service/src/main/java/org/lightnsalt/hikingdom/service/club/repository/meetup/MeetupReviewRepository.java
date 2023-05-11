@@ -17,7 +17,7 @@ public interface MeetupReviewRepository extends JpaRepository<MeetupReview, Long
 	int updateMeetupReviewIsDeletedById(@Param("id") Long id, @Param("isDeleted") boolean isDeleted,
 		@Param("now") LocalDateTime now);
 
-	List<MeetupReview> findByMeetupId(Long meetupId);
+	List<MeetupReview> findByMeetupId(@Param("meetupId") Long meetupId);
 
-	void deleteAllByMeetupId(Long meetupId);
+	void deleteAllByMeetupId(@Param("meetupId") Long meetupId);
 }

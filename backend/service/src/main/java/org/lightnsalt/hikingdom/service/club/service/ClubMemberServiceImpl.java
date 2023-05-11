@@ -82,8 +82,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 
 	@Transactional
 	public boolean retractPendingJoinRequest(Member member, Club club) {
-		return clubJoinRequestRepository.updatePendingJoinRequestByMemberAndClub(member, club,
-			JoinRequestStatusType.RETRACTED, LocalDateTime.now()) > 0;
+		return clubJoinRequestRepository.updatePendingJoinRequestByMemberAndClub(member, club, LocalDateTime.now()) > 0;
 	}
 
 	@Override
@@ -103,8 +102,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 		// 소모임장일 경우
 		if (memberId.equals(hostId)) {
 			// 신청한 회원 정보 가져오기
-			List<ClubJoinRequest> list = clubJoinRequestRepository.findByClubIdAndMemberIsWithdrawAndStatus(clubId,
-				false, JoinRequestStatusType.PENDING);
+			List<ClubJoinRequest> list = clubJoinRequestRepository.findByClubIdAndStatus(clubId, JoinRequestStatusType.PENDING);
 			List<MeetupMemberDetailListRes> result = list.stream()
 				.map(clubJoinRequest -> new MeetupMemberDetailListRes(clubJoinRequest.getMember()))
 				.collect(Collectors.toList());

@@ -26,10 +26,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Member m SET m.profileUrl = :profileUrl WHERE m.id = :id")
-	void setProfileUrlById(String profileUrl, Long id);
+	void setProfileUrlById(@Param("profileUrl") String profileUrl, @Param("id") Long id);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("UPDATE Member m " + "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw " + "WHERE m.id = :id")
+	@Query(
+		"UPDATE Member m " + "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw " + "WHERE m.id = :id")
 	void updateMemberWithdraw(@Param("id") Long id, @Param("isWithdraw") boolean isWithdraw,
 		@Param("now") LocalDateTime now);
 

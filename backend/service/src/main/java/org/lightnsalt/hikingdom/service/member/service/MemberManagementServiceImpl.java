@@ -98,8 +98,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		}
 
 		// 소모임 가입 신청 취소
-		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
-			LocalDateTime.now());
+		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, LocalDateTime.now());
 
 		memberRepository.updateMemberWithdraw(member.getId(), false, LocalDateTime.now());
 	}
@@ -208,8 +207,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			.getId();
 
 		// 가입 신청한 소모임 정보 가져오기
-		final List<ClubJoinRequest> clubMemberList = clubJoinRequestRepository.findByMemberIdAndStatusAndClubIsDeleted(
-			memberId, JoinRequestStatusType.PENDING, false);
+		final List<ClubJoinRequest> clubMemberList = clubJoinRequestRepository.findByMemberIdAndStatus(
+			memberId, JoinRequestStatusType.PENDING);
 
 		// dto에 담아 리턴
 		return clubMemberList.stream().map(clubJoinRequest -> {
