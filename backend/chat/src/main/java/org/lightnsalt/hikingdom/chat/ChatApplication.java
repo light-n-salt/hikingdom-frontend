@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "org.lightnsalt.hikingdom")
 @EnableEurekaClient
 @EnableMongoAuditing
 @EnableMongoRepositories("org.lightnsalt.hikingdom.chat.repository.mongo")
