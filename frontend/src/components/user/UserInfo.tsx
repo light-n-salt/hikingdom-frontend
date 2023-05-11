@@ -15,7 +15,6 @@ function UserInfo({
   totalAlt,
   totalDistance,
   totalDuration,
-  totalHikingCount,
   totalMountainCount,
 }: UserRecord) {
   const { theme } = useContext(ThemeContext)

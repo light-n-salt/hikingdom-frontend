@@ -14,6 +14,8 @@ import styles from './CreateMeetupForm.module.scss'
 import Button from 'components/common/Button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { MtInfo } from 'types/mt.interface'
+import toast from 'components/common/Toast'
+import useUserQuery from 'hooks/useUserQuery'
 
 type Option = {
   value: string
@@ -21,7 +23,8 @@ type Option = {
 }
 
 function CreateMeetupForm() {
-  const { clubId } = useParams()
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
 
   const navigate = useNavigate()
   const [name, setName] = useState('')
@@ -37,10 +40,9 @@ function CreateMeetupForm() {
     setName(event.target.value)
   }
 
-  // input태그 변화에 따른 일정날짜(date) 업데이트하는 함수
+  // input태그 변화에 따른 산 목록(mountainOptions)을 업데이트 하는 함수
   function onChangeSetMountain(event: React.ChangeEvent<HTMLInputElement>) {
     setMountain(event.target.value)
-    if (!event.target.value) return
     getMountains(event.target.value).then((res) => {
       const mountainInfoArray: MtInfo[] = res.data.result.content
       const options: Option[] = []
@@ -80,12 +82,14 @@ function CreateMeetupForm() {
       !date ||
       !time ||
       !description.trim()
-    )
+    ) {
+      toast.addMessage('error', '모든 항목을 정확하게 기입해주세요')
       return
+    }
     const startAt = date + ' ' + time
     createMeetup(clubId, name, mountainId, startAt, description).then((res) => {
       const meetupId = res.data.result.id
-      navigate(`/club/${clubId}/meetup/${meetupId}/detail`)
+      navigate(`/club/meetup/${meetupId}/detail`)
     })
   }
 

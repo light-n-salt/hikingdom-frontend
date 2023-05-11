@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useContext } from 'react'
 import styles from './Calendar.module.scss'
+import { useNavigate, useParams } from 'react-router'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import {
   format,
@@ -12,10 +13,9 @@ import {
   endOfWeek,
   isSameMonth,
 } from 'date-fns'
+import Button from 'components/common/Button'
 import IconButton from 'components/common/IconButton'
 import { ThemeContext } from 'styles/ThemeProvider'
-import Button from 'components/common/Button'
-import { useNavigate, useParams } from 'react-router'
 
 const WEEK_DAYS = ['일', '월', '화', '수', '목', '금', '토']
 
@@ -34,7 +34,6 @@ function Calendar({
 }: CalendarProps) {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
-  const { clubId } = useParams()
 
   // 오늘 날짜 기반으로, 현재 달력이 바라보는 날짜 설정
   const [currentDate, setCurrentDate] = useState(today)
@@ -64,10 +63,8 @@ function Calendar({
 
   // 월 변경 시마다, 해당 월의 첫 일로 setCurrentDate 업데이트
   function onChangeSetCurrentDate(event: React.ChangeEvent<HTMLInputElement>) {
-    console.log(event.target.value)
     const [year, month] = event.target.value.split('-')
     const date = new Date(parseInt(year), parseInt(month) - 1)
-    console.log(date)
     setCurrentDate(date)
   }
 
@@ -130,7 +127,7 @@ function Calendar({
           text="일정생성"
           color="primary"
           size="sm"
-          onClick={() => navigate(`/club/${clubId}/meetup/create`)}
+          onClick={() => navigate(`/club/meetup/create`)}
         />
       </div>
     </div>
