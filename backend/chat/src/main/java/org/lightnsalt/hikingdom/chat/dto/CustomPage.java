@@ -2,11 +2,14 @@ package org.lightnsalt.hikingdom.chat.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
 public class CustomPage<T> {
 	private List<T> content;
+	@JsonProperty("isLast")
 	private boolean isLast;
 	private int pageNumber;
 	private int pageSize;

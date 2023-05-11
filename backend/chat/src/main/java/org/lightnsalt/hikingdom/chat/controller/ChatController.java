@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,13 @@ public class ChatController {
 		ListMessageRes message = chatService.findInitialChatInfo(clubId);
 		log.info("enter chat : {} ", message);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 입장에 성공했습니다", message), HttpStatus.OK);
+	}
+
+	@GetMapping("/clubs/{clubId}/prev-chats")
+	public ResponseEntity<CustomResponseBody> prevChats(@PathVariable Long clubId, @RequestParam String chatId) {
+		log.info("clubId {} ", clubId);
+		ListMessageRes message = chatService.findPrevChatInfo(clubId, chatId);
+		log.info("prev chats  : {} ", message);
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 이전 대화 조회에 성공했습니다", message), HttpStatus.OK);
 	}
 }
