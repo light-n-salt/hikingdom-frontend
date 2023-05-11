@@ -37,7 +37,9 @@ export function getPastMeetups(
 
 // 트래킹 정보 조회
 export function getTrackingInfo(nickname: string, hikingRecordId: number) {
-  return apiRequest.get(`/members/${nickname}/hiking/${hikingRecordId}`)
+  return apiRequest
+    .get(`/members/${nickname}/hiking/${hikingRecordId}`)
+    .then((res) => res.data.result)
 }
 
 // 이메일 인증

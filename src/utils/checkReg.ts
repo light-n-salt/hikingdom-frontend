@@ -17,6 +17,10 @@ const REG_EXP = {
     pattern: /^[0-9]{6}$/,
     condition: '6자리 숫자',
   },
+  name: {
+    pattern: /[ㄱ-ㅎ|가-힣|\w+|a-z|A-Z|0-9|]{1,20}/,
+    condition: '20자 이내',
+  },
 }
 
 type checkExpReturns = {

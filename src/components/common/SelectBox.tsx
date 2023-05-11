@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { forwardRef, ForwardedRef, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './SelectBox.module.scss'
 
-import { BsFillCaretDownFill, BsFillCaretUpFill } from 'react-icons/bs'
+import { BsFillCaretDownFill } from 'react-icons/bs'
 
 // 옵션 타입 정의
 type Option = {
@@ -17,12 +17,10 @@ type SelectBoxProps = {
   isLeft?: boolean // 왼쪽 정렬 여부
 }
 
-function SelectBox({
-  options,
-  defaultLabel,
-  setValue,
-  isLeft = false,
-}: SelectBoxProps) {
+const SelectBox = forwardRef(function SelectBox(
+  { options, defaultLabel, setValue, isLeft = false }: SelectBoxProps,
+  ref: ForwardedRef<HTMLDivElement>
+) {
   const [label, setLabel] = useState<string>(defaultLabel || options[0].label) // 선택된(표시할) 라벨 값
   const [isShow, setIsShow] = useState(false) // 옵션 표시 여부
 
@@ -44,7 +42,7 @@ function SelectBox({
 
   return (
     <div className={`${styles.container} ${styles[isLeft ? 'left' : 'right']}`}>
-      <div className={styles.select} onClick={onClickToggleShow}>
+      <div ref={ref} className={styles.select} onClick={onClickToggleShow}>
         {label}
         <div className={`${styles.arrow} ${styles[isShow ? 'up' : 'down']}`}>
           <BsFillCaretDownFill />
@@ -65,6 +63,6 @@ function SelectBox({
       )}
     </div>
   )
-}
+})
 
 export default SelectBox

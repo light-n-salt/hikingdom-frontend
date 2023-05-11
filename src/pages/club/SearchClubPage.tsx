@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from './SearchClubPage.module.scss'
 import { getClubs } from 'apis/services/clubs'
 import RankList from 'components/common/RankList'
-import SearchBarDropdown from 'components/common/SearchBarDropdown'
+import InputDropdown from 'components/common/InputDropdown'
 import useDebounce from 'hooks/useDebounce'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import { ThemeContext } from 'styles/ThemeProvider'
@@ -12,7 +12,7 @@ import Loading from 'components/common/Loading'
 // 서치바의 드롭다운  SelectBox에 넘길 옵션 배열
 const filterOptions = [
   { label: '모임이름', value: 'name' },
-  { label: '지역', value: 'participation' },
+  // { label: '지역', value: 'participation' },
 ]
 
 function SearchClubPage() {
@@ -65,7 +65,7 @@ function SearchClubPage() {
   return (
     <div className={`page ${theme} p-md ${styles.container}`}>
       <div className={styles.search}>
-        <SearchBarDropdown
+        <InputDropdown
           value={query}
           placeholder="소모임을 검색하세요"
           options={filterOptions}

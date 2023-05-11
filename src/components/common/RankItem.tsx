@@ -77,8 +77,12 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
       {/* 랭킹 아이콘 */}
       {rankingIcon ? (
         <img className={styles.medal} src={rankingIcon} />
-      ) : (
+      ) : clubInfo.ranking ? (
         <div className={styles.rank}>{clubInfo.ranking}</div>
+      ) : (
+        <div className={styles.rank}>
+          <FaMountain />
+        </div>
       )}
     </div>
   )

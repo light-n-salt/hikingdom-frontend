@@ -173,7 +173,7 @@ function ClubChatPage() {
 
   return (
     <div className={`page p-sm ${theme} mobile `}>
-      <PageHeader title="" url={`/club/${clubId}/main`} />
+      <PageHeader title={clubInfo?.clubName} url={`/club/${clubId}/main`} />
       {isError || isLoading ? (
         <Loading />
       ) : (

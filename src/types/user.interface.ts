@@ -38,9 +38,19 @@ export interface UserProfileInfo extends User, UserRecord {
   hikingRecords: UserHiking[]
 }
 
+export interface RecordInfo {
+  alt: number
+  lat: number
+  lng: number
+}
+
+export interface GpsRoute {
+  gpsRoute: RecordInfo[]
+}
+
 // 등산 기록 상세 조회
 export interface UserHikingDetail {
-  gpsRoute: string
+  gpsRoute: GpsRoute
   mountainName: string
   startAt: string
   totalDistance: number

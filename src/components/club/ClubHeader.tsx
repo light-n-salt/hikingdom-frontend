@@ -1,37 +1,39 @@
-import React, { useEffect } from 'react'
+import React, { useMemo } from 'react'
 import styles from './ClubHeader.module.scss'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { getClubSimpleInfo } from 'apis/services/clubs'
-// import { ClubSimpleInfo } from 'types/club.interface'
-import { clubInfoState } from 'recoil/atoms'
-import { useRecoilState } from 'recoil'
+import { ClubSimpleInfo } from 'types/club.interface'
+import { useQuery } from '@tanstack/react-query'
+import { untilMidnight } from 'utils/untilMidnight'
 import Chatting from 'assets/images/airplane.png'
 import IconButton from 'components/common/IconButton'
-import TextButton from 'components/common/TextButton'
 
 function ClubHeader() {
   const navigate = useNavigate()
-
-  const [clubInfo, setClubInfo] = useRecoilState(clubInfoState)
 
   const location = useLocation()
   const type = location.pathname.split('/')[3]
 
   const clubId = useParams<string>().clubId
 
-  useEffect(() => {
-    getClubSimpleInfo(Number(clubId))
-      .then((res) => {
-        setClubInfo(res.data.result)
-      })
-      .catch(() => {})
+  const queryTime = useMemo(() => {
+    return untilMidnight()
   }, [])
 
-  return clubInfo.clubName ? (
-    <>
+  const { data: clubInfo } = useQuery<ClubSimpleInfo>(
+    ['clubInfo'],
+    () => getClubSimpleInfo(Number(clubId)),
+    {
+      cacheTime: queryTime,
+      staleTime: queryTime,
+    }
+  )
+
+  return clubInfo ? (
+    <div className={styles.container}>
       <div className={styles.header}>
-        <span className={styles.title}>{clubInfo.clubName}</span>
+        <h1 className={styles.title}>{clubInfo.clubName}</h1>
         <div className={styles.chat}>
           <IconButton
             imgSrc={Chatting}
@@ -43,7 +45,7 @@ function ClubHeader() {
       <div className={styles.nav}>
         <span
           className={`${styles.button} ${
-            type === 'main' ? styles.active : styles.disabled
+            type === 'main' ? styles.active : styles.inactive
           }`}
           onClick={() => navigate(`main`)}
         >
@@ -51,7 +53,7 @@ function ClubHeader() {
         </span>
         <span
           className={`${styles.button} ${
-            type === 'meetup' ? styles.active : styles.disabled
+            type === 'meetup' ? styles.active : styles.inactive
           }`}
           onClick={() => navigate('meetup')}
         >
@@ -59,7 +61,7 @@ function ClubHeader() {
         </span>
         <span
           className={`${styles.button} ${
-            type === 'member' ? styles.active : styles.disabled
+            type === 'member' ? styles.active : styles.inactive
           }`}
           onClick={() => navigate('member')}
         >
@@ -67,14 +69,14 @@ function ClubHeader() {
         </span>
         <span
           className={`${styles.button} ${
-            type === 'album' ? styles.active : styles.disabled
+            type === 'album' ? styles.active : styles.inactive
           }`}
           onClick={() => navigate('album')}
         >
           앨범
         </span>
       </div>
-    </>
+    </div>
   ) : null
 }
 

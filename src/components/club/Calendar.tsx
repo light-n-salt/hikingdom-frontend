@@ -14,6 +14,8 @@ import {
 } from 'date-fns'
 import IconButton from 'components/common/IconButton'
 import { ThemeContext } from 'styles/ThemeProvider'
+import Button from 'components/common/Button'
+import { useNavigate, useParams } from 'react-router'
 
 const WEEK_DAYS = ['일', '월', '화', '수', '목', '금', '토']
 
@@ -31,9 +33,12 @@ function Calendar({
   onClickDate,
 }: CalendarProps) {
   const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
+  const { clubId } = useParams()
+
   // 오늘 날짜 기반으로, 현재 달력이 바라보는 날짜 설정
   const [currentDate, setCurrentDate] = useState(today)
-
+  // 현재 달력이 바라보는 날짜를 기반으로, 달력의 시작일자와 마지막 일자 반환
   const { calendarStart, calendarEnd } = useMemo(() => {
     const monthStart = startOfMonth(currentDate) // 현 월의 시작 일자
     const monthEnd = endOfMonth(currentDate) // 현 월의 마지막 일자
@@ -120,6 +125,14 @@ function Calendar({
         ))}
       </div>
       <div className={`${styles.gridbox} ${styles.calendar}`}>{dateboxes}</div>
+      <div className={styles.button}>
+        <Button
+          text="일정생성"
+          color="primary"
+          size="sm"
+          onClick={() => navigate(`/club/${clubId}/meetup/create`)}
+        />
+      </div>
     </div>
   )
 }
