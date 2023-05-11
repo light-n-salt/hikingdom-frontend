@@ -7,7 +7,7 @@ import { Album } from 'types/club.interface'
 import { HiTrash, HiLightBulb } from 'react-icons/hi'
 
 import { report } from 'apis/services/users'
-import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteAlbum } from 'apis/services/clubs'
 
 type PhotoModalProps = {

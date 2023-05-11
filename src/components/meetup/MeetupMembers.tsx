@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styles from './MeetupMembers.module.scss'
 
 import Image from 'components/common/Image'
 import Button from 'components/common/Button'
 import Modal from 'components/common/Modal'
 import MemberModal from './MemberModal'
-import Loading from 'components/common/Loading'
 import { MeetupMemberInfo } from 'types/meetup.interface'
 import { ClubMember } from 'types/club.interface'
 import toast from 'components/common/Toast'
@@ -17,32 +16,37 @@ import {
   updateJoin,
   deleteJoin,
 } from 'apis/services/meetup'
+import useUserQuery from 'hooks/useUserQuery'
 
 function MeetupMembers() {
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
   const [memberDetail, setMemberDetail] = useState<ClubMember[]>()
-  const { clubId, meetupId } = useParams() as {
-    clubId: string
+  const { meetupId } = useParams() as {
     meetupId: string
   }
 
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
+
   // 일정 멤버 조회
   const { data: members } = useQuery<MeetupMemberInfo>(['meetupMembers'], () =>
-    getMeetupMembers(parseInt(clubId), parseInt(meetupId))
+    getMeetupMembers(clubId || 0, parseInt(meetupId))
   )
 
   // 모달 ON OFF
   const onClickDetail = () => {
+    if (!clubId) return
     setIsOpen(true)
-    getMembersDetail(parseInt(clubId), parseInt(meetupId)).then((res) =>
+    getMembersDetail(clubId, parseInt(meetupId)).then((res) =>
       setMemberDetail(res)
     )
   }
 
   // 일정 참여
   const onClickJoin = () => {
-    updateJoin(parseInt(clubId), parseInt(meetupId)).then(() => {
+    if (!clubId) return
+    updateJoin(clubId, parseInt(meetupId)).then(() => {
       queryClient.invalidateQueries(['meetupMembers'])
       toast.addMessage('success', '일정에 참여했습니다')
     })
@@ -50,7 +54,8 @@ function MeetupMembers() {
 
   // 일정 참여 취소
   const onClickWithdraw = () => {
-    deleteJoin(parseInt(clubId), parseInt(meetupId)).then(() => {
+    if (!clubId) return
+    deleteJoin(clubId, parseInt(meetupId)).then(() => {
       queryClient.invalidateQueries(['meetupMembers'])
       toast.addMessage('success', '일정을 취소했습니다')
     })

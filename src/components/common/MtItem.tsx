@@ -14,8 +14,6 @@ type MtItemProps = {
 function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
   const navigate = useNavigate()
 
-  const address = mtInfo.address
-
   return (
     <div
       className={`${styles.container} ${styles[size]}`}

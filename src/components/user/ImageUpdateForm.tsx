@@ -17,7 +17,7 @@ import useUserQuery from 'hooks/useUserQuery'
 function ImageUpdateForm() {
   const { theme } = useContext(ThemeContext)
   const [imgUrl, setImgUrl] = useState('')
-  const imgRef = useRef<any>(null)
+  const imgRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -54,6 +54,8 @@ function ImageUpdateForm() {
 
   // 프로필 업데이트
   const onClickUpdate = () => {
+    if (!imgRef.current?.files) return
+
     const file = imgRef.current?.files?.[0]
     const formData = new FormData()
     formData.append('image', file)
@@ -85,7 +87,7 @@ function ImageUpdateForm() {
           icon={<TbCameraPlus />}
           size="sm"
           color="gray"
-          onClick={() => imgRef.current.click()}
+          onClick={() => imgRef.current && imgRef.current.click()}
         />
       )}
     </div>

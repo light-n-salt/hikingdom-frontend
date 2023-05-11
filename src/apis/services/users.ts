@@ -1,5 +1,4 @@
 import apiRequest from 'apis/axios'
-import { User } from 'types/user.interface'
 
 // 닉네임 중복 체크
 export function checkNickname(nickname: string) {
@@ -14,9 +13,8 @@ export function getProfile(nickname: string, size: number | null = null) {
 }
 
 // 유저 정보 조회
-export function getUserInfo(setUserState: (userInfo: User) => void) {
+export function getUserInfo() {
   return apiRequest.get(`/members`).then((res) => {
-    setUserState(res.data.result)
     return res.data.result
   })
 }
@@ -79,6 +77,9 @@ export function login(email: string, password: string) {
         // @ts-expect-error
         window.Token.showToastMessage('Hello Native Callback')
       }
+    })
+    .then(() => {
+      getUserInfo()
     })
 }
 
