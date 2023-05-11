@@ -25,6 +25,6 @@ public class ChatWebSocketController {
 		log.info("chatReq {} ", chatReq);
 		ChatRes chatRes = chatService.saveMessage(chatReq);
 		log.info("enter chat : {} ", chatRes);
-		template.convertAndSend("/sub/clubs/" + clubId, new ChatMessageRes(chatRes));
+		template.convertAndSend("/sub/clubs/" + clubId, new ChatMessageRes("MESSAGE", chatRes));
 	}
 }

@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ChatMessageRes {
-	private static final String TYPE = "MESSAGE";
+	private String type;
 	private ChatRes chat;
 }
