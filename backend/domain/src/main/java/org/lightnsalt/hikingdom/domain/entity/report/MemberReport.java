@@ -27,12 +27,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "member_report")
 @Getter
 @ToString
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member_report")
 public class MemberReport {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
