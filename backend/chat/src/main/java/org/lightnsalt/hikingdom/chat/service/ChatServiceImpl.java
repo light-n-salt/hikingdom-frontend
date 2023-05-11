@@ -12,6 +12,8 @@ import org.lightnsalt.hikingdom.chat.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.chat.entity.Chat;
 import org.lightnsalt.hikingdom.chat.repository.mongo.ChatRepository;
 import org.lightnsalt.hikingdom.chat.repository.mysql.ClubMemberRepository;
+import org.lightnsalt.hikingdom.common.error.ErrorCode;
+import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,17 +46,16 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public ListMessageRes findPrevChatInfo(Long clubId, String chatId, Integer size) {
-		Chat chat = chatRepository.findById(chatId).orElse(null);
 		Pageable pageable = PageRequest.of(0, size, Sort.by("sendAt").descending());
 
 		Page<Chat> chatPage;
-		if (chat == null) {
-			chatPage  = chatRepository.findByClubIdOrderBySendAtDesc(clubId, pageable);
+		if (chatId == null) {
+			chatPage = chatRepository.findByClubIdOrderBySendAtDesc(clubId, pageable);
 		} else {
+			Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new GlobalException(ErrorCode.CHAT_NOT_FOUND));
 			chatPage = chatRepository.findByClubIdAndSendAtBeforeOrderBySendAtDesc(clubId, chat.getSendAt(),
 				pageable);
 		}
-
 
 		CustomPage<ChatRes> chats = new CustomPage<>(
 			chatPage.getContent().stream().map(ChatRes::new).collect(Collectors.toList()),
