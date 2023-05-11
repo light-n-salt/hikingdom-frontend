@@ -1,36 +1,31 @@
 package org.lightnsalt.hikingdom.chat.controller;
 
-import org.lightnsalt.hikingdom.chat.dto.request.ChatReq;
-import org.lightnsalt.hikingdom.chat.dto.response.ChatMessageRes;
-import org.lightnsalt.hikingdom.chat.dto.response.ChatRes;
 import org.lightnsalt.hikingdom.chat.dto.response.ListMessageRes;
 import org.lightnsalt.hikingdom.chat.service.ChatService;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
+import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@RestController
 @Slf4j
+@RequestMapping("/chat")
 @RequiredArgsConstructor
 public class ChatController {
-	private final SimpMessagingTemplate template;
 	private final ChatService chatService;
 
-	@MessageMapping("/clubs/{clubId}/enter")
-	public void enterChat(@DestinationVariable Long clubId) {
+	@GetMapping("/clubs/{clubId}/enter")
+	public ResponseEntity<CustomResponseBody> enterChat(@PathVariable Long clubId) {
+		log.info("clubId {} ", clubId);
 		ListMessageRes message = chatService.findInitialChatInfo(clubId);
 		log.info("enter chat : {} ", message);
-		template.convertAndSend("/sub/clubs/" + clubId, message);
-	}
-
-	@MessageMapping("/clubs/{clubId}/chats")
-	public void messageSave(@DestinationVariable Long clubId, ChatReq chatReq) {
-		ChatRes chatRes = chatService.saveMessage(chatReq);
-		log.info("enter chat : {} ", chatRes);
-		template.convertAndSend("/sub/clubs/" + clubId, new ChatMessageRes(chatRes));
+		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 입장에 성공했습니다", message), HttpStatus.OK);
 	}
 }
