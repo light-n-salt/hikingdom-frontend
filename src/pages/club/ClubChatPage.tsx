@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import { useParams } from 'react-router-dom'
-
 import PageHeader from 'components/common/PageHeader'
 import ChatList from 'components/club/ChatList'
 import Loading from 'components/common/Loading'
@@ -12,6 +11,7 @@ import useUserQuery from 'hooks/useUserQuery'
 import sockjs from 'sockjs-client'
 import { Stomp } from '@stomp/stompjs'
 import axios from 'axios'
+import TextSendBar from 'components/common/TextSendBar'
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
