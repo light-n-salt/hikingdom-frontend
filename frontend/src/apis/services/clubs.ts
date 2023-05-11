@@ -82,6 +82,11 @@ export function getClubInfo(clubId: number) {
   return apiRequest.get(`/clubs/${clubId}/detail`)
 }
 
+// 소모임 채팅 조회
+export function getChats(clubId: number) {
+  return apiRequest.get(`/chat/clubs/${clubId}/enter`)
+}
+
 // 소모임 생성
 export function createClub(
   name: string,

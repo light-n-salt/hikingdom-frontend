@@ -9,8 +9,7 @@ import { Chats, Chat, ChatMember } from 'types/chat.interface'
 import { useQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
 import sockjs from 'sockjs-client'
-import StompJs from 'stompjs'
-import { send } from 'process'
+import { Stomp } from '@stomp/stompjs'
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
@@ -71,7 +70,7 @@ function ClubChatPage() {
   // 유저정보
   const { data: userInfo } = useUserQuery()
 
-  // 웹소켓
+  // 소켓 통신
   const [stomp, setStomp] = useState<any>() // 타입 수정 필요
 
   // 채팅 & 멤버 데이터
@@ -85,12 +84,12 @@ function ClubChatPage() {
     //useQuery
   }, [])
 
-  // 소켓통신 연결
+  // 통신 연결
   useEffect(() => {}, [])
 
   function connection() {
     const socket = new sockjs('연결할 url')
-    const stomp = StompJs.over(socket)
+    const stomp = Stomp.over(socket)
     setStomp(stomp)
 
     // 서버에 connect 프레임 전송
