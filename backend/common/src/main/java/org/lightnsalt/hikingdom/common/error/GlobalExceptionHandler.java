@@ -7,6 +7,7 @@ import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.messaging.handler.annotation.support.MethodArgumentTypeMismatchException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,6 +63,16 @@ public class GlobalExceptionHandler {
 		log.error("handleMissingServletRequestParameterException", e);
 		return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.MISSING_REQUEST_PARAMETER),
 			HttpStatus.BAD_REQUEST);
+	}
+
+	/**
+	 * 메서드에 잘못된 입력 형식이 들어왔을 때 발생하는 처리
+	 */
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	protected ResponseEntity<ErrorResponseBody> handleMethodArgumentTypeMismatchException(
+		MethodArgumentTypeMismatchException e) {
+		log.error("handleMethodArgumentTypeMismatchException", e);
+		return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE), HttpStatus.BAD_REQUEST);
 	}
 
 	/**

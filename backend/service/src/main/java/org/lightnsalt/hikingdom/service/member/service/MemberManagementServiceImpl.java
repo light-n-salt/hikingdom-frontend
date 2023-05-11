@@ -33,6 +33,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	private final ClubMemberRepository clubMemberRepository;
 	private final MeetupRepository meetupRepository;
 	private final MemberRepository memberRepository;
+
+	private final RestTemplate restTemplate;
 
 	@Override
 	public MemberInfoRes findMemberInfo(String email) {
@@ -152,8 +155,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 
-		if (!setNickname(newNickname, member.getId()))
-			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
+		memberRepository.setNicknameById(newNickname, member.getId());
+		sendMemberUpdateAlert(member);
 	}
 
 	@Transactional
@@ -166,15 +169,12 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			String url = s3FileUtil.upload(photo, "members/" + member.getId() + "/profiles");
 			memberRepository.setProfileUrlById(url, member.getId());
 
+			sendMemberUpdateAlert(member);
+
 			return url;
 		} catch (IOException e) {
 			throw new GlobalException(ErrorCode.FAIL_TO_SAVE_PHOTO);
 		}
-	}
-
-	@Transactional
-	public boolean setNickname(String nickname, Long memberId) {
-		return memberRepository.setNicknameById(nickname, memberId) > 0;
 	}
 
 	@Transactional
@@ -223,5 +223,15 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			assert clubJoinRequest.getClub() != null;
 			return new MemberRequestClubRes(clubJoinRequest.getClub(), ranking);
 		}).collect(Collectors.toList());
+	}
+
+	private void sendMemberUpdateAlert(Member member) {
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId()).orElse(null);
+
+		if (clubMember == null)
+			return;
+
+		restTemplate.postForObject("https://hikingdom.kr/chat/clubs/" + clubMember.getClub().getId() + "/member-update",
+			null, Void.class);
 	}
 }
