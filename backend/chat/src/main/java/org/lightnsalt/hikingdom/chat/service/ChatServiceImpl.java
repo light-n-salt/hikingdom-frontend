@@ -12,6 +12,8 @@ import org.lightnsalt.hikingdom.chat.dto.response.ListMessageRes;
 import org.lightnsalt.hikingdom.chat.entity.Chat;
 import org.lightnsalt.hikingdom.chat.repository.mongo.ChatRepository;
 import org.lightnsalt.hikingdom.chat.repository.mysql.ClubMemberRepository;
+import org.lightnsalt.hikingdom.common.error.ErrorCode;
+import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +52,7 @@ public class ChatServiceImpl implements ChatService {
 		// 최근 N개 채팅 반환
 		Pageable pageable = PageRequest.of(0, 20, Sort.by("sendAt").descending());
 		Page<Chat> chatPage = chatRepository.findByClubIdOrderBySendAtDesc(clubId, pageable);
+		System.out.println(chatPage);
 		CustomPage<ChatRes> chats = new CustomPage<>(
 			chatPage.getContent().stream().map(ChatRes::new).collect(Collectors.toList()),
 			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), chatPage.hasNext());
@@ -62,14 +65,14 @@ public class ChatServiceImpl implements ChatService {
 		Chat chat = chatRepository.findById(chatId).orElse(null);
 
 		if (chat == null)
-			return ListMessageRes.of("MESSAGE_LIST", null, null);
+			throw new GlobalException(ErrorCode.CHAT_NOT_FOUND);
 
 		Pageable pageable = PageRequest.of(0, 20, Sort.by("sendAt").descending());
 		Page<Chat> chatPage = chatRepository.findByClubIdAndSendAtBeforeOrderBySendAtDesc(clubId, chat.getSendAt(),
 			pageable);
 		CustomPage<ChatRes> chats = new CustomPage<>(
 			chatPage.getContent().stream().map(ChatRes::new).collect(Collectors.toList()),
-			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), chatPage.hasNext());
+			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), !chatPage.hasNext());
 
 		return ListMessageRes.of("MESSAGE_LIST", chats);
 	}
@@ -77,7 +80,6 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public ListMessageRes findClubMemberInfo(Long clubId) {
 		List<MemberInfoRes> members = clubMemberRepository.findByClubId(clubId);
-
 		return ListMessageRes.of("MEMBERS", members);
 	}
 }
