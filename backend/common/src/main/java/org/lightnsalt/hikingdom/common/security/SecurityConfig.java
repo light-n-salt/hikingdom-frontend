@@ -72,6 +72,7 @@ public class SecurityConfig {
 			.antMatchers("/api/v1/members/auth/**").permitAll()
 			.antMatchers("/v3/api-docs/**").permitAll()
 			.antMatchers("/swagger-ui/**").permitAll()
+			.antMatchers("/chat/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
