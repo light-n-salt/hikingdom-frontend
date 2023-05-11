@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import styles from './NotFoundPage.module.scss'
 import { useNavigate } from 'react-router-dom'
 import Button from 'components/common/Button'
-import Loading from 'components/common/Loading'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 function NotFoundPage() {
@@ -13,8 +12,7 @@ function NotFoundPage() {
     <div className={`page ${theme}`}>
       <div className={styles.content}>
         <div>
-          <Loading />
-          <p>Page Not Found</p>
+          <p>404 Page Not Found</p>
         </div>
         <Button
           text="메인으로"

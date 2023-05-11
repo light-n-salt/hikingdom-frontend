@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import useUserQuery from 'hooks/useUserQuery'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubAlbumPage.module.scss'
 import AlbumList from 'components/club/AlbumList'
@@ -20,19 +20,22 @@ type InfiniteAlbumInfo = {
 function ClubAlbumPage() {
   const { theme } = useContext(ThemeContext)
   const infiniteRef = useRef<HTMLDivElement>(null)
-  const { clubId } = useParams() as { clubId: string }
+
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
 
   const { data, isLoading, fetchNextPage, hasNextPage } =
     useInfiniteQuery<InfiniteAlbumInfo>({
       queryKey: ['photos'],
       queryFn: ({ pageParam = null }) => {
-        return getClubAlbum(parseInt(clubId), pageParam, 21)
+        return getClubAlbum(clubId || 0, pageParam, 21)
       },
       getNextPageParam: (lastPage) => {
         return lastPage.hasNext
           ? lastPage.content.slice(-1)[0].photoId
           : undefined
       },
+      enabled: !!clubId,
     })
 
   const photoList = useMemo(() => {

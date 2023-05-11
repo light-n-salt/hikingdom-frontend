@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './NavigationBar.module.scss'
-import IconButton from './IconButton'
 import {
   IoPeopleOutline,
   IoHomeOutline,
@@ -37,9 +36,7 @@ function NavigationBar() {
             <IoPodiumOutline />
           </NavLink>
           <NavLink
-            to={
-              userInfo?.clubId ? `/club/${userInfo.clubId}/main` : '/club/none'
-            }
+            to={userInfo?.clubId ? `/club/main` : '/club/none'}
             className={({ isActive }) =>
               isActive ? styles.active : styles.inactive
             }

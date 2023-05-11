@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useContext, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
-import styles from './ClubMainDetailPage.module.scss'
+import styles from './ClubDetailPage.module.scss'
 import { getClubInfo } from 'apis/services/clubs'
 import { postJoinClub } from 'apis/services/clubs'
 import { ClubDetailInfo } from 'types/club.interface'
@@ -13,33 +13,44 @@ import clubmountain from 'assets/images/clubmountain.png'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 import { useQuery } from '@tanstack/react-query'
+import useUserQuery from 'hooks/useUserQuery'
 
-function ClubMainDetailPage() {
+function ClubDetailPage() {
   const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
 
-  const clubId = useParams<string>().clubId
+  const clubId = Number(useParams<string>().clubId)
+  const { data: userInfo } = useUserQuery()
 
   const { data: clubInfo } = useQuery<ClubDetailInfo>(
     ['ClubDetailInfo', { clubId: clubId }],
-    () => getClubInfo(Number(clubId))
+    () => getClubInfo(clubId)
   )
 
   function onClickJoinClub() {
-    postJoinClub(Number(clubId))
+    postJoinClub(clubId)
       .then(() => toast.addMessage('success', '가입이 신청되었습니다.'))
       .catch((err) => toast.addMessage('error', `${err.data.message}`))
   }
 
-  return clubInfo ? (
+  useEffect(() => {
+    if (clubId === userInfo?.clubId) {
+      navigate('/club/main')
+    }
+  }, [userInfo])
+
+  return clubInfo && userInfo ? (
     <div className={`page-gradation upside p-sm ${theme} ${styles.page}`}>
       <h1 className={styles.title}>{clubInfo.clubName}</h1>
       <div className={styles.button}>
-        <Button
-          text="가입 신청"
-          size="sm"
-          color="primary"
-          onClick={onClickJoinClub}
-        />
+        {!userInfo.clubId && (
+          <Button
+            text="가입 신청"
+            size="sm"
+            color="primary"
+            onClick={onClickJoinClub}
+          />
+        )}
       </div>
       <ClubRecordInfo
         participationRate={clubInfo.participationRate}
@@ -57,4 +68,4 @@ function ClubMainDetailPage() {
   )
 }
 
-export default ClubMainDetailPage
+export default ClubDetailPage

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
 import styles from './ClubMemberPage.module.scss'
 import { ClubMemberList } from 'types/club.interface'
 import {
@@ -10,35 +9,38 @@ import {
 import Toast from 'components/common/Toast'
 import Loading from 'components/common/Loading'
 import MemberList from 'components/club/MemberList'
+import useUserQuery from 'hooks/useUserQuery'
 
 function ClubMemberPage() {
   const [clubMemberList, setClubMemberList] = useState<ClubMemberList>({
     member: [],
   })
 
-  const clubId = useParams<string>().clubId
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
 
   useEffect(() => {
-    getClubMemberList(Number(clubId))
-  }, [])
+    if (!clubId) return
+    getClubMemberList(clubId)
+  }, [clubId])
 
   // 멤버 조회
   function getClubMemberList(clubId: number) {
-    getClubMember(Number(clubId)).then((res) =>
-      setClubMemberList(res.data.result)
-    )
+    getClubMember(clubId).then((res) => setClubMemberList(res.data.result))
   }
 
   // 수락 함수
   function onClickJoin(memberId: number) {
-    updateClubMember(Number(clubId), memberId)
+    if (!clubId) return
+    updateClubMember(clubId, memberId)
       .then(() => getClubMemberList(Number(clubId)))
       .catch((err) => Toast.addMessage('error', `${err.data.message}`))
   }
 
   // 거절 함수
   function onClickDelete(memberId: number) {
-    deleteClubMember(Number(clubId), memberId)
+    if (!clubId) return
+    deleteClubMember(clubId, memberId)
       .then(() => getClubMemberList(Number(clubId)))
       .catch((err) => Toast.addMessage('error', `${err.data.message}`))
   }

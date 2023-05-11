@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 import PageHeader from 'components/common/PageHeader'
-import TextSendBar from 'components/common/TextSendBar'
 import ChatList from 'components/club/ChatList'
 
 import { Chats } from 'types/chat.interface'

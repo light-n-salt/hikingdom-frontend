@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubMainPage.module.scss'
 import { getClubInfo } from 'apis/services/clubs'
@@ -15,10 +15,12 @@ import TextButton from 'components/common/TextButton'
 import DeleteModal from 'components/club/DeleteModal'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
+import useUserQuery from 'hooks/useUserQuery'
 
 function ClubMainPage() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
+
   const [value, setValue] = useState('')
   const [isOpen, setIsOpen] = useState(false)
 
@@ -26,15 +28,20 @@ function ClubMainPage() {
     setValue(event.target.value)
   }
 
-  const clubId = useParams<string>().clubId
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
 
   const { data: clubInfo } = useQuery<ClubDetailInfo>(
-    ['ClubDetailInfo', { clubId: clubId }],
-    () => getClubInfo(Number(clubId))
+    ['ClubDetailInfo', clubId],
+    () => getClubInfo(clubId || 0),
+    {
+      enabled: !!clubId,
+    }
   )
 
   function onClickDeleteClub() {
-    deleteClub(Number(clubId)).then(() => {
+    if (!clubId) return
+    deleteClub(clubId).then(() => {
       Toast.addMessage('success', `${clubInfo?.clubName}에 탈퇴하셨습니다.`)
       navigate('/club/none')
     })
