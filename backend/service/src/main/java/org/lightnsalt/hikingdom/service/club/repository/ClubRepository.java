@@ -11,9 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ClubRepository extends JpaRepository<Club, Long> {
-	Optional<Club> findByIdAndIsDeleted(@Param("id") Long id, @Param("is_deleted") boolean isDeleted);
 
-	Optional<Club> findByNameAndIsDeleted(@Param("name") String name, @Param("is_deleted") boolean isDeleted);
+	Optional<Club> findByName(@Param("name") String name);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Club c "

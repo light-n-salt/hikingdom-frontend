@@ -43,11 +43,11 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	public void sendClubJoinRequest(String email, Long clubId) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 현재 소모임에 가입되어 있는지 확인
-		if (clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false).isPresent())
+		if (clubMemberRepository.findByMemberId(member.getId()).isPresent())
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 
 		// 현재 소모임에 가입 요청했는지 확인 (동시에 여러 소모임 가입 신청 가능)
@@ -69,7 +69,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	public void retractClubJoinRequest(String email, Long clubId) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		final ClubJoinRequest clubJoinRequest = clubJoinRequestRepository.findByMemberIdAndClubIdAndStatus(
@@ -94,7 +94,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
 
 		// 소모임장 id 가져오기
-		final Long hostId = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Long hostId = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND))
 			.getHost().getId();
 
@@ -112,7 +112,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 		}
 
 		// 소모임에 가입되어있는 회원 정보 가져오기
-		List<ClubMember> list = clubMemberRepository.findByClubIdAndIsWithdraw(clubId, false);
+		List<ClubMember> list = clubMemberRepository.findByClubId(clubId);
 		List<MeetupMemberDetailListRes> result = list.stream()
 			.map(clubMember -> new MeetupMemberDetailListRes(clubMember.getMember()))
 			.collect(Collectors.toList());
@@ -127,8 +127,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 	public void withdrawClubMember(String email, Long clubId) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(clubId, member.getId(),
-				false)
+		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, member.getId())
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED));
 
 		// 모임장일 시, 모임 탈퇴 불가능
@@ -149,6 +148,6 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 		meetupMemberRepository.deleteAll(participatingEvents);
 
 		// 소모임 탈퇴 처리
-		clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, now);
+		clubMemberRepository.deleteById(clubMember.getId());
 	}
 }
