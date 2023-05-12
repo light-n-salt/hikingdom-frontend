@@ -1,10 +1,9 @@
-/*
-package org.lightnsalt.hikingdom.domain.info;
+package org.lightnsalt.hikingdom.service.info;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.lightnsalt.hikingdom.entity.info.MountainInfo;
-import org.lightnsalt.hikingdom.domain.info.repository.MountainInfoRepository;
+import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
+import org.lightnsalt.hikingdom.service.info.repository.MountainInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -110,4 +109,3 @@ public class MountainInfoRepositoryTest {
 	}
 
 }
-*/

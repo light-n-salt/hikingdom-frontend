@@ -56,7 +56,7 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 
 		// 가입 신청 처리
-		if (!updatePendingJoinRequest(candidate, club))
+		if (!updatePendingJoinRequest(candidate, club, JoinRequestStatusType.ACCEPTED))
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
 
 		// 소모임 멤버로 등록
@@ -69,7 +69,8 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 		clubRepository.updateClubMemberCount(clubId, club.getTotalMemberCount() + 1, LocalDateTime.now());
 
 		// 가입 신청자의 다른 가입 요청 취소
-		clubJoinRequestRepository.updatePendingJoinRequestByMember(candidate, LocalDateTime.now());
+		clubJoinRequestRepository.updatePendingJoinRequestByMember(candidate, JoinRequestStatusType.RETRACTED,
+			LocalDateTime.now());
 
 		// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
 		final ClubMember clubMember = clubMemberRepository.findByMemberId(memberId)
@@ -96,15 +97,15 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 		if (!club.getHost().equals(host))
 			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
 
-		if (!updatePendingJoinRequest(candidate, club))
+		if (!updatePendingJoinRequest(candidate, club, JoinRequestStatusType.REJECTED))
 			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted") // 메서드 의미상 의도된 사용법
 	@Transactional
-	public boolean updatePendingJoinRequest(Member candidate, Club club) {
+	public boolean updatePendingJoinRequest(Member candidate, Club club, JoinRequestStatusType status) {
 		return clubJoinRequestRepository
-			.updatePendingJoinRequestByMemberAndClub(candidate, club, LocalDateTime.now()) > 0;
+			.updatePendingJoinRequestByMemberAndClub(candidate, club, status, LocalDateTime.now()) > 0;
 	}
 
 	private void sendMemberUpdateAlert(Long clubId, List<MemberInfoRes> members) {

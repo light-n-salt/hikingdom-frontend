@@ -6,6 +6,7 @@ import java.util.List;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
+import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubAsset;
 import org.lightnsalt.hikingdom.service.club.repository.ClubAssetRepository;
 import org.lightnsalt.hikingdom.service.club.dto.request.ClubInfoReq;
@@ -82,7 +83,8 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 
 		// 소모임 신청 취소
-		clubJoinRequestRepository.updatePendingJoinRequestByMember(host, LocalDateTime.now());
+		clubJoinRequestRepository.updatePendingJoinRequestByMember(host, JoinRequestStatusType.RETRACTED,
+			LocalDateTime.now());
 
 		final BaseAddressInfo baseAddressInfo = getBaseAddressInfo(clubInfoReq);
 
