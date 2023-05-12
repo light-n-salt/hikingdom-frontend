@@ -18,7 +18,7 @@ export function getUserInfo() {
     // @ts-expect-error
     if (window.Kotlin) {
       // @ts-expect-error
-      window.Kotiln.saveUserInfo(res.data.result)
+      window.Kotlin.saveUserInfo(res.data.result)
     }
     return res.data.result
   })
@@ -80,7 +80,7 @@ export function login(email: string, password: string) {
       // @ts-expect-error
       if (window.Kotlin) {
         // @ts-expect-error
-        window.Kotiln.saveToken(res.data.result.refreshToken)
+        window.Kotlin.saveToken(res.data.result.refreshToken)
       }
     })
     .then(() => {
@@ -96,7 +96,7 @@ export function logout() {
     // @ts-expect-error
     if (window.Kotlin) {
       // @ts-expect-error
-      window.Kotiln.removeToken()
+      window.Kotlin.removeToken()
     }
   })
 }
