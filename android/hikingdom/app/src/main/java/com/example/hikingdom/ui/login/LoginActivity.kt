@@ -34,7 +34,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.addJavascriptInterface(WebInterface(this), "Kotlin")
-        webView.evaluateJavascript("sendRefreshToken('$refreshToken')", null)
+//        webView.evaluateJavascript("sendRefreshToken('$refreshToken')", null)
         webView.loadUrl(ApplicationClass.INDEX_WEB_URL)
     }
 }

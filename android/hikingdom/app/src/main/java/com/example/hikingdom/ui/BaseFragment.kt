@@ -26,7 +26,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
     private var _binding: VB? = null
     protected val binding get() = _binding!!
     lateinit var activityContext: Activity // 부모 aictivity의 Context
-    lateinit var db: AppDatabase // 데이터베이스
+    var db: AppDatabase? = null // 데이터베이스
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,7 +40,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activityContext = context as Activity
-        val db = AppDatabase.getInstance(activityContext) // 데이터베이스
+        db = AppDatabase.getInstance(activityContext) // 데이터베이스
     }
 
     override fun onStart() {
@@ -70,7 +70,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.addJavascriptInterface(WebInterface(context), "Kotlin")
-        webView.evaluateJavascript("sendRefreshToken('$refreshToken')", null)
+//        webView.evaluateJavascript("sendRefreshToken('$refreshToken')", null)
         webView.loadUrl(url)
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {

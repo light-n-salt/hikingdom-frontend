@@ -24,7 +24,7 @@ class SplashActivity: BaseActivity<ActivitySplashBinding>(ActivitySplashBinding:
 
         Handler(Looper.getMainLooper()).postDelayed({
 //            autoLogin()
-            startActivityWithClear(MainActivity::class.java)
+            startActivityWithClear(LoginActivity::class.java)
         }, 2000)
     }
 

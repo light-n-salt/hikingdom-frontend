@@ -1,5 +1,6 @@
 package com.example.hikingdom.ui.main.mypage
 
+import android.util.Log
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import com.example.hikingdom.ApplicationClass
@@ -13,6 +14,9 @@ class MypageFragment(): BaseFragment<FragmentMypageBinding>(FragmentMypageBindin
     override fun initAfterBinding() {
         // Room에서 사용자 정보 읽어오기
         var user = db?.userDao()?.getUser()
+
+        Log.d("db", "$db")
+        Log.d("user", "$user")
 
         // 사용자 닉네임이 해당하는 프로필 페이지로 이동
         webViewSetting(activityContext, binding.mypageWebview,MYPAGE_WEB_URL + '/' + user?.nickname)
