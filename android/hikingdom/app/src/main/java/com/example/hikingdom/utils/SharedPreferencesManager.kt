@@ -20,3 +20,12 @@ fun saveIsLocationServiceRunning(boolean: Boolean){ //
 
 fun getIsLocationServiceRunning(): Boolean =
     mSharedPreferences.getBoolean("isLocationServiceRunning", false)
+
+fun saveIsSummit(boolean: Boolean){ //
+    val editor = mSharedPreferences.edit()
+    editor.putBoolean("isSummit", boolean)
+    editor.apply()
+}
+
+fun getIsSummit(): Boolean =
+    mSharedPreferences.getBoolean("isSummit", false)

@@ -23,7 +23,9 @@ import com.example.hikingdom.data.remote.hiking.SaveHikingRecordReq
 import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.ui.main.hiking.HikingFragment.Companion.ACTION_STOP
 import com.example.hikingdom.utils.LocationHelper
+import com.example.hikingdom.utils.getIsSummit
 import com.example.hikingdom.utils.saveIsLocationServiceRunning
+import com.example.hikingdom.utils.saveIsSummit
 import java.time.LocalDateTime
 import kotlin.concurrent.thread
 
@@ -106,7 +108,8 @@ class LocationService : Service(), SaveHikingRecordView {
             val minAlt = storedUserLocations.minByOrNull { it.altitude }?.altitude
             val totalAlt = maxAlt!! - minAlt!!
             var saveHikingRecordReq = SaveHikingRecordReq(false, 2, null, ApplicationClass().localDateTimeToString(startAt),
-                totalDistance.value!!, totalAlt, duration.value!!, gpsRoute)
+                totalDistance.value!!, totalAlt, duration.value!!, getIsSummit(), gpsRoute)
+            Log.d("saveHikingRecordReq", saveHikingRecordReq.toString())
             HikingService.saveHikingRecord(this, saveHikingRecordReq)
         }else{
             Log.d(TAG, "foreground service 시작")
@@ -219,6 +222,7 @@ class LocationService : Service(), SaveHikingRecordView {
 
     override fun onSaveHikingRecordSuccess(message: String) {
         db?.userLocationDao().deleteAllUserLocations()  // 나중에 지우기 (api 호출 onSuccess에서 처리해줘야함)
+        saveIsSummit(false) // sharedPreference에 isSummit 여부 초기화
         Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
         Log.d("saveHikingRecordSuccess", message)
     }

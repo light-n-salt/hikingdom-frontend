@@ -6,6 +6,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -22,6 +23,8 @@ import com.example.hikingdom.data.local.AppDatabase
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.utils.getIsLocationServiceRunning
+import com.example.hikingdom.utils.getIsSummit
+import com.example.hikingdom.utils.saveIsSummit
 import net.daum.mf.map.api.*
 import java.time.LocalDateTime
 
@@ -54,6 +57,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 
     lateinit var hikingStartBtn: Button
     lateinit var hikingFinishBtn: Button
+    lateinit var hikingSummitBtn: Button
 
     override fun initAfterBinding() {
         binding.lifecycleOwner = this
@@ -95,6 +99,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
     fun setHikingService(){
         hikingStartBtn = binding.hikingStartBtn
         hikingFinishBtn = binding.hikingFinishBtn
+        hikingSummitBtn = binding.hikingSummitBtn
 
 //        if(locationService != null && locationService?.isHikingStarted?.value == true){
 //            Log.d("setHikingService", "true")
@@ -114,9 +119,11 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             // 사용자의 실시간 위치 정보 화면에 띄워주기
             loadLocationInfo()
             hikingFinishBtn.visibility = View.VISIBLE
+            hikingSummitBtn.visibility = View.VISIBLE
             hikingStartBtn.visibility = View.GONE
         }else{
             hikingFinishBtn.visibility = View.GONE
+            hikingSummitBtn.visibility = View.GONE
             hikingStartBtn.visibility = View.VISIBLE
         }
 
@@ -124,7 +131,10 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             startHikingService()
             showToast("등산 기록을 시작합니다.")
             hikingFinishBtn.visibility = View.VISIBLE
+            hikingSummitBtn.visibility = View.VISIBLE
             hikingStartBtn.visibility = View.GONE
+
+            saveIsSummit(false) // 완등인증 여부 초기화
         }
 
         hikingFinishBtn.setOnClickListener {
@@ -138,9 +148,27 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             bound = false
             showToast("등산 기록을 종료합니다.")
             hikingFinishBtn.visibility = View.GONE
+            hikingSummitBtn.visibility = View.GONE
             hikingStartBtn.visibility = View.VISIBLE
 
             finishTime = LocalDateTime.now()    // 종료시간 세팅
+        }
+
+        hikingSummitBtn.setOnClickListener {
+            // 완등 인증 버튼을 누르면, 정상에 100m 이내일 시 인증완료. 인증 여부를 로컬에 저장
+            if(getIsSummit()){
+                showToast("이미 완등 인증을 완료하였습니다.")
+                Log.d("saveIsSummit ", getIsSummit().toString()+"/ 이미 완등 인증을 완료")
+            } else {
+                if(checkIsSummit()){
+                    saveIsSummit(true)
+                    showToast("완등 인증이 완료되었습니다.")
+                    Log.d("saveIsSummit", getIsSummit().toString()+"/ 완등 인증 완료")
+                } else{
+                    saveIsSummit(false)
+                    showToast("산 정상에 도착 후 다시 인증해주세요.")
+                }
+            }
         }
     }
 
@@ -476,6 +504,20 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         mapView.addPOIItem(customMarker)
     }
 
+    private fun checkIsSummit(): Boolean {    // 현재 위치로 완등여부 확인
+        val location = locationService?.currentLocation?.value
+        if(location != null){
+            val summitLocation = Location("")
+            // 산 정상 좌표 임시값으로 설정해둠
+            summitLocation.latitude = 37.5013
+            summitLocation.longitude = 127.0395
+            val distance = summitLocation.distanceTo(location)
+//            val distance = Location.distanceBetween(location.latitude, location.longitude, summitLocation.latitude, summitLocation.longitude)
+            Log.d("distance", distance.toString())
+            return distance < 200   // 200m 이내에 있으면 완등으로 판단
+        }
+        return false
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -110,19 +110,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="하이킹 시작"
+                android:text="@string/hiking_start"
+                android:textSize="18sp"/>
+
+            <Button
+                android:id="@+id/hiking_summit_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/hiking_finish_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/hiking_summit"
+                android:visibility="gone"
                 android:textSize="18sp"/>
 
             <Button
                 android:id="@+id/hiking_finish_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
                 android:padding="10dp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/hiking_summit_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="하이킹 종료"
+                android:text="@string/hiking_finish"
                 android:visibility="gone"
                 android:textSize="18sp"/>
 
