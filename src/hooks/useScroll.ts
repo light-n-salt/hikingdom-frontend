@@ -30,8 +30,8 @@ function useInfiniteScroll({
     const element = ref.current // 무한스크롤이 동작할 DOM 엘리먼트
     if (isLoading || isEnd || !element) return // 로딩 중 | 마지막 정보 | element가 null일 경우, 함수 종료
 
-    const { scrollTop } = element // 엘리먼트의 스크롤 정보
-    if (scrollTop > threshold) return // 스크롤이 최상단이 아닐 경우, 함수 종료
+    const { scrollTop, scrollHeight, clientHeight } = element // 엘리먼트의 스크롤 정보
+    if (scrollTop + scrollHeight - clientHeight > threshold) return // 스크롤이 최상단이 아닐 경우, 함수 종료
 
     setIsLoading(true) // 로딩여부 trued
     await loadMore() // 비동기 요청

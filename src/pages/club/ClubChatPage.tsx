@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react'
+import React, { useContext, useState, useEffect, useRef, useMemo } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import PageHeader from 'components/common/PageHeader'
 import ChatList from 'components/club/ChatList'
@@ -11,6 +11,7 @@ import sockjs from 'sockjs-client'
 import { Stomp } from '@stomp/stompjs'
 import TextSendBar from 'components/common/TextSendBar'
 import useScroll from 'hooks/useScroll'
+// import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
 type InfiniteChat = {
   content: Chats[]
@@ -42,39 +43,39 @@ function ClubChatPage() {
   const [chatList, setChatList] = useState<Chat[]>([])
   const [message, setMessage] = useState<string>('')
 
+  const [trigger, setTrigger] = useState<number>(0)
+
   // 채팅 데이터
-  const { isLoading, isError } = useQuery<any>(
-    ['chats'],
-    () => getChats(Number(userInfo?.clubId)),
-    {
-      onSuccess: (res) => {
-        console.log(res.chats.content.slice(-1)[0].chatId)
-        setChatList(res.chats.content)
-      },
-      enabled: !!userInfo,
-    }
-  )
-  // const {
-  //   data: chats,
-  //   isError,
-  //   isLoading,
-  //   fetchNextPage,
-  //   hasNextPage,
-  // } = useInfiniteQuery<any>({
-  //   queryKey: ['chats'],
-  //   queryFn: ({ pageParam = null }) => {
-  //     return () => getChats(Number(userInfo?.clubId), pageParam, 20)
-  //   },
-  //   getNextPageParam: (lastPage) => {
-  //     console.log('lastPage', lastPage)
-  //     return lastPage.isLast
-  //       ? lastPage.chats.content.slice(-1)[0].chatId
-  //       : undefined
-  //   },
-  //   onSuccess: (res) => {
-  //     console.log('data', res)
-  //   },
-  // })
+  const {
+    data: chats,
+    isError,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery<any>({
+    queryKey: ['chats'],
+    queryFn: ({ pageParam = null }) => {
+      return getChats(Number(userInfo?.clubId), pageParam)
+    },
+    getNextPageParam: (lastPage) => {
+      return !lastPage.isLast
+        ? lastPage.chats.content.slice(-1)[0].chatId
+        : undefined
+    },
+    enabled: !!userInfo,
+    onSuccess: (res) => {
+      // const tmp: Chat[] = []
+      // res.pages.forEach((page) => {
+      //   tmp.push(...page.chats.content)
+      // })
+      // setChatList(tmp)
+      // console.log('CHATS', tmp)
+      setChatList((chatList) => [
+        ...chatList,
+        ...res.pages.slice(-1)[0].chats.content,
+      ])
+    },
+  })
 
   // 멤버 데이터
   const { data: memberInfo } = useQuery(
@@ -90,6 +91,7 @@ function ClubChatPage() {
 
   // mount시 통신 연결
   useEffect(() => {
+    if (!userInfo) return
     connection()
     return () => {
       // unmount시 연결 해제
@@ -97,20 +99,21 @@ function ClubChatPage() {
         stomp.disconnect()
       }
     }
-  }, [])
+  }, [userInfo])
 
+  // 소켓 연결 & 구독 함수
   const connection = () => {
     const socket = new sockjs('https://hikingdom.kr/chat')
     const stomp = Stomp.over(socket)
     setStomp(stomp)
 
-    // 서버에 연결
+    // 서버 연결
     stomp.connect({}, () => {
       // 특정 URI 구독
       stomp.subscribe(`/sub/clubs/${userInfo?.clubId}`, (chatDTO) => {
-        // 구독후 메세지를 받을 때마다 실행할 함수
+        // 구독후 데이터를 받을 때마다 실행할 함수
         const data = JSON.parse(chatDTO.body)
-        console.log('data', data)
+
         // 채팅 데이터
         if (data.type === 'MESSAGE') {
           setChatList((chatList) => [data.chat, ...chatList])
@@ -118,14 +121,16 @@ function ClubChatPage() {
         }
         // 멤버 데이터
         if (data.type === 'MEMBERS') {
+          console.log('멤버 데이터 업데이트', data.members)
           setMembers(data.members)
+          setTrigger((trigger) => trigger + 1)
           return
         }
       })
     })
   }
 
-  // 메세지 전송
+  // 메세지 전송 함수
   const sendChat = () => {
     if (!message.trim()) return
     stomp.send(
@@ -141,13 +146,24 @@ function ClubChatPage() {
     setMessage('')
   }
 
+  useScroll({
+    ref: infiniteRef,
+    loadMore: fetchNextPage,
+    isEnd: !hasNextPage,
+  })
+
   return (
     <div className={`page p-sm ${theme} mobile `}>
       <PageHeader title={clubInfo?.clubName} url={`/club/main`} />
       {isError || isLoading ? (
         <Loading />
       ) : (
-        <ChatList chats={chatList} members={members} />
+        <ChatList
+          ref1={infiniteRef}
+          trigger={trigger}
+          chats={chatList}
+          members={members}
+        />
       )}
       <TextSendBar
         placeholder="내용을 입력해주세요"
