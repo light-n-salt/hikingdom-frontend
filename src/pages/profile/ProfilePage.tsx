@@ -5,9 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import UserProfile from 'components/user/UserProfile'
 import PastMeetupList from 'components/user/PastMeetupList'
-import IconButton from 'components/common/IconButton'
 import Loading from 'components/common/Loading'
-import bell from 'assets/images/bell.png'
 
 import { UserProfileInfo } from 'types/user.interface'
 
@@ -17,7 +15,6 @@ import useUserQuery from 'hooks/useUserQuery'
 
 function ProfilePage() {
   const { theme } = useContext(ThemeContext)
-  const navigate = useNavigate()
   const { data: userInfo } = useUserQuery() // 유저 정보
   const { nickname } = useParams() as { nickname: string }
   const { data, isLoading, isError } = useQuery<UserProfileInfo>(
@@ -44,9 +41,6 @@ function ProfilePage() {
       />
       <div className={styles.title}>등산기록</div>
       <PastMeetupList />
-      <div className={styles.alarm}>
-        <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
-      </div>
     </div>
   )
 }

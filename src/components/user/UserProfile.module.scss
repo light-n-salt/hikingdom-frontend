@@ -1,9 +1,19 @@
 @use 'src/styles/colors' as *;
 
+.stranger {
+  visibility: hidden;
+}
+
 .profile {
   position: relative;
   width: 100%;
   padding-top: 5.5rem;
+}
+
+.alarm {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
 }
 
 .img {
