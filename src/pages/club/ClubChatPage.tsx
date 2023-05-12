@@ -108,9 +108,7 @@ function ClubChatPage() {
     // 서버 연결
     stomp.connect(
       {
-        headers: {
-          accessToken: localStorage.getItem('accessToken'),
-        },
+        token: localStorage.getItem('accessToken'),
       },
       () => {
         // 특정 URI 구독

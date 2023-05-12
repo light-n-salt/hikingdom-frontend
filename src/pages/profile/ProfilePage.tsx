@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ProfilePage.module.scss'
 import { useParams } from 'react-router-dom'
@@ -10,18 +10,23 @@ import Loading from 'components/common/Loading'
 import { UserProfileInfo } from 'types/user.interface'
 
 import { getProfile } from 'apis/services/users'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
 
 function ProfilePage() {
   const { theme } = useContext(ThemeContext)
+  const queryClient = useQueryClient()
   const { data: userInfo } = useUserQuery() // 유저 정보
   const { nickname } = useParams() as { nickname: string }
   const { data, isLoading, isError } = useQuery<UserProfileInfo>(
     ['userProfile'],
     () => getProfile(nickname, 5),
-    { enabled: !!userInfo, cacheTime: 0 }
+    { enabled: !!userInfo }
   )
+
+  useEffect(() => {
+    queryClient.invalidateQueries(['userProfile'])
+  }, [nickname])
 
   return !userInfo || isError || isLoading ? (
     <Loading size="sm" />

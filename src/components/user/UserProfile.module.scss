@@ -1,13 +1,14 @@
 @use 'src/styles/colors' as *;
 
-.stranger {
-  visibility: hidden;
-}
-
 .profile {
   position: relative;
   width: 100%;
   padding-top: 5.5rem;
+}
+
+.icon {
+  font-size: 2rem;
+  cursor: pointer;
 }
 
 .alarm-siren {
@@ -17,22 +18,13 @@
   width: 100%;
   padding: 0.5rem;
   top: 0;
-
-  > .siren {
-    visibility: hidden;
-  }
-
-  &.stranger {
-    .alarm {
-      visibility: hidden;
-    }
-    .siren {
-      visibility: visible;
-    }
-  }
 }
 
 .siren {
+  display: none;
+  position: absolute;
+  right: 0;
+  padding: 0.5rem;
   font-size: 0.9rem;
   > svg {
     color: clr(red-clr);
@@ -81,4 +73,18 @@
 .email {
   margin-bottom: 1rem;
   color: clr(gray-clr, light);
+}
+
+.stranger {
+  &.alarm {
+    display: none;
+  }
+
+  &.btns {
+    visibility: hidden;
+  }
+
+  &.siren {
+    display: block;
+  }
 }
