@@ -47,7 +47,7 @@
     align-items: center;
     position: relative;
     width: 100%;
-    min-height: 100%;
+    height: 100%;
 
     &.p-sm {
       padding-left: 0.5rem;
@@ -77,11 +77,11 @@
 
     &.upside {
       &.light {
-        @include upside-down-light-gradation-theme
+        @include upside-down-light-gradation-theme;
       }
 
       &.dark {
-        @include upside-down-dark-gradation-theme
+        @include upside-down-dark-gradation-theme;
       }
     }
   }

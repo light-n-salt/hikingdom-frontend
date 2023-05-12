@@ -1,29 +1,70 @@
 @use 'src/styles/colors' as *;
 @use 'src/styles/themes' as *;
+@use 'src/styles/animations' as *;
 
 .mine {
+  @include animation-slide-in-left(fast, 20%);
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   gap: 0.3rem;
+  width: 100%;
+
+  img {
+    display: none;
+  }
+
+  .name {
+    display: none;
+  }
 
   .content {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.3rem;
+  }
+
+  .chatContent {
+    width: fit-content;
     padding: 0.5rem;
     border-radius: 0.5rem;
     background-color: clr(primary-clr, light);
     color: clr(white-clr, light);
-    box-shadow: -1px 3px 5px 0px clr(shadow-clr);
+    box-shadow: -1px 2px 3px 0px clr(shadow-clr, light);
   }
 }
 
 .others {
+  @include animation-slide-in-right(fast, 20%);
   display: flex;
   gap: 0.3rem;
+  width: 100%;
+
+  .discontinued {
+    visibility: hidden;
+    > img {
+      height: 0;
+    }
+  }
 
   .content {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .chatContent {
+    width: fit-content;
     padding: 0.5rem;
     border-radius: 0.5rem;
-    @include light-theme;
+
+    &.light {
+      @include light-theme;
+      box-shadow: -1px 2px 3px 0px clr(shadow-clr);
+    }
+    &.dark {
+      @include dark-theme;
+      box-shadow: -1px 2px 3px 0px clr(shadow-clr, light);
+    }
   }
 
   .chat {
@@ -43,4 +84,11 @@
     width: 1rem;
     height: 1rem;
   }
+}
+
+.time {
+  align-self: flex-end;
+  padding-bottom: 0.2rem;
+  color: clr(gray-clr, light);
+  font-size: 0.5rem;
 }

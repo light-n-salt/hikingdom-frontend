@@ -1,11 +1,10 @@
 import React, { useState, useRef } from 'react'
 import styles from './AlbumModal.module.scss'
-import { updateMeetupAlbum, getMeetupAlbum } from 'apis/services/meetup'
+import { updateMeetupAlbum } from 'apis/services/meetup'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
-import { Album } from 'types/club.interface'
 
 const MAX_FILE_SIZE = 1024 * 1024 // 1MB 이하 사진만 업로드
 
@@ -19,7 +18,7 @@ function AlbumModal({ setIsOpen }: AlbumModalProps) {
     meetupId: string
   }
   const [files, setFiles] = useState<string[] | undefined>()
-  const albumRef = useRef<any>(null)
+  const albumRef = useRef<HTMLInputElement>(null)
   const queryClient = useQueryClient()
 
   // 선택한 사진 모달에 띄우기
@@ -50,7 +49,9 @@ function AlbumModal({ setIsOpen }: AlbumModalProps) {
   )
 
   const updateFiles = () => {
-    const fileList = albumRef.current?.files
+    if (!albumRef.current?.files) return
+
+    const fileList = albumRef.current.files
     const formData = new FormData()
 
     // 선택한 사진이 없을 때
@@ -87,7 +88,7 @@ function AlbumModal({ setIsOpen }: AlbumModalProps) {
           text="사진 선택"
           color="secondary"
           size="sm"
-          onClick={() => albumRef.current.click()}
+          onClick={() => albumRef.current && albumRef.current.click()}
         />
         {files && (
           <Button

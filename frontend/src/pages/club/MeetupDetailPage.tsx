@@ -27,31 +27,28 @@ import useUserQuery from 'hooks/useUserQuery'
 
 function MeetupDetailPage() {
   const { theme } = useContext(ThemeContext)
-  const { clubId, meetupId } = useParams() as {
-    clubId: string
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
+  const { meetupId } = useParams() as {
     meetupId: string
   }
-  const { data: userInfo } = useUserQuery()
+
   const [content, setContent] = useState<string>('') // 후기 내용
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   // 모임 정보
-  const {
-    data: meetup,
-    isLoading,
-    isError,
-  } = useQuery<meetupInfoDetail>(['meetup'], () =>
-    getMeetupDetail(parseInt(clubId), parseInt(meetupId))
+  const { data: meetup } = useQuery<meetupInfoDetail>(['meetup'], () =>
+    getMeetupDetail(clubId || 0, parseInt(meetupId))
   )
 
   // 후기 조회
   const { data: reviews } = useQuery<MeetupReview[]>(['reviews'], () =>
-    getReviews(parseInt(clubId), parseInt(meetupId))
+    getReviews(clubId || 0, parseInt(meetupId))
   )
 
   // 후기 등록
   const onClickUpdateReview = useMutation(
-    () => updateReview(parseInt(clubId), parseInt(meetupId), content),
+    () => updateReview(clubId || 0, parseInt(meetupId), content),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['reviews'])
@@ -63,7 +60,7 @@ function MeetupDetailPage() {
 
   // 일정 삭제
   const onClickDeleteMeetup = useMutation(
-    () => deleteMeetup(parseInt(clubId), parseInt(meetupId)),
+    () => deleteMeetup(clubId || 0, parseInt(meetupId)),
     {
       onSuccess: () => {
         toast.addMessage('success', '일정이 삭제되었습니다')
@@ -86,7 +83,7 @@ function MeetupDetailPage() {
     <div className={`page p-sm ${theme} ${styles.page}`}>
       <PageHeader
         title={meetup?.meetupName}
-        url={`/club/${clubId}/meetup`}
+        url={`/club/meetup`}
         color="primary"
       />
       <MeetupDetail

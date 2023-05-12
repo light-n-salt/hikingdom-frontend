@@ -1,18 +1,21 @@
 // 소모임 채팅 내용 조회 - 채팅 내용
 export interface Chat {
-  chattingId: number
+  chatId: string
   memberId: number
-  profileUrl: string
-  nickname: string
-  level: number
   content: string
   sendAt: string
-  isContinue: boolean
+}
+
+export interface ChatMember {
+  memberId: number
+  nickname: string
+  profileUrl: string
+  level: number
 }
 
 // 소모임 채팅 내용 조회 - 채팅
 export interface Chats {
-  groupId: number
-  groupName: string
-  chatting: Chat[]
+  status: string
+  members: ChatMember[]
+  chats: Chat[]
 }

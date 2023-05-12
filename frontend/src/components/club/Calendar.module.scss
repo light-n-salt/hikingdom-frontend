@@ -4,9 +4,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 1.5rem 0.5rem;
 }
 
 .flexbox {
@@ -19,7 +19,7 @@
 .gridbox {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 1rem;
+  gap: 0.5rem;
   width: 100%;
 }
 
@@ -52,6 +52,7 @@
 .datebox {
   position: relative;
   border-radius: 0.2rem;
+  margin: 0.2rem;
   cursor: pointer;
 
   &.sunday {
