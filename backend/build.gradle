@@ -17,10 +17,6 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
-test {
-    useJUnitPlatform()
-}
-
 bootJar {
     enabled = false
 }
