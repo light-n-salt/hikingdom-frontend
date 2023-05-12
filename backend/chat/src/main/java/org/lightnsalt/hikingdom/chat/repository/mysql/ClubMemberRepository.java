@@ -15,5 +15,4 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
 		+ "ON cb.member.id = m.id "
 		+ "WHERE cb.club.id = :clubId AND cb.isWithdraw = false")
 	List<MemberRes> findByClubId(Long clubId);
-
 }
