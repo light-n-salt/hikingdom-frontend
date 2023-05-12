@@ -148,18 +148,27 @@ export function deleteClubRequest(clubId: number) {
   return apiRequest.delete(`/clubs/${clubId}/join-request`)
 }
 
+// 소모임 멤버 조회
 export function getClubMember(clubId: number) {
   return apiRequest.get(`/clubs/${clubId}/members`)
 }
 
+// 소모임 탈퇴
 export function deleteClub(clubId: number) {
   return apiRequest.delete(`/clubs/${clubId}/members`)
 }
 
+// 소모임 가입 신청
 export function updateClubMember(clubId: number, memberId: number) {
   return apiRequest.post(`/clubs/${clubId}/admin/requests/${memberId}`)
 }
 
+// 소모임 가입 신청취소
 export function deleteClubMember(clubId: number, memberId: number) {
   return apiRequest.delete(`/clubs/${clubId}/admin/requests/${memberId}`)
+}
+
+// 오늘의 소모임 산 조회 (Main)
+export function getTodayClubMt() {
+  return apiRequest.get(`/info/today/clubs`).then((res) => res.data.result)
 }
