@@ -1,5 +1,5 @@
 import './App.scss'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import WebMargin from 'components/common/WebMargin'
 // Auth
@@ -37,6 +37,7 @@ import ProfileUpdatePage from 'pages/profile/ProfileUpdatePage'
 import AlarmPage from 'pages/profile/AlarmPage'
 import NotFoundPage from 'pages/NotFoundPage'
 import PrivateRoute from 'pages/PrivateRoute'
+import sendRefreshToken from 'utils/sendRefreshToken'
 
 function App() {
   return (
