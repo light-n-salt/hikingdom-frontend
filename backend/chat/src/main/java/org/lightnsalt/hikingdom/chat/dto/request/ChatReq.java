@@ -8,6 +8,9 @@ import lombok.Data;
 @Data
 public class ChatReq {
 	@NotNull
+	private String type;
+
+	@NotNull
 	private Long clubId;
 
 	@NotNull
