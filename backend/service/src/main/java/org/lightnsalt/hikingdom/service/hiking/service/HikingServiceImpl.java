@@ -109,7 +109,7 @@ public class HikingServiceImpl implements HikingService {
                 .orElseThrow(() -> new GlobalException(ErrorCode.MOUNTAIN_NOT_FOUND));
 
         LocalDateTime startAt = LocalDateTime.parse(hikingRecordReq.getStartAt(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        LocalDateTime endAt = startAt.plusMinutes(hikingRecordReq.getTotalDuration());
+        LocalDateTime endAt = startAt.plusSeconds(hikingRecordReq.getTotalDuration());
 
 
 
