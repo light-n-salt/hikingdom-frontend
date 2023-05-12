@@ -18,5 +18,6 @@ public class HikingRecordReq {
     private int totalDistance;
     private double maxAlt;
     private int totalDuration;
+    private Boolean isSummit;
     private List<GpsRoute> gpsRoute;
 }

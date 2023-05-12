@@ -43,6 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		throws ServletException, IOException {
 		try {
 			String accessToken = resolveToken(request);
+			log.info("accessToken: ", accessToken);
 			if (StringUtils.hasText(accessToken)) {
 				// check if access token is blacklisted (token is logged out)
 				String isLogout = redisUtil.getValue(accessToken);
