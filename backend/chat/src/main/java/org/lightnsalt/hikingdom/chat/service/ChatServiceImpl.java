@@ -17,6 +17,7 @@ import org.lightnsalt.hikingdom.chat.dto.response.message.MessageRes;
 import org.lightnsalt.hikingdom.chat.entity.Chat;
 import org.lightnsalt.hikingdom.chat.repository.mongo.ChatRepository;
 import org.lightnsalt.hikingdom.chat.repository.mysql.ClubMemberRepository;
+import org.lightnsalt.hikingdom.chat.repository.mysql.ClubRepository;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.springframework.data.domain.Page;
@@ -33,11 +34,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
 	private final ChatRepository chatRepository;
+	private final ClubRepository clubRepository;
 	private final ClubMemberRepository clubMemberRepository;
 
 	@Override
 	public MessageRes saveMessage(ChatReq chatReq) {
-		if (!clubMemberRepository.existsById(chatReq.getClubId()))
+		if (!clubRepository.existsById(chatReq.getClubId()))
 			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
 
 		Chat chat = Chat.builder()
@@ -55,7 +57,7 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public MessageRes findPrevChatInfo(Long clubId, String chatId, Integer size) {
-		if (!clubMemberRepository.existsById(clubId))
+		if (!clubRepository.existsById(clubId))
 			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
 
 		Pageable pageable = PageRequest.of(0, size, Sort.by("sendAt").descending());
@@ -87,7 +89,7 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public MessageRes findClubMemberInfo(Long clubId) {
-		if (!clubMemberRepository.existsById(clubId))
+		if (!clubRepository.existsById(clubId))
 			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
 
 		Map<Long, MemberRes> members = clubMemberRepository.findByClubId(clubId).stream()
