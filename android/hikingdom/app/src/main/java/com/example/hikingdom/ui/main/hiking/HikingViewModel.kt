@@ -36,7 +36,7 @@ class HikingViewModel : ViewModel() {
         duration.value = timeToStr(d)
     }
 
-    fun setTotalDistance(td : Float){
+    fun setTotalDistance(td: Int){
         totalDistance.value = ((td / 1000f * 100f).roundToInt() / 100f).toString() + "km"
     }
 
