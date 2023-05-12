@@ -14,6 +14,7 @@ import toast from 'components/common/Toast'
 
 import { BiEdit } from 'react-icons/bi'
 import { HiLightBulb } from 'react-icons/hi'
+import { FiChevronLeft } from 'react-icons/fi'
 import { UserRecord, User } from 'types/user.interface'
 import LEVEL_TO_IMG from 'constants/levels'
 import bell from 'assets/images/bell.png'
@@ -62,11 +63,12 @@ export default function UserProfile({
           <LevelModal />
         </Modal>
       )}
-      <div className={`${styles['alarm-siren']}  ${stranger}`}>
-        <div className={`${styles.siren}`} onClick={onClickReport}>
+      <div className={`${styles['alarm-siren']}`}>
+        <FiChevronLeft onClick={() => navigate(-1)} className={styles.icon} />
+        <div className={`${stranger} ${styles.siren}`} onClick={onClickReport}>
           <HiLightBulb /> 신고하기
         </div>
-        <div className={`${styles.alarm}`}>
+        <div className={`${stranger} ${styles.alarm}`}>
           <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
         </div>
       </div>
@@ -74,7 +76,7 @@ export default function UserProfile({
         <Image size="lg" imgUrl={profileUrl} />
       </div>
       <div className={`content ${theme} ${styles.record}`}>
-        <div className={`${styles.btns} ${stranger}`}>
+        <div className={`${stranger} ${styles.btns}`}>
           <Button
             text={'로그아웃'}
             size={'sm'}
