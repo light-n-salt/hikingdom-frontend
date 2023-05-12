@@ -10,10 +10,37 @@
   padding-top: 5.5rem;
 }
 
-.alarm {
+.alarm-siren {
   position: absolute;
-  right: 1.5rem;
-  top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem;
+  top: 0;
+
+  > .siren {
+    visibility: hidden;
+  }
+
+  &.stranger {
+    .alarm {
+      visibility: hidden;
+    }
+    .siren {
+      visibility: visible;
+    }
+  }
+}
+
+.siren {
+  font-size: 0.9rem;
+  > svg {
+    color: clr(red-clr);
+  }
+}
+
+.alarm {
+  padding: 1rem;
 }
 
 .img {
