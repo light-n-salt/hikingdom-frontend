@@ -22,10 +22,7 @@ import com.example.hikingdom.data.remote.hiking.HikingService
 import com.example.hikingdom.data.remote.hiking.SaveHikingRecordReq
 import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.ui.main.hiking.HikingFragment.Companion.ACTION_STOP
-import com.example.hikingdom.utils.LocationHelper
-import com.example.hikingdom.utils.getIsSummit
-import com.example.hikingdom.utils.saveIsLocationServiceRunning
-import com.example.hikingdom.utils.saveIsSummit
+import com.example.hikingdom.utils.*
 import java.time.LocalDateTime
 import kotlin.concurrent.thread
 

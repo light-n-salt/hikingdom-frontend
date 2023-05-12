@@ -22,9 +22,7 @@ import com.example.hikingdom.R
 import com.example.hikingdom.data.local.AppDatabase
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
-import com.example.hikingdom.utils.getIsLocationServiceRunning
-import com.example.hikingdom.utils.getIsSummit
-import com.example.hikingdom.utils.saveIsSummit
+import com.example.hikingdom.utils.*
 import net.daum.mf.map.api.*
 import java.time.LocalDateTime
 
@@ -135,6 +133,13 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             hikingStartBtn.visibility = View.GONE
 
             saveIsSummit(false) // 완등인증 여부 초기화
+
+            hikingViewModel.mountainSummitLat.value = 0.0  // 완등인증시 사용할 산 정상 위도 초기화
+            hikingViewModel.mountainSummitLng.value = 0.0  // 완등인증시 사용할 산 정상 경도 초기화
+
+            // TODO: 산 목록 api, 오늘 일정 조회 api 호출, 호출하고 응답 잘 받아왔다면 산 정상의 lat, lng 같이 받아온다. 받아온 lat, lng viewmodel에 저장해야함
+//            hikingViewModel.mountainSummitLat.value = 37.5013   // 임시 값 setting
+//            hikingViewModel.mountainSummitLng.value = 127.0395  // 임시 값 setting
         }
 
         hikingFinishBtn.setOnClickListener {
@@ -508,13 +513,20 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         val location = locationService?.currentLocation?.value
         if(location != null){
             val summitLocation = Location("")
-            // 산 정상 좌표 임시값으로 설정해둠
-            summitLocation.latitude = 37.5013
-            summitLocation.longitude = 127.0395
-            val distance = summitLocation.distanceTo(location)
+            // 뷰모델에 저장된 산 정상 좌표 가져오기
+            val summitLat = hikingViewModel.mountainSummitLat.value
+            val summitLng = hikingViewModel.mountainSummitLng.value
+            if (!((summitLat == 0.0) or (summitLng == 0.0))){
+                summitLocation.latitude = summitLat!!
+                summitLocation.longitude = summitLng!!
+
+                val distance = summitLocation.distanceTo(location)
 //            val distance = Location.distanceBetween(location.latitude, location.longitude, summitLocation.latitude, summitLocation.longitude)
-            Log.d("distance", distance.toString())
-            return distance < 200   // 200m 이내에 있으면 완등으로 판단
+                Log.d("distance", distance.toString())
+                return distance < 200   // 200m 이내에 있으면 완등으로 판단
+            }else{
+                Log.d("checkIsSummit", "getMountainSummitLat() or getMountainSummitLng() is 0.0")
+            }
         }
         return false
     }
