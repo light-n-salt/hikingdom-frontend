@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import styles from './MainPage.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { getTodayMountains } from 'apis/services/mountains'
-import { getRanking } from 'apis/services/clubs'
-import { MtInfo } from 'types/mt.interface'
+import { getRanking, getTodayClubMt } from 'apis/services/clubs'
+import { MtInfo, TodayClubMt } from 'types/mt.interface'
 import { ClubInfo } from 'types/club.interface'
 import { useQuery } from '@tanstack/react-query'
 import cloud from 'assets/images/cloud.png'
@@ -15,6 +15,7 @@ import IconText from 'components/common/IconText'
 import RankList from 'components/common/RankList'
 import Loading from 'components/common/Loading'
 import { untilMidnight } from 'utils/untilMidnight'
+import { toDate } from 'date-fns'
 
 type InfiniteClubInfo = {
   content: ClubInfo[]
@@ -40,11 +41,25 @@ function MainPage() {
     staleTime: queryTime,
   })
 
-  const { data: clubInfoArray } = useQuery<InfiniteClubInfo>(['clubRankTop3'], () =>
-    getRanking('', null, 3)
+  const { data: clubInfoArray } = useQuery<InfiniteClubInfo>(
+    ['clubRankTop3'],
+    () => getRanking('', null, 3)
   )
 
-  return mtInfoArray && clubInfoArray ? (
+  // const { data: todayClubMt } = useQuery<TodayClubMt>(
+  //   ['todayClubMountain'],
+  //   getTodayClubMt, {
+  //     cacheTime: queryTime,
+  //     staleTime: queryTime,
+  //   }
+  // )
+
+  // Api 연결되면 삭제할 데이터
+  const todayClubMt = {
+    clubId: 1,
+  }
+
+  return mtInfoArray && clubInfoArray && todayClubMt ? (
     <>
       {isLoading || isError ? (
         <Loading />
@@ -78,7 +93,7 @@ function MainPage() {
             <img
               src={clubmountain}
               onClick={() => {
-                navigate(`/club/1/main`)
+                navigate(`/club/${todayClubMt.clubId}/detail`)
               }}
             />
           </div>
