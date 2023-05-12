@@ -2,6 +2,7 @@ package com.example.hikingdom.utils
 
 import com.example.hikingdom.ApplicationClass.Companion.ACCESS_TOKEN_KEY
 import com.example.hikingdom.ApplicationClass.Companion.REFRESH_TOKEN_KEY
+import com.example.hikingdom.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.example.hikingdom.ApplicationClass.Companion.mSharedPreferences
 
 // ApplicatonClass에서 선언한 sharedPreference에 대한 동작을 정의한 함수

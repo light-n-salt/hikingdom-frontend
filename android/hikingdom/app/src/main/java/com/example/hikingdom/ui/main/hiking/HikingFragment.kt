@@ -30,8 +30,6 @@ import java.time.LocalDateTime
 class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBinding::inflate)
 //    , MapView.CurrentLocationEventListener
 {
-    lateinit var db: AppDatabase
-
     private var locationService: LocationService? = null
     private val hikingViewModel : HikingViewModel by viewModels()
 
@@ -64,7 +62,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         mapView = MapView(requireContext())
         mapViewContainer = binding.hikingMapview
 
-        db = AppDatabase.getInstance(requireContext())!!    // 로컬 DB
+//        db = AppDatabase.getInstance(requireContext())!!    // 로컬 DB
 
         checkPermission()
     }
@@ -426,7 +424,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         val polyline = MapPolyline()
         polyline.lineColor = POLYLINE_COLOR_CODE  // @color/blue 에 해당하는 rgb color
 
-        val existingLocationList = db.userLocationDao().getUserLocations()
+        val existingLocationList = db?.userLocationDao()?.getUserLocations()
 
         if(!existingLocationList.isNullOrEmpty()){
 
