@@ -250,7 +250,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	}
 
 	private void sendMemberUpdateAlert(Long clubId, List<MemberInfoRes> members) {
-		restTemplate.postForEntity("http://localhost:8080/chat/clubs/" + clubId + "/member-update",
+		restTemplate.postForEntity("https://hikingdom.kr/chat/clubs/" + clubId + "/member-update",
 			members, MemberInfoRes.class);
 	}
 }
