@@ -21,6 +21,7 @@ class GroupFragment(): BaseFragment<FragmentGroupBinding>(FragmentGroupBinding::
         webView.webViewClient = WebViewClient()
         webView.loadUrl(GROUP_WEB_URL)
         webView.settings.javaScriptEnabled = true
+        webView.settings.domStorageEnabled = true
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

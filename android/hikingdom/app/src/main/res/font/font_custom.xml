@@ -7,6 +7,6 @@
         android:fontWeight="400"
         android:fontStyle="normal"
         app:font="@font/applesdgothicneoregular"
-        app:fontWeight="400"
+        app:fontWeight="600"
         app:fontStyle="normal"/>
 </font-family>
