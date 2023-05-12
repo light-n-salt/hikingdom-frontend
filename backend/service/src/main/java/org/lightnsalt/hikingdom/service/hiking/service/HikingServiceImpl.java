@@ -24,6 +24,7 @@ import org.lightnsalt.hikingdom.service.hiking.repository.HikingRepositoryCustom
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingGpsRepository;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
 import org.lightnsalt.hikingdom.service.info.repository.MountainInfoRepository;
+import org.lightnsalt.hikingdom.service.member.repository.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,7 @@ public class HikingServiceImpl implements HikingService {
     private final MemberHikingGpsRepository memberHikingGpsRepository;
     private final HikingRepositoryCustom hikingRepositoryCustom;
     private final MountainInfoRepository mountainInfoRepository;
+    private final MemberHikingStatisticRepository memberHikingStatisticRepository;
 
 //    @Override
 //    @Transactional
@@ -126,7 +128,7 @@ public class HikingServiceImpl implements HikingService {
                     .totalDuration((long) hikingRecordReq.getTotalDuration())
                     .totalDistance((long) hikingRecordReq.getTotalDistance())
                     .totalAlt((long) hikingRecordReq.getMaxAlt())
-                    .isSummit(true) // 완등여부 => 임시로 true
+                    .isSummit(hikingRecordReq.getIsSummit())
                     .build();
         }else{
             memberHiking = MemberHiking.builder()
@@ -138,7 +140,7 @@ public class HikingServiceImpl implements HikingService {
                     .totalDuration((long) hikingRecordReq.getTotalDuration())
                     .totalDistance((long) hikingRecordReq.getTotalDistance())
                     .totalAlt((long) hikingRecordReq.getMaxAlt())
-                    .isSummit(true) // 완등여부 => 임시로 true
+                    .isSummit(hikingRecordReq.getIsSummit())
                     .build();
         }
 
@@ -165,6 +167,8 @@ public class HikingServiceImpl implements HikingService {
 
         final MemberHiking savedMemberHiking = memberHikingRepository.save(memberHiking);
         final MemberHikingGps savedMemberHikingGps = memberHikingGpsRepository.save(memberHikingGps);
+
+
 
         return savedMemberHiking.getId();
     }
