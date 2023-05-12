@@ -5,6 +5,8 @@ import styles from './ClubDetailPage.module.scss'
 import { getClubInfo } from 'apis/services/clubs'
 import { postJoinClub } from 'apis/services/clubs'
 import { ClubDetailInfo } from 'types/club.interface'
+import useUserQuery from 'hooks/useUserQuery'
+import { useQuery } from '@tanstack/react-query'
 
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
@@ -13,8 +15,7 @@ import PageHeader from 'components/common/PageHeader'
 import clubmountain from 'assets/images/clubmountain.png'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
-import { useQuery } from '@tanstack/react-query'
-import useUserQuery from 'hooks/useUserQuery'
+import ClubMoutain from 'components/club/ClubMoutain'
 
 function ClubDetailPage() {
   const { theme } = useContext(ThemeContext)
@@ -63,7 +64,8 @@ function ClubDetailPage() {
       <div className={styles.intro}>
         <MeetupIntroduction content={clubInfo.description} />
       </div>
-      <img src={clubmountain} className={styles.image} />
+      {/* <img src={clubmountain} className={styles.image} /> */}
+      <ClubMoutain />
     </div>
   ) : (
     <Loading />
