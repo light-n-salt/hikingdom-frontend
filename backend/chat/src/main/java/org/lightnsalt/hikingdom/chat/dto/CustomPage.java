@@ -9,17 +9,17 @@ import lombok.Data;
 @Data
 public class CustomPage<T> {
 	private List<T> content;
-	@JsonProperty("isLast")
-	private boolean isLast;
+	@JsonProperty("hasNext")
+	private boolean hasNext;
 	private int pageNumber;
 	private int pageSize;
 	private long totalElements;
 
-	public CustomPage(List<T> content, int pageNumber, int pageSize, long totalElements, boolean isLast) {
+	public CustomPage(List<T> content, int pageNumber, int pageSize, long totalElements, boolean hasNext) {
 		this.content = content;
 		this.pageNumber = pageNumber;
 		this.pageSize = pageSize;
 		this.totalElements = totalElements;
-		this.isLast = isLast;
+		this.hasNext = hasNext;
 	}
 }

@@ -71,7 +71,7 @@ public class ChatServiceImpl implements ChatService {
 
 		CustomPage<ChatRes> chats = new CustomPage<>(
 			chatPage.getContent().stream().map(ChatRes::new).collect(Collectors.toList()),
-			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), !chatPage.hasNext());
+			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), chatPage.hasNext());
 
 		return new ChatListMessageRes(chats);
 	}
