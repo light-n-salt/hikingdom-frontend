@@ -73,6 +73,8 @@ public class SecurityConfig {
 			.antMatchers("/api/v1/members/auth/**").permitAll()
 			.antMatchers("/v3/api-docs/**").permitAll()
 			.antMatchers("/swagger-ui/**").permitAll()
+			.antMatchers("/chat/ws/**").permitAll()
+			.antMatchers("/api/v1/hiking/ws/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.sessionManagement()
