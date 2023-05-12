@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
+import org.lightnsalt.hikingdom.service.info.dto.response.MountainLocationRes;
 import org.lightnsalt.hikingdom.service.info.repository.MountainDailyInfoRepository;
 import org.lightnsalt.hikingdom.service.info.repository.MountainInfoRepositoryCustom;
 import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddRes;
@@ -122,9 +123,9 @@ public class MountainInfoServiceImpl implements MountainInfoService {
 	}
 
 	@Override
-	public List<MountainListRes> findMountainInfoLocation(double lat, double lng) {
+	public List<MountainLocationRes> findMountainInfoLocation(double lat, double lng) {
 
 		List<MountainInfo> mountainInfoList = mountainInfoRepository.findByLocation(lng, lat, 30000);
-		return mountainInfoList.stream().map(MountainListRes::new).collect(Collectors.toList());
+		return mountainInfoList.stream().map(MountainLocationRes::new).collect(Collectors.toList());
 	}
 }
