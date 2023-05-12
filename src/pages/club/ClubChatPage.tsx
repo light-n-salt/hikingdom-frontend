@@ -42,7 +42,7 @@ function ClubChatPage() {
   const [members, setMembers] = useState<{ [key: number]: ChatMember }>({})
   const [chatList, setChatList] = useState<Chat[]>([])
   const [message, setMessage] = useState<string>('')
-
+  // 멤버 정보 업데이트시 ChatItem 업데이트
   const [trigger, setTrigger] = useState<number>(0)
 
   // 채팅 데이터
@@ -58,7 +58,7 @@ function ClubChatPage() {
       return getChats(Number(userInfo?.clubId), pageParam)
     },
     getNextPageParam: (lastPage) => {
-      return !lastPage.hasNext
+      return lastPage.chats.hasNext
         ? lastPage.chats.content.slice(-1)[0].chatId
         : undefined
     },

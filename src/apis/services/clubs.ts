@@ -87,8 +87,8 @@ export function getClubInfo(clubId: number) {
 // 소모임 채팅 조회
 export function getChats(
   clubId: number,
-  chatId: number | null = null,
-  size: number | null = 20
+  chatId: string | null = null,
+  size: number | null = 50
 ) {
   return apiRequest
     .get(`/clubs/${clubId}/chats`, {

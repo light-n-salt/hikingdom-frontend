@@ -21,7 +21,7 @@ function useInfiniteScroll({
   ref,
   loadMore,
   isEnd = false,
-  threshold = 1,
+  threshold = 5,
 }: InfiniteScrollProps): InfiniteScrollReturns {
   const [isLoading, setIsLoading] = useState(false) // 비동기 요청에 대한 로딩 여부
 

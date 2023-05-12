@@ -7,12 +7,13 @@ import Button from 'components/common/Button'
 import LabelInput from 'components/common/LabelInput'
 import TextButton from 'components/common/TextButton'
 import useAuthInput from 'hooks/useAuthInput'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 function LoginForm() {
   const navigate = useNavigate()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
-
+  const queryClient = useQueryClient()
   const {
     value: email,
     onChange: changeEmail,
@@ -33,6 +34,7 @@ function LoginForm() {
     }
     login(email, password)
       .then(() => {
+        queryClient.invalidateQueries(['user'])
         navigate('/main')
       })
       .catch((err) => {
