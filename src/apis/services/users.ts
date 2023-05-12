@@ -15,10 +15,11 @@ export function getProfile(nickname: string, size: number | null = null) {
 // 유저 정보 조회
 export function getUserInfo() {
   return apiRequest.get(`/members`).then((res) => {
+    const userInfo = res.data.result
     // @ts-expect-error
     if (window.Kotlin) {
       // @ts-expect-error
-      window.Kotlin.saveUserInfo(res.data.result)
+      window.Kotlin.saveUserInfo(JSON.stringify(userInfo))
     }
     return res.data.result
   })
@@ -75,16 +76,25 @@ export function login(email: string, password: string) {
       password,
     })
     .then((res) => {
-      localStorage.setItem('accessToken', res.data.result.accessToken)
-      localStorage.setItem('refreshToken', res.data.result.refreshToken)
+      const accessToken = res.data.result.accessToken
+      const refreshToekn = res.data.result.refreshToken
+      localStorage.setItem('accessToken', accessToken)
+      localStorage.setItem('refreshToken', refreshToekn)
       // @ts-expect-error
       if (window.Kotlin) {
         // @ts-expect-error
-        window.Kotlin.saveToken(res.data.result.refreshToken)
+        window.Kotlin.saveToken(accessToken, refreshToekn)
       }
     })
     .then(() => {
       getUserInfo()
+    })
+    .then(() => {
+      // @ts-expect-error
+      if (window.Kotlin) {
+        // @ts-expect-error
+        window.Kotlin.login()
+      }
     })
 }
 
@@ -97,6 +107,8 @@ export function logout() {
     if (window.Kotlin) {
       // @ts-expect-error
       window.Kotlin.removeToken()
+      // @ts-expect-error
+      window.Kotlin.unlogin()
     }
   })
 }
