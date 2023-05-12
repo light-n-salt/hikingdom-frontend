@@ -9,6 +9,7 @@ import { ClubDetailInfo } from 'types/club.interface'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 import Loading from 'components/common/Loading'
+import PageHeader from 'components/common/PageHeader'
 import clubmountain from 'assets/images/clubmountain.png'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
@@ -41,7 +42,8 @@ function ClubDetailPage() {
 
   return clubInfo && userInfo ? (
     <div className={`page-gradation upside p-sm ${theme} ${styles.page}`}>
-      <h1 className={styles.title}>{clubInfo.clubName}</h1>
+      <PageHeader title={clubInfo.clubName} url="" color="primary" />
+      {/* <h1 className={styles.title}>{clubInfo.clubName}</h1> */}
       <div className={styles.button}>
         {!userInfo.clubId && (
           <Button

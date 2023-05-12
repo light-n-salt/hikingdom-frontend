@@ -30,7 +30,7 @@ export interface TodayAssetInfo {
   column: number
 }
 
-// 오늘 산 모임
+// 오늘의 모임 산
 export interface TodayClubMt {
   clubId: number
   assets: TodayAssetInfo[]
