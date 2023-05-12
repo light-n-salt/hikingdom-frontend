@@ -17,6 +17,6 @@ public class ChatRes {
 		this.chatId = chat.getId();
 		this.memberId = chat.getMemberId();
 		this.content = chat.getContent();
-		this.sendAt = chat.getSendAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		this.sendAt = chat.getSendAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 	}
 }
