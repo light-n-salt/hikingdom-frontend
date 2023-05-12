@@ -17,8 +17,8 @@ public class MountainLocationRes {
 	private String address;
 	private double maxAlt;
 	private String imgUrl;
-	private String mountainSummitLat;
-	private String mountainSummitLng;
+	private double mountainSummitLat;
+	private double mountainSummitLng;
 
 	public MountainLocationRes(MountainInfo mountainInfo) {
 		this.mountainId = mountainInfo.getId();
@@ -26,7 +26,7 @@ public class MountainLocationRes {
 		this.address = mountainInfo.getAddress();
 		this.maxAlt = mountainInfo.getTopAlt();
 		this.imgUrl = mountainInfo.getImgUrl();
-		this.mountainSummitLat = String.valueOf(mountainInfo.getTopLat());
-		this.mountainSummitLng = String.valueOf(mountainInfo.getTopLng());
+		this.mountainSummitLat = mountainInfo.getTopLat();
+		this.mountainSummitLng = mountainInfo.getTopLng();
 	}
 }
