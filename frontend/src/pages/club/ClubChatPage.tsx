@@ -62,14 +62,8 @@ function ClubChatPage() {
         ? lastPage.chats.content.slice(-1)[0].chatId
         : undefined
     },
-    enabled: !!userInfo,
+    enabled: !!userInfo && !!members,
     onSuccess: (res) => {
-      // const tmp: Chat[] = []
-      // res.pages.forEach((page) => {
-      //   tmp.push(...page.chats.content)
-      // })
-      // setChatList(tmp)
-      // console.log('CHATS', tmp)
       setChatList((chatList) => [
         ...chatList,
         ...res.pages.slice(-1)[0].chats.content,
