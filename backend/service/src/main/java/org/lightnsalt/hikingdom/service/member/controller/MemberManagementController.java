@@ -10,7 +10,7 @@ import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
-import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberDetailRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
 import org.lightnsalt.hikingdom.service.member.service.MemberManagementService;
@@ -45,13 +45,14 @@ public class MemberManagementController {
 
 	@GetMapping
 	public ResponseEntity<CustomResponseBody> memberInfoDetail(Authentication authentication) {
-		MemberInfoRes memberInfoRes = memberManagementService.findMemberInfo(authentication.getName());
-		return new ResponseEntity<>(BaseResponseBody.of("회원 정보 조회에 성공했습니다", memberInfoRes), HttpStatus.OK);
+		MemberDetailRes memberDetailRes = memberManagementService.findMemberInfo(authentication.getName());
+		return new ResponseEntity<>(BaseResponseBody.of("회원 정보 조회에 성공했습니다", memberDetailRes), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/withdraw")
 	public ResponseEntity<CustomResponseBody> memberRemove(Authentication authentication) {
 		memberManagementService.removeMember(authentication.getName());
+
 		return new ResponseEntity<>(BaseResponseBody.of("회원 탈퇴에 성공했습니다"), HttpStatus.OK);
 	}
 

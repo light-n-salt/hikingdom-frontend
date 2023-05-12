@@ -24,6 +24,7 @@ import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordRes;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberDetailRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
@@ -60,13 +61,13 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	private final RestTemplate restTemplate;
 
 	@Override
-	public MemberInfoRes findMemberInfo(String email) {
+	public MemberDetailRes findMemberInfo(String email) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
 			.orElse(null);
 
-		return MemberInfoRes.builder()
+		return MemberDetailRes.builder()
 			.memberId(member.getId())
 			.email(member.getEmail())
 			.nickname(member.getNickname())
@@ -98,6 +99,11 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			// 소모임 탈퇴
 			// TODO: 소모임 일정 참여해둔 것 취소?
 			clubMemberRepository.deleteById(clubMember.getId());
+
+			// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
+			List<MemberInfoRes> members = clubMemberRepository.findByClubIdReturnMemberInfoRes(
+				clubMember.getClub().getId());
+			sendMemberUpdateAlert(clubMember.getClub().getId(), members);
 		}
 
 		// 소모임 가입 신청 취소
@@ -157,20 +163,38 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		}
 
 		memberRepository.setNicknameById(newNickname, member.getId());
-		sendMemberUpdateAlert(member);
+
+		// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
+			.orElse(null);
+
+		if (clubMember != null) {
+			List<MemberInfoRes> members = clubMemberRepository.findByClubIdReturnMemberInfoRes(
+				clubMember.getClub().getId());
+			sendMemberUpdateAlert(clubMember.getClub().getId(), members);
+		}
 	}
 
 	@Transactional
 	@Override
 	public String changeProfileImage(String email, MultipartFile photo) {
-		final Member member = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final Long memberId = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED))
+			.getId();
 
 		try {
-			String url = s3FileUtil.upload(photo, "members/" + member.getId() + "/profiles");
-			memberRepository.setProfileUrlById(url, member.getId());
+			String url = s3FileUtil.upload(photo, "members/" + memberId + "/profiles");
+			memberRepository.setProfileUrlById(url, memberId);
 
-			sendMemberUpdateAlert(member);
+			// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
+			final ClubMember clubMember = clubMemberRepository.findByMemberId(memberId)
+				.orElse(null);
+
+			if (clubMember != null) {
+				List<MemberInfoRes> members = clubMemberRepository.findByClubIdReturnMemberInfoRes(
+					clubMember.getClub().getId());
+				sendMemberUpdateAlert(clubMember.getClub().getId(), members);
+			}
 
 			return url;
 		} catch (IOException e) {
@@ -226,13 +250,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		}).collect(Collectors.toList());
 	}
 
-	private void sendMemberUpdateAlert(Member member) {
-		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId()).orElse(null);
-
-		if (clubMember == null)
-			return;
-
-		restTemplate.postForObject("https://hikingdom.kr/chat/clubs/" + clubMember.getClub().getId() + "/member-update",
-			null, Void.class);
+	private void sendMemberUpdateAlert(Long clubId, List<MemberInfoRes> members) {
+		restTemplate.postForEntity("https://hikingdom.kr/chat/clubs/" + clubId + "/member-update",
+			members, MemberInfoRes.class);
 	}
 }

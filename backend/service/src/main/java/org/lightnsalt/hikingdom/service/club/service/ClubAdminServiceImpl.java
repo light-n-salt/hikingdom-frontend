@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
@@ -11,6 +12,7 @@ import org.lightnsalt.hikingdom.service.club.repository.ClubJoinRequestRepositor
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +72,15 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(candidate, JoinRequestStatusType.RETRACTED,
 			LocalDateTime.now());
 
-		sendClubMemberUpdateAlert(candidate);
+		// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(memberId)
+			.orElse(null);
+
+		if (clubMember != null) {
+			List<MemberInfoRes> members = clubMemberRepository.findByClubIdReturnMemberInfoRes(
+				clubMember.getClub().getId());
+			sendMemberUpdateAlert(clubMember.getClub().getId(), members);
+		}
 	}
 
 	@Transactional
@@ -98,13 +108,8 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 			.updatePendingJoinRequestByMemberAndClub(candidate, club, status, LocalDateTime.now()) > 0;
 	}
 
-	private void sendClubMemberUpdateAlert(Member candidate) {
-		final ClubMember clubMember = clubMemberRepository.findByMemberId(candidate.getId()).orElse(null);
-
-		if (clubMember == null)
-			return;
-
-		restTemplate.postForObject("https://hikingdom.kr/chat/clubs/" + clubMember.getClub().getId() + "/member-update",
-			null, Void.class);
+	private void sendMemberUpdateAlert(Long clubId, List<MemberInfoRes> members) {
+		restTemplate.postForEntity("https://hikingdom.kr/chat/clubs/" + clubId + "/member-update",
+			members, MemberInfoRes.class);
 	}
 }
