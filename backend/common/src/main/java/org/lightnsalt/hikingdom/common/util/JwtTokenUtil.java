@@ -68,6 +68,10 @@ public class JwtTokenUtil {
 		throw new GlobalException(ErrorCode.INVALID_TOKEN);
 	}
 
+	public boolean validateToken(String bearerToken) {
+		return getClaimsFromToken(resolveToken(bearerToken)).getExpiration().after(new Date());
+	}
+
 	public String getEmailFromToken(String token) {
 		return getClaimsFromToken(token).getSubject();
 	}
