@@ -7,7 +7,7 @@ import { Chat, ChatMember } from 'types/chat.interface'
 
 type ChatListProps = {
   chats: Chat[]
-  members: ChatMember[]
+  members: { [key: number]: ChatMember }
 }
 
 function ChatList({ chats, members }: ChatListProps) {

@@ -10,7 +10,7 @@ import { Chat, ChatMember } from 'types/chat.interface'
 
 type ChatItemProps = {
   chat: Chat
-  members: ChatMember[]
+  members: { [key: number]: ChatMember }
   isContinued: boolean
 }
 
@@ -33,8 +33,8 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
     // )
 
     const chatMember: ChatMember | undefined = members[chat.memberId]
-    console.log('chat', chat)
-    console.log('memberId', members[chat.memberId])
+    // console.log('chat', chat)
+    // console.log('memberId', members[chat.memberId])
     if (!chatMember) return
     const { nickname, profileUrl, level } = chatMember
     const tmpUser = {
