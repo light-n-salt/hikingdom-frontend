@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChatMessageRes extends MessageRes {
-	private ChatRes chatRes;
+	private ChatRes chat;
 
 	public ChatMessageRes(ChatRes chatRes) {
 		super(MessageType.MESSAGE);
-		this.chatRes = chatRes;
+		this.chat = chatRes;
 	}
 }
