@@ -58,7 +58,7 @@ function ClubChatPage() {
       return getChats(Number(userInfo?.clubId), pageParam)
     },
     getNextPageParam: (lastPage) => {
-      return !lastPage.isLast
+      return !lastPage.hasNext
         ? lastPage.chats.content.slice(-1)[0].chatId
         : undefined
     },
