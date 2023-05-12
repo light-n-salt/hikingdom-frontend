@@ -14,6 +14,8 @@ class HikingViewModel : ViewModel() {
     var longitude = MutableLiveData<Double>()
     var altitude = MutableLiveData<Double>()
     var isHikingStarted = MutableLiveData<Boolean>()
+    var mountainSummitLat = MutableLiveData<Double>()
+    var mountainSummitLng = MutableLiveData<Double>()
 
     // 위도, 경도, 고도 list
     var locations = MutableLiveData<ArrayList<Location>>()
@@ -26,6 +28,8 @@ class HikingViewModel : ViewModel() {
         longitude.value = 0.0
         altitude.value = 0.0
         isHikingStarted.value = false
+        mountainSummitLat.value = 0.0
+        mountainSummitLng.value = 0.0
     }
 
     fun getLocations(){
