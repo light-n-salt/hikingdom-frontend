@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.chat.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -74,6 +75,14 @@ public class ChatServiceImpl implements ChatService {
 			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), chatPage.hasNext());
 
 		return new ChatListMessageRes(chats);
+	}
+
+	@Override
+	public MessageRes convertMemberResToMessageRes(List<MemberRes> memberResList) {
+		Map<Long, MemberRes> members = memberResList.stream()
+			.collect(Collectors.toMap(MemberRes::getMemberId, Function.identity()));
+
+		return new MemberListMessageRes(members);
 	}
 
 	@Override

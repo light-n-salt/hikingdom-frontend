@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
-import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberDetailRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberManagementService {
-	MemberInfoRes findMemberInfo(String email);
+	MemberDetailRes findMemberInfo(String email);
 
 	void removeMember(String email);
 
