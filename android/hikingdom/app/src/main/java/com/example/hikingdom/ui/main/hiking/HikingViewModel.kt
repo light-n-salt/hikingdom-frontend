@@ -19,8 +19,8 @@ class HikingViewModel : ViewModel() {
     var locations = MutableLiveData<ArrayList<Location>>()
 
     init {
-        duration.value = "00:00:00"
-        totalDistance.value = "00.00km"
+        duration.value = "00:00"
+        totalDistance.value = "0.000km"
         locations.value = ArrayList()
         latitude.value = 0.0
         longitude.value = 0.0
@@ -36,8 +36,9 @@ class HikingViewModel : ViewModel() {
         duration.value = timeToStr(d)
     }
 
-    fun setTotalDistance(td : Float){
-        totalDistance.value = ((td / 1000f * 100f).roundToInt() / 100f).toString() + "km"
+    fun setTotalDistance(td: Int){
+        round(td.toDouble())
+        totalDistance.value = (td / 1000f).toString() + "km"
     }
 
     fun setCurrentLocation(l : Location){
