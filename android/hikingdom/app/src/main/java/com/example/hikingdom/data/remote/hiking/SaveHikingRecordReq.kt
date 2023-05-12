@@ -8,6 +8,7 @@ data class SaveHikingRecordReq(
     val totalDistance: Int,
     val maxAlt: Double,
     val totalDuration: Int,
+    val isSummit: Boolean,
     val gpsRoute: List<GpsRoute>
 )
 
