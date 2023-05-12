@@ -1,5 +1,7 @@
 package com.example.hikingdom.ui.main.home
 
+import android.os.Build
+import android.webkit.WebSettings
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import com.example.hikingdom.ApplicationClass.Companion.HOME_WEB_URL

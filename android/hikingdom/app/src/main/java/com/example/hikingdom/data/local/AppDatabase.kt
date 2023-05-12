@@ -9,7 +9,7 @@ import com.example.hikingdom.data.entities.User
 import com.example.hikingdom.data.entities.UserLocation
 
 
-@Database(entities = [User::class, UserLocation::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, UserLocation::class], version = 2, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao // 사용자 정보 Dao
     abstract fun userLocationDao(): UserLocationDao // 사용자 위치정보 Dao
@@ -26,7 +26,7 @@ abstract class AppDatabase: RoomDatabase() {
                         context.applicationContext,
                         AppDatabase::class.java,
                         APP_DATABASE
-                    ).allowMainThreadQueries().build()
+                    ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
                 }
             }
             return instance

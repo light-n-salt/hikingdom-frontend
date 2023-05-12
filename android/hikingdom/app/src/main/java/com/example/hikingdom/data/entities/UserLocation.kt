@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class UserLocation(
     val latitude : Double,
-    val longtitude : Double,
+    val longitude : Double,
     val altitude : Double
 ) {
     @PrimaryKey(autoGenerate = true)
