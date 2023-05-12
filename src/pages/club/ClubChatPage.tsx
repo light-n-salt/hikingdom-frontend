@@ -39,7 +39,9 @@ function ClubChatPage() {
   const [stomp, setStomp] = useState<any>() // 타입 수정 필요
 
   // 채팅 & 멤버 데이터
-  const [members, setMembers] = useState<{ [key: number]: ChatMember }>({})
+  const [members, setMembers] = useState<{ [key: number]: ChatMember } | null>(
+    null
+  )
   const [chatList, setChatList] = useState<Chat[]>([])
   const [message, setMessage] = useState<string>('')
   // 멤버 정보 업데이트시 ChatItem 업데이트
@@ -138,6 +140,12 @@ function ClubChatPage() {
         content: message,
       })
     )
+    // if (infiniteRef.current) {
+    //   infiniteRef.current.scrollTo({
+    //     top: infiniteRef.current.scrollHeight,
+    //     behavior: 'smooth',
+    //   })
+    // }
     setMessage('')
   }
 
@@ -150,7 +158,7 @@ function ClubChatPage() {
   return (
     <div className={`page p-sm ${theme} mobile `}>
       <PageHeader title={clubInfo?.clubName} url={`/club/main`} />
-      {isError || isLoading ? (
+      {!members || !chatList ? (
         <Loading />
       ) : (
         <ChatList
