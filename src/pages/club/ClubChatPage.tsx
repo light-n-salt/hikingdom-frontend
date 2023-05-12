@@ -69,6 +69,7 @@ function ClubChatPage() {
         ...res.pages.slice(-1)[0].chats.content,
       ])
     },
+    cacheTime: 0,
   })
 
   // 멤버 데이터
