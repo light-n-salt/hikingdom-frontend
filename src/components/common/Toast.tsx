@@ -32,12 +32,7 @@ class ToastManager {
   deleteMessage(id: number) {
     const newMessages = this.messages.filter((message) => message.id !== id)
     this.messages = newMessages
-    this.root.render(
-      <ToastMessages
-        messages={this.messages}
-        deleteMessage={this.deleteMessage.bind(this)} // 함수 안에 선언된 this.(변수)를 prop받은 컴포넌트에서도 사용할 수 있도록 bind
-      />
-    )
+    this.root.render(<ToastMessages messages={this.messages} />)
   }
 
   // 3초뒤 자동으로 토스트를 닫는 함수
@@ -71,12 +66,7 @@ class ToastManager {
       type,
       message,
     })
-    this.root.render(
-      <ToastMessages
-        messages={this.messages}
-        deleteMessage={this.deleteMessage.bind(this)}
-      />
-    )
+    this.root.render(<ToastMessages messages={this.messages} />)
     this.autoDeleteMessage(id)
   }
 }
@@ -86,10 +76,9 @@ export default new ToastManager()
 // 토스트 메시지 리스트
 type ToastMessagesProps = {
   messages: Message[] // 메시지 배열
-  deleteMessage: (id: number) => void // 토스트 메시지를 삭제하는 함수
 }
 
-function ToastMessages({ messages, deleteMessage }: ToastMessagesProps) {
+function ToastMessages({ messages }: ToastMessagesProps) {
   // 아이콘 할당
   function getIcon(type: 'success' | 'error' | 'info' | 'warning') {
     switch (type) {

@@ -78,7 +78,7 @@ function MainPage() {
             <img
               src={clubmountain}
               onClick={() => {
-                navigate(`/club/1/detail`)
+                navigate(`/club/1/main`)
               }}
             />
           </div>

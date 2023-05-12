@@ -11,6 +11,7 @@ import { getMeetupAlbum } from 'apis/services/meetup'
 
 import useInfiniteVerticalScroll from 'hooks/useInfiniteVerticalScroll'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import useUserQuery from 'hooks/useUserQuery'
 
 type InfiniteAlbumInfo = {
   content: Album[]
@@ -21,31 +22,29 @@ type InfiniteAlbumInfo = {
 }
 
 function MeetupAlbum() {
-  const { clubId, meetupId } = useParams() as {
-    clubId: string
+  const { meetupId } = useParams() as {
     meetupId: string
   }
+
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
   const [isOpen, setIsOpen] = useState(false) // 선택한 사진 모달 on/off
   const [photo, setPhoto] = useState<Album>() // 선택한 사진
   const [isAlbumOpen, setIsAlbumOpen] = useState(false) // 사진 업데이트 모달
   const infiniteRef = useRef<HTMLDivElement>(null)
 
-  const { data, isLoading, fetchNextPage, hasNextPage } =
+  const { data, fetchNextPage, hasNextPage } =
     useInfiniteQuery<InfiniteAlbumInfo>({
       queryKey: ['meetupPhotos'],
       queryFn: ({ pageParam = null }) => {
-        return getMeetupAlbum(
-          parseInt(clubId),
-          parseInt(meetupId),
-          pageParam,
-          5
-        )
+        return getMeetupAlbum(clubId || 0, parseInt(meetupId), pageParam, 5)
       },
       getNextPageParam: (lastPage) => {
         return lastPage.hasNext
           ? lastPage.content.slice(-1)[0].photoId
           : undefined
       },
+      enabled: !!clubId,
     })
 
   const photoInfo = useMemo(() => {

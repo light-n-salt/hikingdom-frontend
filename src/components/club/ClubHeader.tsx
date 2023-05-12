@@ -1,21 +1,19 @@
 import React, { useMemo } from 'react'
 import styles from './ClubHeader.module.scss'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-
-import { getClubSimpleInfo } from 'apis/services/clubs'
-import { ClubSimpleInfo } from 'types/club.interface'
 import { useQuery } from '@tanstack/react-query'
-import { untilMidnight } from 'utils/untilMidnight'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { getClubSimpleInfo } from 'apis/services/clubs'
 import Chatting from 'assets/images/airplane.png'
 import IconButton from 'components/common/IconButton'
+import useUserQuery from 'hooks/useUserQuery'
+import { untilMidnight } from 'utils/untilMidnight'
+import { ClubSimpleInfo } from 'types/club.interface'
 
 function ClubHeader() {
   const navigate = useNavigate()
 
-  const location = useLocation()
-  const type = location.pathname.split('/')[3]
-
-  const clubId = useParams<string>().clubId
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
 
   const queryTime = useMemo(() => {
     return untilMidnight()
@@ -23,10 +21,11 @@ function ClubHeader() {
 
   const { data: clubInfo } = useQuery<ClubSimpleInfo>(
     ['clubInfo'],
-    () => getClubSimpleInfo(Number(clubId)),
+    () => getClubSimpleInfo(clubId || 0),
     {
       cacheTime: queryTime,
       staleTime: queryTime,
+      enabled: !!clubId,
     }
   )
 
@@ -38,44 +37,44 @@ function ClubHeader() {
           <IconButton
             imgSrc={Chatting}
             size="sm"
-            onClick={() => navigate(`/club/${clubInfo.clubId}/chat`)}
+            onClick={() => navigate(`/club/chat`)}
           />
         </div>
       </div>
-      <div className={styles.nav}>
-        <span
-          className={`${styles.button} ${
-            type === 'main' ? styles.active : styles.inactive
-          }`}
-          onClick={() => navigate(`main`)}
+      <nav className={styles.nav}>
+        <NavLink
+          to="main"
+          className={({ isActive }) =>
+            isActive ? styles.active : styles.inactive
+          }
         >
           모임
-        </span>
-        <span
-          className={`${styles.button} ${
-            type === 'meetup' ? styles.active : styles.inactive
-          }`}
-          onClick={() => navigate('meetup')}
+        </NavLink>
+        <NavLink
+          to="meetup"
+          className={({ isActive }) =>
+            isActive ? styles.active : styles.inactive
+          }
         >
           일정
-        </span>
-        <span
-          className={`${styles.button} ${
-            type === 'member' ? styles.active : styles.inactive
-          }`}
-          onClick={() => navigate('member')}
+        </NavLink>
+        <NavLink
+          to="member"
+          className={({ isActive }) =>
+            isActive ? styles.active : styles.inactive
+          }
         >
           멤버
-        </span>
-        <span
-          className={`${styles.button} ${
-            type === 'album' ? styles.active : styles.inactive
-          }`}
-          onClick={() => navigate('album')}
+        </NavLink>
+        <NavLink
+          to="album"
+          className={({ isActive }) =>
+            isActive ? styles.active : styles.inactive
+          }
         >
           앨범
-        </span>
-      </div>
+        </NavLink>
+      </nav>
     </div>
   ) : null
 }

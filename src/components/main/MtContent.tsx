@@ -1,13 +1,10 @@
-import React, { useContext } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+import React from 'react'
 import styles from './MtContent.module.scss'
 
 import IconText from 'components/common/IconText'
 
 import peaksImg from 'assets/images/mountain.png'
 import addressImg from 'assets/images/marker.png'
-import transportImg from 'assets/images/transport.png'
-import facilityImg from 'assets/images/facility.png'
 import descriptionImg from 'assets/images/message.png'
 
 type MtContentProps = {
@@ -17,8 +14,6 @@ type MtContentProps = {
 }
 
 function MtContent({ address, peaks, description }: MtContentProps) {
-  const { theme, toggleTheme } = useContext(ThemeContext)
-
   return (
     <div className={`${styles.mtcontent}`}>
       <Info imgSrc={addressImg} title="주소" content={address} />
