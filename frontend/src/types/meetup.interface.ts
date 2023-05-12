@@ -7,14 +7,13 @@ export interface MeetupInfoList {
 
 //모임 일정 조회
 export interface MeetupInfo {
+  description: string
   meetupHostId: number
   meetupId: number
   meetupName: string
   mountainName: string
-  startDate: string
-  startTime: string
-  description: string
-  totalMmember: number
+  startAt: string
+  totalMember: number
 }
 
 // 일정 멤버
@@ -25,7 +24,7 @@ export interface MeetupMember {
 
 // 일정 멤버 조회
 export interface MeetupMemberInfo {
-  totalMmember: number
+  totalMember: number
   isJoin: boolean
   memberInfo: MeetupMember[]
 }
@@ -41,7 +40,7 @@ export interface MeetupReview {
 
 // 상세 일정 조회
 export interface meetupInfoDetail extends MeetupInfo {
-  isJoin: boolean
+  join: boolean
   memberInfo: MeetupMember[]
   photoInfo: Album[]
   reviewInfo: MeetupReview[]

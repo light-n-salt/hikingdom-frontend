@@ -1,35 +1,38 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { MtInfo } from 'types/mt.interface'
-import IconText from './IconText'
-import hotAirBalloon from 'assets/images/hot_air_balloon.png'
-import marker from 'assets/images/marker.png'
 import styles from './MtItem.module.scss'
+import { useNavigate } from 'react-router-dom'
+import marker from 'assets/images/marker.png'
+import hotAirBalloon from 'assets/images/hot_air_balloon.png'
+import IconText from 'components/common/IconText'
+import { MtInfo } from 'types/mt.interface'
 
 type MtItemProps = {
-  mtInfo: MtInfo
-  size?: 'sm' | 'lg'
+  mtInfo: MtInfo // 산 정보
+  size?: 'sm' | 'lg' // 크기
 }
 
 function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
-  const maxAlt = mtInfo.maxAlt.toString() + 'm'
   const navigate = useNavigate()
+
+  const address = mtInfo.address
 
   return (
     <div
-      className={`${styles['mt-item']} ${styles[size]}`}
-      onClick={() => navigate(`/mountain/detail/${mtInfo.mountainId}`)}
+      className={`${styles.container} ${styles[size]}`}
+      onClick={() => navigate(`/mountain/${mtInfo.mountainId}/detail`)}
     >
+      <img className={styles.img} src={mtInfo.imgUrl} />
       <h3>{mtInfo.name}</h3>
-      <div>
+      <div className={styles.flexbox}>
         <IconText imgSrc={hotAirBalloon} text="높이" />
-        {maxAlt}
+        {Math.floor(mtInfo.maxAlt)} m
       </div>
-      <div>
+      <div className={styles.flexbox}>
         <IconText imgSrc={marker} text="위치" />
-        {mtInfo.address}
+        {mtInfo.address.length > 8
+          ? mtInfo.address.slice(0, 8) + '...'
+          : mtInfo.address}
       </div>
-      <img src={mtInfo.imgUrl} />
     </div>
   )
 }

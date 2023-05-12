@@ -36,8 +36,8 @@ public class MemberSignUpServiceImpl implements MemberSignUpService {
 		String nickname = memberSignUpReq.getNickname();
 
 		if (!memberSignUpReq.getPassword().equals(memberSignUpReq.getCheckPassword()) ||
-			memberRepository.existsByEmailAndIsWithdraw(email, false)
-			|| memberRepository.existsByNicknameAndIsWithdraw(nickname, false)) {
+			memberRepository.existsByEmail(email)
+			|| memberRepository.existsByNickname(nickname)) {
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}
 
@@ -62,7 +62,7 @@ public class MemberSignUpServiceImpl implements MemberSignUpService {
 
 	@Override
 	public void checkDuplicateNickname(String nickname) {
-		if (memberRepository.existsByNicknameAndIsWithdraw(nickname, false)) {
+		if (memberRepository.existsByNickname(nickname)) {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 	}

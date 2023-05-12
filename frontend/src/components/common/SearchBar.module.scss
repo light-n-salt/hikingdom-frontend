@@ -1,36 +1,29 @@
 @use 'src/styles/colors' as *;
-@use 'src/styles/z-index' as *;
 
 .searchbar {
-  @include z-index(content);
   display: flex;
-  justify-content: center;
-  position: sticky;
-  top: 0.5rem;
-  margin-bottom: 1rem;
-  border: 2px solid $secondary;
-  border-radius: 0.5rem;
-  // gap: 2rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10rem;
+  background-color: clr(white-clr, light);
+  box-shadow: 0 0 4px clr(shadow-clr);
+}
 
-  .icon {
-    margin: 0.7rem;
-    height: 1.6rem;
-    width: 1.6rem;
-    color: $primary;
-  }
+.icon {
+  height: 1.8rem;
+  width: 1.8rem;
+  padding: 0 0.3rem 0 0;
+  color: clr(primary-clr, light);
+}
 
-  label {
-    font-size: 2.5rem;
-    font-weight: 400;
-    color: $primary;
-  }
+.input {
+  padding: 0.1rem 0.7rem;
+  border-left: 2px solid clr(primary-clr);
+  font-size: 1.1rem;
+}
 
-  input {
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 1.3rem;
-    border-radius: 0.5rem;
-    color: $gray;
-    // background: clr(white-clr);
-  }
+.input::placeholder {
+  color: transparentize(clr(gray-clr, light), 0.4);
+  font-weight: 600;
 }

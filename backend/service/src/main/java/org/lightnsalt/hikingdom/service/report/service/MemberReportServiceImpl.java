@@ -32,7 +32,7 @@ public class MemberReportServiceImpl implements MemberReportService {
 	@Transactional
 	public Long saveMemberReport(String email, MemberReportReq req) {
 		// 신고하는 사용자 조회
-		final Member reporter = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member reporter = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		// 신고하려는 사용자 조회
@@ -40,21 +40,21 @@ public class MemberReportServiceImpl implements MemberReportService {
 
 		switch (req.getType()) {
 			case "ALBUM":
-				final MeetupAlbum meetupAlbum = meetupAlbumRepository.findById(req.getId())
+				final MeetupAlbum meetupAlbum = meetupAlbumRepository.findById(Long.parseLong(req.getId()))
 					.orElseThrow(() -> new GlobalException(ErrorCode.PHOTO_NOT_FOUND));
 
 				reported = memberRepository.findById(meetupAlbum.getMember().getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 				break;
 			case "REVIEW":
-				final MeetupReview meetupReview = meetupReviewRepository.findById(req.getId())
+				final MeetupReview meetupReview = meetupReviewRepository.findById(Long.parseLong(req.getId()))
 					.orElseThrow(() -> new GlobalException(ErrorCode.PHOTO_NOT_FOUND));
 
 				reported = memberRepository.findById(meetupReview.getMember().getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 				break;
 			case "MEMBER":
-				reported = memberRepository.findById(req.getId())
+				reported = memberRepository.findByNickname(req.getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 				break;
 			default:

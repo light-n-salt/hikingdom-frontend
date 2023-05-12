@@ -1,0 +1,87 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+}
+
+.flexbox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.2rem 1rem;
+}
+
+.gridbox {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.input {
+  text-align: center;
+  width: 9rem;
+}
+
+.weekdays {
+  > div {
+    text-align: center;
+  }
+  // 일요일
+  > div:first-child {
+    color: clr(red-clr, dark);
+  }
+  // 토요일
+  > div:last-child {
+    color: clr(blue-clr);
+  }
+}
+
+.calendar {
+  background-color: clr(white-clr, light);
+}
+
+.datebox {
+  position: relative;
+  border-radius: 0.2rem;
+  cursor: pointer;
+
+  &.sunday {
+    color: clr(red-clr, dark);
+  }
+  &.saturday {
+    color: clr(blue-clr);
+  }
+  &.gray {
+    color: clr(gray-clr, light);
+  }
+  &.today {
+    border-radius: 50%;
+    background-color: clr(primary-clr);
+    color: clr(white-clr, light);
+  }
+  &.meetup {
+    background-image: url('./../../assets/svgs/simple_mountain.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+
+.datebox > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.datebox:after {
+  display: block;
+  content: '';
+  padding-bottom: 100%;
+}

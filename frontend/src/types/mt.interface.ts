@@ -17,12 +17,10 @@ export interface MtAssetInfo {
 
 // 산 상세정보
 export interface MtInfoDetail extends MtInfo {
-  timeDuration: number
-  peaks: string[]
+  totalDuration: number
+  peaks: string
   description: string
-  transport: string
-  facility: string
-  asset: MtAssetInfo[]
+  asset?: MtAssetInfo[]
 }
 
 // 에셋 정보

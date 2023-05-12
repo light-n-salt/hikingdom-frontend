@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class ClubBasicServiceImpl implements ClubBasicService {
-	private static final String locationCodePattern = "\\d{10}";
+	private static final String LOCATION_CODE_PATTERN = "\\d{10}";
 
 	private final ClubRepository clubRepository;
 	private final ClubAssetRepository clubAssetRepository;
@@ -55,7 +55,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Override
 	public CustomSlice<ClubSearchRes> findClubList(String query, String word, Long clubId, Pageable pageable) {
 		if (!(query.matches("^(|name)$") ||
-			query.equals("location") && word.matches(locationCodePattern))) {
+			query.equals("location") && word.matches(LOCATION_CODE_PATTERN))) {
 			log.error("ClubBasicService:findClubList: Invalid Query {}, Word {}", query, word);
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}
@@ -73,13 +73,13 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public Long addClub(String email, ClubInfoReq clubInfoReq) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		checkDuplicateClubName(clubInfoReq.getName());
 
 		// 소모임 가입 여부 확인. 이미 가입된 경우, 소모임 생성 X
-		if (clubMemberRepository.findByMemberIdAndIsWithdraw(host.getId(), false).isPresent())
+		if (clubMemberRepository.findByMemberId(host.getId()).isPresent())
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 
 		// 소모임 신청 취소
@@ -111,10 +111,10 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public void modifyClub(String email, Long clubId, ClubInfoReq clubInfoReq) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		if (!club.getHost().getId().equals(host.getId())) {
@@ -142,7 +142,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public ClubSimpleDetailRes findClubSimpleDetail(Long clubId) {
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		return ClubSimpleDetailRes.builder()
@@ -155,7 +155,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public void checkDuplicateClubName(String clubName) {
-		if (clubRepository.findByNameAndIsDeleted(clubName, false).isPresent()) {
+		if (clubRepository.findByName(clubName).isPresent()) {
 			throw new GlobalException(ErrorCode.DUPLICATE_CLUB_NAME);
 		}
 	}
@@ -163,12 +163,11 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public ClubDetailRes findClubDetail(String email, Long clubId) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
-		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberIdAndIsWithdraw(club.getId(),
-				member.getId(), false)
+		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(club.getId(), member.getId())
 			.orElse(null);
 
 		final List<ClubAsset> clubAssetList = clubAssetRepository.findAllByClubId(club.getId());

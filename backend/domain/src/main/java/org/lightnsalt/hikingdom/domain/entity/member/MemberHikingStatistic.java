@@ -20,12 +20,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "member_hiking_statistic")
 @Getter
 @ToString
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member_hiking_statistic")
 public class MemberHikingStatistic {
 	@Id
 	private Long id;

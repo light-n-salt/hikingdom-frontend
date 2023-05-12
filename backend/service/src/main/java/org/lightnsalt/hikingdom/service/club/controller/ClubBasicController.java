@@ -3,6 +3,8 @@ package org.lightnsalt.hikingdom.service.club.controller;
 import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
@@ -10,7 +12,6 @@ import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.club.dto.request.ClubInfoReq;
-import org.lightnsalt.hikingdom.service.club.dto.request.ClubNameReq;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubDetailRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSearchRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSimpleDetailRes;
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1/clubs")
 @RequiredArgsConstructor
 public class ClubBasicController {
@@ -85,16 +88,10 @@ public class ClubBasicController {
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 상세 정보 조회에 성공했습니다", clubSimpleDetailRes), HttpStatus.OK);
 	}
 
-	@GetMapping("/check-duplicate")
-	public ResponseEntity<CustomResponseBody> clubNameCheck(@RequestBody @Valid ClubNameReq clubNameReq,
-		BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
-				bindingResult.getAllErrors().get(0).getDefaultMessage()),
-				HttpStatus.BAD_REQUEST);
-		}
-
-		clubBasicService.checkDuplicateClubName(clubNameReq.getName());
+	@GetMapping("/check-duplicate/{clubName}")
+	public ResponseEntity<CustomResponseBody> clubNameCheck(@Valid @NotEmpty(message = "소모임 이름은 필수 입력값입니다.")
+	@Pattern(regexp = ".{1,20}", message = "소모임 이름은 1~20자 이내입니다.") @PathVariable String clubName) {
+		clubBasicService.checkDuplicateClubName(clubName);
 		return new ResponseEntity<>(BaseResponseBody.of("사용할 수 있는 소모임 이름입니다"), HttpStatus.OK);
 	}
 }

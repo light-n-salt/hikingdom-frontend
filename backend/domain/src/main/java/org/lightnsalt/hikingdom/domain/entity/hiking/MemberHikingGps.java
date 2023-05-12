@@ -23,11 +23,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "member_hiking_gps")
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@TypeDef(name = "json", typeClass = JsonStringType.class)
-@Table(name = "member_hiking_gps")
 public class MemberHikingGps {
 	@Id
 	private Long id;

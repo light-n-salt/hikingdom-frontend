@@ -2,27 +2,22 @@ package org.lightnsalt.hikingdom.service.club.repository.meetup;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface MeetupReviewRepository extends JpaRepository<MeetupReview, Long> {
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE MeetupReview m "
 		+ "SET m.isDeleted = :isDeleted, m.deletedAt = :now "
 		+ "WHERE m.id = :id")
-	int updateMeetupReviewIsDeletedById(Long id, boolean isDeleted, LocalDateTime now);
+	int updateMeetupReviewIsDeletedById(@Param("id") Long id, @Param("isDeleted") boolean isDeleted,
+		@Param("now") LocalDateTime now);
 
-	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("UPDATE MeetupReview m "
-		+ "SET m.isDeleted = :isDeleted, m.deletedAt = :now "
-		+ "WHERE m.meetup.id = :meetupId")
-	void updateMeetupReviewIsDeletedByMeetupId(Long meetupId, boolean isDeleted, LocalDateTime now);
+	List<MeetupReview> findByMeetupId(@Param("meetupId") Long meetupId);
 
-	Optional<MeetupReview> findByIdAndIsDeleted(Long id, boolean isDeleted);
-
-	List<MeetupReview> findByMeetupIdAndIsDeleted(Long meetupId, boolean isDeleted);
+	void deleteAllByMeetupId(@Param("meetupId") Long meetupId);
 }

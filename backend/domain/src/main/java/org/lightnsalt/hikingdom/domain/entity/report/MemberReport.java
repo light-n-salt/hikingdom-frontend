@@ -27,12 +27,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "member_report")
 @Getter
 @ToString
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member_report")
 public class MemberReport {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,11 +58,11 @@ public class MemberReport {
 	private String reportType;
 
 	@Column(name = "reported_content", nullable = false)
-	private Long reportedContent;
+	private String reportedContent;
 
 	@Builder
 	public MemberReport(Member reporter, Member reported, LocalDateTime reportedAt, String reportType,
-		Long reportedContent) {
+		String reportedContent) {
 		this.reporter = reporter;
 		this.reported = reported;
 		this.reportedAt = reportedAt;

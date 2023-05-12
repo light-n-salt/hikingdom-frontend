@@ -1,0 +1,63 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0 1rem 0.6rem;
+  background-color: clr(white-clr, light);
+
+  > .user {
+    flex: 1;
+  }
+
+  > .record {
+    flex: 1.4;
+  }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.nickname {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.image {
+  height: 1rem;
+}
+
+.record {
+  display: flex;
+  align-items: center;
+
+  > .content {
+    flex: 1;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bold {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.text {
+  font-size: 0.7rem;
+}
+
+.button {
+  display: flex;
+  gap: 0.5rem;
+  padding-right: 0.5rem;
+}

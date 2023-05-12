@@ -1,31 +1,33 @@
 @use 'src/styles/colors' as *;
-
-.main {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-}
+@use 'src/styles/animations' as *;
 
 .container {
   display: flex;
   flex-direction: column;
-  padding-top: 0.7rem;
+  gap: 1.2rem;
+  overflow-y: auto;
   width: 100%;
+  padding-bottom: 1rem;
+}
 
-  &.sm {
-    gap: 0.3rem;
-  }
+.container > div {
+  opacity: 0;
+}
 
-  &.lg {
-    gap: 1.5rem;
+@for $i from 1 through 3 {
+  .container > div:nth-child(#{$i}) {
+    @include animation-slide-in-up(normal, 40%, #{($i - 1) * 0.2}s);
   }
 }
 
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: 100%;
+}
+
 .scroll {
-  padding: 0.7rem;
-  overflow-x: scroll;
-  // 스크롤바 숨기기
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  overflow-x: auto;
+  padding: 0 1rem 0.2rem 1rem;
 }

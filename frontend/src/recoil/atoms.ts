@@ -1,23 +1,23 @@
 import { atom } from 'recoil'
 import { recoilPersist } from 'recoil-persist'
+import { User } from 'types/user.interface'
+import { ClubSimpleInfo } from 'types/club.interface'
 
 const { persistAtom } = recoilPersist()
 
-// JWT 토큰 관련 설정
-const ACCESS_TOKEN_KEY = 'AccessToken'
-const REFRESH_TOKEN_KEY = 'RefreshToken'
-
-// Recoil atom 정의
-const accessTokenState = atom<string>({
-  key: ACCESS_TOKEN_KEY,
-  default: localStorage.getItem(ACCESS_TOKEN_KEY) ?? '',
+const userInfoState = atom<User>({
+  key: 'UserInfo',
+  default: JSON.parse(localStorage.getItem('UserInfo') || '{}'),
   effects_UNSTABLE: [persistAtom],
 })
 
-const refreshTokenState = atom<string>({
-  key: REFRESH_TOKEN_KEY,
-  default: localStorage.getItem(REFRESH_TOKEN_KEY) ?? '',
-  effects_UNSTABLE: [persistAtom],
+const clubInfoState = atom<ClubSimpleInfo>({
+  key: 'ClubInfo',
+  default: {
+    hostId: 0,
+    clubId: 0,
+    clubName: '',
+  },
 })
 
-export { accessTokenState, refreshTokenState }
+export { userInfoState, clubInfoState }

@@ -12,20 +12,19 @@ type MtDetailProps = {
 }
 
 function MtDetail({ mtInfo }: MtDetailProps) {
-  const { theme, toggleTheme } = useContext(ThemeContext)
   return (
     <div className={styles.detail}>
       <MtTitle
         name={mtInfo.name}
         maxAlt={mtInfo.maxAlt}
-        timeDuration={mtInfo.timeDuration}
-        assetUrl={mtInfo.asset[0].assetUrl}
+        timeDuration={mtInfo.totalDuration}
+        // assetUrl={mtInfo.asset[0].assetUrl}
+        assetUrl="https://img.freepik.com/premium-vector/abstract-tree-3d-vector-icon-cartoon-minimal-style_365941-704.jpg"
       />
       <MtContent
         address={mtInfo.address}
         peaks={mtInfo.peaks}
-        transport={mtInfo.transport}
-        facility={mtInfo.facility}
+        // transport={mtInfo.transport}
         description={mtInfo.description}
       />
     </div>

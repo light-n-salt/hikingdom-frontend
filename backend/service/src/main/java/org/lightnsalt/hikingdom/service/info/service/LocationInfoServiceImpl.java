@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class LocationInfoServiceImpl implements LocationInfoService {
-	private static final String sidoPattern = "^(?=(.*\\d))(\\d{2}00000000|3611000000)$";
+	private static final String SIDO_PATTERN = "^(?=(.*\\d))(\\d{2}00000000|3611000000)$";
 
 	private final BaseAddressInfoRepository baseAddressInfoRepository;
 	private final BaseAddressInfoRepositoryCustom baseAddressInfoRepositoryCustom;
@@ -25,7 +25,7 @@ public class LocationInfoServiceImpl implements LocationInfoService {
 	@Override
 	public List<BaseAddressInfoRes> findBaseAddressInfoList(String query, String word) {
 		if (!(query.equals("sido") && word.equals("0000000000") ||
-			query.equals("gugun") && word.matches(sidoPattern))) {
+			query.equals("gugun") && word.matches(SIDO_PATTERN))) {
 			log.error("LocationInfoService:findSidoList: Invalid Query {}, Word {}", query, word);
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}

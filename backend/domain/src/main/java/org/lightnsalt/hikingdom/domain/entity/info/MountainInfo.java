@@ -18,12 +18,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "mountain_info")
 @Getter
 @ToString
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "mountain_info")
 public class MountainInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,4 +64,18 @@ public class MountainInfo {
 		this.asset = asset;
 	}
 
+	@Builder
+	public MountainInfo(String name, String description, String address, double topAlt, double topLat, double topLng,
+		int totalDuration, String imgUrl, String peaks, List<AssetInfo> asset) {
+		this.name = name;
+		this.description = description;
+		this.address = address;
+		this.topAlt = topAlt;
+		this.topLat = topLat;
+		this.topLng = topLng;
+		this.totalDuration = totalDuration;
+		this.imgUrl = imgUrl;
+		this.peaks = peaks;
+		this.asset = asset;
+	}
 }

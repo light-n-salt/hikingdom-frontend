@@ -4,6 +4,7 @@
   display: flex;
   align-items: center;
   position: relative;
+  margin: 1rem 0;
   width: 100%;
 
   &.dark {
@@ -30,6 +31,7 @@
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
+  white-space: nowrap;
   font-weight: 600;
 
   &.sm {

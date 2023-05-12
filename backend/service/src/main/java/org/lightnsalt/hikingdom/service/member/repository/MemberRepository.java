@@ -8,15 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-	Optional<Member> findByEmailAndIsWithdraw(@Param("email") String email, @Param("is_withdraw") boolean isWithdraw);
+	Optional<Member> findByEmail(@Param("email") String email);
 
-	boolean existsByEmailAndIsWithdraw(@Param("email") String email, @Param("is_withdraw") boolean isWithdraw);
+	boolean existsByEmail(@Param("email") String email);
 
-	boolean existsByNicknameAndIsWithdraw(@Param("nickname") String nickname, @Param("is_withdraw") boolean isWithdraw);
+	boolean existsByNickname(@Param("nickname") String nickname);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Member m SET m.password = :password WHERE m.id = :id")
@@ -24,18 +22,17 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Member m SET m.nickname = :nickname WHERE m.id = :id")
-	int setNicknameById(@Param("nickname") String nickname, @Param("id") Long id);
+	void setNicknameById(@Param("nickname") String nickname, @Param("id") Long id);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("UPDATE Member m SET m.profileUrl = :profileUrl WHERE m.id = :id")
-	void setProfileUrlById(String profileUrl, Long id);
+	void setProfileUrlById(@Param("profileUrl") String profileUrl, @Param("id") Long id);
 
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("UPDATE Member m "
-		+ "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw "
-		+ "WHERE m.id = :id")
-	void updateMemberWithdraw(Long id, boolean isWithdraw, LocalDateTime now);
+	@Query(
+		"UPDATE Member m " + "SET m.withdrawAt = :now, m.isWithdraw = :isWithdraw " + "WHERE m.id = :id")
+	void updateMemberWithdraw(@Param("id") Long id, @Param("isWithdraw") boolean isWithdraw,
+		@Param("now") LocalDateTime now);
 
-	Optional<Member> findByNicknameAndIsWithdraw(@Param("nickname") String nickname,
-		@Param("isWithdraw") boolean isWithdraw);
+	Optional<Member> findByNickname(@Param("nickname") String nickname);
 }

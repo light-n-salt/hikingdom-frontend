@@ -1,36 +1,23 @@
-import React, { useContext } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+import React from 'react'
 import styles from './SearchBar.module.scss'
-import { BsSearch } from 'react-icons/bs'
+import { BiSearch } from 'react-icons/bi'
 
 type SearchBarProps = {
-  value: string
-  placeholder: string
-  setSelected?: (value: string) => void // selectbox 값 변경 함수
-  onChangeText: (value: string) => void // 검색값
+  value: string // input 태그 value
+  placeholder: string // input 태그 placeholder
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void // input 태그 onChange시 동작 함수
 }
 
-function SearchBar({
-  value,
-  placeholder,
-  setSelected,
-  onChangeText,
-}: SearchBarProps) {
-  const { theme } = useContext(ThemeContext)
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChangeText(event.target.value)
-  }
-
+function SearchBar({ value, placeholder, onChange }: SearchBarProps) {
   return (
-    <div className={`content ${theme} ${styles.searchbar}`}>
-      {setSelected ? <>toggle</> : <BsSearch className={`${styles.icon}`} />}
-      <label htmlFor="input"> I </label>
+    <div className={`${styles.searchbar}`}>
+      <BiSearch className={`${styles.icon}`} />
       <input
         id="input"
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
         placeholder={placeholder}
+        className={`${styles.input}`}
       />
     </div>
   )

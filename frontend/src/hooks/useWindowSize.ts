@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
 
+/*
+window 크기를 계산해서 반환하는 커스텀 훅
+*/
+
 type useWindowSizeReturns = {
-  width: number
-  height: number
+  width: number // window 너비
+  height: number // window  높이
 }
 
 function useWindowSize(): useWindowSizeReturns {
-  // 화면 크기 상태를 저장할 useState 훅
+  // window 크기를 저장할 useState
   const [windowSize, setWindowSize] = useState({
     width: 0,
     height: 0,

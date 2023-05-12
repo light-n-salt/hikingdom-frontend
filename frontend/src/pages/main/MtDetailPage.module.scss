@@ -1,21 +1,18 @@
 @use 'src/styles/colors' as *;
-@use 'src/styles/z-index' as *;
 
 .detail {
   display: flex;
-  overflow: hidden;
   position: relative;
   background-color: clr(white-clr, light);
+}
 
-  > img {
-    @include z-index(background);
-    position: absolute;
-    top: 0;
-    left: 0;
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    width: 100%;
-    height: 30%;
-    object-fit: cover;
-    filter: brightness(90%) saturate(80%);
-  }
+  width: 100%;
+  height: 30%;
+  object-fit: cover;
+  filter: brightness(90%) saturate(80%);
 }

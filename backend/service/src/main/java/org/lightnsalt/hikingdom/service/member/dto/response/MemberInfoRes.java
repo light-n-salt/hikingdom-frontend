@@ -1,15 +1,16 @@
 package org.lightnsalt.hikingdom.service.member.dto.response;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberInfoRes {
 	private Long memberId;
-	private String email;
 	private String nickname;
 	private String profileUrl;
 	private Integer level;
-	private Long clubId;
 }
+

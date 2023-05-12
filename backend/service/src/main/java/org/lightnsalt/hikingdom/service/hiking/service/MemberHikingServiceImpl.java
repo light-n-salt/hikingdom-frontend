@@ -29,7 +29,7 @@ public class MemberHikingServiceImpl implements MemberHikingService {
 	@Transactional
 	public HikingRecordDetailRes findHikingRecord(String nickname, Long hikingRecordId) {
 		// 회원 찾기
-		final Long memberId = memberRepository.findByNicknameAndIsWithdraw(nickname, false)
+		final Long memberId = memberRepository.findByNickname(nickname)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND))
 			.getId();
 
@@ -52,7 +52,7 @@ public class MemberHikingServiceImpl implements MemberHikingService {
 	public CustomSlice<HikingRecordListRes> findHikingRecordList(String nickname, Long hikingRecordId,
 		Pageable pageable) {
 		// 회원 확인
-		final Long memberId = memberRepository.findByNicknameAndIsWithdraw(nickname, false)
+		final Long memberId = memberRepository.findByNickname(nickname)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND))
 			.getId();
 

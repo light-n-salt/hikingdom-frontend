@@ -16,7 +16,7 @@ public class ClubDetailRes {
 	@JsonProperty("isJoin")
 	private boolean isJoin;
 	private double participationRate;
-	private Long totalDuration;
+	private int totalDuration;
 	private Long totalDistance;
 	private Long totalAlt;
 	private String description;
@@ -26,7 +26,8 @@ public class ClubDetailRes {
 		this.clubName = club.getName();
 		this.isJoin = isJoin;
 		this.participationRate = club.getHikingStatistic().getParticipationRate();
-		this.totalDuration = club.getHikingStatistic().getTotalDuration() / 60; // seconds to minutes
+		this.totalDuration = Math.round(
+			Math.floorDiv(club.getHikingStatistic().getTotalDuration(), 60)); // seconds to minutes
 		this.totalDistance = club.getHikingStatistic().getTotalDistance();
 		this.totalAlt = club.getHikingStatistic().getTotalAlt();
 		this.description = club.getDescription();

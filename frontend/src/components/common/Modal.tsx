@@ -3,8 +3,8 @@ import styles from './Modal.module.scss'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 type ModalProps = {
-  onClick: () => void
-  children: React.ReactNode
+  onClick: () => void // 닫는 함수
+  children: React.ReactNode // 안에 띄울 컨텐츠
 }
 
 function Modal({ onClick, children }: ModalProps) {
@@ -12,7 +12,10 @@ function Modal({ onClick, children }: ModalProps) {
 
   return (
     <div onClick={onClick} className={`${styles.modal}`}>
-      <div onClick={(e) => e.stopPropagation()} className={`content ${theme}`}>
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`content ${theme} ${styles.content}`}
+      >
         {children}
       </div>
     </div>

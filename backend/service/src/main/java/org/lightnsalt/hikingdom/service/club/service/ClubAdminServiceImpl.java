@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
@@ -11,9 +12,11 @@ import org.lightnsalt.hikingdom.service.club.repository.ClubJoinRequestRepositor
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +30,16 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
 	private final MemberRepository memberRepository;
 
+	private final RestTemplate restTemplate;
+
 	@Transactional
 	@Override
 	public void acceptClubJoinRequest(String email, Long clubId, Long memberId) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Member candidate = memberRepository.findById(memberId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 소모임 관리자인지 확인
@@ -47,7 +52,7 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 			throw new GlobalException(ErrorCode.CLUB_JOIN_REQUEST_NOT_FOUND);
 
 		// 가입 신청자가 다른 소모임에 가입되어 있는지 확인
-		if (clubMemberRepository.findByMemberIdAndIsWithdraw(memberId, false).isPresent())
+		if (clubMemberRepository.findByMemberId(memberId).isPresent())
 			throw new GlobalException(ErrorCode.CLUB_ALREADY_JOINED);
 
 		// 가입 신청 처리
@@ -66,16 +71,26 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 		// 가입 신청자의 다른 가입 요청 취소
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(candidate, JoinRequestStatusType.RETRACTED,
 			LocalDateTime.now());
+
+		// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(memberId)
+			.orElse(null);
+
+		if (clubMember != null) {
+			List<MemberInfoRes> members = clubMemberRepository.findByClubIdReturnMemberInfoRes(
+				clubMember.getClub().getId());
+			sendMemberUpdateAlert(clubMember.getClub().getId(), members);
+		}
 	}
 
 	@Transactional
 	@Override
 	public void rejectClubJoinRequest(String email, Long clubId, Long memberId) {
-		final Member host = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member host = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Member candidate = memberRepository.findById(memberId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
-		final Club club = clubRepository.findByIdAndIsDeleted(clubId, false)
+		final Club club = clubRepository.findById(clubId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 
 		// 소모임 관리자인지 확인
@@ -89,7 +104,12 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted") // 메서드 의미상 의도된 사용법
 	@Transactional
 	public boolean updatePendingJoinRequest(Member candidate, Club club, JoinRequestStatusType status) {
-		return clubJoinRequestRepository.updatePendingJoinRequestByMemberAndClub(candidate, club, status,
-			LocalDateTime.now()) > 0;
+		return clubJoinRequestRepository
+			.updatePendingJoinRequestByMemberAndClub(candidate, club, status, LocalDateTime.now()) > 0;
+	}
+
+	private void sendMemberUpdateAlert(Long clubId, List<MemberInfoRes> members) {
+		restTemplate.postForEntity("https://hikingdom.kr/chat/clubs/" + clubId + "/member-update",
+			members, MemberInfoRes.class);
 	}
 }

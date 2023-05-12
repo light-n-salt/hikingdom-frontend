@@ -13,7 +13,6 @@ import org.lightnsalt.hikingdom.common.util.S3FileUtil;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubJoinRequest;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
-import org.lightnsalt.hikingdom.domain.entity.club.record.ClubRanking;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
@@ -25,6 +24,7 @@ import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordRes;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
+import org.lightnsalt.hikingdom.service.member.dto.response.MemberDetailRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
@@ -34,6 +34,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -57,14 +58,16 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	private final MeetupRepository meetupRepository;
 	private final MemberRepository memberRepository;
 
+	private final RestTemplate restTemplate;
+
 	@Override
-	public MemberInfoRes findMemberInfo(String email) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+	public MemberDetailRes findMemberInfo(String email) {
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
 			.orElse(null);
 
-		return MemberInfoRes.builder()
+		return MemberDetailRes.builder()
 			.memberId(member.getId())
 			.email(member.getEmail())
 			.nickname(member.getNickname())
@@ -77,9 +80,9 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Transactional
 	@Override
 	public void removeMember(String email) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
-		final ClubMember clubMember = clubMemberRepository.findByMemberIdAndIsWithdraw(member.getId(), false)
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
 			.orElse(null);
 
 		if (clubMember != null) {
@@ -95,14 +98,19 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 			// 소모임 탈퇴
 			// TODO: 소모임 일정 참여해둔 것 취소?
-			clubMemberRepository.updateClubMemberWithdrawById(clubMember.getId(), true, LocalDateTime.now());
+			clubMemberRepository.deleteById(clubMember.getId());
+
+			// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
+			List<MemberInfoRes> members = clubMemberRepository.findByClubIdReturnMemberInfoRes(
+				clubMember.getClub().getId());
+			sendMemberUpdateAlert(clubMember.getClub().getId(), members);
 		}
 
 		// 소모임 가입 신청 취소
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
 			LocalDateTime.now());
 
-		memberRepository.updateMemberWithdraw(member.getId(), true, LocalDateTime.now());
+		memberRepository.updateMemberWithdraw(member.getId(), false, LocalDateTime.now());
 	}
 
 	@Override
@@ -125,7 +133,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}
 
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		boolean isValidPassword = passwordEncoder.matches(memberChangePasswordReq.getPassword(), member.getPassword());
@@ -141,7 +149,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Transactional
 	@Override
 	public void changeNickname(String email, MemberNicknameReq memberNicknameReq) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		String newNickname = memberNicknameReq.getNickname();
@@ -150,23 +158,43 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			return;
 		}
 
-		if (memberRepository.existsByNicknameAndIsWithdraw(newNickname, false)) {
+		if (memberRepository.existsByNickname(newNickname)) {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 
-		if (!setNickname(newNickname, member.getId()))
-			throw new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR);
+		memberRepository.setNicknameById(newNickname, member.getId());
+
+		// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
+		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
+			.orElse(null);
+
+		if (clubMember != null) {
+			List<MemberInfoRes> members = clubMemberRepository.findByClubIdReturnMemberInfoRes(
+				clubMember.getClub().getId());
+			sendMemberUpdateAlert(clubMember.getClub().getId(), members);
+		}
 	}
 
 	@Transactional
 	@Override
 	public String changeProfileImage(String email, MultipartFile photo) {
-		final Member member = memberRepository.findByEmailAndIsWithdraw(email, false)
-			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final Long memberId = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED))
+			.getId();
 
 		try {
-			String url = s3FileUtil.upload(photo, "members/" + member.getId() + "/profiles");
-			memberRepository.setProfileUrlById(url, member.getId());
+			String url = s3FileUtil.upload(photo, "members/" + memberId + "/profiles");
+			memberRepository.setProfileUrlById(url, memberId);
+
+			// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
+			final ClubMember clubMember = clubMemberRepository.findByMemberId(memberId)
+				.orElse(null);
+
+			if (clubMember != null) {
+				List<MemberInfoRes> members = clubMemberRepository.findByClubIdReturnMemberInfoRes(
+					clubMember.getClub().getId());
+				sendMemberUpdateAlert(clubMember.getClub().getId(), members);
+			}
 
 			return url;
 		} catch (IOException e) {
@@ -175,15 +203,10 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	}
 
 	@Transactional
-	public boolean setNickname(String nickname, Long memberId) {
-		return memberRepository.setNicknameById(nickname, memberId) > 0;
-	}
-
-	@Transactional
 	@Override
 	public MemberProfileRes findProfile(String nickname, Pageable pageable) {
 		// 회원정보 가져오기
-		final Member member = memberRepository.findByNicknameAndIsWithdraw(nickname, false)
+		final Member member = memberRepository.findByNickname(nickname)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 		// 회원 등산통계 가져오기
 		final MemberHikingStatistic memberHikingStatistic = memberHikingStatisticRepository.findById(member.getId())
@@ -204,26 +227,31 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	@Override
 	public List<MemberRequestClubRes> findRequestClub(String email) {
 		// 회원 정보 가져오기
-		final Long memberId = memberRepository.findByEmailAndIsWithdraw(email, false)
+		final Long memberId = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED))
 			.getId();
 
 		// 가입 신청한 소모임 정보 가져오기
-		final List<ClubJoinRequest> clubMemberList = clubJoinRequestRepository.findByMemberIdAndStatusAndClubIsDeleted(
-			memberId, JoinRequestStatusType.PENDING, false);
+		final List<ClubJoinRequest> clubMemberList = clubJoinRequestRepository.findByMemberIdAndStatus(
+			memberId, JoinRequestStatusType.PENDING);
 
 		// dto에 담아 리턴
 		return clubMemberList.stream().map(clubJoinRequest -> {
 			int ranking = 0;
 			if (clubJoinRequest.getClub() != null) {
-				ClubRanking var = clubRankingRepository.findTop1ByClubIdOrderBySetDate(
+				var clubRanking = clubRankingRepository.findTop1ByClubIdOrderBySetDate(
 					clubJoinRequest.getClub().getId());
-				if (var != null) {
-					ranking = Math.toIntExact(var.getRanking());
+				if (clubRanking != null) {
+					ranking = Math.toIntExact(clubRanking.getRanking());
 				}
 			}
 			assert clubJoinRequest.getClub() != null;
 			return new MemberRequestClubRes(clubJoinRequest.getClub(), ranking);
 		}).collect(Collectors.toList());
+	}
+
+	private void sendMemberUpdateAlert(Long clubId, List<MemberInfoRes> members) {
+		restTemplate.postForEntity("https://hikingdom.kr/chat/clubs/" + clubId + "/member-update",
+			members, MemberInfoRes.class);
 	}
 }

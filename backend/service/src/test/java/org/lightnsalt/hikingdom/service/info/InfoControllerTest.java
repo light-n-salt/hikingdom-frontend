@@ -1,12 +1,12 @@
 /*
-package org.lightnsalt.hikingdom.domain.info;
+package org.lightnsalt.hikingdom.service.info;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.lightnsalt.hikingdom.domain.info.dto.request.MountainAddReq;
+import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -76,7 +76,7 @@ public class InfoControllerTest {
 			.name("산 테스트")
 			.description("테스트 설명")
 			.address("테스트 주소")
-			.topAlt(233)
+			.maxAlt(233)
 			.topLat(333.4)
 			.topLng(333.4)
 			.totalDuration(60)
@@ -92,4 +92,5 @@ public class InfoControllerTest {
 	}
 
 }
-*/
+
+ */

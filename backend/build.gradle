@@ -17,10 +17,6 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
-test {
-    useJUnitPlatform()
-}
-
 bootJar {
     enabled = false
 }
@@ -47,6 +43,10 @@ subprojects {
             extendsFrom annotationProcessor
         }
     }
+
+    ext {
+        set('springCloudVersion', "2021.0.4")
+    }
 }
 
 project(':common') {
@@ -65,5 +65,12 @@ project(':service') {
 project(':batch') {
     dependencies {
         implementation project(':domain')
+    }
+}
+
+project(':chat') {
+    dependencies {
+        implementation project(':domain')
+        implementation project(':common')
     }
 }

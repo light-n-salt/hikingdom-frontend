@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import useWindowSize from 'hooks/useWindowSize'
+/*
+실행환경의 모바일 여부를 판단하는 커스텀 훅
+*/
 
 function useIsMobile(): boolean {
   const details = navigator.userAgent // 현재 디바이스에 대한 정보를 가져온다

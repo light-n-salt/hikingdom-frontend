@@ -1,0 +1,21 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  padding-top: 1rem;
+  gap: 1rem;
+}
+
+.search {
+  width: 100%;
+}
+
+.clubs {
+  overflow-y: auto;
+  width: 100%;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

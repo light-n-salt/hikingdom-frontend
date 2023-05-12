@@ -11,37 +11,34 @@ import UserInfo from 'components/user/UserInfo'
 import LevelModal from 'components/user/LevelModal'
 import Modal from 'components/common/Modal'
 
-import mountain from 'assets/images/mountain.png'
-
 import { BiEdit } from 'react-icons/bi'
+import { UserRecord, User } from 'types/user.interface'
+import LEVEL_TO_IMG from 'constants/levels'
 
-// import { UserRecord } from 'types/user.interface'
+import { logout } from 'apis/services/users'
 
-// type UserProfileProps = {
-//     imgUrl: string
-//     nickname: string
-//     email: string
-//     userRecord: UserRecord
-// }
+interface UserProfileProps extends UserRecord, User {}
 
-export default function UserProfile() {
+// Todo: level API 업데이트
+export default function UserProfile({
+  profileUrl,
+  nickname,
+  email,
+  level,
+  totalAlt,
+  totalDistance,
+  totalDuration,
+  totalHikingCount,
+  totalMountainCount,
+}: UserProfileProps) {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
 
-  // Todo: user API 연동
-  const userRecord = {
-    totalHikingCount: 10,
-    totalMountainCount: 30,
-    totalDuration: '30:23',
-    totalDistance: 34,
-    totalAlt: 34,
+  const onClickLogout = () => {
+    logout()
+    navigate('/')
   }
-
-  const imgUrl =
-    'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80'
-  const nickname = '이병호리병'
-  const email = '조혜진진자라@gamil.com'
 
   return (
     <div className={styles.profile}>
@@ -51,7 +48,7 @@ export default function UserProfile() {
         </Modal>
       )}
       <div className={`content ${theme} ${styles.img}`}>
-        <Image size="lg" imgUrl={imgUrl} />
+        <Image size="lg" imgUrl={profileUrl} />
       </div>
       <div className={`content ${theme} ${styles.record}`}>
         <div className={styles.btns}>
@@ -59,7 +56,7 @@ export default function UserProfile() {
             text={'로그아웃'}
             size={'sm'}
             color={'secondary'}
-            onClick={() => console.log('로그아웃')}
+            onClick={onClickLogout}
           />
 
           <IconButton
@@ -71,14 +68,22 @@ export default function UserProfile() {
         </div>
         <div className={styles.username}>
           {nickname}
-          <IconButton
-            imgSrc={mountain}
-            size={'sm'}
-            onClick={() => setIsOpen(true)}
-          />
+          {level && (
+            <IconButton
+              imgSrc={LEVEL_TO_IMG[level]}
+              size={'sm'}
+              onClick={() => setIsOpen(true)}
+            />
+          )}
         </div>
         <span className={styles.email}>{email}</span>
-        <UserInfo userRecord={userRecord} />
+        <UserInfo
+          totalAlt={totalAlt}
+          totalDistance={totalDistance}
+          totalDuration={totalDuration}
+          totalHikingCount={totalHikingCount}
+          totalMountainCount={totalMountainCount}
+        />
       </div>
     </div>
   )

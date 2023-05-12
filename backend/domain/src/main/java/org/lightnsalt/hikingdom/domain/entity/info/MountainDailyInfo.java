@@ -24,12 +24,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
+@Table(name = "mountain_daily_info")
 @Getter
 @ToString
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "mountain_daily_info")
 public class MountainDailyInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,4 +44,9 @@ public class MountainDailyInfo {
 	@Column(name = "set_date")
 	private LocalDate setDate;
 
+	@Builder
+	public MountainDailyInfo(MountainInfo mountain, LocalDate setDate) {
+		this.mountain = mountain;
+		this.setDate = setDate;
+	}
 }

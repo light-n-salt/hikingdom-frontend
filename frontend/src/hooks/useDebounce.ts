@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-// value : 입력값   delay: 지연시킬 시간
+// value: 입력값, delay: 지연시킬 시간
 function useDebounce(value: string, delay?: number): string {
   const [debouncedValue, setDebouncedValue] = useState(value)
 
   useEffect(() => {
     // 2. delay 후 debouncedValue에 value 값 할당
-    const timer = setTimeout(() => setDebouncedValue(value), delay || 200)
+    const timer = setTimeout(() => setDebouncedValue(value), delay || 500)
 
     return () => {
       clearTimeout(timer)

@@ -7,21 +7,20 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSearchRes;
+import org.lightnsalt.hikingdom.service.club.repository.ClubSearchRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class ClubRankingRepositoryCustom {
+public class ClubRankingRepositoryCustom extends ClubSearchRepository {
 	private final JPAQueryFactory queryFactory;
 
 	private Slice<ClubSearchRes> selectClubRankingBySort(LocalDate date, OrderSpecifier<?> orderSpecifier, Long clubId,
@@ -35,7 +34,7 @@ public class ClubRankingRepositoryCustom {
 				isLast(clubId))
 			.orderBy(orderSpecifier,
 				clubRanking.ranking.asc())
-			.limit(pageable.getPageSize() + 1)
+			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 
 		return checkLastPage(pageable, result);
@@ -55,22 +54,5 @@ public class ClubRankingRepositoryCustom {
 
 	public Slice<ClubSearchRes> sortClubRankingByTotalDuration(LocalDate date, Long clubId, Pageable pageable) {
 		return selectClubRankingBySort(date, clubRanking.totalDuration.desc(), clubId, pageable);
-	}
-
-	private BooleanExpression isLast(Long clubId) {
-		if (clubId == null) {
-			return null;
-		}
-		return club.id.lt(clubId);
-	}
-
-	private Slice<ClubSearchRes> checkLastPage(Pageable pageable, List<ClubSearchRes> result) {
-		boolean hasNext = false;
-
-		if (result.size() > pageable.getPageSize()) {
-			hasNext = true;
-			result.remove(pageable.getPageSize());
-		}
-		return new SliceImpl<>(result, pageable, hasNext);
 	}
 }

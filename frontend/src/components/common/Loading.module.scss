@@ -3,12 +3,10 @@
 
 .container {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  height: 100%;
-
-  @include animation-slide-in-left;
+  height: auto;
 }
 
 .circle {
