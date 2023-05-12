@@ -22,6 +22,9 @@ public class CustomLogFilter implements GatewayFilterFactory<CustomLogFilter.Con
 			ServerHttpResponse response = exchange.getResponse();
 
 			log.info("CustomLogFilter pre-filter: Request Path -> {}", request.getPath());
+			log.info("CustomLogFilter pre-filter: Request Method -> {}", request.getMethod());
+			log.info("CustomLogFilter pre-filter: Request Query -> {}", request.getQueryParams());
+			log.info("CustomLogFilter pre-filter: Request Headers -> {}", request.getHeaders());
 
 			return chain.filter(exchange).then(Mono.fromRunnable(
 				() -> log.info("CustomLogFilter post-filter: Response Status -> {}", response.getStatusCode())));
