@@ -40,16 +40,5 @@ class RankingFragment(): BaseFragment<FragmentRankingBinding>(FragmentRankingBin
                 }
             }
         })
-
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-
-                if (webView.canGoBack()) {
-                    webView.goBack()
-                } else {
-                    System.exit(0)
-                }
-            }
-        })
     }
 }
