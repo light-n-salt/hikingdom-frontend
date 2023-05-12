@@ -25,6 +25,7 @@ import com.example.hikingdom.ui.main.hiking.HikingFragment.Companion.ACTION_STOP
 import com.example.hikingdom.utils.LocationHelper
 import com.example.hikingdom.utils.saveIsLocationServiceRunning
 import java.time.LocalDateTime
+import kotlin.concurrent.thread
 
 class LocationService : Service(), SaveHikingRecordView {
     lateinit var db: AppDatabase
@@ -43,7 +44,7 @@ class LocationService : Service(), SaveHikingRecordView {
 
     var isHikingStarted = MutableLiveData<Boolean>()
 
-    lateinit var startAt: LocalDateTime;
+    private lateinit var startAt: LocalDateTime
 
     private lateinit var locationHandler: Handler
     private lateinit var locationLooper: Looper
@@ -77,6 +78,7 @@ class LocationService : Service(), SaveHikingRecordView {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand 진입")
+
         if (intent?.action != null
             && intent.action.equals(ACTION_STOP, ignoreCase = true)) {
             Log.d(TAG, "foreground service 종료")
@@ -144,11 +146,14 @@ class LocationService : Service(), SaveHikingRecordView {
 
             LocationHelper().startListeningUserLocation(this, hikingLocationListener)
 
-            // 타이머 핸들러스레드 생성
-            val timernHandlerThread = HandlerThread("timer_thread")
-            timernHandlerThread.start()
-            timerLooper = timernHandlerThread.looper
-            timerHandler = Handler(timerLooper)
+            thread(start = true) { // 타이머 스레드 생성
+                while (isServiceRunning) { // started 값이true일 경우 반복
+                    Thread.sleep(1000) // 1초 지연
+                    if(isServiceRunning) { // started 값이 true일 경우
+                        duration.postValue(duration.value?.plus(1)) // duration값을 1씩 더함
+                    }
+                }
+            }
 
             // sharedPreference에 LocationService 실행 상태 저장 (for HikingFragment의 '하이킹 시작/종료'버튼 처리)
             saveIsLocationServiceRunning(true)
@@ -156,23 +161,6 @@ class LocationService : Service(), SaveHikingRecordView {
 
         return START_STICKY
     }
-//    private var mThread: Thread? = object : Thread("calculate duration") {
-//        override fun run() {
-//            super.run()
-//            while(isServiceRunning){
-//
-//                try {
-//                    sleep(1000)
-//                    duration.postValue(duration.value?.plus(1))
-//                } catch (e: InterruptedException) {
-//                    currentThread().interrupt()
-//                    break
-//                }
-//            }
-//            Log.d(TAG, "경로 기록 스레드 종료")
-//            // while문 빠져나와 run()메서드 종료 => 스레드가 사용 중이던 자원을 정리하고, run()메서드가 끝나게 됨으로써 스레드가 안전하게 종료됨
-//        }
-//    }
 
     //Notififcation for ON-going
     private var iconNotification: Bitmap? = null
