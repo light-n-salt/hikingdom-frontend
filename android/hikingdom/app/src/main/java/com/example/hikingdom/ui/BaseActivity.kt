@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.example.hikingdom.ApplicationClass
 
 // Base Acitivity: ActivityBinding::inflate을 전달받아 ViewBinding 생성
 abstract class BaseActivity<VB: ViewBinding>(private val inflate: (LayoutInflater) -> VB): AppCompatActivity(){
@@ -25,6 +29,9 @@ abstract class BaseActivity<VB: ViewBinding>(private val inflate: (LayoutInflate
 
         // 키보드 동작을 제어하는 매니저 클래스 할당
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+
+        // 리액트 웹뷰 디버깅
+        WebView.setWebContentsDebuggingEnabled(true)
 
         // 상속받는 클래스에서 정의하는 abstract func
         initAfterBinding()
@@ -55,4 +62,5 @@ abstract class BaseActivity<VB: ViewBinding>(private val inflate: (LayoutInflate
     fun hideKeyboard(v: View){
         imm?.hideSoftInputFromWindow(v.windowToken, 0)
     }
+
 }

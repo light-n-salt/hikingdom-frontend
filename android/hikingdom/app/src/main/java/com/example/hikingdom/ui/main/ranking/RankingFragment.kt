@@ -9,29 +9,11 @@ import com.example.hikingdom.ui.BaseFragment
 class RankingFragment(): BaseFragment<FragmentRankingBinding>(FragmentRankingBinding::inflate) {
 
     override fun initAfterBinding() {
-        webViewSetting()
+        webViewSetting(activityContext, binding.rankingWebview, RANKING_WEB_URL)
     }
 
     companion object {
         fun newInstance(): RankingFragment = RankingFragment()
     }
 
-    fun webViewSetting(){
-        val webView = binding.rankingWebview
-        webView.webViewClient = WebViewClient()
-        webView.loadUrl(RANKING_WEB_URL)
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
-
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-
-                if (webView.canGoBack()) {
-                    webView.goBack()
-                } else {
-                    System.exit(0)
-                }
-            }
-        })
-    }
 }

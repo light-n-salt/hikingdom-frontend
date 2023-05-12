@@ -11,9 +11,10 @@ import com.example.hikingdom.data.entities.UserLocation
 
 @Database(entities = [User::class, UserLocation::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun userDao(): UserDao
-    abstract fun userLocationDao(): UserLocationDao
+    abstract fun userDao(): UserDao // 사용자 정보 Dao
+    abstract fun userLocationDao(): UserLocationDao // 사용자 위치정보 Dao
 
+    // database 인스턴스가 없을 경우, 인스턴스 생성
     companion object {
         private var instance: AppDatabase? = null
 
@@ -28,7 +29,6 @@ abstract class AppDatabase: RoomDatabase() {
                     ).allowMainThreadQueries().build()
                 }
             }
-
             return instance
         }
     }

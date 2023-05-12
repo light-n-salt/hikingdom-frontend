@@ -27,9 +27,6 @@ class MainActivity: BaseActivity<ActivityMainBinding>(ActivityMainBinding::infla
         // Bottom 네비게이션에 Fragment영역에 대한 NavController 할당
         binding.mainBottomNavigation.setupWithNavController(navController)
         binding.mainBottomNavigation.itemIconTintList = null
-
-        // 리액트 웹뷰 디버깅
-        WebView.setWebContentsDebuggingEnabled(true)
     }
 
     override fun onDestroy() {
