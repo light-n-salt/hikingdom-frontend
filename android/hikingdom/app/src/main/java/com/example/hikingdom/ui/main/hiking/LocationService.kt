@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
+import com.example.hikingdom.ApplicationClass
 import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.R
 import com.example.hikingdom.data.entities.UserLocation
@@ -23,6 +24,7 @@ import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.ui.main.hiking.HikingFragment.Companion.ACTION_STOP
 import com.example.hikingdom.utils.LocationHelper
 import com.example.hikingdom.utils.saveIsLocationServiceRunning
+import java.time.LocalDateTime
 
 class LocationService : Service(), SaveHikingRecordView {
     lateinit var db: AppDatabase
@@ -31,7 +33,7 @@ class LocationService : Service(), SaveHikingRecordView {
     var hikingLocationListener : LocationHelper.HikingLocationListener? = null
     // 현재까지의 이동 거리(m)(누적), 이동 고도(m)(최대고도 - 최소고도), 걸린 시간(초)(종료 시간 - 시작 시간)
     var duration = MutableLiveData<Int>()
-    var totalDistance = MutableLiveData<Float>()
+    var totalDistance = MutableLiveData<Int>()
 
     // 위도, 경도, 고도 list
     var locations = MutableLiveData<ArrayList<Location>>()
@@ -41,6 +43,8 @@ class LocationService : Service(), SaveHikingRecordView {
 
     var isHikingStarted = MutableLiveData<Boolean>()
 
+    lateinit var startAt: LocalDateTime;
+
     private lateinit var locationHandler: Handler
     private lateinit var locationLooper: Looper
     private lateinit var timerHandler: Handler
@@ -48,7 +52,7 @@ class LocationService : Service(), SaveHikingRecordView {
 
     init {
         duration.value = 0
-        totalDistance.value = 0.0f
+        totalDistance.value = 0
         locations.value = ArrayList()
         isHikingStarted.value = false
     }
@@ -92,14 +96,23 @@ class LocationService : Service(), SaveHikingRecordView {
             val storedUserLocations = db?.userLocationDao().getUserLocations()
             Log.d("storedUserLocations", storedUserLocations.toString())
             // storedUserLocations를 post api로 서버에 전달, success 시 모든 userLocation 데이터 삭제
-            var gpsRoute = ArrayList<GpsRoute>();
+            var gpsRoute = ArrayList<GpsRoute>()
             for (storedUserLocation in storedUserLocations){
                 gpsRoute.add(GpsRoute(storedUserLocation.latitude, storedUserLocation.longitude, storedUserLocation.altitude))
             }
-            var saveHikingRecordReq = SaveHikingRecordReq(false, 2, null, "2023-05-10 15:39:20", 322, 95.34, 101, gpsRoute)
+            val maxAlt = storedUserLocations.maxByOrNull { it.altitude }?.altitude
+            val minAlt = storedUserLocations.minByOrNull { it.altitude }?.altitude
+            val totalAlt = maxAlt!! - minAlt!!
+            var saveHikingRecordReq = SaveHikingRecordReq(false, 2, null, ApplicationClass().localDateTimeToString(startAt),
+                totalDistance.value!!, totalAlt, duration.value!!, gpsRoute)
             HikingService.saveHikingRecord(this, saveHikingRecordReq)
         }else{
             Log.d(TAG, "foreground service 시작")
+
+            db?.userLocationDao().deleteAllUserLocations()  // 룸db에 저장되어 있는 내용 전부 삭제
+
+            LocalDateTime.now()
+            startAt = LocalDateTime.now()
 
             createNotification()
             isServiceRunning = true
@@ -117,7 +130,7 @@ class LocationService : Service(), SaveHikingRecordView {
                         // Here you got user location :)
                         Log.d("Location","" + location.latitude + "," + location.longitude + ","+location.altitude)
                         if (currentLocation.value != null){  // 처음 위치정보를 가져왔다면 pass
-                            val distance = location.distanceTo(currentLocation.value)
+                            val distance = location.distanceTo(currentLocation.value).toInt()
                             totalDistance.postValue(totalDistance.value?.plus(distance))
                         }
                         currentLocation.postValue(location)
