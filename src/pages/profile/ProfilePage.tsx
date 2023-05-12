@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ProfilePage.module.scss'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import UserProfile from 'components/user/UserProfile'
 import PastMeetupList from 'components/user/PastMeetupList'
@@ -18,10 +18,9 @@ function ProfilePage() {
   const { data: userInfo } = useUserQuery() // 유저 정보
   const { nickname } = useParams() as { nickname: string }
   const { data, isLoading, isError } = useQuery<UserProfileInfo>(
-    ['userHiking'],
-    // ?? : 왼쪽 피연산자가 null 또는 undefined인 경우에 오른쪽 피연산자를 반환
+    ['userProfile'],
     () => getProfile(nickname, 5),
-    { enabled: !!userInfo }
+    { enabled: !!userInfo, cacheTime: 0 }
   )
 
   return !userInfo || isError || isLoading ? (
@@ -29,10 +28,10 @@ function ProfilePage() {
   ) : (
     <div className={`page p-sm ${theme} ${styles.profile}`}>
       <UserProfile
-        profileUrl={userInfo?.profileUrl}
-        nickname={userInfo?.nickname}
-        email={userInfo?.email}
-        level={userInfo?.level}
+        profileUrl={data?.profileUrl}
+        nickname={data?.nickname}
+        email={data?.email}
+        level={data?.level}
         totalAlt={data?.totalAlt}
         totalDistance={data?.totalDistance}
         totalDuration={data?.totalDuration}
