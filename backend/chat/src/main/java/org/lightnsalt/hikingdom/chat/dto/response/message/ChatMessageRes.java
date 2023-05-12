@@ -1,7 +1,7 @@
 package org.lightnsalt.hikingdom.chat.dto.response.message;
 
 import org.lightnsalt.hikingdom.chat.dto.MessageType;
-import org.lightnsalt.hikingdom.chat.entity.Chat;
+import org.lightnsalt.hikingdom.chat.dto.response.ChatRes;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChatMessageRes extends MessageRes {
-	private Chat chat;
+	private ChatRes chatRes;
 
-	public ChatMessageRes(Chat chat) {
+	public ChatMessageRes(ChatRes chatRes) {
 		super(MessageType.MESSAGE);
-		this.chat = chat;
+		this.chatRes = chatRes;
 	}
 }

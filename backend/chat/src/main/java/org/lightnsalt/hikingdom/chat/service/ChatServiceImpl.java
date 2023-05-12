@@ -47,8 +47,9 @@ public class ChatServiceImpl implements ChatService {
 			.build();
 
 		Chat savedChat = chatRepository.save(chat);
+		ChatRes chatRes = new ChatRes(savedChat);
 
-		return new ChatMessageRes(savedChat);
+		return new ChatMessageRes(chatRes);
 	}
 
 	@Override
