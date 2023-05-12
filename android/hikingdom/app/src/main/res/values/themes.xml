@@ -10,6 +10,7 @@
         <item name="colorSecondaryVariant">@color/primary</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/primary</item>
         <!-- Customize your theme here. -->
         <item name="android:textViewStyle">@font/applesdgothicneoregular</item>
         <item name="buttonStyle">@font/applesdgothicneoregular</item>
@@ -18,9 +19,6 @@
         <item name="checkboxStyle">@font/applesdgothicneoregular</item>
         <!-- Remove the title bar -->
         <item name="windowNoTitle">true</item>
-
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/primary</item>
     </style>
 
     <style name="Widget.BottomNavigationView"

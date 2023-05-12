@@ -19,13 +19,19 @@ class ApplicationClass : Application() {
             return baseApplication
         }
 
+        // 병호호
+        const val ACCESS_TOKEN_KEY: String = "HIKINGDOM_ACCESS_TOKEN"        // sharedPreference에 대한 accessToken 키
+        const val REFRESH_TOKEN_KEY: String = "HIKINGDOM_ACCESS_TOKEN"       // sharedPreference에 대한 refreshToken 키
+        // 희주주
         const val X_ACCESS_TOKEN: String = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE2ODM3MDI4MDYsImV4cCI6MTY4MzcwNjQwNn0._Fpo6Bqh8wQQxoSG7WtQ7FDeedXlWAknwKWc5FQVrMo"
+
         const val TAG: String = "HIKINGDOM-ANDROID"                      // Log, SharedPreference
         const val APP_DATABASE = "$TAG-DB"
 
         lateinit var mSharedPreferences: SharedPreferences
         lateinit var retrofit: Retrofit
 
+//        const val BASE_URL: String = "http://70.12.246.181:3000"       // 로컬 테스트 주소
         const val BASE_URL: String = BuildConfig.PROD_URL       // 웹뷰나 api 통신 시 사용할 기본 주소. 이를 이용해 한번에 PROD_URL <-> DEV_URL 전환 가능. local.properties를 참조.
         const val HOME_WEB_URL: String = BASE_URL + "main"         // 메인페이지 WebView URL
         const val RANKING_WEB_URL: String = BASE_URL + "rank"      // 랭킹페이지 WebView URL

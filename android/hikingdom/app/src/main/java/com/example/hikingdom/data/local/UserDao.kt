@@ -14,4 +14,9 @@ interface UserDao {
     @Delete
     fun delete(user: User)
 
+    @Query("SELECT * FROM UserTable LIMIT 1")
+    fun getUser(): User
+
+    @Query("SELECT * FROM UserTable")
+    fun getALLUser(): List<User>
 }

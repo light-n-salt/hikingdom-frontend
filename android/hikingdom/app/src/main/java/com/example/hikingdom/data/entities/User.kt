@@ -7,11 +7,12 @@ import com.google.gson.annotations.SerializedName
 // 사용자 정보 데이터 클래스
 @Entity(tableName = "UserTable")
 data class User(
-    @SerializedName("phone") val phone: String,
-    @SerializedName("password") val password: String,
-    @SerializedName("name") val name: String,
-    @SerializedName("sex") val sex: String
-    // 지역, 구력, 프로필 사진 등 추가
+    @SerializedName("email") val email: String,
+    @SerializedName("nickname") val nickname: String,
+    @SerializedName("profileUrl") val profileUrl: String,
+    @SerializedName("level") val level: Int,
+    @SerializedName("memberId") val memberId: Int,
+    @SerializedName("clubId") val clubId: Int? = null,
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

@@ -1,44 +1,28 @@
 package com.example.hikingdom.ui.main.mypage
 
-import android.os.Build
-import android.webkit.WebSettings
+import android.util.Log
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
+import com.example.hikingdom.ApplicationClass
 import com.example.hikingdom.ApplicationClass.Companion.MYPAGE_WEB_URL
+import com.example.hikingdom.data.local.AppDatabase
 import com.example.hikingdom.databinding.FragmentMypageBinding
 import com.example.hikingdom.ui.BaseFragment
 
 class MypageFragment(): BaseFragment<FragmentMypageBinding>(FragmentMypageBinding::inflate) {
 
     override fun initAfterBinding() {
-        webViewSetting()
+        // Room에서 사용자 정보 읽어오기
+        var user = db?.userDao()?.getUser()
+
+        Log.d("db", "$db")
+        Log.d("user", "$user")
+
+        // 사용자 닉네임이 해당하는 프로필 페이지로 이동
+        webViewSetting(activityContext, binding.mypageWebview,MYPAGE_WEB_URL + '/' + user?.nickname)
     }
 
     companion object {
         fun newInstance(): MypageFragment = MypageFragment()
-    }
-
-    fun webViewSetting(){
-        val webView = binding.mypageWebview
-        webView.webViewClient = WebViewClient()
-        webView.loadUrl(MYPAGE_WEB_URL)
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
-
-        val wsetting: WebSettings = webView.settings
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // https 이미지.
-            wsetting.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-        }
-
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-
-                if (webView.canGoBack()) {
-                    webView.goBack()
-                } else {
-                    System.exit(0)
-                }
-            }
-        })
     }
 }

@@ -1,64 +1,40 @@
 package com.example.hikingdom.ui.login
 
+import android.util.Log
 import android.view.View
+import android.webkit.WebViewClient
+import androidx.activity.OnBackPressedCallback
+import com.example.hikingdom.ApplicationClass
+import com.example.hikingdom.config.WebInterface
 import com.example.hikingdom.data.remote.auth.Auth
 import com.example.hikingdom.databinding.ActivityLoginBinding
 
 import com.example.hikingdom.ui.BaseActivity
+import com.example.hikingdom.ui.main.MainActivity
+import com.example.hikingdom.utils.getRefreshToken
 
-class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate), LoginView, View.OnClickListener {
+class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate), LoginView {
 
     override fun initAfterBinding() {
-//        binding.loginSignUpTv.setOnClickListener(this)
-//        binding.loginSignInBtn.setOnClickListener(this)
+        webViewSetting()
     }
 
-    override fun onClick(v: View?) {
-        if(v == null) return
-
-        when(v) {
-//            binding.loginSignUpTv -> startNextActivity(SignUpActivity::class.java)
-//            binding.loginSignInBtn -> login()
-        }
+    // 로그인 성공 시, 동작시킬 함수
+    override fun onLoginSuccess() {
+        startActivityWithClear(MainActivity::class.java)
     }
 
-    private fun login() {
-//        if (binding.loginIdEt.text.toString().isEmpty() || binding.loginDirectInputEt.text.toString().isEmpty()) {
-//            Toast.makeText(this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        if (binding.loginPasswordEt.text.toString().isEmpty()) {
-//            Toast.makeText(this, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        val email = binding.loginIdEt.text.toString() + "@" + binding.loginDirectInputEt.text.toString()
-//        val password = binding.loginPasswordEt.text.toString()
-//        val user = User(email, password, "")
-//
-//        AuthService.login(this, user)
-    }
+    // WebView 셋팅
+    fun webViewSetting(){
+        var refreshToken = getRefreshToken()
+        Log.d("refresh", "$refreshToken")
 
-    override fun onLoginLoading() {
-//        binding.loginLoadingPb.visibility = View.VISIBLE
-    }
-
-    override fun onLoginSuccess(auth: Auth) {
-//        binding.loginLoadingPb.visibility = View.GONE
-//
-//        saveJwt(auth.jwt)
-//        startActivityWithClear(MainActivity::class.java)
-    }
-
-    override fun onLoginFailure(code: Int, message: String) {
-//        binding.loginLoadingPb.visibility = View.GONE
-//
-//        when(code) {
-//            2015, 2019, 3014 -> {
-//                binding.loginErrorTv.visibility = View.VISIBLE
-//                binding.loginErrorTv.text= message
-//            }
-//        }
+        val webView = binding.loginWebview
+        webView.webViewClient = WebViewClient()
+        webView.settings.javaScriptEnabled = true
+        webView.settings.domStorageEnabled = true
+        webView.addJavascriptInterface(WebInterface(this), "Kotlin")
+//        webView.evaluateJavascript("sendRefreshToken('$refreshToken')", null)
+        webView.loadUrl(ApplicationClass.INDEX_WEB_URL)
     }
 }
