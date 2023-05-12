@@ -40,21 +40,21 @@ public class MemberReportServiceImpl implements MemberReportService {
 
 		switch (req.getType()) {
 			case "ALBUM":
-				final MeetupAlbum meetupAlbum = meetupAlbumRepository.findById(req.getId())
+				final MeetupAlbum meetupAlbum = meetupAlbumRepository.findById(Long.parseLong(req.getId()))
 					.orElseThrow(() -> new GlobalException(ErrorCode.PHOTO_NOT_FOUND));
 
 				reported = memberRepository.findById(meetupAlbum.getMember().getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 				break;
 			case "REVIEW":
-				final MeetupReview meetupReview = meetupReviewRepository.findById(req.getId())
+				final MeetupReview meetupReview = meetupReviewRepository.findById(Long.parseLong(req.getId()))
 					.orElseThrow(() -> new GlobalException(ErrorCode.PHOTO_NOT_FOUND));
 
 				reported = memberRepository.findById(meetupReview.getMember().getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 				break;
 			case "MEMBER":
-				reported = memberRepository.findById(req.getId())
+				reported = memberRepository.findByNickname(req.getId())
 					.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
 				break;
 			default:
