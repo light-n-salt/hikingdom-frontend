@@ -30,7 +30,7 @@ function NicknameUpdateForm() {
   const onClickUpdate = useMutation(() => updateNickname(nickname), {
     onSuccess: () => {
       toast.addMessage('success', '닉네임이 변경되었습니다')
-      queryClient.invalidateQueries(['user'])
+      queryClient.invalidateQueries(['userProfile'])
       navigate(`/profile/${nickname}`)
     },
     onError: () => {

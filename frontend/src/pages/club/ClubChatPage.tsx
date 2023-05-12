@@ -11,6 +11,7 @@ import sockjs from 'sockjs-client'
 import { Stomp } from '@stomp/stompjs'
 import TextSendBar from 'components/common/TextSendBar'
 import useScroll from 'hooks/useScroll'
+
 // import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
 type InfiniteChat = {
@@ -39,7 +40,9 @@ function ClubChatPage() {
   const [stomp, setStomp] = useState<any>() // 타입 수정 필요
 
   // 채팅 & 멤버 데이터
-  const [members, setMembers] = useState<{ [key: number]: ChatMember }>({})
+  const [members, setMembers] = useState<{ [key: number]: ChatMember } | null>(
+    null
+  )
   const [chatList, setChatList] = useState<Chat[]>([])
   const [message, setMessage] = useState<string>('')
   // 멤버 정보 업데이트시 ChatItem 업데이트
@@ -98,31 +101,36 @@ function ClubChatPage() {
 
   // 소켓 연결 & 구독 함수
   const connection = () => {
-    const socket = new sockjs('https://hikingdom.kr/chat')
+    const socket = new sockjs('https://hikingdom.kr/chat/ws')
     const stomp = Stomp.over(socket)
     setStomp(stomp)
 
     // 서버 연결
-    stomp.connect({}, () => {
-      // 특정 URI 구독
-      stomp.subscribe(`/sub/clubs/${userInfo?.clubId}`, (chatDTO) => {
-        // 구독후 데이터를 받을 때마다 실행할 함수
-        const data = JSON.parse(chatDTO.body)
+    stomp.connect(
+      {
+        token: localStorage.getItem('accessToken'),
+      },
+      () => {
+        // 특정 URI 구독
+        stomp.subscribe(`/sub/clubs/${userInfo?.clubId}`, (chatDTO) => {
+          // 구독후 데이터를 받을 때마다 실행할 함수
+          const data = JSON.parse(chatDTO.body)
 
-        // 채팅 데이터
-        if (data.type === 'MESSAGE') {
-          setChatList((chatList) => [data.chat, ...chatList])
-          return
-        }
-        // 멤버 데이터
-        if (data.type === 'MEMBERS') {
-          console.log('멤버 데이터 업데이트', data.members)
-          setMembers(data.members)
-          setTrigger((trigger) => trigger + 1)
-          return
-        }
-      })
-    })
+          // 채팅 데이터
+          if (data.type === 'MESSAGE') {
+            setChatList((chatList) => [data.chat, ...chatList])
+            return
+          }
+          // 멤버 데이터
+          if (data.type === 'MEMBERS') {
+            console.log('멤버 데이터 업데이트', data.members)
+            setMembers(data.members)
+            setTrigger((trigger) => trigger + 1)
+            return
+          }
+        })
+      }
+    )
   }
 
   // 메세지 전송 함수
@@ -130,7 +138,11 @@ function ClubChatPage() {
     if (!message.trim()) return
     stomp.send(
       `/pub/clubs/${userInfo?.clubId}`,
-      {},
+      {
+        headers: {
+          accessToken: localStorage.getItem('accessToken'),
+        },
+      },
       JSON.stringify({
         type: 'chat',
         clubId: userInfo?.clubId,
@@ -138,6 +150,12 @@ function ClubChatPage() {
         content: message,
       })
     )
+    // if (infiniteRef.current) {
+    //   infiniteRef.current.scrollTo({
+    //     top: infiniteRef.current.scrollHeight,
+    //     behavior: 'smooth',
+    //   })
+    // }
     setMessage('')
   }
 
@@ -150,7 +168,7 @@ function ClubChatPage() {
   return (
     <div className={`page p-sm ${theme} mobile `}>
       <PageHeader title={clubInfo?.clubName} url={`/club/main`} />
-      {isError || isLoading ? (
+      {!members || !chatList ? (
         <Loading />
       ) : (
         <ChatList
