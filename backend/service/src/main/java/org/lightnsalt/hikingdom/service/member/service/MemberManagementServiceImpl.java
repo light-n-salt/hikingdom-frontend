@@ -107,7 +107,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		}
 
 		// 소모임 가입 신청 취소
-		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, LocalDateTime.now());
+		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
+			LocalDateTime.now());
 
 		memberRepository.updateMemberWithdraw(member.getId(), false, LocalDateTime.now());
 	}
