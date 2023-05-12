@@ -7,6 +7,8 @@ import com.example.hikingdom.config.XAccessTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
@@ -54,5 +56,11 @@ class ApplicationClass : Application() {
             .build()
 
         mSharedPreferences = applicationContext.getSharedPreferences(TAG, Context.MODE_PRIVATE)
+    }
+
+
+    fun localDateTimeToString(LocalDateTime: LocalDateTime): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        return LocalDateTime.format(formatter)
     }
 }
