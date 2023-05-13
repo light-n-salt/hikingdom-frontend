@@ -1,3 +1,7 @@
+plugins {
+    id "org.sonarqube" version "3.0"
+}
+
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:3.1.4'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
