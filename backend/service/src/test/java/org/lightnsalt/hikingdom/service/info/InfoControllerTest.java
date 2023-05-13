@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class InfoControllerTest {
+class InfoControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -35,7 +35,7 @@ public class InfoControllerTest {
 	@DisplayName("산 데이터 입력값 Null")
 	@Transactional
 	@WithMockUser(username = "ssafy@ssafy.com", password = "ssafy!1234", roles = {"USER", "ADMIN"})
-	public void MountainInfo_input_isNull() throws Exception {
+	void MountainInfo_input_isNull() throws Exception {
 		// given
 		final String url = "/api/v1/info/mountains";
 
@@ -55,7 +55,7 @@ public class InfoControllerTest {
 	@DisplayName("산 데이터 입력 성공")
 	@Transactional
 	@WithMockUser(username = "ssafy@ssafy.com", password = "ssafy!1234", roles = {"USER", "ADMIN"})
-	public void Mountain_create_success() throws Exception {
+	void Mountain_create_success() throws Exception {
 		// given
 		final String url = "/api/v1/info/mountains";
 
