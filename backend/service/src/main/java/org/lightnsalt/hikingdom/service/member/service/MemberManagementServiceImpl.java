@@ -13,11 +13,13 @@ import org.lightnsalt.hikingdom.common.util.S3FileUtil;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubJoinRequest;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
+import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupMember;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
 import org.lightnsalt.hikingdom.service.club.repository.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
+import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
 import org.lightnsalt.hikingdom.service.club.repository.record.ClubRankingRepository;
 import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordRes;
@@ -56,6 +58,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
 	private final ClubMemberRepository clubMemberRepository;
 	private final MeetupRepository meetupRepository;
+	private final MeetupMemberRepository meetupMemberRepository;
 	private final MemberRepository memberRepository;
 
 	private final RestTemplate restTemplate;
@@ -85,6 +88,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
 			.orElse(null);
 
+		LocalDateTime now = LocalDateTime.now();
+
 		if (clubMember != null) {
 			// 소모임 모임장 또는 진행 중인 일정이 있을 시 탈퇴 불가능
 			if (clubMember.getClub().getHost().getId().equals(member.getId())) {
@@ -96,8 +101,12 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 				throw new GlobalException(ErrorCode.CLUB_MEMBER_HOST_MEETUP_EXISTS);
 			}
 
+			// 참여하고 있는 일정이 있을 시, 자동 참여 취소
+			List<MeetupMember> participatingEvents = meetupMemberRepository.findByMemberIdAndStartAtAfter(
+				member.getId(), now);
+			meetupMemberRepository.deleteAll(participatingEvents);
+
 			// 소모임 탈퇴
-			// TODO: 소모임 일정 참여해둔 것 취소?
 			clubMemberRepository.deleteById(clubMember.getId());
 
 			// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
@@ -108,9 +117,9 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 		// 소모임 가입 신청 취소
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
-			LocalDateTime.now());
+			now);
 
-		memberRepository.updateMemberWithdraw(member.getId(), false, LocalDateTime.now());
+		memberRepository.updateMemberWithdraw(member.getId(), true, now);
 	}
 
 	@Override
