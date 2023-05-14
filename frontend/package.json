@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-three/drei": "^9.68.3",
     "@react-three/fiber": "^8.13.0",
     "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^4.29.5",
