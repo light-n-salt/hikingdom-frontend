@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-// 사용자 정보 데이터 클래스
+// User 테이블. UserDao를 통해 조작
 @Entity(tableName = "UserTable")
 data class User(
     @SerializedName("email") val email: String,

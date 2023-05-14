@@ -8,7 +8,7 @@ import com.example.hikingdom.ApplicationClass.Companion.APP_DATABASE
 import com.example.hikingdom.data.entities.User
 import com.example.hikingdom.data.entities.UserLocation
 
-
+// 어플리케이션의 RoomDB 인스턴스를 정의한 클래스
 @Database(entities = [User::class, UserLocation::class], version = 2, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao // 사용자 정보 Dao

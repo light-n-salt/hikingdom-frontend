@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.example.hikingdom.data.entities.UserLocation
 
+// UserLocation Table에 대한 접근 메소드를 정의
 @Dao
 interface UserLocationDao {
 
