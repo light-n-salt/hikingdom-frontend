@@ -71,7 +71,7 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 
 		return MemberTokenRes.builder()
 			.accessToken(accessToken)
-			.refreshToken(oldRefreshToken)
+			.refreshToken("Bearer " + oldRefreshToken)
 			.build();
 	}
 }
