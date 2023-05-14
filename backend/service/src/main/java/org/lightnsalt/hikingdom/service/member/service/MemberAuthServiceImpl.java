@@ -64,14 +64,14 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 
 		String accessToken = jwtTokenUtil.createAccessToken(email, member.getRole());
-		String refreshToken = jwtTokenUtil.createRefreshToken(email, member.getRole());
+		// String refreshToken = jwtTokenUtil.createRefreshToken(email, member.getRole());
 
-		redisUtil.deleteValue("RT" + email);
-		redisUtil.setValueWithExpiration("RT" + email, refreshToken.substring(7), jwtTokenUtil.refreshExpiration);
+		// redisUtil.deleteValue("RT" + email);
+		// redisUtil.setValueWithExpiration("RT" + email, refreshToken.substring(7), jwtTokenUtil.refreshExpiration);
 
 		return MemberTokenRes.builder()
 			.accessToken(accessToken)
-			.refreshToken(refreshToken)
+			.refreshToken(oldRefreshToken)
 			.build();
 	}
 }
