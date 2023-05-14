@@ -61,6 +61,9 @@ dependencies {
     implementation 'com.querydsl:querydsl-core'
     implementation 'com.querydsl:querydsl-collections'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
+
+    // fcm
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
 }
 
 dependencyManagement {
