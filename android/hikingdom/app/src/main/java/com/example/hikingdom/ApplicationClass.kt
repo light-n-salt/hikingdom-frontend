@@ -40,7 +40,7 @@ class ApplicationClass : Application() {
         const val NONE_GROUP_WEB_URL: String = BASE_URL + "club/none"          // 메인페이지 WebView URL
         const val MYPAGE_WEB_URL: String = BASE_URL + "profile"     // 마이페이지 WebView URL
 
-        const val SERVER_URL: String = BuildConfig.SERVER_DEV_URL       // 백서버 URL
+        const val SERVER_URL: String = BuildConfig.SERVER_PROD_URL       // 백서버 URL
         const val API_BASE_URL: String = SERVER_URL + "api/v1/"       // API 통신 시 사용할 baseUrl
         const val SOCKET_BASE_URL: String = SERVER_URL + "api/v1/"       // 소켓 통신 시 사용할 baseUrl
 
