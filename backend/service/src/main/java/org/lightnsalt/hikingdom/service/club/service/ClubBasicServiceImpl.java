@@ -54,7 +54,8 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	@Transactional
 	@Override
 	public CustomSlice<ClubSearchRes> findClubList(String query, String word, Long clubId, Pageable pageable) {
-		if (!(query.matches("^(|name)$") ||
+		if (!(query.equals("") && word.equals("") ||
+			query.equals("name") ||
 			query.equals("location") && word.matches(LOCATION_CODE_PATTERN))) {
 			log.error("ClubBasicService:findClubList: Invalid Query {}, Word {}", query, word);
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
