@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "member_hiking")
+@Table(name = "notification")
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
