@@ -75,6 +75,7 @@ public class SecurityConfig {
 			.antMatchers("/swagger-ui/**").permitAll()
 			.antMatchers("/api/v1/hiking/**").permitAll()
 			.antMatchers("/chat/ws/**").permitAll()
+			.antMatchers("/chat/clubs/*/member-update").permitAll()
 			.antMatchers("/api/v1/hiking/ws/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
