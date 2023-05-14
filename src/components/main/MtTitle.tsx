@@ -26,7 +26,7 @@ function MtTitle({ name, maxAlt, timeDuration, assetUrl }: MtTitleProps) {
 
         {/* 왕복시간 */}
         <div className={styles.content}>
-          <span className={styles.bold}>{convertToHour(timeDuration)}</span>
+          <span className={styles.bold}>약 {convertToHour(timeDuration)}</span>
           <span className={styles.text}>왕복시간</span>
         </div>
 
