@@ -32,7 +32,7 @@ public class MountainInfo {
 	@Column(length = 20, nullable = false)
 	private String name;
 
-	@Column(nullable = false)
+	@Column(length = 1024, nullable = false)
 	private String description;
 
 	@Column(length = 200, nullable = false)
