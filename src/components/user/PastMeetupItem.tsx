@@ -19,6 +19,7 @@ import Modal from 'components/common/Modal'
 
 import { UserHiking } from 'types/user.interface'
 import { convertToKm } from 'utils/convertToKm'
+import { convertToTime } from 'utils/convertToTime'
 import useUserQuery from 'hooks/useUserQuery'
 
 export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
@@ -78,7 +79,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
           />
         </div>
         <div>
-          <IconText imgSrc={time} text={hiking.totalDuration} size="sm" />
+          <IconText imgSrc={time} text={convertToTime(hiking.totalDuration)} size="sm" />
           <IconText
             imgSrc={distance}
             text={convertToKm(hiking.totalDistance) + 'km'}

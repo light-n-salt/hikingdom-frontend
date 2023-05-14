@@ -1,16 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
+import { useNavigate } from 'react-router-dom'
 import styles from './ChatItem.module.scss'
-
 import Image from 'components/common/Image'
-
 import LEVEL_TO_IMG from 'constants/levels'
 import useUserQuery from 'hooks/useUserQuery'
 import { Chat, ChatMember } from 'types/chat.interface'
 
 type ChatItemProps = {
   chat: Chat
-  members: ChatMember[]
+  members: { [key: number]: ChatMember }
   isContinued: boolean
 }
 
@@ -24,18 +23,22 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
   const { theme } = useContext(ThemeContext)
   const { data: userInfo } = useUserQuery()
   const [user, setUser] = useState<User>()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    // 멤버ID 대조 => 해당 프로필, 닉네임 반환
-
-    // const chatMember: ChatMember | undefined = members.find(
-    //   (member) => member.memberId === chat.memberId
-    // )
-
+    // 멤버ID 대조 : 해당 프로필, 닉네임 반환
     const chatMember: ChatMember | undefined = members[chat.memberId]
-    console.log('chat', chat)
-    console.log('memberId', members[chat.memberId])
-    if (!chatMember) return
+
+    // 멤버를 찾을 수 없을 때(탈퇴한 멤버일 때)
+    if (!chatMember) {
+      setUser({
+        nickname: '알 수 없음',
+        profileUrl: '',
+        level: '',
+      })
+      return
+    }
+    // 멤버가 있을 때 : LEVEL URL 반영
     const { nickname, profileUrl, level } = chatMember
     const tmpUser = {
       nickname,
@@ -50,12 +53,12 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
     chat.memberId === userInfo?.memberId ? styles.mine : styles.others
   const imgStyle = isContinued ? styles.discontinued : ''
 
-  // 전송 시간
-  const time = chat.sendAt.split(' ')[1].split(':')
-
   return user ? (
     <div className={chatStyle}>
-      <div className={imgStyle}>
+      <div
+        className={imgStyle}
+        onClick={() => navigate(`/profile/${user.nickname}`)}
+      >
         <Image size="sm" imgUrl={user.profileUrl} />
       </div>
 
@@ -70,7 +73,7 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
           <div className={`${styles.chatContent} ${styles[`${theme}`]}`}>
             {chat.content}
           </div>
-          <div className={styles.time}>{`${time[0]}:${time[1]}`}</div>
+          <div className={styles.time}>{chat.sendAt.split(' ')[1]}</div>
         </div>
       </div>
     </div>

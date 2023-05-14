@@ -107,7 +107,14 @@
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<%= process.env.REACT_APP_KAKAOMAP_API_KEY%>"
     ></script>
-    <title>HIKINGDOM - 등산으로 꾸미는 나만의 왕국</title>
+    <title>HIKINGDOM - 등산으로 꾸미는 우리의 왕국</title>
+    <!-- 코틀린으로부터 JWT 토큰을 발급받아 저장하는 함수 -->
+    <script>
+      function saveTokens(accessToken, refreshToken) {
+        localStorage.setItem('accessToken', accessToken)
+        localStorage.setItem('refreshToken', refreshToken)
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

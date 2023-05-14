@@ -13,6 +13,7 @@ import bronzeMedal from 'assets/images/bronze_medal.png'
 import silverMedal from 'assets/images/silver_medal.png'
 import { ThemeContext } from 'styles/ThemeProvider'
 import { ClubInfo } from 'types/club.interface'
+import { convertToTime } from 'utils/convertToTime'
 
 type RankItemProps = {
   clubInfo: ClubInfo // 소모임 정보
@@ -70,7 +71,7 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
       <div className={`${styles.info} ${styles[size]}`}>
         <IconText imgSrc={person} text={totalMemeber} />
         <div className={styles.flexbox}>
-          <IconText imgSrc={hourglass} text={clubInfo.totalDuration} />
+          <IconText imgSrc={hourglass} text={convertToTime(clubInfo.totalDuration)} />
           <IconText imgSrc={shoe} text={totalDistance} />
         </div>
       </div>

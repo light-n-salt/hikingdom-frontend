@@ -6,32 +6,21 @@ import PageHeader from 'components/common/PageHeader'
 import AlarmList from 'components/user/AlarmList'
 
 import useUserQuery from 'hooks/useUserQuery'
+import { useQuery } from '@tanstack/react-query'
+import { getAlarms } from 'apis/services/users'
 
 function AlarmPage() {
   const { theme } = useContext(ThemeContext)
   const { data: userInfo } = useUserQuery()
 
-  const alarmList: UserAlarm[] = [
-    {
-      alarmId: 0,
-      title: '일정이 추가되었습니다.',
-      content: '정예지렁이님이 8월 31일 새로운 일정을 추가하셨습니다.',
-      createdAt: '2017.07.15 오후 12:34',
-      isRead: false,
-    },
-    {
-      alarmId: 1,
-      title: '일정이 추가되었습니다.',
-      content: '정예지렁이님이 8월 31일 새로운 일정을 추가하셨습니다.',
-      createdAt: '2017.07.15 오후 12:34',
-      isRead: true,
-    },
-  ]
+  const { data: alarmList } = useQuery<UserAlarm[]>(['alarms'], () =>
+    getAlarms()
+  )
 
   return (
     <div className={`page p-sm ${theme} mobile `}>
       <PageHeader title="알림 내역" url={`/profile/${userInfo?.nickname}`} />
-      <AlarmList alarmList={alarmList} />
+      {alarmList && <AlarmList alarmList={alarmList} />}
     </div>
   )
 }

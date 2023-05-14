@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
       const refreshToken = localStorage.getItem('refreshToken') // recoil에서 refreshToken 읽어오기
 
       axios
-        .post(`${process.env.REACT_APP_API_BASE_URL}/refresh-token`, {
+        .post(`${process.env.REACT_APP_API_BASE_URL}/members/auth/refresh-token`, {
           refreshToken,
         })
         .then((response) => {
