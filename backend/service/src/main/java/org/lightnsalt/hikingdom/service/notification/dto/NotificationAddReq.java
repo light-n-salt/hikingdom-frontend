@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.notification.Notification;
 
 import java.time.LocalDateTime;
@@ -13,9 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class NotificationAddReq {
-    private String email;
+    private Member member;
     private String title;
     private String body;
     private LocalDateTime sendAt;
-    private Boolean isRead;
 }
