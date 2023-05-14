@@ -15,12 +15,9 @@
   }
 }
 
-.container > div {
-  opacity: 0;
-}
-
 @for $i from 1 through 10 {
   .container > div:nth-child(#{$i}) {
+    opacity: 0;
     @include animation-slide-in-up(normal, 40%, #{($i - 1) * 0.1}s);
   }
 }
