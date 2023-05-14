@@ -13,7 +13,7 @@ export interface User {
 export interface UserRecord {
   totalHikingCount: number
   totalMountainCount: number
-  totalDuration: string
+  totalDuration: number
   totalDistance: number
   totalAlt: number
 }
@@ -24,7 +24,7 @@ export interface UserHiking {
   hikingRecordId: number
   mountainName: string
   startAt: string
-  totalDuration: string
+  totalDuration: number
   totalDistance: number
   maxAlt: number
   isSummit: boolean
@@ -60,9 +60,9 @@ export interface UserHikingDetail {
 
 // 전체 알림 조회
 export interface UserAlarm {
-  alarmId: number
+  notificationId: number
   title: string
-  content: string
-  createdAt: string
+  body: string
+  sendAt: string
   isRead: boolean
 }

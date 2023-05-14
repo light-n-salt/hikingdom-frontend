@@ -85,10 +85,15 @@ export function getClubInfo(clubId: number) {
 }
 
 // 소모임 채팅 조회
-export function getChats(clubId: number) {
+export function getChats(
+  clubId: number,
+  chatId: string | null = null,
+  size: number | null = 50
+) {
   return apiRequest
-    .get(`/clubs/${clubId}/chats?size=20`, {
+    .get(`/clubs/${clubId}/chats`, {
       baseURL: 'https://hikingdom.kr/chat',
+      params: { chatId, size },
     })
     .then((res) => res.data.result)
 }
@@ -140,7 +145,7 @@ export function postJoinClub(clubId: number) {
 
 // 소모임 가입 신청 목록 조회
 export function getClubRequest() {
-  return apiRequest.get(`/members/clubs/my-requests`)
+  return apiRequest.get(`/members/clubs/my-requests`).then((res) => res.data.result)
 }
 
 // 소모임 가입 신청 취소

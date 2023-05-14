@@ -34,6 +34,7 @@ function ImageUpdateForm() {
   const updateImg = useMutation(updateProfile, {
     onSuccess: () => {
       toast.addMessage('success', '프로필이 변경되었습니다')
+      queryClient.invalidateQueries(['userProfile'])
       queryClient.invalidateQueries(['user'])
       navigate(`/profile/${userInfo?.nickname}`)
     },
