@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.example.hikingdom.ApplicationClass
 import com.example.hikingdom.config.WebInterface
 import com.example.hikingdom.data.local.AppDatabase
 import com.example.hikingdom.utils.Inflate
@@ -64,15 +63,15 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
     }
 
     // fragment의 webView 레아이웃을 셋팅하는 함수
-    fun webViewSetting(context: Activity, webView: WebView, url: String,){
+    fun webViewSetting(context: Activity, webView: WebView, url: String){
         var refreshToken = getRefreshToken() // sharedPreference에서 refresh token 가져오기
+        var accessToken = getAccessToken() // sharedPreference에서 access token 가져오기
 
         // 웹뷰 설정
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true   // 웹뷰 자바스크립트 허용
         webView.settings.domStorageEnabled = true   // 웹뷰 로컬 스토리지 허용
         webView.addJavascriptInterface(WebInterface(context), "Kotlin") // 웹뷰와의 인터페이스 연결
-//        webView.evaluateJavascript("sendRefreshToken('$refreshToken')", null)
 
         // 웹뷰로 http 리소스 불러 오기 허용
         val webSetting: WebSettings = webView.settings
@@ -80,6 +79,14 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
             webSetting.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         }
 
+        // 페이지가 로드 되었을 때 JWT 토큰을 전달해줌
+        webView.setWebViewClient(object : WebViewClient() {
+            override fun onPageFinished(view: WebView, url: String) {
+                Log.d("Token", "$refreshToken")
+                webView.evaluateJavascript("saveTokens('$accessToken', '$refreshToken')", null)
+            }
+        })
+        
         webView.loadUrl(url) // 전달받은 url로 웹뷰 연결
 
         // 뒤로 가기 불가능 시 종료
@@ -92,5 +99,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
                 }
             }
         })
+
     }
+
 }

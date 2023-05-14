@@ -14,6 +14,8 @@ import com.example.hikingdom.utils.deleteJWT
 import com.example.hikingdom.utils.saveJWT
 import com.google.gson.Gson
 
+
+// 리액트 WebView로부터 호출되는 함수들을 정의한 클래스
 class WebInterface(private val mContext: Context) {
     private val gson = Gson()
 
@@ -54,7 +56,8 @@ class WebInterface(private val mContext: Context) {
         val userInfo = gson.fromJson(jsonUserInfo, User::class.java)
         val db = AppDatabase.getInstance(mContext)
 
-        db?.userDao()?.insert(userInfo)
+        db?.userDao()?.deleteAll() // 기존 정보 삭제
+        db?.userDao()?.insert(userInfo) // 새 정보 입력
     }
 
 }

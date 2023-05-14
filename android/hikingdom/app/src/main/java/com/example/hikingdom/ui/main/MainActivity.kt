@@ -1,17 +1,19 @@
 package com.example.hikingdom.ui.main
 
-import android.content.pm.PackageManager
-import android.util.Base64
 import android.util.Log
-import android.webkit.WebView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.hikingdom.R
+import com.example.hikingdom.data.remote.api.RetrofitTokenInstance
+import com.example.hikingdom.data.remote.auth.AuthRetrofitInterface
+import com.example.hikingdom.data.remote.auth.UserResponse
 import com.example.hikingdom.databinding.ActivityMainBinding
 import com.example.hikingdom.ui.BaseActivity
-import java.security.MessageDigest
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MainActivity: BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -27,6 +29,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>(ActivityMainBinding::infla
         // Bottom 네비게이션에 Fragment영역에 대한 NavController 할당
         binding.mainBottomNavigation.setupWithNavController(navController)
         binding.mainBottomNavigation.itemIconTintList = null
+
     }
 
     override fun onDestroy() {
