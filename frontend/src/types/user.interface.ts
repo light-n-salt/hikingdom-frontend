@@ -60,9 +60,9 @@ export interface UserHikingDetail {
 
 // 전체 알림 조회
 export interface UserAlarm {
-  alarmId: number
+  notificationId: number
   title: string
-  content: string
-  createdAt: string
+  body: string
+  sendAt: string
   isRead: boolean
 }

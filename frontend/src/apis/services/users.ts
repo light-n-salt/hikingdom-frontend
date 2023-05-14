@@ -46,6 +46,13 @@ export function getTrackingInfo(nickname: string, hikingRecordId: number) {
     .then((res) => res.data.result)
 }
 
+// 알람 조회
+export function getAlarms(notificationId: number | null = null) {
+  return apiRequest
+    .get(`members/notifications`, { params: { notificationId } })
+    .then((res) => res.data.result.content)
+}
+
 // 이메일 인증
 export function validEmail(email: string) {
   return apiRequest.post(`/members/auth/email-valid`, {
