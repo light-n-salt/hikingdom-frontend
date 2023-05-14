@@ -10,6 +10,7 @@ import height from 'assets/images/hot_air_balloon.png'
 import { UserRecord } from 'types/user.interface'
 
 import { convertToKm } from 'utils/convertToKm'
+import { convertToTime } from 'utils/convertToTime'
 
 function UserInfo({
   totalAlt,
@@ -27,7 +28,11 @@ function UserInfo({
     <div className={`${theme} ${styles['user-info']}`}>
       <div className={styles['info-box']}>
         <Info imgSrc={mountain} title={'등반한 산'} content={mountainInfo} />
-        <Info imgSrc={time} title={'시간'} content={totalDuration} />
+        <Info
+          imgSrc={time}
+          title={'시간'}
+          content={convertToTime(totalDuration)}
+        />
       </div>
       <div className={styles['info-box']}>
         <Info imgSrc={distance} title={'거리(km)'} content={distanceInfo} />
