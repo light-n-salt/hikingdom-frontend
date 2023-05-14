@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "630306921353",
+    "project_id": "hikingdom-60692",
+    "storage_bucket": "hikingdom-60692.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630306921353:android:e05fb05e82684a0f875f58",
+        "android_client_info": {
+          "package_name": "com.lns.hikingdom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630306921353-l3ckatb8athm6kmroap81qocb0ivc8de.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClA8B2SjwQwKDBLg0sFIzc2rwqyIcJPUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630306921353-l3ckatb8athm6kmroap81qocb0ivc8de.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
