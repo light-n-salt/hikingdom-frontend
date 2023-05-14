@@ -21,8 +21,8 @@ public enum ErrorCode {
 	// business error codes //
 
 	// member related error codes
-	DUPLICATE_EMAIL(400, "M001", "사용할 수 없는 이메일입니다"),
-	DUPLICATE_NICKNAME(400, "M002", "사용할 수 없는 닉네임입니다"),
+	DUPLICATE_EMAIL(400, "M001", "이미 가입된 이메일입니다"),
+	DUPLICATE_NICKNAME(400, "M002", "이미 존재하는 닉네임입니다"),
 	MEMBER_NOT_FOUND(404, "M003", "존재하지 않는 사용자입니다"),
 	MEMBER_LOGIN_FAIL(401, "M004", "이메일 또는 비밀번호가 올바르지 않습니다"),
 
@@ -40,7 +40,7 @@ public enum ErrorCode {
 
 	// club member related error codes
 	CLUB_MEMBER_UNAUTHORIZED(401, "CM001", "소모임에 가입된 회원이 아닙니다"),
-	CLUB_JOIN_REQUEST_PENDING(400, "CM002", "소모임 가입 요청이 이미 존재합니다"),
+	CLUB_JOIN_REQUEST_PENDING(400, "CM002", "이미 가입 요청한 소모임입니다"),
 	CLUB_JOIN_REQUEST_NOT_FOUND(404, "CM003", "유효한 소모임 가입 요청이 없습니다"),
 	CLUB_MEMBER_HOST_MEETUP_EXISTS(400, "CM004", "아직 진행 중인 일정이 있습니다"),
 	CLUB_MEMBER_IS_HOST(400, "CM005", "소모임 모임장은 탈퇴할 수 없습니다"),
