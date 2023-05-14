@@ -145,7 +145,7 @@ export function postJoinClub(clubId: number) {
 
 // 소모임 가입 신청 목록 조회
 export function getClubRequest() {
-  return apiRequest.get(`/members/clubs/my-requests`)
+  return apiRequest.get(`/members/clubs/my-requests`).then((res) => res.data.result)
 }
 
 // 소모임 가입 신청 취소
