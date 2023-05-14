@@ -14,6 +14,7 @@ type MtContentProps = {
 }
 
 function MtContent({ address, peaks, description }: MtContentProps) {
+  console.log(description)
   return (
     <div className={`${styles.mtcontent}`}>
       <Info imgSrc={addressImg} title="주소" content={address} />
