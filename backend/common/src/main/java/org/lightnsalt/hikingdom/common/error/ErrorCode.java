@@ -63,7 +63,10 @@ public enum ErrorCode {
 	HIKING_RECORD_NOT_FOUND(404, "H001", "존재하지 않는 등산 기록입니다"),
 
 	// chat related error codes
-	CHAT_NOT_FOUND(404, "CH001", "존재하지 않는 채팅 기록입니다");
+	CHAT_NOT_FOUND(404, "CH001", "존재하지 않는 채팅 기록입니다"),
+
+	// notification related error codes
+	NOTIFICATION_NOT_FOUND(404, "N001", "알림이 존재하지 않습니다");
 	private final int status;
 	private final String code;
 	private final String message;
