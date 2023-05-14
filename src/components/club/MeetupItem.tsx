@@ -23,9 +23,7 @@ function MeetupItem({ meetupInfo }: MeetupItemProps) {
   return (
     <div
       className={`content ${theme} ${styles.container}`}
-      onClick={() =>
-        navigate(`/club/${clubId}/meetup/${meetupInfo.meetupId}/detail`)
-      }
+      onClick={() => navigate(`/club/meetup/${meetupInfo.meetupId}/detail`)}
     >
       <div className={styles.header}>
         <h3>{meetupInfo.meetupName}</h3>

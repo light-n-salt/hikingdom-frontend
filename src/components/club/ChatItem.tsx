@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
+import { useNavigate } from 'react-router-dom'
 import styles from './ChatItem.module.scss'
 import Image from 'components/common/Image'
 import LEVEL_TO_IMG from 'constants/levels'
@@ -22,6 +23,7 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
   const { theme } = useContext(ThemeContext)
   const { data: userInfo } = useUserQuery()
   const [user, setUser] = useState<User>()
+  const navigate = useNavigate()
 
   useEffect(() => {
     // 멤버ID 대조 : 해당 프로필, 닉네임 반환
@@ -51,12 +53,12 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
     chat.memberId === userInfo?.memberId ? styles.mine : styles.others
   const imgStyle = isContinued ? styles.discontinued : ''
 
-  // 전송 시간
-  // const time = chat.sendAt.split(' ')[1].split(':')
-
   return user ? (
     <div className={chatStyle}>
-      <div className={imgStyle}>
+      <div
+        className={imgStyle}
+        onClick={() => navigate(`/profile/${user.nickname}`)}
+      >
         <Image size="sm" imgUrl={user.profileUrl} />
       </div>
 
