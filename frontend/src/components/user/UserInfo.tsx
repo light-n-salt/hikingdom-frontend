@@ -31,7 +31,7 @@ function UserInfo({
         <Info
           imgSrc={time}
           title={'시간'}
-          content={convertToTime(Number(totalDuration))}
+          content={convertToTime(totalDuration)}
         />
       </div>
       <div className={styles['info-box']}>

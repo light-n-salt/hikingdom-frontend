@@ -6,9 +6,9 @@ export function convertToTime(minutes: number) {
     hours = Math.floor(minutes / 60)
     minutes = Math.floor(minutes % 60)
 
-    return `${hours}:${minutes}`
+    return  minutes >= 10 ? `${hours}:${minutes}` : `${hours}:0${minutes}`
   } else {
-    return `00:${minutes}`
+    return minutes >= 10 ? `00:${minutes}` : `00:0${minutes}`
   }
 }
 
@@ -18,8 +18,8 @@ export function convertToHour(minutes: number) {
   if (minutes > 60) {
     hours = Math.floor(minutes / 60)
     minutes = Math.floor(minutes % 60)
-    return minutes ? `약 ${hours}시간 ${minutes}분` : `약 ${hours}시간`
+    return minutes ? `${hours}시간 ${minutes}분` : `${hours}시간`
   } else {
-    return `약 ${minutes}분`
+    return `${minutes}분`
   }
 }
