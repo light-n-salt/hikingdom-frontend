@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useRef, useMemo } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
+import styles from './ClubChatPage.module.scss'
 import PageHeader from 'components/common/PageHeader'
 import ChatList from 'components/club/ChatList'
 import Loading from 'components/common/Loading'
@@ -168,16 +169,18 @@ function ClubChatPage() {
   return (
     <div className={`page p-sm ${theme} mobile `}>
       <PageHeader title={clubInfo?.clubName} url={`/club/main`} />
-      {!members || !chatList ? (
-        <Loading />
-      ) : (
-        <ChatList
-          ref1={infiniteRef}
-          trigger={trigger}
-          chats={chatList}
-          members={members}
-        />
-      )}
+      <div className={styles.content}>
+        {!members || !chatList ? (
+          <Loading />
+        ) : (
+          <ChatList
+            ref1={infiniteRef}
+            trigger={trigger}
+            chats={chatList}
+            members={members}
+          />
+        )}
+      </div>
       <TextSendBar
         placeholder="내용을 입력해주세요"
         content={message}

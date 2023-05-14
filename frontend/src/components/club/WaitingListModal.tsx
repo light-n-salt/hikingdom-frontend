@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import styles from './WaitingListModal.module.scss'
-import { getClubRequest } from 'apis/services/clubs'
-import RankList from 'components/common/RankList'
 
 import { ClubInfo } from 'types/club.interface'
+import { getClubRequest } from 'apis/services/clubs'
 import { deleteClubRequest } from 'apis/services/clubs'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import Toast from 'components/common/Toast'
+import RankList from 'components/common/RankList'
 
 function WaitingListModal() {
-  const [clubInfoArray, setClubInfoArray] = useState<ClubInfo[]>([])
+  const queryClient = useQueryClient()
 
-  useEffect(() => {
-    getClubRequest().then((res) => setClubInfoArray(res.data.result))
-  }, [])
+  const { data: clubInfoArray = [] } = useQuery<ClubInfo[]>(['requestClubList'], getClubRequest)
 
   // 소모임 신청 취소 함수
   function onClickDeleteClub(clubId: number, clubName: string) {
     deleteClubRequest(clubId)
       .then(() => {
+        queryClient.invalidateQueries(['requestClubList'])
         Toast.addMessage('success', `${clubName}의 가입 신청을 취소했습니다.`)
-        getClubRequest().then((res) => setClubInfoArray(res.data.result))
       })
       .catch((err) => Toast.addMessage('error', `${err.data.message}`))
   }
@@ -27,16 +26,16 @@ function WaitingListModal() {
   return (
     <div className={styles.list}>
       <h2>가입 대기 중 모임</h2>
-      {clubInfoArray[0] ? (
+      {clubInfoArray?.length > 0 ? (
         <RankList
           clubInfoArray={clubInfoArray}
           size="lg"
           onClickDeleteClub={onClickDeleteClub}
         />
       ) : (
-        <span>가입 신청한 모임이 없습니다.</span>
+        <span className={styles.text}>가입 신청한 모임이 없습니다.</span>
       )}
-    </div>
+  </div>
   )
 }
 

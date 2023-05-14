@@ -12,6 +12,7 @@ import Button from 'components/common/Button'
 import LabelInput from 'components/common/LabelInput'
 import useCheckPw from 'hooks/useCheckPw'
 import useAuthInput from 'hooks/useAuthInput'
+import Loading from 'components/common/Loading'
 
 function SignupForm() {
   const navigate = useNavigate()
@@ -54,14 +55,18 @@ function SignupForm() {
   // 2: 통과 못함
   const [isAuthStatus, setIsAuthStatus] = useState(1) // 이메일 인증 여부 판단
   const [isDupStatus, setIsDupStatus] = useState(1) // 닉네임 중복 여부 판단
+  const [isEmailLoading, setIsEmailLoading] = useState(false) // 이메일 인증코드 로딩중
 
   // 이메일 인증코드 발신 api 요청
   function onClickValidEmail() {
+    setIsEmailLoading(true)
     validEmail(email)
       .then((res) => {
+        setIsEmailLoading(false)
         toast.addMessage('success', res.data.message)
       })
       .catch((err) => {
+        setIsEmailLoading(false)
         toast.addMessage('error', err.data.message)
       })
   }
@@ -109,6 +114,11 @@ function SignupForm() {
 
   return (
     <div className={styles.container}>
+      {isEmailLoading && (
+        <div className={styles.loading}>
+          <Loading type="circle" />
+        </div>
+      )}
       <div className={styles.flex}>
         <LabelInput
           label="이메일"

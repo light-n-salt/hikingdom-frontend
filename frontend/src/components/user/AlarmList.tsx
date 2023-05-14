@@ -7,7 +7,7 @@ function AlarmList({ alarmList }: { alarmList: UserAlarm[] }) {
   return (
     <div className={`${styles['alarm-list']}`}>
       {alarmList.map((alarm) => (
-        <AlarmItem key={alarm.alarmId} alarm={alarm} />
+        <AlarmItem key={alarm.notificationId} alarm={alarm} />
       ))}
     </div>
   )
