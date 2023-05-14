@@ -8,6 +8,7 @@ import com.example.hikingdom.utils.deleteJWT
 import com.example.hikingdom.utils.getAccessToken
 import com.example.hikingdom.utils.getRefreshToken
 import com.example.hikingdom.utils.saveJWT
+import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -23,10 +24,12 @@ class RetrofitTokenInstance {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
+            val gson = GsonBuilder().setLenient().create()
+
             return Retrofit
                 .Builder()
                 .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(
                     OkHttpClient.Builder()
                         .addInterceptor(httpLoggingInterceptor) // 디버깅을 위한 로깅 인터셉터

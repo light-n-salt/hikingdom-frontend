@@ -47,6 +47,14 @@
             android:name=".ui.main.hiking.LocationService"
             android:foregroundServiceType="location"/>
 
+        <service
+            android:name=".FirebaseMessagingServiceUtil"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="${KAKAOMAP_NATIVE_APP_KEY}"/>

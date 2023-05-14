@@ -52,6 +52,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
     // onStart 이 후 실행될 함수
     protected abstract fun initAfterBinding()
 
+    // fragment 종료 시, bidnding 해제
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

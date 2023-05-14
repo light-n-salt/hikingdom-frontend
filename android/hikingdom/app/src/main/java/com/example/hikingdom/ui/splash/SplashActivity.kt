@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.R
 import com.example.hikingdom.data.remote.api.RetrofitInstance
 import com.example.hikingdom.data.remote.auth.AuthRetrofitInterface
@@ -18,6 +19,8 @@ import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.utils.deleteJWT
 import com.example.hikingdom.utils.getRefreshToken
 import com.example.hikingdom.utils.saveJWT
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,10 +36,13 @@ class SplashActivity: BaseActivity<ActivitySplashBinding>(ActivitySplashBinding:
         logo.startAnimation(slideFromLeftAnimation)
         catchphrase.startAnimation(slideFromRightAnimation)
 
+        getFcmToken()   // fcm token 확인
+
         autoLogin() // 자동 로그인 로직 실행
     }
 
     private fun autoLogin() {
+        Log.d("autiLogin", "autoLogin")
         val refreshToken = getRefreshToken() // refreshToken 유뮤 확인
         val api = RetrofitInstance.getInstance().create(AuthRetrofitInterface::class.java)  // Retrofit 객체 생성(인터셉터 없는)
 
@@ -88,5 +94,20 @@ class SplashActivity: BaseActivity<ActivitySplashBinding>(ActivitySplashBinding:
 
     override fun onAutoLoginFailure(code: Int, message: String) {
         startActivityWithClear(LoginActivity::class.java)
+    }
+
+    fun getFcmToken(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Log.d("getFcmToken", token)
+        })
     }
 }
