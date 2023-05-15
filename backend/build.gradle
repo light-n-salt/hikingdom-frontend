@@ -1,97 +1,76 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.11'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'java'
+    id 'org.springframework.boot' version '2.7.11'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'org.lightnsalt'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
 repositories {
-	mavenCentral()
-}
-
-ext {
-	set('snippetsDir', file("build/generated-snippets"))
-}
-
-bootJar {
-	dependsOn asciidoctor
-	copy {
-		from "${asciidoctor.outputDir}"
-		into 'BOOT-INF/classes/static/docs'
-	}
+    mavenCentral()
 }
 
 dependencies {
-	// jpa
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'com.vladmihalcea:hibernate-types-55:2.21.1'
-
-	// database
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'mysql:mysql-connector-java:8.0.33'
-//	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-
-	// mail
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-	// security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-	// web
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-
-	// test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	testImplementation 'org.springframework.security:spring-security-test'
-
-	testImplementation "org.assertj:assertj-core:3.20.2"
-	runtimeOnly 'com.h2database:h2'
-
-	// swagger
-	implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
-
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
-tasks.named('test') {
-	outputs.dir snippetsDir
-	useJUnitPlatform()
+bootJar {
+    enabled = false
 }
 
-tasks.named('asciidoctor') {
-	inputs.dir snippetsDir
-	dependsOn test
+jar {
+    enabled = true
 }
 
-asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs')
+subprojects {
+    group 'org.lightnsalt'
+
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 11
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    ext {
+        set('springCloudVersion', "2021.0.4")
+    }
 }
 
-tasks.register("copyDocument", Copy) {
-	dependsOn("asciidoctor")
-	from(file("build/docs/asciidoc"))
-	into(file("src/main/resources/static/docs"))
+project(':common') {
+    dependencies {
+        implementation project(':domain')
+    }
 }
 
-build {
-	dependsOn copyDocument
+project(':service') {
+    dependencies {
+        implementation project(':domain')
+        implementation project(':common')
+    }
+}
+
+project(':batch') {
+    dependencies {
+        implementation project(':domain')
+    }
+}
+
+project(':chat') {
+    dependencies {
+        implementation project(':domain')
+        implementation project(':common')
+    }
 }
