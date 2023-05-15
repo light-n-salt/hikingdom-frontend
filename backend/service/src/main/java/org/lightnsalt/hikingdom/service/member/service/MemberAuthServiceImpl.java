@@ -13,6 +13,7 @@ import org.lightnsalt.hikingdom.service.member.repository.MemberFcmTokenReposito
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 	private final MemberRepository memberRepository;
 	private final MemberFcmTokenRepository memberFcmTokenRepository;
 
+	@Transactional
 	@Override
 	public MemberTokenRes login(MemberLoginReq memberLoginReq) {
 		String email = memberLoginReq.getEmail();
