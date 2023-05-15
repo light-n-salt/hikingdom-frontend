@@ -7,7 +7,7 @@
     android:minWidth="350dp"
     android:minHeight="580dp"
     android:orientation="vertical"
-    android:padding="30dp">
+    android:padding="15dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_meetup"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="320dp"
         android:clipToPadding="false"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
