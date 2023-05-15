@@ -7,32 +7,32 @@ import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.R
-import com.example.hikingdom.data.local.AppDatabase
 import com.example.hikingdom.data.remote.api.RetrofitTokenInstance
 import com.example.hikingdom.data.remote.hiking.HikingRetrofitInterface
-import com.example.hikingdom.data.remote.hiking.Mountain
+import com.example.hikingdom.data.remote.hiking.MeetupResponse
 import com.example.hikingdom.data.remote.hiking.MountainResponse
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
+import com.example.hikingdom.ui.main.hiking.dialog.MeetupAdapter
 import com.example.hikingdom.ui.main.hiking.dialog.MountainAdapter
-import com.example.hikingdom.ui.main.hiking.dialog.MountainViewModel
 import com.example.hikingdom.utils.*
 import net.daum.mf.map.api.*
 import retrofit2.Call
@@ -79,30 +79,10 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 //        db = AppDatabase.getInstance(requireContext())!!    // 로컬 DB
 
         checkPermission()
-
-        // 다이얼로그창 띄우기
-        val mountainView = LayoutInflater.from(activityContext).inflate(R.layout.dialog_mountain, null)
-        val mBuilder = AlertDialog.Builder(activityContext)
-            .setView(mountainView)
-            .setTitle("가까운 산")
-        val moutainDialog = mBuilder.show()
-
-        // 데이터 불러오기
-        val api = RetrofitTokenInstance.getInstance().create(HikingRetrofitInterface::class.java)
-        api.getNearMountains(37.4328f, 126.9965f).enqueue(object: Callback<MountainResponse> {
-            override fun onResponse(call: Call<MountainResponse>, response: Response<MountainResponse>) {
-                Log.d("user!", "${response.body()}")
-                val rv = moutainDialog.findViewById<RecyclerView>(R.id.mountain_rv)
-                val mountainAdapter = MountainAdapter(activityContext, response.body()!!.result)
-                rv.adapter = mountainAdapter
-                rv.layoutManager = LinearLayoutManager(activityContext)
-            }
-            override fun onFailure(call: Call<MountainResponse>, t: Throwable) {
-                Log.d("user!", "fail")
-            }
-        })
-
+        showMeetupDialog()
+//        showMountainDialog()
     }
+
 
 
     companion object {
@@ -565,6 +545,70 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
             }
         }
         return false
+    }
+
+    private fun showMeetupDialog() {
+        // 다이얼로그창 띄우기
+        val meetupView = LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_meetup, null)
+        val mBuilder = AlertDialog.Builder(activityContext)
+            .setView(meetupView)
+        val meetupDialog = mBuilder.show()
+
+        // 데이터 불러오기
+        val api = RetrofitTokenInstance.getInstance().create(HikingRetrofitInterface::class.java)
+        api.getTodayMeetups().enqueue(object: Callback<MeetupResponse> {
+            override fun onResponse(call: Call<MeetupResponse>, response: Response<MeetupResponse>) {
+                val rv = meetupDialog.findViewById<RecyclerView>(R.id.recycler_view_meetup)
+                Log.d("meetup!", "${response.body()}")
+                val meetupAdapter = MeetupAdapter(activityContext, response.body()!!.result)
+                rv.adapter = meetupAdapter
+                rv.layoutManager = LinearLayoutManager(activityContext)
+            }
+            override fun onFailure(call: Call<MeetupResponse>, t: Throwable) {
+                Log.d("user!", "fail")
+            }
+        })
+    }
+
+    private fun showMountainDialog() {
+        // 다이얼로그창 띄우기
+        val mountainView = LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_mountain, null)
+        val mBuilder = AlertDialog.Builder(activityContext)
+            .setView(mountainView)
+        val moutainDialog = mBuilder.show()
+
+        // 현재 위치 가져오기
+        val locationManager: LocationManager = getSystemService(requireContext(), LocationManager::class.java)!!
+        // 위치 권한 체크
+        if (ActivityCompat.checkSelfPermission(
+                activityContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                activityContext,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(activityContext, "위치 권한이 없습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val loc_Current: Location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
+        val cur_lat = loc_Current.getLatitude();
+        val cur_lng = loc_Current.getLongitude();
+
+        // 데이터 불러오기
+        val api = RetrofitTokenInstance.getInstance().create(HikingRetrofitInterface::class.java)
+        api.getNearMountains(cur_lat, cur_lng).enqueue(object: Callback<MountainResponse> {
+            override fun onResponse(call: Call<MountainResponse>, response: Response<MountainResponse>) {
+                Log.d("user!", "${response.body()}")
+                val rv = moutainDialog.findViewById<RecyclerView>(R.id.mountain_rv)
+                val mountainAdapter = MountainAdapter(activityContext, response.body()!!.result)
+                rv.adapter = mountainAdapter
+                rv.layoutManager = LinearLayoutManager(activityContext)
+            }
+            override fun onFailure(call: Call<MountainResponse>, t: Throwable) {
+                Log.d("user!", "fail")
+            }
+        })
     }
 
     override fun onDestroyView() {
