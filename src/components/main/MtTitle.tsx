@@ -7,6 +7,8 @@ import Loading from 'components/common/Loading'
 import Modal from 'components/common/Modal'
 import AssetModal from './AssetModal'
 
+import { MtAssetInfo } from 'types/mt.interface'
+
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
 import Asset from './Asset'
@@ -15,29 +17,55 @@ type MtTitleProps = {
   name: string
   maxAlt: number
   timeDuration: number
-  assetUrl: string
+  assets: MtAssetInfo[]
 }
 
-function MtTitle({ name, maxAlt, timeDuration, assetUrl }: MtTitleProps) {
+function MtTitle({ name, maxAlt, timeDuration, assets }: MtTitleProps) {
   const { theme } = useContext(ThemeContext)
   const [isOpen, setIsOpen] = useState(false)
+  // const [pos, setPos] = useState(new THREE.Vector3(0, -0.8, 3))
+  const [y, setY] = useState(-0.8)
+  const [z, setZ] = useState(3)
+  const canvasStyle = isOpen
+    ? { width: 'fit-content', height: '40vh', zIndex: 999 }
+    : { height: '20vh', zIndex: 0 }
+
+  // const assetPosition = isOpen
+  //   ? new THREE.Vector3(0, -0.5, 0.5)
+  // : new THREE.Vector3(0, -0.8, 3)
+
+  useEffect(() => {
+    if (isOpen) {
+      setY(-0.5)
+      setZ(0.5)
+      // setPos(new THREE.Vector3(0, -0.5, 0.5))
+    } else {
+      // setPos(new THREE.Vector3(0, -0.8, 3))
+      setY(-0.8)
+      setZ(3)
+    }
+  }, [isOpen])
 
   return (
     <div className={`content ${theme} ${styles.mttitle}`}>
       {/* 모달 */}
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
-          <AssetModal />
+          <AssetModal
+            url={assets[0].assetUrl}
+            name={assets[0].name}
+            getCondition={assets[0].getCondition}
+          />
         </Modal>
       )}
       {/* asset */}
       <div className={styles.asset}>
-        {assetUrl ? (
-          <Canvas>
+        {assets.length ? (
+          <Canvas style={canvasStyle}>
             <ambientLight />
             <Asset
-              position={new THREE.Vector3(0, -0.5, 3)}
-              url={assetUrl}
+              position={new THREE.Vector3(0, -0.8, 3)}
+              url={assets[0].assetUrl}
               onClick={() => setIsOpen(true)}
             />
           </Canvas>

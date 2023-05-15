@@ -18,7 +18,7 @@ function MtDetail({ mtInfo }: MtDetailProps) {
           name={mtInfo.name}
           maxAlt={mtInfo.maxAlt}
           timeDuration={mtInfo.totalDuration}
-          assetUrl={mtInfo.assets[0].assetUrl}
+          assets={mtInfo.assets}
         />
       )}
       <MtContent
