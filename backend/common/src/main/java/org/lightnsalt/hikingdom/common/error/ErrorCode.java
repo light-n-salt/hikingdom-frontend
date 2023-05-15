@@ -61,6 +61,7 @@ public enum ErrorCode {
 
 	// hiking record related error codes
 	HIKING_RECORD_NOT_FOUND(404, "H001", "존재하지 않는 등산 기록입니다"),
+	HIKING_LOCATION_SHARE_INVALID(404, "H002", "올바르지 않은 등산 위치 공유 요청입니다"),
 
 	// chat related error codes
 	CHAT_NOT_FOUND(404, "CH001", "존재하지 않는 채팅 기록입니다"),
