@@ -42,6 +42,7 @@ class SplashActivity: BaseActivity<ActivitySplashBinding>(ActivitySplashBinding:
     }
 
     private fun autoLogin() {
+        Log.d("autiLogin", "autoLogin")
         val refreshToken = getRefreshToken() // refreshToken 유뮤 확인
         val api = RetrofitInstance.getInstance().create(AuthRetrofitInterface::class.java)  // Retrofit 객체 생성(인터셉터 없는)
 
