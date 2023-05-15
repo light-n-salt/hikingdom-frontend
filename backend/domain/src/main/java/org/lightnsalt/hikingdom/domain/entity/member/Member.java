@@ -88,4 +88,8 @@ public class Member extends BaseTimeEntity {
 		this.hikingStatistic = hikingStatistic;
 		this.memberFcmTokens = memberFcmTokens;
 	}
+
+	public void updateMemberLevel(MemberLevelInfo level) {
+		this.level = level;
+	}
 }
