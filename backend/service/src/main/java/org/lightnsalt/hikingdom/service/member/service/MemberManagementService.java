@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.service.member.service;
 import java.util.List;
 
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
+import org.lightnsalt.hikingdom.service.member.dto.request.MemberLogoutReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberDetailRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
@@ -15,7 +16,7 @@ public interface MemberManagementService {
 
 	void removeMember(String email);
 
-	void logout(String bearerToken);
+	void logout(String bearerToken, MemberLogoutReq memberLogoutReq);
 
 	void changePassword(String email, MemberChangePasswordReq memberChangePasswordReq);
 
