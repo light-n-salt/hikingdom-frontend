@@ -79,7 +79,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
 //        db = AppDatabase.getInstance(requireContext())!!    // 로컬 DB
 
         checkPermission()
-        showMeetupDialog()
+//        showMeetupDialog()
 //        showMountainDialog()
     }
 
