@@ -32,7 +32,7 @@ class MountainAdapter(val context: Context, val dataset:List<Mountain>): Recycle
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MountainAdapter.ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_mountain, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_select_mountain, parent, false)
         return ViewHolder(view)
     }
 

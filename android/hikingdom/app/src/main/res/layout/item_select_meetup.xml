@@ -39,7 +39,7 @@
             android:layout_height="match_parent" />
 
         <TextView
-            android:id="@+id/meetup_member_count"
+            android:id="@+id/total_member"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -70,7 +70,7 @@
             android:layout_height="match_parent" />
 
         <TextView
-            android:id="@+id/meetup_mounatin"
+            android:id="@+id/mountain_name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/meetup_item_mountain"
@@ -93,7 +93,7 @@
             android:layout_height="match_parent" />
 
         <TextView
-            android:id="@+id/meetup_start"
+            android:id="@+id/start_at"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/meetup_item_start"
