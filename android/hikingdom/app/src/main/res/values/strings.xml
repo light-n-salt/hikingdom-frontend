@@ -73,4 +73,9 @@
     <string name="select_hiking_question">오늘 누구와 등산하시나요?</string>
     <string name="select_hiking_group">모임 등산</string>
     <string name="select_hiking_individual">개인 등산</string>
+
+    <!--  dialog mountain  -->
+    <string name="dialog_mountain_title">산 선택</string>
+
+
 </resources>
