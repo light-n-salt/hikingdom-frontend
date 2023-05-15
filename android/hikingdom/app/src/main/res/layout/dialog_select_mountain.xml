@@ -19,18 +19,15 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <view
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_mountain"
-        class="androidx.appcompat.app.AlertController$RecycleListView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:clipToPadding="false"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
-    </view>
-
-
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"

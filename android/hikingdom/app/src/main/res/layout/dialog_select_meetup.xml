@@ -19,16 +19,15 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <view
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_meetup"
-        class="androidx.appcompat.app.AlertController$RecycleListView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:clipToPadding="false"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
-    </view>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,12 +44,12 @@
 
             <RadioButton
                 android:id="@+id/radiobutton_polish"
-                android:theme="@style/CustomRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/dialog_meetup_radio"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:theme="@style/CustomRadioButton" />
 
             <View
                 android:layout_width="10dp"
