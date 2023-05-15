@@ -15,6 +15,7 @@ import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHikingGps;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
+import org.lightnsalt.hikingdom.domain.entity.member.MemberLevelInfo;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
@@ -26,6 +27,7 @@ import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingGpsReposit
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
 import org.lightnsalt.hikingdom.service.info.repository.MountainInfoRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberHikingStatisticRepository;
+import org.lightnsalt.hikingdom.service.member.repository.MemberLevelInfoRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +58,7 @@ public class HikingServiceImpl implements HikingService {
     private final HikingRepositoryCustom hikingRepositoryCustom;
     private final MountainInfoRepository mountainInfoRepository;
     private final MemberHikingStatisticRepository memberHikingStatisticRepository;
+    private final MemberLevelInfoRepository memberLevelInfoRepository;
 
 //    @Override
 //    @Transactional
@@ -173,15 +176,42 @@ public class HikingServiceImpl implements HikingService {
         final MemberHikingGps savedMemberHikingGps = memberHikingGpsRepository.save(memberHikingGps);
 
         // MemberHikingStatistic 업데이트
+        int isSummit = memberHiking.getIsSummit() ? 1 : 0;  // 완등 시 toatlMountainCount + 1
+
         MemberHikingStatistic memberHikingStatistic = memberHikingStatisticRepository.findById(member.getId())
                 .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_HIKING_STATISTIC_NOT_FOUND));
-        log.info("memberHikingStatistic : {}", memberHikingStatistic);
+//        log.info("memberHikingStatistic : {}", memberHikingStatistic);
         memberHikingStatistic.updateMemberHikingStatistic(member, memberHikingStatistic.getTotalHikingCount() + 1,
-                memberHikingStatistic.getTotalMountainCount() + 1,
+                memberHikingStatistic.getTotalMountainCount() + isSummit,
                 memberHikingStatistic.getTotalDuration() + savedMemberHiking.getTotalDuration(),
                 memberHikingStatistic.getTotalDistance() + savedMemberHiking.getTotalDistance(),
                 memberHikingStatistic.getTotalAlt() + savedMemberHiking.getTotalAlt());
-        log.info("memberHikingStatistic : {}", memberHikingStatistic);
+//        log.info("memberHikingStatistic : {}", memberHikingStatistic);
+
+        // Level 업데이트
+        int originLevel = member.getLevel().getId();
+        int newLevel = originLevel;
+
+        Long totalMountainCount = memberHikingStatistic.getTotalMountainCount();
+        List<MemberLevelInfo> memberLevelInfos = memberLevelInfoRepository.findAll();
+
+        for (int i = 0; i < memberLevelInfos.size(); i++) {
+            MemberLevelInfo currentLevelInfo = memberLevelInfos.get(i);
+            int currentLevelCondition =  memberLevelInfos.get(i).getLevelCondition();
+
+            if (totalMountainCount >= currentLevelCondition) {
+                if (i == memberLevelInfos.size() - 1 || totalMountainCount < memberLevelInfos.get(i + 1).getLevelCondition()) {
+                    newLevel = currentLevelInfo.getId();
+                    break;
+                }
+            }
+        }
+
+        if (newLevel != originLevel) {
+            MemberLevelInfo memberLevelInfo = memberLevelInfoRepository.findById(newLevel)
+                    .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_LEVEL_INFO_NOT_FOUND));
+            member.updateMemberLevel(memberLevelInfo);
+        }
         return savedMemberHiking.getId();
     }
 
