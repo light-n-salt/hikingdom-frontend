@@ -8,6 +8,7 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.notification.Notification;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
+import org.lightnsalt.hikingdom.service.notification.dto.FCMNotificationReq;
 import org.lightnsalt.hikingdom.service.notification.dto.NotificationAddReq;
 import org.lightnsalt.hikingdom.service.notification.dto.NotificationRes;
 import org.lightnsalt.hikingdom.service.notification.repository.NotificationRepository;
@@ -27,6 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final NotificationRepositoryCustom notificationRepositoryCustom;
     private final MemberRepository memberRepository;
+    private final FCMNotificationService fcmNotificationService;
 
     @Transactional
     @Override
@@ -40,6 +42,13 @@ public class NotificationServiceImpl implements NotificationService {
                 .isRead(false)
                 .build();
         final Notification savedNotification = notificationRepository.save(notification);
+
+        fcmNotificationService.sendNotificationByToken(
+                FCMNotificationReq.builder()
+                        .targetUserId(notificationAddReq.getMember().getId())
+                        .title(notificationAddReq.getTitle())
+                        .body(notificationAddReq.getBody())
+                        .build());
 
         return savedNotification.getId();
     }
