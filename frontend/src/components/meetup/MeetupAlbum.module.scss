@@ -1,0 +1,33 @@
+@use 'src/styles/colors' as *;
+
+.album {
+  width: 100%;
+}
+
+.titles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  color: clr(primary-clr);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.photos {
+  overflow: scroll;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  gap: 0.5rem;
+}
+
+.photo {
+  aspect-ratio: 1/1;
+  width: 100%;
+  border-radius: 0.3rem;
+  object-fit: cover;
+}

@@ -1,0 +1,17 @@
+@use 'src/styles/colors' as *;
+
+.nickname {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 3rem;
+  margin-top: 1.5rem;
+  padding-top: 4.5rem;
+
+  > button:first-child {
+    position: absolute;
+    top: 6.5rem;
+    left: 1.5rem;
+    width: 15%;
+  }
+}

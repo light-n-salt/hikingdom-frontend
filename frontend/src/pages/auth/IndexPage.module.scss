@@ -1,0 +1,14 @@
+.container {
+  justify-content: center;
+  gap: 15rem;
+  overflow: hidden;
+  height: 100%;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  filter: brightness(0.5);
+}

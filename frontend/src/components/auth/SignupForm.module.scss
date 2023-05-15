@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+  align-items: self-end;
+  gap: 1rem;
+}
