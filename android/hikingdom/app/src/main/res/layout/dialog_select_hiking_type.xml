@@ -22,7 +22,7 @@
         android:textSize="22sp"
         android:textStyle="bold" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/meetup_hiking_start_btn"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/individual_hiking_start_btn"
         android:layout_width="270dp"
         android:layout_height="wrap_content"

@@ -89,7 +89,7 @@
         android:paddingStart="30dp"
         android:paddingEnd="30dp">
 
-        <Button
+        <android.widget.Button
             android:id="@+id/meetup_select_cancel"
             android:layout_width="match_parent"
             android:layout_height="45dp"
@@ -99,13 +99,13 @@
             android:textColor="@color/primary"
             android:textSize="18sp"
             android:textStyle="bold"
-            tools:ignore="ButtonStyle" />
+            tools:ignore="UselessParent" />
 
         <View
             android:layout_width="30dp"
             android:layout_height="match_parent" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/meetup_select_ok"
             android:layout_width="match_parent"
             android:layout_height="45dp"
