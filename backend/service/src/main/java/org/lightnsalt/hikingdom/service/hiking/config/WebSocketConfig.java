@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.config;
+package org.lightnsalt.hikingdom.service.hiking.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
