@@ -30,6 +30,7 @@ import org.lightnsalt.hikingdom.service.member.dto.response.MemberDetailRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes;
+import org.lightnsalt.hikingdom.service.member.repository.MemberFcmTokenRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +61,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	private final MeetupRepository meetupRepository;
 	private final MeetupMemberRepository meetupMemberRepository;
 	private final MemberRepository memberRepository;
+	private final MemberFcmTokenRepository memberFcmTokenRepository;
 
 	private final RestTemplate restTemplate;
 
@@ -118,6 +120,9 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		// 소모임 가입 신청 취소
 		clubJoinRequestRepository.updatePendingJoinRequestByMember(member, JoinRequestStatusType.RETRACTED,
 			now);
+
+		// fcm token 삭제
+		memberFcmTokenRepository.deleteAllByMemberId(member.getId());
 
 		memberRepository.updateMemberWithdraw(member.getId(), true, now);
 	}
