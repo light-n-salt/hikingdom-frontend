@@ -70,7 +70,10 @@ public enum ErrorCode {
 	NOTIFICATION_NOT_FOUND(404, "N001", "알림이 존재하지 않습니다"),
 
 	// member hiking statistic related error codes
-	MEMBER_HIKING_STATISTIC_NOT_FOUND(404, "HS001", "등산 통계가 존재하지 않습니다");
+	MEMBER_HIKING_STATISTIC_NOT_FOUND(404, "HS001", "등산 통계가 존재하지 않습니다"),
+
+	// member level info related error codes
+	MEMBER_LEVEL_INFO_NOT_FOUND(404, "L001", "레벨 정보가 존재하지 않습니다");
 	private final int status;
 	private final String code;
 	private final String message;
