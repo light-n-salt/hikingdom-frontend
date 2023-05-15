@@ -41,13 +41,10 @@ import com.google.gson.JsonParseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.EntityManager;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class HikingServiceImpl implements HikingService {
-    private final EntityManager em;
 
     private final ClubRepository clubRepository;
     private final MeetupRepository meetupRepository;
