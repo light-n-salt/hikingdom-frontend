@@ -73,7 +73,7 @@ public class SecurityConfig {
 			.antMatchers("/api/v1/members/auth/**").permitAll()
 			.antMatchers("/v3/api-docs/**").permitAll()
 			.antMatchers("/swagger-ui/**").permitAll()
-			.antMatchers("/api/v1/hiking/**").permitAll()
+//			.antMatchers("/api/v1/hiking/**").permitAll()
 			.antMatchers("/chat/ws/**").permitAll()
 			.antMatchers("/chat/clubs/*/member-update").permitAll()
 			.antMatchers("/api/v1/hiking/ws/**").permitAll()
