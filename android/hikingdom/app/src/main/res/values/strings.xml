@@ -48,4 +48,8 @@
     <string name="list_item_dummy_format">m</string>
     <string name="list_item_dummy_location">서울시 노원구 중계동</string>
 
+    <!-- select hiking type dialog -->
+    <string name="select_hiking_question">오늘 누구와 등산하시나요?</string>
+    <string name="select_hiking_group">모임 등산</string>
+    <string name="select_hiking_individual">개인 등산</string>
 </resources>
