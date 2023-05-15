@@ -9,6 +9,7 @@ import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
+import org.lightnsalt.hikingdom.service.member.dto.request.MemberLogoutReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberDetailRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberProfileRes;
@@ -57,8 +58,9 @@ public class MemberManagementController {
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<CustomResponseBody> logout(@RequestHeader("Authorization") String bearerToken) {
-		memberManagementService.logout(bearerToken);
+	public ResponseEntity<CustomResponseBody> logout(@RequestHeader("Authorization") String bearerToken,
+		@RequestBody(required = false) MemberLogoutReq memberLogoutReq) {
+		memberManagementService.logout(bearerToken, memberLogoutReq);
 
 		return new ResponseEntity<>(BaseResponseBody.of("로그아웃에 성공했습니다"), HttpStatus.OK);
 	}

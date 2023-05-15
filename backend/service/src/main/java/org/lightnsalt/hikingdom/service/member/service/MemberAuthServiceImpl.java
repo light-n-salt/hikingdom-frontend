@@ -4,13 +4,16 @@ import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.JwtTokenUtil;
 import org.lightnsalt.hikingdom.common.util.RedisUtil;
+import org.lightnsalt.hikingdom.domain.entity.notification.MemberFcmToken;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberLoginReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberRefreshTokenReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberTokenRes;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
+import org.lightnsalt.hikingdom.service.member.repository.MemberFcmTokenRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +28,9 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 	private final JwtTokenUtil jwtTokenUtil;
 
 	private final MemberRepository memberRepository;
+	private final MemberFcmTokenRepository memberFcmTokenRepository;
 
+	@Transactional
 	@Override
 	public MemberTokenRes login(MemberLoginReq memberLoginReq) {
 		String email = memberLoginReq.getEmail();
@@ -35,6 +40,19 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 
 		if (!passwordEncoder.matches(memberLoginReq.getPassword(), member.getPassword())) {
 			throw new GlobalException(ErrorCode.MEMBER_LOGIN_FAIL);
+		}
+
+		// save FCM token
+		String fcmToken = memberLoginReq.getFcmToken();
+		if (fcmToken != null) {
+			if (!memberFcmTokenRepository.existsByMemberIdAndBody(member.getId(), fcmToken)) {
+				MemberFcmToken memberFcmToken = MemberFcmToken.builder()
+					.member(member)
+					.body(fcmToken)
+					.build();
+
+				memberFcmTokenRepository.save(memberFcmToken);
+			}
 		}
 
 		String accessToken = jwtTokenUtil.createAccessToken(email, member.getRole());
