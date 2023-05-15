@@ -25,6 +25,7 @@ import org.lightnsalt.hikingdom.service.club.repository.record.ClubRankingReposi
 import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordRes;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
+import org.lightnsalt.hikingdom.service.member.dto.request.MemberLogoutReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberDetailRes;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
@@ -127,15 +128,26 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		memberRepository.updateMemberWithdraw(member.getId(), true, now);
 	}
 
+	@Transactional
 	@Override
-	public void logout(String bearerToken) {
+	public void logout(String bearerToken, MemberLogoutReq memberLogoutReq) {
 		String accessToken = jwtTokenUtil.resolveToken(bearerToken);
 		String email = jwtTokenUtil.getEmailFromToken(accessToken);
 
+		final Member member = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+
+		// FCM Token 존재할 시 삭제
+		if (memberLogoutReq != null && memberLogoutReq.getFcmToken() != null) {
+			memberFcmTokenRepository.deleteByMemberIdAndBody(member.getId(), memberLogoutReq.getFcmToken());
+		}
+		
+		// redis에서 refresh token 삭제
 		if (redisUtil.getValue("RT" + email) != null) {
 			redisUtil.deleteValue("RT" + email);
 		}
 
+		// 기존 access token 블랙리스트
 		Long expiration = jwtTokenUtil.getExpirationFromToken(accessToken);
 		redisUtil.setValueWithExpiration(accessToken, "logout", expiration);
 	}
