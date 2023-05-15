@@ -38,6 +38,10 @@
     <string name="hiking_finish">하이킹 종료</string>
     <string name="hiking_start">하이킹 시작</string>
 
+    <!--  global button  -->
+    <string name="button_cancel">취소</string>
+    <string name="button_ok">확인</string>
+
     <!-- mountain list item -->
     <string name="list_item_alt">높이</string>
     <string name="list_item_location">위치</string>
@@ -58,6 +62,12 @@
     <string name="desc_ic_mountain">산 3D 아이콘</string>
     <string name="desc_ic_click">시계 3D 아이콘</string>
 
+    <!--  dialog meetup  -->
+    <string name="dialog_meetup_title">일정 선택</string>
+    <string name="dialog_meetup_radio">위치 정보 제 3자 제공에 동의합니다</string>
+    <string name="dialog_meetup_radio_detail">일정 인원에게 나의 위치 정보를 제공합니다</string>
+    <string name="dialog_meetup_radio_polish">약관 보기</string>
+    <string name="dialog_meetup_imagebutton">약관 보기 버튼</string>
 
     <!-- select hiking type dialog -->
     <string name="select_hiking_question">오늘 누구와 등산하시나요?</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mountain_list_item"
+    android:id="@+id/meetup_item"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:background="@drawable/selector_meetup_item"
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/meetup_item_name"
-        android:textColor="#50B06A"
+        android:textColor="@color/primary"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -39,6 +39,7 @@
             android:layout_height="match_parent" />
 
         <TextView
+            android:id="@+id/meetup_member_count"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -69,6 +70,7 @@
             android:layout_height="match_parent" />
 
         <TextView
+            android:id="@+id/meetup_mounatin"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/meetup_item_mountain"
@@ -91,6 +93,7 @@
             android:layout_height="match_parent" />
 
         <TextView
+            android:id="@+id/meetup_start"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/meetup_item_start"
