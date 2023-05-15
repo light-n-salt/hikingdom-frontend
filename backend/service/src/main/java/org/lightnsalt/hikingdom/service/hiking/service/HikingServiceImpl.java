@@ -14,7 +14,6 @@ import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHikingGps;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
-import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
@@ -39,13 +38,10 @@ import com.google.gson.JsonParseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.EntityManager;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class HikingServiceImpl implements HikingService {
-    private final EntityManager em;
 
     private final ClubRepository clubRepository;
     private final MeetupRepository meetupRepository;
@@ -172,16 +168,8 @@ public class HikingServiceImpl implements HikingService {
         final MemberHiking savedMemberHiking = memberHikingRepository.save(memberHiking);
         final MemberHikingGps savedMemberHikingGps = memberHikingGpsRepository.save(memberHikingGps);
 
-        // MemberHikingStatistic 업데이트
-        MemberHikingStatistic memberHikingStatistic = memberHikingStatisticRepository.findById(member.getId())
-                .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_HIKING_STATISTIC_NOT_FOUND));
-        log.info("memberHikingStatistic : {}", memberHikingStatistic);
-        memberHikingStatistic.updateMemberHikingStatistic(member, memberHikingStatistic.getTotalHikingCount() + 1,
-                memberHikingStatistic.getTotalMountainCount() + 1,
-                memberHikingStatistic.getTotalDuration() + savedMemberHiking.getTotalDuration(),
-                memberHikingStatistic.getTotalDistance() + savedMemberHiking.getTotalDistance(),
-                memberHikingStatistic.getTotalAlt() + savedMemberHiking.getTotalAlt());
-        log.info("memberHikingStatistic : {}", memberHikingStatistic);
+
+
         return savedMemberHiking.getId();
     }
 
