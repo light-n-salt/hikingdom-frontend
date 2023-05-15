@@ -1,0 +1,18 @@
+@use 'src/styles/colors' as *;
+
+.profile {
+  gap: 1rem;
+}
+
+.alarm {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
+}
+
+.title {
+  align-self: flex-start;
+  color: clr(primary-clr);
+  font-size: 1.2rem;
+  font-weight: bold;
+}

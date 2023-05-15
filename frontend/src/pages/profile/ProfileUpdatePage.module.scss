@@ -1,0 +1,11 @@
+@use 'src/styles/colors' as *;
+
+.profile {
+  gap: 0.8rem;
+}
+
+.signout {
+  align-self: flex-start;
+  margin: 1rem;
+  color: clr(red-clr);
+}

@@ -1,0 +1,9 @@
+@use 'src/styles/colors' as *;
+
+.password {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 3rem;
+  padding-top: 2rem;
+}

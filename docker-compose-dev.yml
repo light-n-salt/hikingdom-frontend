@@ -1,0 +1,99 @@
+version: "3.9"
+
+services:
+  dev-frontend:
+    container_name: dev-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3001:3000
+    networks:
+      - dev_hikingdom_net
+        
+  dev-backend-discovery:
+    container_name: dev-backend-discovery
+    build:
+      context: ./backend/discovery
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: dev
+    ports:
+      - 6472:8761
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      - dev_hikingdom_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  dev-backend-service:
+    container_name: dev-backend-service
+    build:
+      context: ./backend/service
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: dev
+    ports:
+      - 9001:8080
+    environment:
+      - TZ=Asia/Seoul
+      - EUREKA_SERVER=dev-backend-discovery
+    networks:
+      - dev_hikingdom_net
+    depends_on:
+      dev-backend-discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/members/auth/health-check"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  dev-backend-chat:
+    container_name: dev-backend-chat
+    build:
+      context: ./backend/chat
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: dev
+    ports:
+      - 9002:8080
+    environment:
+      - TZ=Asia/Seoul
+      - EUREKA_SERVER=dev-backend-discovery
+    networks:
+      - dev_hikingdom_net
+    depends_on:
+      dev-backend-discovery:
+        condition: service_healthy
+
+  dev-backend-gateway:
+    container_name: dev-backend-gateway
+    build:
+      context: ./backend/gateway
+      dockerfile: Dockerfile
+      args:
+        SERVER_MODE: dev
+    ports:
+      - 8081:8080
+    environment:
+      - TZ=Asia/Seoul
+      - EUREKA_SERVER=dev-backend-discovery
+    networks:
+      - dev_hikingdom_net
+    depends_on:
+      dev-backend-discovery:
+        condition: service_healthy
+      dev-backend-service:
+        condition: service_healthy
+        
+networks:
+  dev_hikingdom_net:
+    driver: bridge
+

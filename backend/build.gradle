@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.11'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'org.lightnsalt'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+subprojects {
+    group 'org.lightnsalt'
+
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 11
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    ext {
+        set('springCloudVersion', "2021.0.4")
+    }
+}
+
+project(':common') {
+    dependencies {
+        implementation project(':domain')
+    }
+}
+
+project(':service') {
+    dependencies {
+        implementation project(':domain')
+        implementation project(':common')
+    }
+}
+
+project(':batch') {
+    dependencies {
+        implementation project(':domain')
+    }
+}
+
+project(':chat') {
+    dependencies {
+        implementation project(':domain')
+        implementation project(':common')
+    }
+}

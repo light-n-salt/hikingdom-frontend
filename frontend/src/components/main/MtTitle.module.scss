@@ -1,0 +1,49 @@
+@use 'src/styles/colors' as *;
+
+.mttitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 90%;
+  padding: 1.5rem 1rem 1rem;
+  gap: 1.2rem;
+}
+
+.title {
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bold {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.text {
+  font-size: 0.9rem;
+}
+
+.border {
+  font-size: 2rem;
+  color: clr(gray-clr, light);
+}
+
+.img {
+  width: 3rem;
+  height: 3rem;
+}

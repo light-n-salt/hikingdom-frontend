@@ -1,0 +1,46 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.label {
+  margin: 0 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: clr(tertiary-clr);
+}
+
+.textarea {
+  overflow-y: auto;
+  width: 100%;
+  padding: 0.5rem;
+  border: 3px solid clr(secondary-clr);
+  border-radius: 0.5rem;
+  background-color: clr(white-clr, light);
+  font-size: 1rem;
+
+  &.sm {
+    min-height: 10rem;
+  }
+
+  &.md {
+    min-height: 15rem;
+  }
+
+  &.lg {
+    min-height: 20rem;
+  }
+}
+
+.textarea::placeholder {
+  color: transparentize(clr(gray-clr, light), 0.4);
+}
+
+.textarea:focus {
+  box-shadow: 0 0 2px 2px clr(lime-clr, light); /* 선택된 요소 주변에 블러 효과 적용 */
+}

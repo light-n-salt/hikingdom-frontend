@@ -1,0 +1,22 @@
+@use 'src/styles/colors' as *;
+
+.intro {
+  position: relative;
+}
+
+.title {
+  position: absolute;
+  top: -1rem;
+  left: 1rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.2rem;
+  background-color: clr(secondary-clr);
+  color: clr(primary-clr);
+  font-weight: bold;
+}
+
+.content {
+  width: 100%;
+  height: 7rem;
+  padding: 1rem;
+}
