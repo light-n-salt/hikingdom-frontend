@@ -31,7 +31,9 @@ import org.lightnsalt.hikingdom.service.info.repository.MountainInfoRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.lightnsalt.hikingdom.service.notification.dto.NotificationAddReq;
+import org.lightnsalt.hikingdom.service.notification.dto.event.CreateMeetupNotificationEvent;
 import org.lightnsalt.hikingdom.service.notification.service.NotificationService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +53,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	private final MemberRepository memberRepository;
 	private final ClubMemberRepository clubMemberRepository;
 	private final NotificationService notificationService;
+	private final ApplicationEventPublisher eventPublisher;
 
 	@Override
 	@Transactional
@@ -86,14 +89,12 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 
 		meetupMemberRepository.save(meetupMember);
 
-		// 일정 생성 완료 알림 (일정 생성자만)
-		createMeetupNotification(member, LocalDateTime.parse(req.getStartAt() + ":00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-		// 모임 멤버들에 대한 알림 추가
-		clubMemberRepository.findByClubId(clubId)
-				.stream()
-				.filter(cm -> !cm.getMember().getId().equals(member.getId()))	// 일정 생성자 제외
-				.forEach(cm -> createMeetupNotification(cm.getMember(), member, meetup.getStartAt()));
+		// 비동기 알림
+		eventPublisher.publishEvent(new CreateMeetupNotificationEvent(
+				clubMemberRepository.findByClubId(clubId),
+				member,
+				savedMeetup.getStartAt()
+		));
 
 		return savedMeetup.getId();
 	}
@@ -220,27 +221,5 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 			.collect(Collectors.toList());
 
 		return new MeetupDetailRes(meetup, totalMember, isJoin, memberInfos, photoInfos, reviewInfos);
-	}
-
-	private void createMeetupNotification(Member member, LocalDateTime startAt){
-		String meetupDate = startAt.format(DateTimeFormatter.ofPattern("MM월 dd일"));
-		NotificationAddReq notificationAddReq = NotificationAddReq.builder()
-				.member(member)
-				.title(meetupDate + " 일정이 생성되었습니다.")
-				.body("새로운 일정이 생성되었습니다.")
-				.sendAt(LocalDateTime.now())
-				.build();
-		notificationService.addNotification(notificationAddReq);
-	}
-
-	void createMeetupNotification(Member member, Member host, LocalDateTime startAt) {
-		String meetupDate = startAt.format(DateTimeFormatter.ofPattern("MM월 dd일"));
-		NotificationAddReq notificationAddReq = NotificationAddReq.builder()
-				.member(member)
-				.title("일정이 추가되었습니다. 참여해보세요!")
-				.body(host.getNickname() + "님이 "+ meetupDate +" 새로운 일정을 추가하셨습니다.")
-				.sendAt(LocalDateTime.now())
-				.build();
-		notificationService.addNotification(notificationAddReq);
 	}
 }
