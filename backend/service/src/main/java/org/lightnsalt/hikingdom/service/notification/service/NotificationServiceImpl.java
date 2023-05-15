@@ -33,7 +33,6 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     @Override
     public Long addNotification(NotificationAddReq notificationAddReq) {
-        log.info("addNotification: {}", notificationAddReq.toString());
         Notification notification = Notification.builder()
                 .member(notificationAddReq.getMember())
                 .title(notificationAddReq.getTitle())
