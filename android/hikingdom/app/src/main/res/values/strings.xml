@@ -39,7 +39,7 @@
     <string name="hiking_start">하이킹 시작</string>
 
     <!-- mountain list item -->
-    <string name="list_item_alt">높이</string>
+    <string name="mountain_item_alt">높이</string>
     <string name="list_item_location">위치</string>
     <string name="desc_alt_icon">높이 3D 아이콘</string>
     <string name="desc_location_icon">위치 3D 아이콘</string>
@@ -47,5 +47,16 @@
     <string name="list_item_dummy_alt">594</string>
     <string name="list_item_dummy_format">m</string>
     <string name="list_item_dummy_location">서울시 노원구 중계동</string>
+
+    <!--  meetup list item  -->
+    <string name="meetup_item_name">도봉산 정복 가즈아</string>
+    <string name="meetup_item_member_count">5</string>
+    <string name="meetup_item_format_person">명</string>
+    <string name="meetup_item_mountain">도봉산</string>
+    <string name="meetup_item_start">14:00</string>
+    <string name="desc_ic_person">사람 3D 아이콘</string>
+    <string name="desc_ic_mountain">산 3D 아이콘</string>
+    <string name="desc_ic_click">시계 3D 아이콘</string>
+
 
 </resources>
