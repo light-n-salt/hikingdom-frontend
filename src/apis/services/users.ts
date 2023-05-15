@@ -87,10 +87,8 @@ export function login(email: string, password: string) {
       const refreshToekn = res.data.result.refreshToken
       localStorage.setItem('accessToken', accessToken)
       localStorage.setItem('refreshToken', refreshToekn)
-      console.log(1)
       // @ts-expect-error
       if (window.Kotlin) {
-        console.log(2)
         // @ts-expect-error
         window.Kotlin.saveToken(accessToken, refreshToekn)
       }

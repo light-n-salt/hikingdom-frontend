@@ -169,18 +169,18 @@ function ClubChatPage() {
   return (
     <div className={`page p-sm ${theme} mobile `}>
       <PageHeader title={clubInfo?.clubName} url={`/club/main`} />
-      <div className={styles.content}>
-        {!members || !chatList ? (
+      {!members || !chatList ? (
+        <div className={styles.content}>
           <Loading />
-        ) : (
-          <ChatList
-            ref1={infiniteRef}
-            trigger={trigger}
-            chats={chatList}
-            members={members}
-          />
-        )}
-      </div>
+        </div>
+      ) : (
+        <ChatList
+          ref1={infiniteRef}
+          trigger={trigger}
+          chats={chatList}
+          members={members}
+        />
+      )}
       <TextSendBar
         placeholder="내용을 입력해주세요"
         content={message}
