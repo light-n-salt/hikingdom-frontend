@@ -16,12 +16,6 @@ class HomeFragment(): BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inf
         webViewSetting(activityContext, binding.homeWebview, HOME_WEB_URL)
     }
 
-    override fun onResume() {
-        super.onResume()
-        var refreshToken = getRefreshToken() // sharedPreference에서 refresh token 가져오기
-        binding.homeWebview.evaluateJavascript("saveRefreshToken('$refreshToken')", null)
-    }
-
     companion object {
         fun newInstance(): HomeFragment = HomeFragment()
     }
