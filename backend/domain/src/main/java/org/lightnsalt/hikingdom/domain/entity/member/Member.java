@@ -19,6 +19,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import org.lightnsalt.hikingdom.domain.entity.notification.MemberFcmToken;
 
 @Entity
@@ -74,7 +75,8 @@ public class Member extends BaseTimeEntity {
 
 	@Builder
 	public Member(MemberLevelInfo level, String email, String password, String nickname, String profileUrl,
-		LocalDateTime withdrawAt, boolean isWithdraw, MemberRoleType role, MemberHikingStatistic hikingStatistic) {
+		LocalDateTime withdrawAt, boolean isWithdraw, MemberRoleType role, MemberHikingStatistic hikingStatistic,
+		List<MemberFcmToken> memberFcmTokens) {
 		this.level = level;
 		this.email = email;
 		this.password = password;
@@ -84,5 +86,6 @@ public class Member extends BaseTimeEntity {
 		this.isWithdraw = isWithdraw;
 		this.role = role;
 		this.hikingStatistic = hikingStatistic;
+		this.memberFcmTokens = memberFcmTokens;
 	}
 }
