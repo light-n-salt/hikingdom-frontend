@@ -20,7 +20,7 @@ export interface MtInfoDetail extends MtInfo {
   totalDuration: number
   peaks: string
   description: string
-  asset?: MtAssetInfo[]
+  assets: MtAssetInfo[]
 }
 
 // 에셋 정보
