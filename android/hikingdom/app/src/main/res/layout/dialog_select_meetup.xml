@@ -45,7 +45,7 @@
 
             <RadioButton
                 android:id="@+id/radiobutton_polish"
-                style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
+                android:theme="@style/CustomRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
