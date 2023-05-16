@@ -33,8 +33,8 @@ public class CreateClubAssetNotificationEventListener {
 
     private void createClubAssetNotification(List<ClubMember> clubMemberList, AssetInfo assetInfo, String url){ // 소모임 일정 중 한명이라도 산을 완등하여 소모임 에셋 생성이 완료되었다는 것을 알림 (알림 DB insert, fcm 푸시알림 전송)
         NotificationAddReq notificationAddReq = NotificationAddReq.builder()
-            .title("에셋이 발급되었습니다")
-            .body("소속 소모임에 ["+assetInfo.getName() + "] 이 발급되었습니다! 확인해보세요")
+            .title("에셋을 획득하셨습니다!")
+            .body("소속 소모임이 ["+assetInfo.getName() + "]을 획득했습니다! 확인해보세요")
             .sendAt(LocalDateTime.now())
             .url(url)
             .build();
