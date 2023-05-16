@@ -36,7 +36,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   // 그룹 일정 상세보기로 이동하는 함수
   const onClickGroup = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation() // 부모 이벤트 버블링 방지
-    navigate(`/club/${userInfo?.clubId}/meetup/${hiking.meetupId}/detail`)
+    navigate(`/club/meetup/${hiking.meetupId}/detail`)
   }
 
   return (
@@ -79,7 +79,11 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
           />
         </div>
         <div>
-          <IconText imgSrc={time} text={convertToTime(hiking.totalDuration)} size="sm" />
+          <IconText
+            imgSrc={time}
+            text={convertToTime(hiking.totalDuration)}
+            size="sm"
+          />
           <IconText
             imgSrc={distance}
             text={convertToKm(hiking.totalDistance) + 'km'}

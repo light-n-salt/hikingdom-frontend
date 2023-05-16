@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './PhotoModal.module.scss'
-import { useParams } from 'react-router-dom'
 import toast from 'components/common/Toast'
 
 import { Album } from 'types/club.interface'
@@ -10,6 +9,8 @@ import { report } from 'apis/services/users'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteAlbum } from 'apis/services/clubs'
 
+import useUserQuery from 'hooks/useUserQuery'
+
 type PhotoModalProps = {
   photo: Album
   setState: (isOpen: boolean) => void
@@ -17,12 +18,10 @@ type PhotoModalProps = {
 
 function PhotoModal({ photo, setState }: PhotoModalProps) {
   const queryClient = useQueryClient()
-  const { clubId } = useParams() as {
-    clubId: string
-  }
+  const { data: userInfo } = useUserQuery()
 
   const onClickDelete = useMutation(
-    () => deleteAlbum(parseInt(clubId), photo.photoId),
+    () => deleteAlbum(Number(userInfo?.clubId), photo.photoId),
     {
       onSuccess: () => {
         // 모임 앨범, 일정 앨범 query key 모두 무효화

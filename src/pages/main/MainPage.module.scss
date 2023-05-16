@@ -17,7 +17,7 @@
 
 @for $i from 1 through 3 {
   .container > div:nth-child(#{$i}) {
-    @include animation-slide-in-up(normal, 40%, #{($i - 1) * 0.2}s);
+    @include animation-slide-in-up(normal, 10%, #{($i - 1) * 0.2}s);
   }
 }
 
