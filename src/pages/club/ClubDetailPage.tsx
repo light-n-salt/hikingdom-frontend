@@ -30,7 +30,7 @@ function ClubDetailPage() {
 
   function onClickJoinClub() {
     postJoinClub(clubId)
-      .then(() => toast.addMessage('success', '가입이 신청되었습니다.'))
+      .then(() => toast.addMessage('success', '가입신청이 완료되었습니다'))
       .catch((err) => toast.addMessage('error', `${err.data.message}`))
   }
 
