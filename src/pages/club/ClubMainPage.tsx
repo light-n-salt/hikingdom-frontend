@@ -6,13 +6,12 @@ import { getClubInfo } from 'apis/services/clubs'
 import { deleteClub } from 'apis/services/clubs'
 import { useQuery } from '@tanstack/react-query'
 import { ClubDetailInfo } from 'types/club.interface'
-import clubmountain from 'assets/images/clubmountain.png'
 import Modal from 'components/common/Modal'
 import Toast from 'components/common/Toast'
 import Loading from 'components/common/Loading'
-import SearchBar from 'components/common/SearchBar'
 import TextButton from 'components/common/TextButton'
 import DeleteModal from 'components/club/DeleteModal'
+import SearchClubMt from 'components/club/SearchClubMt'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 import useUserQuery from 'hooks/useUserQuery'
@@ -21,12 +20,7 @@ function ClubMainPage() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
 
-  const [value, setValue] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-
-  function onChangeSetValue(event: React.ChangeEvent<HTMLInputElement>) {
-    setValue(event.target.value)
-  }
 
   const { data: userInfo } = useUserQuery()
   const clubId = userInfo?.clubId
@@ -70,13 +64,8 @@ function ClubMainPage() {
         />
         <div className={styles.intro}>
           <MeetupIntroduction content={clubInfo.description} />
-          <SearchBar
-            value={value}
-            placeholder="등산했던 산을 검색해보세요"
-            onChange={onChangeSetValue}
-          />
         </div>
-        <img src={clubmountain} className={styles.image} />
+        <SearchClubMt assetInfo={clubInfo.asset} />
         <div className={styles.button}>
           <TextButton
             text="모임탈퇴"

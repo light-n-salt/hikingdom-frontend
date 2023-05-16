@@ -65,7 +65,7 @@ function ClubDetailPage() {
         <MeetupIntroduction content={clubInfo.description} />
       </div>
       {/* <img src={clubmountain} className={styles.image} /> */}
-      <ClubMoutain />
+      <ClubMoutain zoom={3} />
     </div>
   ) : (
     <Loading />
