@@ -9,14 +9,12 @@ import Button from 'components/common/Button'
 const MAX_FILE_SIZE = 1024 * 1024 // 1MB 이하 사진만 업로드
 
 type AlbumModalProps = {
+  clubId: number | undefined
   setIsOpen: () => void
 }
 
-function AlbumModal({ setIsOpen }: AlbumModalProps) {
-  const { clubId, meetupId } = useParams() as {
-    clubId: string
-    meetupId: string
-  }
+function AlbumModal({ setIsOpen, clubId }: AlbumModalProps) {
+  const { meetupId } = useParams() as { meetupId: string }
   const [files, setFiles] = useState<string[] | undefined>()
   const albumRef = useRef<HTMLInputElement>(null)
   const queryClient = useQueryClient()
@@ -38,7 +36,7 @@ function AlbumModal({ setIsOpen }: AlbumModalProps) {
   // 사진 업로드하기
   const { mutate } = useMutation(
     (formData: FormData) =>
-      updateMeetupAlbum(parseInt(clubId), parseInt(meetupId), formData),
+      updateMeetupAlbum(Number(clubId), Number(meetupId), formData),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['meetupPhotos'])
