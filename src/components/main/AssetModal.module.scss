@@ -1,0 +1,39 @@
+@use 'src/styles/colors' as *;
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  padding-bottom: 3rem;
+
+  > div:first-child {
+    align-self: flex-end;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.title {
+  text-align: center;
+  width: 100%;
+  padding-bottom: 1rem;
+  border-bottom: 0.2rem solid clr(secondary-clr);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.condition {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.description {
+  font-weight: normal;
+}
