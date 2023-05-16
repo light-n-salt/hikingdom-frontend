@@ -27,7 +27,6 @@ function MeetupAlbum() {
   }
 
   const { data: userInfo } = useUserQuery()
-  const clubId = userInfo?.clubId
   const [isOpen, setIsOpen] = useState(false) // 선택한 사진 모달 on/off
   const [photo, setPhoto] = useState<Album>() // 선택한 사진
   const [isAlbumOpen, setIsAlbumOpen] = useState(false) // 사진 업데이트 모달
@@ -37,14 +36,19 @@ function MeetupAlbum() {
     useInfiniteQuery<InfiniteAlbumInfo>({
       queryKey: ['meetupPhotos'],
       queryFn: ({ pageParam = null }) => {
-        return getMeetupAlbum(clubId || 0, parseInt(meetupId), pageParam, 5)
+        return getMeetupAlbum(
+          Number(userInfo?.clubId),
+          Number(meetupId),
+          pageParam,
+          5
+        )
       },
       getNextPageParam: (lastPage) => {
         return lastPage.hasNext
           ? lastPage.content.slice(-1)[0].photoId
           : undefined
       },
-      enabled: !!clubId,
+      enabled: !!userInfo,
     })
 
   const photoInfo = useMemo(() => {
@@ -69,11 +73,16 @@ function MeetupAlbum() {
 
   return (
     <div className={styles.album}>
+      {/* 사진 등록 모달 */}
       {isAlbumOpen && (
         <Modal onClick={() => setIsAlbumOpen(false)}>
-          <AlbumModal setIsOpen={() => setIsAlbumOpen(false)} />
+          <AlbumModal
+            clubId={userInfo?.clubId}
+            setIsOpen={() => setIsAlbumOpen(false)}
+          />
         </Modal>
       )}
+      {/* 사진 상세보기 모달 */}
       {isOpen && (
         <Modal onClick={() => setIsOpen}>
           {photo && <PhotoModal photo={photo} setState={setIsOpen} />}
