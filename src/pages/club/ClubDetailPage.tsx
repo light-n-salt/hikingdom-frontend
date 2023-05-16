@@ -15,7 +15,7 @@ import Loading from 'components/common/Loading'
 import PageHeader from 'components/common/PageHeader'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
-import ClubMoutain from 'components/club/ClubMoutain'
+import ClubMountain from 'components/club/ClubMountain'
 
 function ClubDetailPage() {
   const { theme } = useContext(ThemeContext)
@@ -65,7 +65,7 @@ function ClubDetailPage() {
       <div className={styles.intro}>
         <MeetupIntroduction content={clubInfo.description} />
       </div>
-      <ClubMoutain zoom={3} assetInfo={assetArray}/>
+      <ClubMountain zoom={3} assetInfo={assetArray}/>
     </div>
   ) : (
     <Loading />

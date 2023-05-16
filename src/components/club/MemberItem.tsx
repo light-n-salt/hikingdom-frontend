@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import styles from './MemberItem.module.scss'
 import Image from 'components/common/Image'
 import Button from 'components/common/Button'
@@ -18,11 +19,12 @@ function MemberItem({
   onClickJoin,
   onClickDelete,
 }: MemberItemProps) {
+  const navigate = useNavigate()
   const imgSrc = LEVEL_TO_IMG[memberInfo.level]
 
   return (
     <div className={styles.container}>
-      <div className={styles.user}>
+      <div className={styles.user} onClick={() => navigate(`/profile/${memberInfo.nickname}`)}>
         <Image imgUrl={memberInfo.profileUrl} size="sm" isSquare={true} />
         <div className={styles.username}>
           <span>{memberInfo.nickname}</span>
