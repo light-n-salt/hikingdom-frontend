@@ -14,7 +14,7 @@ import MtList from 'components/common/MtList'
 import IconText from 'components/common/IconText'
 import RankList from 'components/common/RankList'
 import Loading from 'components/common/Loading'
-import ClubMoutain from 'components/club/ClubMoutain'
+import ClubMountain from 'components/club/ClubMountain'
 import { untilMidnight } from 'utils/untilMidnight'
 import { getPosition } from 'utils/getPosition'
 
@@ -97,7 +97,7 @@ function MainPage() {
               size="sm"
               isBold={true}
             />
-            <ClubMoutain zoom={5} assetInfo={assetArray}/>
+            <ClubMountain zoom={5} assetInfo={assetArray}/>
           </div>
         </div>
       )}

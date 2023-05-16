@@ -11,7 +11,7 @@ export function getPosition(arr: any[], filter?: string) {
   const uniqueNameList = new Set(); // 중복된 name 값을 제거하기 위한 Set 객체
 
   arr[0].position = new THREE.Vector3(0, 0, 0);
-  uniqueNameList.add("전체")
+  // uniqueNameList.add("전체")
 
   while (idx < n) {
     for (const [dx, dz] of [[1, 0], [0, 1], [-1, 0], [0, -1]]) {
