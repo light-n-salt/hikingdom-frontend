@@ -77,7 +77,7 @@ services:
       context: ./backend/hiking
       dockerfile: Dockerfile
     ports:
-      - 8003:8080
+      - 8003:3000
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=main-backend-discovery
     networks:
