@@ -5,17 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
-import org.lightnsalt.hikingdom.service.hiking.dto.response.TodayMeetupRes;
-import org.lightnsalt.hikingdom.service.info.dto.response.MountainDetailRes;
-import org.lightnsalt.hikingdom.service.notification.dto.NotificationRes;
+import org.lightnsalt.hikingdom.service.notification.dto.response.NotificationRes;
 import org.lightnsalt.hikingdom.service.notification.service.NotificationService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Slf4j
