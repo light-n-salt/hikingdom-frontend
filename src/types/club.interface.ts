@@ -25,8 +25,8 @@ export interface AssetInfo {
   mountainName?: string | undefined
   meetupId?: number | undefined
   assetUrl: string
-  row: number
-  column: number
+  row?: number
+  column?: number
 }
 
 // 오늘의 모임 산
@@ -44,7 +44,7 @@ export interface ClubDetailInfo {
   totalDistance: number
   totalAlt: number
   description: string
-  asset: AssetInfo[]
+  assets: AssetInfo[]
 }
 
 // 소모임 멤버
