@@ -10,12 +10,10 @@ import lombok.Getter;
 @Getter
 public class CreateClubAssetNotificationEvent {
 	private final List<ClubMember> clubMemberList;
-	private final Long meetupId;
 	private final AssetInfo assetInfo;
 
-	public CreateClubAssetNotificationEvent(List<ClubMember> clubMemberList, Long meetupId, AssetInfo assetInfo) {
+	public CreateClubAssetNotificationEvent(List<ClubMember> clubMemberList, AssetInfo assetInfo) {
 		this.clubMemberList = clubMemberList;
-		this.meetupId = meetupId;
 		this.assetInfo = assetInfo;
 	}
 }
