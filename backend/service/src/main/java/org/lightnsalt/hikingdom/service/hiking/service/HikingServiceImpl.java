@@ -9,13 +9,19 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
+import org.lightnsalt.hikingdom.domain.entity.club.Club;
+import org.lightnsalt.hikingdom.domain.entity.club.ClubAsset;
+import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHiking;
 import org.lightnsalt.hikingdom.domain.entity.hiking.MemberHikingGps;
+import org.lightnsalt.hikingdom.domain.entity.info.AssetInfo;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.member.MemberHikingStatistic;
 import org.lightnsalt.hikingdom.domain.entity.member.MemberLevelInfo;
+import org.lightnsalt.hikingdom.service.club.repository.ClubAssetRepository;
+import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
@@ -25,6 +31,7 @@ import org.lightnsalt.hikingdom.service.hiking.dto.response.TodayMeetupRes;
 import org.lightnsalt.hikingdom.service.hiking.repository.HikingRepositoryCustom;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingGpsRepository;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
+import org.lightnsalt.hikingdom.service.info.repository.AssetInfoRepository;
 import org.lightnsalt.hikingdom.service.info.repository.MountainInfoRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberLevelInfoRepository;
@@ -56,6 +63,9 @@ public class HikingServiceImpl implements HikingService {
     private final MountainInfoRepository mountainInfoRepository;
     private final MemberHikingStatisticRepository memberHikingStatisticRepository;
     private final MemberLevelInfoRepository memberLevelInfoRepository;
+    private final ClubMemberRepository clubMemberRepository;
+    private final ClubAssetRepository clubAssetRepository;
+    private final AssetInfoRepository assetInfoRepository;
 
 //    @Override
 //    @Transactional
@@ -119,10 +129,20 @@ public class HikingServiceImpl implements HikingService {
 
         Meetup meetup;
         MemberHiking memberHiking;
-        if(hikingRecordReq.getIsMeetup()){
+        // 개인 등산인지 소모임 일정 등산인지 확인
+        if(hikingRecordReq.getIsMeetup()){  // 소모임 일정 등산
             meetup = meetupRepository.findById(hikingRecordReq.getMeetupId())
                     .orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
-            memberHiking = MemberHiking.builder()
+
+            // 개인 등산이 아닌 소모임 일정 등산일 경우, 소모임 통계 및 소모임 asset 업데이트
+            // 속한 소모임이 있는지 체크
+            ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
+                .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_HAS_NO_CLUBS));
+
+            // 사용자가 속해있는 소모임과 request로 들어온 소모임이 일치하는지 체크
+            Club club = meetup.getClub(); // request로 들어온 소모임
+            if(clubMember.getClub().getId() == club.getId()){
+                memberHiking = MemberHiking.builder()
                     .member(member)
                     .mountain(mountainInfo)
                     .meetup(meetup)
@@ -134,7 +154,35 @@ public class HikingServiceImpl implements HikingService {
                     .totalAlt((long) hikingRecordReq.getMaxAlt())
                     .isSummit(hikingRecordReq.getIsSummit())
                     .build();
-        }else{
+
+                if(hikingRecordReq.getIsSummit()){  // 완등 시
+                    // ClubTotalHikingStatistic 업데이트
+
+
+                    // ClubAsset 업데이트
+                    ClubAsset clubAsset = clubAssetRepository.findByMeetupId(hikingRecordReq.getMeetupId());
+                    if(clubAsset == null) {
+                        AssetInfo assetInfo = assetInfoRepository.findByMountainId(mountainInfo.getId());
+                        if(assetInfo != null){
+                            clubAssetRepository.save(ClubAsset.builder()
+                                .club(club)
+                                .asset(assetInfo)
+                                .meetup(meetup)
+                                .build());
+                        }else{
+                            throw new GlobalException(ErrorCode.ASSET_NOT_FOUND);
+                        }
+                    }else{
+                        // 이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우 PASS
+                        log.info("이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우");
+                    }
+                }
+
+            } else{
+                throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
+            }
+
+        }else{  // 개인 등산일 경우
             memberHiking = MemberHiking.builder()
                     .member(member)
                     .mountain(mountainInfo)
@@ -184,8 +232,6 @@ public class HikingServiceImpl implements HikingService {
                 memberHikingStatistic.getTotalDistance() + savedMemberHiking.getTotalDistance(),
                 memberHikingStatistic.getTotalAlt() + savedMemberHiking.getTotalAlt());
 //        log.info("memberHikingStatistic : {}", memberHikingStatistic);
-
-        // ClubTotalHikingStatistic 업데이트
 
 
         // Level 업데이트
