@@ -1,0 +1,83 @@
+package org.lightnsalt.hikingdom.service.notification.service;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
+import org.lightnsalt.hikingdom.domain.entity.info.AssetInfo;
+import org.lightnsalt.hikingdom.domain.entity.member.Member;
+import org.lightnsalt.hikingdom.service.notification.dto.event.CreateClubAssetNotificationEvent;
+import org.lightnsalt.hikingdom.service.notification.dto.event.CreateMeetupNotificationEvent;
+import org.lightnsalt.hikingdom.service.notification.dto.request.NotificationAddReq;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+
+@Component
+@Async("createClubAssetNotification")
+@Transactional
+@RequiredArgsConstructor
+public class CreateClubAssetNotificationEventListener {
+    private final NotificationService notificationService;
+
+    @EventListener
+    public void handleCreateMeetupNotificationEvent(CreateClubAssetNotificationEvent event) {
+
+        final List<ClubMember> clubMemberList = event.getClubMemberList();
+        final AssetInfo assetInfo = event.getAssetInfo();
+        String url = "/club/main";
+
+        createMeetupHostNotification(host, meetupDate, url);     // 일정을 생성한 호스트에게 생성이 완료되었다는 것을 알림 (알림 DB insert, fcm 푸시알림 전송)
+        createMeetupClubMembersNotification(clubMemberList, host, meetupDate, url);  // 일정을 생성한 호스트가 속한 클럽의 멤버들에게 생성이 완료되었다는 것을 알림 (알림 DB insert, fcm 푸시알림 전송)
+    }
+
+    private void createMeetupHostNotification(Member host, String meetupDate, String url){    // 일정을 생성한 호스트에게 생성이 완료되었다는 것을 알림 (알림 DB insert, fcm 푸시알림 전송)
+        NotificationAddReq notificationAddReq = NotificationAddReq.builder()
+                .member(host)
+                .title(meetupDate + " 일정이 생성되었습니다.")
+                .body("새로운 일정이 생성되었습니다.")
+                .sendAt(LocalDateTime.now())
+                .url(url)
+                .build();
+        notificationService.addNotification(notificationAddReq);
+    }
+
+    private void createMeetupClubMembersNotification(List<ClubMember> clubMemberList, Member host, String meetupDate
+        , String url){ // 일정을 생성한 호스트가 속한 클럽의 멤버들에게 생성이 완료되었다는 것을 알림 (알림 DB insert, fcm 푸시알림 전송)
+        NotificationAddReq notificationAddReq = NotificationAddReq.builder()
+                .title("일정이 추가되었습니다. 참여해보세요!")
+                .body(host.getNickname() + "님이 "+ meetupDate +" 새로운 일정을 추가하셨습니다.")
+                .sendAt(LocalDateTime.now())
+                .url(url)
+                .build();
+
+        clubMemberList
+                .stream()
+                .filter(cm -> !cm.getMember().getId().equals(host.getId())) // 일정 생성자 제외
+                .forEach(cm -> {
+                    notificationAddReq.setMember(cm.getMember());
+                    notificationService.addNotification(notificationAddReq);
+                });
+    }
+
+    private void createMeetupNotification(AssetInfo assetInfo){ // 소모임 일정 중 한명이라도 산을 완등하여 소모임 에셋 생성이 완료되었다는 것을 알림 (알림 DB insert, fcm 푸시알림 전송)
+        NotificationAddReq notificationAddReq = NotificationAddReq.builder()
+            .title("에셋이 발급되었습니다")
+            .body(assetInfo.getName() + " 새로운 일정을 추가하셨습니다.")
+            .sendAt(LocalDateTime.now())
+            .url(url)
+            .build();
+
+        clubMemberList
+            .stream()
+            .filter(cm -> !cm.getMember().getId().equals(host.getId())) // 일정 생성자 제외
+            .forEach(cm -> {
+                notificationAddReq.setMember(cm.getMember());
+                notificationService.addNotification(notificationAddReq);
+            });
+    }
+}
