@@ -36,6 +36,9 @@ import org.lightnsalt.hikingdom.service.info.repository.MountainInfoRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberLevelInfoRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
+import org.lightnsalt.hikingdom.service.notification.dto.event.CreateClubAssetNotificationEvent;
+import org.lightnsalt.hikingdom.service.notification.dto.event.CreateMeetupNotificationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +69,7 @@ public class HikingServiceImpl implements HikingService {
     private final ClubMemberRepository clubMemberRepository;
     private final ClubAssetRepository clubAssetRepository;
     private final AssetInfoRepository assetInfoRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
 //    @Override
 //    @Transactional
@@ -161,7 +165,7 @@ public class HikingServiceImpl implements HikingService {
 
                     // ClubAsset 업데이트
                     ClubAsset clubAsset = clubAssetRepository.findByMeetupId(hikingRecordReq.getMeetupId());
-                    if(clubAsset == null) {
+                    if(clubAsset == null) { // clubAsset이 없으면 이 데이터는 이 일정에서 처음으로 완등한 데이터임. clubAsset 생성
                         AssetInfo assetInfo = assetInfoRepository.findByMountainId(mountainInfo.getId());
                         if(assetInfo != null){
                             clubAssetRepository.save(ClubAsset.builder()
@@ -169,6 +173,14 @@ public class HikingServiceImpl implements HikingService {
                                 .asset(assetInfo)
                                 .meetup(meetup)
                                 .build());
+
+                            // 비동기 알림
+                            eventPublisher.publishEvent(new CreateClubAssetNotificationEvent(
+                                clubMemberRepository.findByClubId(clubId),
+                                member,
+                                savedMeetup.getId(),
+                                savedMeetup.getStartAt()
+                            ));
                         }else{
                             throw new GlobalException(ErrorCode.ASSET_NOT_FOUND);
                         }
