@@ -8,9 +8,9 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.notification.Notification;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
-import org.lightnsalt.hikingdom.service.notification.dto.FCMNotificationReq;
-import org.lightnsalt.hikingdom.service.notification.dto.NotificationAddReq;
-import org.lightnsalt.hikingdom.service.notification.dto.NotificationRes;
+import org.lightnsalt.hikingdom.service.notification.dto.request.FCMNotificationReq;
+import org.lightnsalt.hikingdom.service.notification.dto.request.NotificationAddReq;
+import org.lightnsalt.hikingdom.service.notification.dto.response.NotificationRes;
 import org.lightnsalt.hikingdom.service.notification.repository.NotificationRepository;
 import org.lightnsalt.hikingdom.service.notification.repository.NotificationRepositoryCustom;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -38,6 +37,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .title(notificationAddReq.getTitle())
                 .body(notificationAddReq.getBody())
                 .sendAt(notificationAddReq.getSendAt())
+                .url(notificationAddReq.getUrl())
                 .isRead(false)
                 .build();
         final Notification savedNotification = notificationRepository.save(notification);
@@ -66,6 +66,7 @@ public class NotificationServiceImpl implements NotificationService {
                         notification.getTitle(),
                         notification.getBody(),
                         notification.getSendAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                        notification.getUrl(),
                         notification.isRead()
         )));
     }
