@@ -73,7 +73,13 @@ public enum ErrorCode {
 	MEMBER_HIKING_STATISTIC_NOT_FOUND(404, "HS001", "등산 통계가 존재하지 않습니다"),
 
 	// member level info related error codes
-	MEMBER_LEVEL_INFO_NOT_FOUND(404, "L001", "레벨 정보가 존재하지 않습니다");
+	MEMBER_LEVEL_INFO_NOT_FOUND(404, "L001", "레벨 정보가 존재하지 않습니다"),
+
+	// club member related error codes
+	MEMBER_HAS_NO_CLUBS(404, "CM001", "사용자가 속한 소모임이 없습니다"),
+
+	// asset related error codes
+	ASSET_NOT_FOUND(404, "A001", "Asset이 존재하지 않습니다");
 	private final int status;
 	private final String code;
 	private final String message;
