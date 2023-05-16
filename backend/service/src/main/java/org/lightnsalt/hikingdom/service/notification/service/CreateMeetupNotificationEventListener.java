@@ -1,19 +1,19 @@
 package org.lightnsalt.hikingdom.service.notification.service;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
-import org.lightnsalt.hikingdom.service.notification.dto.NotificationAddReq;
 import org.lightnsalt.hikingdom.service.notification.dto.event.CreateMeetupNotificationEvent;
-import org.lightnsalt.hikingdom.service.notification.repository.NotificationRepository;
+import org.lightnsalt.hikingdom.service.notification.dto.request.NotificationAddReq;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @Async("createMeetupNotification")
@@ -21,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CreateMeetupNotificationEventListener {
     private final NotificationService notificationService;
-    private final NotificationRepository notificationRepository;
 
     @EventListener
     public void handleCreateMeetupNotificationEvent(CreateMeetupNotificationEvent event) {
