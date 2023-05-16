@@ -1,5 +1,4 @@
 import React from 'react'
-
 import styles from './MemberItem.module.scss'
 import Image from 'components/common/Image'
 import Button from 'components/common/Button'
@@ -52,7 +51,10 @@ function MemberItem({
           </div>
         ) : (
           <>
-            <Info title="등산 시간" content={convertToTime(memberInfo.totalDuration)} />
+            <Info
+              title="등산 시간"
+              content={convertToTime(memberInfo.totalDuration)}
+            />
 
             <Info
               title="등산 횟수"
