@@ -176,10 +176,8 @@ public class HikingServiceImpl implements HikingService {
 
                             // 비동기 알림
                             eventPublisher.publishEvent(new CreateClubAssetNotificationEvent(
-                                clubMemberRepository.findByClubId(clubId),
-                                member,
-                                savedMeetup.getId(),
-                                savedMeetup.getStartAt()
+                                clubMemberRepository.findByClubId(club.getId()),
+                                assetInfo
                             ));
                         }else{
                             throw new GlobalException(ErrorCode.ASSET_NOT_FOUND);
