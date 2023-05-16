@@ -65,4 +65,5 @@ export interface UserAlarm {
   body: string
   sendAt: string
   isRead: boolean
+  url: string
 }

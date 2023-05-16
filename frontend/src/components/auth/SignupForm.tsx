@@ -104,7 +104,7 @@ function SignupForm() {
       return toast.addMessage('success', '모든 정보를 올바르게 기입해주세요')
     signup(email, nickname, password, checkPassword)
       .then(() => {
-        toast.addMessage('success', '회원가입에 성공했습니다!')
+        toast.addMessage('success', '회원가입에 성공했습니다')
         navigate('/login')
       })
       .catch((err) => {

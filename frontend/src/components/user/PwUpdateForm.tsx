@@ -46,12 +46,12 @@ function PwUpdateForm() {
     () => updatePw(password, newPassword, checkPassword),
     {
       onSuccess: () => {
-        toast.addMessage('success', '비밀번호가 변경되었습니다.')
+        toast.addMessage('success', '비밀번호가 변경되었습니다')
         navigate(`/profile/${userInfo?.nickname}`)
       },
       onError: (err: AxiosError) => {
         if (err.status === 401) {
-          toast.addMessage('error', '현재 비밀번호가 일치하지 않습니다.')
+          toast.addMessage('error', '현재 비밀번호가 일치하지 않습니다')
         }
       },
     }
@@ -59,11 +59,11 @@ function PwUpdateForm() {
 
   const onClickUpdate = () => {
     if (!isNewPwPass) {
-      toast.addMessage('error', '비밀번호 형식이 맞지 않습니다.')
+      toast.addMessage('error', '비밀번호 형식이 맞지 않습니다')
     }
 
     if (!isCheckPwPass) {
-      toast.addMessage('error', '새비밀번호가 일치하지 않습니다.')
+      toast.addMessage('error', '새비밀번호가 일치하지 않습니다')
       return
     }
 

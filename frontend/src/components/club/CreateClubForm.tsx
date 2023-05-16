@@ -89,7 +89,7 @@ function CreateClubForm() {
     }
     checkClubName(name)
       .then(() => {
-        toast.addMessage('success', '중복확인 되었습니다.')
+        toast.addMessage('success', '중복확인 되었습니다')
         setIsNamePass(true)
       })
       .catch((err) => {

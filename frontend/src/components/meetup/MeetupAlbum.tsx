@@ -12,6 +12,11 @@ import { getMeetupAlbum } from 'apis/services/meetup'
 import useInfiniteVerticalScroll from 'hooks/useInfiniteVerticalScroll'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
+import { displayValue } from '@tanstack/react-query-devtools/build/lib/utils'
+
+type MeetupAlbum = {
+  join: boolean
+}
 
 type InfiniteAlbumInfo = {
   content: Album[]
@@ -21,13 +26,12 @@ type InfiniteAlbumInfo = {
   pageSize: number
 }
 
-function MeetupAlbum() {
+function MeetupAlbum({ join }: MeetupAlbum) {
   const { meetupId } = useParams() as {
     meetupId: string
   }
 
   const { data: userInfo } = useUserQuery()
-  const clubId = userInfo?.clubId
   const [isOpen, setIsOpen] = useState(false) // 선택한 사진 모달 on/off
   const [photo, setPhoto] = useState<Album>() // 선택한 사진
   const [isAlbumOpen, setIsAlbumOpen] = useState(false) // 사진 업데이트 모달
@@ -37,14 +41,19 @@ function MeetupAlbum() {
     useInfiniteQuery<InfiniteAlbumInfo>({
       queryKey: ['meetupPhotos'],
       queryFn: ({ pageParam = null }) => {
-        return getMeetupAlbum(clubId || 0, parseInt(meetupId), pageParam, 5)
+        return getMeetupAlbum(
+          Number(userInfo?.clubId),
+          Number(meetupId),
+          pageParam,
+          5
+        )
       },
       getNextPageParam: (lastPage) => {
         return lastPage.hasNext
           ? lastPage.content.slice(-1)[0].photoId
           : undefined
       },
-      enabled: !!clubId,
+      enabled: !!userInfo,
     })
 
   const photoInfo = useMemo(() => {
@@ -69,11 +78,16 @@ function MeetupAlbum() {
 
   return (
     <div className={styles.album}>
+      {/* 사진 등록 모달 */}
       {isAlbumOpen && (
         <Modal onClick={() => setIsAlbumOpen(false)}>
-          <AlbumModal setIsOpen={() => setIsAlbumOpen(false)} />
+          <AlbumModal
+            clubId={userInfo?.clubId}
+            setIsOpen={() => setIsAlbumOpen(false)}
+          />
         </Modal>
       )}
+      {/* 사진 상세보기 모달 */}
       {isOpen && (
         <Modal onClick={() => setIsOpen}>
           {photo && <PhotoModal photo={photo} setState={setIsOpen} />}
@@ -81,23 +95,29 @@ function MeetupAlbum() {
       )}
       <div className={styles.titles}>
         <span className={styles.title}>추억</span>
-        <Button
-          text="추가"
-          color="primary"
-          size="xs"
-          onClick={() => setIsAlbumOpen(true)}
-        />
-      </div>
-      <div ref={infiniteRef} className={styles.photos}>
-        {photoInfo?.map((photo) => (
-          <img
-            key={photo.photoId}
-            src={photo.imgUrl}
-            className={styles.photo}
-            onClick={() => onClickOpenModal(photo.photoId)}
+        {join && (
+          <Button
+            text="추가"
+            color="primary"
+            size="xs"
+            onClick={() => setIsAlbumOpen(true)}
           />
-        ))}
+        )}
       </div>
+      {photoInfo.length ? (
+        <div ref={infiniteRef} className={styles.photos}>
+          {photoInfo?.map((photo) => (
+            <img
+              key={photo.photoId}
+              src={photo.imgUrl}
+              className={styles.photo}
+              onClick={() => onClickOpenModal(photo.photoId)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.blank}>등록된 사진이 없습니다</div>
+      )}
     </div>
   )
 }

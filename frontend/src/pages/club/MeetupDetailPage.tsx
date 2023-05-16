@@ -52,7 +52,7 @@ function MeetupDetailPage() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['reviews'])
-        toast.addMessage('success', '후기가 등록되었습니다.')
+        toast.addMessage('success', '후기가 등록되었습니다')
         setContent('')
       },
     }
@@ -85,26 +85,29 @@ function MeetupDetailPage() {
         title={meetup?.meetupName}
         url={`/club/meetup`}
         color="primary"
+        size="sm"
       />
       <MeetupDetail
         mountain={meetup?.mountainName}
-        date={meetup?.startAt.split(' ')[0]}
-        time={meetup?.startAt.split(' ')[1]}
+        date={meetup?.startAt.split(' ')[0].replaceAll('-', '.').slice(-8)}
+        time={meetup?.startAt.split(' ')[1].slice(0, 5)}
       />
       <div className={`page ${theme} ${styles.content}`}>
         <div className={styles.intro}>
           <MeetupIntroduction content={meetup?.description} />
         </div>
         <MeetupMembers />
-        <MeetupAlbum />
+        <MeetupAlbum join={meetup?.join} />
         {reviews && <MeetupReviewList reviewInfo={reviews} />}
       </div>
-      <TextSendBar
-        placeholder="후기를 입력해주세요"
-        content={content}
-        setContent={setContent}
-        onClick={() => onClickUpdateReview.mutate()}
-      />
+      {meetup?.join && (
+        <TextSendBar
+          placeholder="후기를 입력해주세요"
+          content={content}
+          setContent={setContent}
+          onClick={() => onClickUpdateReview.mutate()}
+        />
+      )}
       {userInfo?.memberId === meetup.meetupHostId ? (
         <Button
           text="삭제"

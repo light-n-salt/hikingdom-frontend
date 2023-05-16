@@ -1,8 +1,13 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/animations' as *;
 
 .page {
   gap: 1rem;
   padding-top: 0.5rem;
+
+  > div {
+    @include animation-slide-in-up(normal, 10%);
+  }
 }
 
 .intro {

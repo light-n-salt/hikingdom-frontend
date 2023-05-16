@@ -1,9 +1,14 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/animations' as *;
 
 .page {
   align-items: center;
   gap: 0.5rem;
   padding-top: 0.5rem;
+
+  > div {
+    @include animation-slide-in-up(normal, 10%);
+  }
 }
 
 // .title {

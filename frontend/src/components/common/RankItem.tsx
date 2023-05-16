@@ -71,7 +71,10 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
       <div className={`${styles.info} ${styles[size]}`}>
         <IconText imgSrc={person} text={totalMemeber} />
         <div className={styles.flexbox}>
-          <IconText imgSrc={hourglass} text={convertToTime(clubInfo.totalDuration)} />
+          <IconText
+            imgSrc={hourglass}
+            text={convertToTime(clubInfo.totalDuration)}
+          />
           <IconText imgSrc={shoe} text={totalDistance} />
         </div>
       </div>

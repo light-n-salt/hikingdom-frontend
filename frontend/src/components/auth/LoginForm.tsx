@@ -23,6 +23,7 @@ function LoginForm() {
     value: password,
     onChange: changePw,
     isPass: isPwPass,
+    condition: condition,
   } = useAuthInput({ type: 'password' }) // 사용자 인증 input 커스텀 훅
 
   // 로그인 api 요청
@@ -71,7 +72,7 @@ function LoginForm() {
             }
           }}
           isPass={isPwPass}
-          placeholder="비밀번호를 입력해주세요"
+          placeholder={condition}
           type="password"
         />
         <TextButton

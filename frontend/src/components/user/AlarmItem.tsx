@@ -1,13 +1,14 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './AlarmItem.module.scss'
-
+import { useNavigate } from 'react-router'
 import { UserAlarm } from 'types/user.interface'
 
 import { GoPrimitiveDot } from 'react-icons/go'
 
 function AlarmItem({ alarm }: { alarm: UserAlarm }) {
   const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
 
   // read, unread 구분
   const alarmStyle = alarm.isRead ? styles.read : styles.unread
@@ -20,8 +21,15 @@ function AlarmItem({ alarm }: { alarm: UserAlarm }) {
     time.length
   )}`
 
+  const onClick = () => {
+    navigate(alarm.url)
+  }
+
   return (
-    <div className={`content ${theme} ${styles.alarm} ${alarmStyle}`}>
+    <div
+      className={`content ${theme} ${styles.alarm} ${alarmStyle}`}
+      onClick={onClick}
+    >
       <div className={`${styles['alarm-title-box']}`}>
         <div className={`${styles.title} ${alarmStyle}`}>
           <GoPrimitiveDot className={styles.dot} />

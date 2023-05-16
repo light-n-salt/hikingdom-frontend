@@ -1,4 +1,6 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/animations' as *;
+@use 'src/styles/z-index' as *;
 
 .profile {
   position: relative;
@@ -36,6 +38,7 @@
 }
 
 .img {
+  @include z-index(content);
   display: flex;
   position: absolute;
   top: 1rem;
@@ -43,15 +46,16 @@
   width: fit-content;
   padding: 0.5rem;
   border-radius: 5rem;
-
   transform: translate(-50%, 0);
 }
+
 .record {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
   gap: 0.5rem;
+  @include animation-slide-in-up(normal, 10%);
 }
 
 .btns {
