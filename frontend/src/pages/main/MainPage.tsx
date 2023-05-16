@@ -3,19 +3,19 @@ import styles from './MainPage.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { getTodayMountains } from 'apis/services/mountains'
 import { getRanking, getTodayClubMt } from 'apis/services/clubs'
-import { MtInfo, TodayClubMt } from 'types/mt.interface'
+import { MtInfo } from 'types/mt.interface'
+import { TodayClubMt } from 'types/club.interface'
 import { ClubInfo } from 'types/club.interface'
 import { useQuery } from '@tanstack/react-query'
 import cloud from 'assets/images/cloud.png'
 import trophy from 'assets/images/trophy.png'
 import mountain from 'assets/images/mountain.png'
-import clubmountain from 'assets/images/clubmountain.png'
 import MtList from 'components/common/MtList'
 import IconText from 'components/common/IconText'
 import RankList from 'components/common/RankList'
 import Loading from 'components/common/Loading'
+import ClubMoutain from 'components/club/ClubMoutain'
 import { untilMidnight } from 'utils/untilMidnight'
-import { toDate } from 'date-fns'
 
 type InfiniteClubInfo = {
   content: ClubInfo[]
@@ -83,19 +83,19 @@ function MainPage() {
               <RankList clubInfoArray={clubInfoArrayEx} size="sm" />
             </div>
           </div>
-          <div className={styles.section}>
+          <div
+            className={`${styles.section} ${styles.height}`}
+            onClick={() => {
+              navigate(`/club/${todayClubMt.clubId}/detail`)
+            }}
+          >
             <IconText
               imgSrc={mountain}
               text="오늘의 모임 산"
               size="sm"
               isBold={true}
             />
-            <img
-              src={clubmountain}
-              onClick={() => {
-                navigate(`/club/${todayClubMt.clubId}/detail`)
-              }}
-            />
+            <ClubMoutain zoom={5} />
           </div>
         </div>
       )}
