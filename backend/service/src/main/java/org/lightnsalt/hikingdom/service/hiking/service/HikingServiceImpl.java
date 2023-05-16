@@ -185,6 +185,9 @@ public class HikingServiceImpl implements HikingService {
                 memberHikingStatistic.getTotalAlt() + savedMemberHiking.getTotalAlt());
 //        log.info("memberHikingStatistic : {}", memberHikingStatistic);
 
+        // ClubTotalHikingStatistic 업데이트
+
+
         // Level 업데이트
         int originLevel = member.getLevel().getId();
         int newLevel = originLevel;
