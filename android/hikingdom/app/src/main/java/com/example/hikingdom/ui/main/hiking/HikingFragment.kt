@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -82,9 +83,9 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         checkPermission()
 
         // 모달 팝업
-        showSelectTypeDialog()
-//        showMeetupDialog()
-//        showMountainDialog()
+        if (hikingViewModel.isHikingStarted.value == false) {
+            showSelectTypeDialog()
+        }
     }
 
 
@@ -224,9 +225,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 Log.d(
                     "polyline test 2",
                     StringBuilder("lastLat: ").append(lastLat.toString()).append("/ lastLng: ")
-                        .append(lastLng.toString())
-                        .append(lastLng.toString()).append("/ lat: ").append(it.latitude)
-                        .append("/ lng: ").append(it.longitude).toString()
+                        .append(lastLng.toString()).append(lastLng.toString()).append("/ lat: ")
+                        .append(it.latitude).append("/ lng: ").append(it.longitude).toString()
                 )
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(lastLat, lastLng));
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(it.latitude, it.longitude))
@@ -261,16 +261,14 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     private fun checkPermission() {
 //        Log.d("checkPermission", "첫번쨰 확인")
         if (ContextCompat.checkSelfPermission(
-                this.requireActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION
+                this.requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             // Fine Location permission is granted
             // Check if current android version >= 11, if >= 11 check for Background Location permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 if (ContextCompat.checkSelfPermission(
-                        this.requireActivity(),
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        this.requireActivity(), Manifest.permission.ACCESS_BACKGROUND_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
                     // Background Location Permission is granted so do your work here
@@ -311,26 +309,21 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     private fun askForLocationPermission() {
 //        Log.d("askForLocationPermission", "진입")
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this.requireActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION
+                this.requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION
             )
         ) {
 //            Log.d("askForLocationPermission", "조건문 true")
-            AlertDialog.Builder(this.requireContext())
-                .setTitle("위치 권한 설정")
+            AlertDialog.Builder(this.requireContext()).setTitle("위치 권한 설정")
                 .setMessage("경로 기록 서비스를 이용하려면 위치 권한을 허용해주세요.")
-                .setPositiveButton("허용",
-                    DialogInterface.OnClickListener { dialog, which ->
-                        ActivityCompat.requestPermissions(
-                            this.requireActivity(), arrayOf<String>(
-                                Manifest.permission.ACCESS_FINE_LOCATION
-                            ), LOCATION_PERMISSION_CODE
-                        )
-                    })
-                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
+                .setPositiveButton("허용", DialogInterface.OnClickListener { dialog, which ->
+                    ActivityCompat.requestPermissions(
+                        this.requireActivity(), arrayOf<String>(
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ), LOCATION_PERMISSION_CODE
+                    )
+                }).setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
                     // Permission is denied by the user
-                })
-                .create().show()
+                }).create().show()
         } else {
 //            Log.d("askForLocationPermission", "조건문 false")
             locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -340,26 +333,21 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     private fun askPermissionForBackgroundUsage() {
 //        Log.d("askPermissionForBackgroundUsage", "진입")
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this.requireActivity(),
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                this.requireActivity(), Manifest.permission.ACCESS_BACKGROUND_LOCATION
             )
         ) {
 //            Log.d("askPermissionForBackgroundUsage", "조건문 true")
-            AlertDialog.Builder(this.requireContext())
-                .setTitle("백그라운드 권한 설정")
+            AlertDialog.Builder(this.requireContext()).setTitle("백그라운드 권한 설정")
                 .setMessage("백그라운드 위치 권한을 설정하지 않으면, 백그라운드 경로 기록 서비스를 이용할 수 없어요.")
-                .setPositiveButton("설정",
-                    DialogInterface.OnClickListener { dialog, which ->
-                        ActivityCompat.requestPermissions(
-                            this.requireActivity(), arrayOf<String>(
-                                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                            ), BACKGROUND_LOCATION_PERMISSION_CODE
-                        )
-                    })
-                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
+                .setPositiveButton("설정", DialogInterface.OnClickListener { dialog, which ->
+                    ActivityCompat.requestPermissions(
+                        this.requireActivity(), arrayOf<String>(
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        ), BACKGROUND_LOCATION_PERMISSION_CODE
+                    )
+                }).setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
                     // User declined for Background Location Permission.
-                })
-                .create().show()
+                }).create().show()
         } else {
 //            Log.d("askPermissionForBackgroundUsage", "조건문 false")
             backgroundLocationPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
@@ -445,8 +433,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             false // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
 
         customMarker.setCustomImageAnchor(
-            0.5f,
-            1.0f
+            0.5f, 1.0f
         ) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
     }
 
@@ -469,8 +456,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             for (location in existingLocationList) {
                 polyline.addPoint(
                     MapPoint.mapPointWithGeoCoord(
-                        location.latitude,
-                        location.longitude
+                        location.latitude, location.longitude
                     )
                 )
             }
@@ -538,8 +524,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             false // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
 
         customMarker.setCustomImageAnchor(
-            0.7f,
-            1.0f
+            0.7f, 1.0f
         ) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
 
@@ -570,12 +555,12 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
     // dialog_select_hiking_type 띄우기
     private fun showSelectTypeDialog() {
-        // 다이얼로그창 띄우기
+        // dialog 띄우기
         val selectView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_hiking_type, null)
-        val mBuilder = AlertDialog.Builder(activityContext)
-            .setView(selectView)
-        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
+        val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)
+        // TODO: 못나가게 막기
+//        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
         val meetupDialog = mBuilder.show()
 
         // 클릭 리스너 핸들 -> 일정 등산, 개인 등산
@@ -588,24 +573,18 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     }
 
     private fun showMeetupDialog() {
-        // 다이얼로그창 띄우기
+        // dialog 띄우기
         val meetupView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_meetup, null)
-        val mBuilder = AlertDialog.Builder(activityContext)
-            .setView(meetupView)
-        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
+        val mBuilder = AlertDialog.Builder(activityContext).setView(meetupView)
+//        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
         val meetupDialog = mBuilder.show()
-
-        // 취소 버튼 클릭 리스너 -> 버튼 클릭 시 dialog 닫기
-        val cancelButton = meetupView.findViewById<Button>(R.id.meetup_select_cancel)
-        cancelButton.setOnClickListener { meetupDialog.dismiss(); showSelectTypeDialog(); hikingViewModel.meetupClear() }
 
         // 데이터 불러오기
         val api = RetrofitTokenInstance.getInstance().create(HikingRetrofitInterface::class.java)
         api.getTodayMeetups().enqueue(object : Callback<MeetupResponse> {
             override fun onResponse(
-                call: Call<MeetupResponse>,
-                response: Response<MeetupResponse>
+                call: Call<MeetupResponse>, response: Response<MeetupResponse>
             ) {
                 val rv = meetupDialog.findViewById<RecyclerView>(R.id.recycler_view_meetup)
                 Log.d("meetup!", "${response.body()}")
@@ -617,16 +596,25 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 // adapter 클릭 리스너 등록
                 meetupAdapter.setItemClickListener(object : MeetupAdapter.OnItemClickListener {
                     override fun onClick(v: View, position: Int) {
-                        // 클릭 시 이벤트
-
                         // viewModel에 데이터 저장
                         hikingViewModel.isMeetup.value = true
                         hikingViewModel.meetupId.value = meetupList[position].meetupId
                         hikingViewModel.mountainId.value = meetupList[position].mountainId
+                        hikingViewModel.mountainName.value = meetupList[position].mountainName
                         hikingViewModel.mountainSummitLat.value =
                             meetupList[position].mountainSummitLat
                         hikingViewModel.mountainSummitLng.value =
                             meetupList[position].mountainSummitLng
+
+                        // 클릭 시 이벤트
+                        val agreementRadioButton =
+                            meetupView.findViewById<RadioButton>(R.id.radiobutton_polish)
+                        if (agreementRadioButton.isChecked) {
+                            agreementHikingMeetupModal()
+                            meetupDialog.dismiss()
+                        } else {
+                            Toast.makeText(context, "약관에 동의 후 진행해주세요", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 })
             }
@@ -635,48 +623,24 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 Log.d("user!", "fail")
             }
         })
-
-//        val cancelButton = meetupView.findViewById<Button>(R.id.meetup_select_cancel)
-//        cancelButton.setOnClickListener { meetupDialog.dismiss(); showSelectTypeDialog(); hikingViewModel.meetupClear()}
-
-        val polishRadioButton = meetupView.findViewById<RadioButton>(R.id.radiobutton_polish)
-        // 확인 버튼 클릭 리스너
-        val selectCompleteButton = meetupView.findViewById<Button>(R.id.meetup_select_ok)
-        selectCompleteButton.setOnClickListener {
-            // 라디오 버튼 체크 확인
-            if (polishRadioButton.isChecked) {
-                // dialog 닫기
-                Toast.makeText(context, "${hikingViewModel.meetupId.value}", Toast.LENGTH_SHORT)
-                    .show()
-                meetupDialog.dismiss()
-            }
-        }
     }
 
     private fun showMountainDialog() {
         // 다이얼로그창 띄우기
         val mountainView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_mountain, null)
-        val mBuilder = AlertDialog.Builder(activityContext)
-            .setView(mountainView)
-        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
-        val moutainDialog = mBuilder.show()
-
-        // 취소 버튼 클릭 리스너 -> 버튼 클릭 시 dialog 닫기
-        val cancelButton = mountainView.findViewById<Button>(R.id.mountain_select_cancel)
-        cancelButton.setOnClickListener { moutainDialog.dismiss(); showSelectTypeDialog() }
-
+        val mBuilder = AlertDialog.Builder(activityContext).setView(mountainView)
+//        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
+        val mountainDialog = mBuilder.show()
 
         // 현재 위치 가져오기
         val locationManager: LocationManager =
             getSystemService(requireContext(), LocationManager::class.java)!!
         // 위치 권한 체크
         if (ActivityCompat.checkSelfPermission(
-                activityContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                activityContext, Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                activityContext,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                activityContext, Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             Toast.makeText(activityContext, "위치 권한이 없습니다.", Toast.LENGTH_SHORT).show()
@@ -691,20 +655,55 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         val api = RetrofitTokenInstance.getInstance().create(HikingRetrofitInterface::class.java)
         api.getNearMountains(cur_lat, cur_lng).enqueue(object : Callback<MountainResponse> {
             override fun onResponse(
-                call: Call<MountainResponse>,
-                response: Response<MountainResponse>
+                call: Call<MountainResponse>, response: Response<MountainResponse>
             ) {
                 Log.d("user!", "${response.body()}")
-                val rv = moutainDialog.findViewById<RecyclerView>(R.id.mountain_rv)
-                val mountainAdapter = MountainAdapter(activityContext, response.body()!!.result)
+                val mountainList = response.body()!!.result
+                val rv = mountainDialog.findViewById<RecyclerView>(R.id.mountain_rv)
+                val mountainAdapter = MountainAdapter(activityContext, mountainList)
                 rv.adapter = mountainAdapter
                 rv.layoutManager = LinearLayoutManager(activityContext)
+
+                // adapter 클릭 리스너 등록
+                mountainAdapter.setItemClickListener(object : MountainAdapter.OnItemClickListener {
+                    override fun onClick(v: View, position: Int) {
+                        // viewModel에 데이터 저장
+                        hikingViewModel.mountainId.value = mountainList[position].mountainId.toInt()
+                        hikingViewModel.mountainName.value = mountainList[position].name
+                        hikingViewModel.mountainSummitLat.value =
+                            mountainList[position].mountainSummitLat
+                        hikingViewModel.mountainSummitLng.value =
+                            mountainList[position].mountainSummitLng
+
+                        // 클릭 시 이벤트
+                        agreementHikingMeetupModal()
+                        mountainDialog.dismiss()
+                    }
+                })
             }
 
             override fun onFailure(call: Call<MountainResponse>, t: Throwable) {
                 Log.d("user!", "fail")
             }
         })
+    }
+
+    fun agreementHikingMeetupModal() {
+        // dialog 띄우기
+        val selectView =
+            LayoutInflater.from(activityContext).inflate(R.layout.dialog_hiking_agreement, null)
+        selectView.findViewById<TextView>(R.id.selected_hiking_mountain).text =
+            hikingViewModel.mountainName.value
+        val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)
+        val meetupDialog = mBuilder.show()
+
+        // 클릭 리스너 핸들 -> 확인
+        val hikingStart = selectView.findViewById<Button>(R.id.hiking_mountain_start_btn)
+        hikingStart.setOnClickListener { meetupDialog.dismiss() }
+
+        // 클릭 리스너 핸들 -> 취소
+        val hikingCancel = selectView.findViewById<Button>(R.id.hiking_mountain_cancel_start_btn)
+        hikingCancel.setOnClickListener { meetupDialog.dismiss();hikingViewModel.meetupClear(); showSelectTypeDialog() }
     }
 
     override fun onDestroyView() {

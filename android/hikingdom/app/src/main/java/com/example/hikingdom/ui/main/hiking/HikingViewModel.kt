@@ -13,18 +13,27 @@ class HikingViewModel : ViewModel() {
     var longitude = MutableLiveData<Double>()
     var altitude = MutableLiveData<Double>()
     var isHikingStarted = MutableLiveData<Boolean>()
+
+    // related meetup
+    var isMeetup = MutableLiveData<Boolean>()
+    var meetupId = MutableLiveData<Int>()
+    var meetupName = MutableLiveData<String>()
+
+    // related mountain
+    var mountainId = MutableLiveData<Int>()
+    var mountainName = MutableLiveData<String>()
     var mountainSummitLat = MutableLiveData<Double>()
     var mountainSummitLng = MutableLiveData<Double>()
-    var mountainId = MutableLiveData<Int>()
-    var meetupId = MutableLiveData<Int>()
-    var isMeetup = MutableLiveData<Boolean>()
 
     // 위도, 경도, 고도 list
     var locations = MutableLiveData<ArrayList<Location>>()
 
     init {
-        meetupId.value = 0
         isMeetup.value = false
+        meetupId.value = 0
+        meetupName.value = ""
+        mountainId.value = 0
+        mountainName.value = ""
         duration.value = "00:00"
         totalDistance.value = "0.000km"
         locations.value = ArrayList()
@@ -39,7 +48,9 @@ class HikingViewModel : ViewModel() {
     fun meetupClear() {
         isMeetup.value = false
         meetupId.value = 0
+        meetupName.value = ""
         mountainId.value = 0
+        mountainName.value = ""
         mountainSummitLat.value = 0.0
         mountainSummitLng.value = 0.0
     }
