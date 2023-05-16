@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -582,18 +583,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         val individualHikingStart =
             selectView.findViewById<Button>(R.id.individual_hiking_start_btn)
 
-        meetupHikingStart.setOnClickListener(SelectButtonListener())
-        individualHikingStart.setOnClickListener(SelectButtonListener())
-    }
-
-    inner class SelectButtonListener : View.OnClickListener {
-        override fun onClick(view: View?) {
-            when (view?.id) {
-                R.id.meetup_hiking_start_btn -> showMeetupDialog()
-                R.id.individual_hiking_start_btn -> showMountainDialog()
-                else -> null
-            }
-        }
+        meetupHikingStart.setOnClickListener { showMeetupDialog(); meetupDialog.dismiss() }
+        individualHikingStart.setOnClickListener { showMountainDialog();meetupDialog.dismiss() }
     }
 
     private fun showMeetupDialog() {
@@ -602,11 +593,12 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_meetup, null)
         val mBuilder = AlertDialog.Builder(activityContext)
             .setView(meetupView)
+        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
         val meetupDialog = mBuilder.show()
 
         // 취소 버튼 클릭 리스너 -> 버튼 클릭 시 dialog 닫기
         val cancelButton = meetupView.findViewById<Button>(R.id.meetup_select_cancel)
-        cancelButton.setOnClickListener { meetupDialog.dismiss() }
+        cancelButton.setOnClickListener { meetupDialog.dismiss(); showSelectTypeDialog(); hikingViewModel.meetupClear() }
 
         // 데이터 불러오기
         val api = RetrofitTokenInstance.getInstance().create(HikingRetrofitInterface::class.java)
@@ -617,9 +609,26 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             ) {
                 val rv = meetupDialog.findViewById<RecyclerView>(R.id.recycler_view_meetup)
                 Log.d("meetup!", "${response.body()}")
-                val meetupAdapter = MeetupAdapter(activityContext, response.body()!!.result)
+                val meetupList = response.body()!!.result
+                val meetupAdapter = MeetupAdapter(activityContext, meetupList)
                 rv.adapter = meetupAdapter
                 rv.layoutManager = LinearLayoutManager(activityContext)
+
+                // adapter 클릭 리스너 등록
+                meetupAdapter.setItemClickListener(object : MeetupAdapter.OnItemClickListener {
+                    override fun onClick(v: View, position: Int) {
+                        // 클릭 시 이벤트
+
+                        // viewModel에 데이터 저장
+                        hikingViewModel.isMeetup.value = true
+                        hikingViewModel.meetupId.value = meetupList[position].meetupId
+                        hikingViewModel.mountainId.value = meetupList[position].mountainId
+                        hikingViewModel.mountainSummitLat.value =
+                            meetupList[position].mountainSummitLat
+                        hikingViewModel.mountainSummitLng.value =
+                            meetupList[position].mountainSummitLng
+                    }
+                })
             }
 
             override fun onFailure(call: Call<MeetupResponse>, t: Throwable) {
@@ -627,12 +636,21 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             }
         })
 
+//        val cancelButton = meetupView.findViewById<Button>(R.id.meetup_select_cancel)
+//        cancelButton.setOnClickListener { meetupDialog.dismiss(); showSelectTypeDialog(); hikingViewModel.meetupClear()}
+
+        val polishRadioButton = meetupView.findViewById<RadioButton>(R.id.radiobutton_polish)
         // 확인 버튼 클릭 리스너
-        // 라디오 버튼 체크 확인
-        
-        // viewModel에 데이터 저장
-        
-        // dialog 닫기
+        val selectCompleteButton = meetupView.findViewById<Button>(R.id.meetup_select_ok)
+        selectCompleteButton.setOnClickListener {
+            // 라디오 버튼 체크 확인
+            if (polishRadioButton.isChecked) {
+                // dialog 닫기
+                Toast.makeText(context, "${hikingViewModel.meetupId.value}", Toast.LENGTH_SHORT)
+                    .show()
+                meetupDialog.dismiss()
+            }
+        }
     }
 
     private fun showMountainDialog() {
@@ -641,11 +659,12 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_mountain, null)
         val mBuilder = AlertDialog.Builder(activityContext)
             .setView(mountainView)
+        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
         val moutainDialog = mBuilder.show()
 
         // 취소 버튼 클릭 리스너 -> 버튼 클릭 시 dialog 닫기
         val cancelButton = mountainView.findViewById<Button>(R.id.mountain_select_cancel)
-        cancelButton.setOnClickListener { moutainDialog.dismiss() }
+        cancelButton.setOnClickListener { moutainDialog.dismiss(); showSelectTypeDialog() }
 
 
         // 현재 위치 가져오기
