@@ -23,28 +23,14 @@ type MtTitleProps = {
 function MtTitle({ name, maxAlt, timeDuration, assets }: MtTitleProps) {
   const { theme } = useContext(ThemeContext)
   const [isOpen, setIsOpen] = useState(false)
-  // const [pos, setPos] = useState(new THREE.Vector3(0, -0.8, 3))
-  const [y, setY] = useState(-0.8)
-  const [z, setZ] = useState(3)
+
+  // 에셋 CSS
+  const assetStyle = isOpen ? styles.open : styles.close
+
+  // 캔버스 CSS : inline-style만 가능
   const canvasStyle = isOpen
-    ? { width: 'fit-content', height: '40vh', zIndex: 999 }
+    ? { width: 'fit-content', height: '33vh', zIndex: 999 }
     : { height: '20vh', zIndex: 0 }
-
-  // const assetPosition = isOpen
-  //   ? new THREE.Vector3(0, -0.5, 0.5)
-  // : new THREE.Vector3(0, -0.8, 3)
-
-  useEffect(() => {
-    if (isOpen) {
-      setY(-0.5)
-      setZ(0.5)
-      // setPos(new THREE.Vector3(0, -0.5, 0.5))
-    } else {
-      // setPos(new THREE.Vector3(0, -0.8, 3))
-      setY(-0.8)
-      setZ(3)
-    }
-  }, [isOpen])
 
   return (
     <div className={`content ${theme} ${styles.mttitle}`}>
@@ -52,14 +38,14 @@ function MtTitle({ name, maxAlt, timeDuration, assets }: MtTitleProps) {
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
           <AssetModal
-            url={assets[0].assetUrl}
             name={assets[0].name}
             getCondition={assets[0].getCondition}
+            onClick={() => setIsOpen(false)}
           />
         </Modal>
       )}
       {/* asset */}
-      <div className={styles.asset}>
+      <div className={`${styles.asset} ${assetStyle}`}>
         {assets.length ? (
           <Canvas style={canvasStyle}>
             <ambientLight />
