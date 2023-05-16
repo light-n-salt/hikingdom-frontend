@@ -42,8 +42,7 @@ function ClubDetailPage() {
 
   return clubInfo && userInfo ? (
     <div className={`page-gradation upside p-sm ${theme} ${styles.page}`}>
-      <PageHeader title={clubInfo.clubName} url="" color="primary" />
-      {/* <h1 className={styles.title}>{clubInfo.clubName}</h1> */}
+      <PageHeader title={clubInfo.clubName} color="primary" />
       <div className={styles.button}>
         {!userInfo.clubId && (
           <Button

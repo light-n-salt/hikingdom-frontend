@@ -22,13 +22,16 @@
   gap: 0.3rem;
 }
 
-.nickname {
-  font-size: 0.8rem;
+.username {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.85rem;
   font-weight: bold;
 }
 
 .image {
-  height: 1rem;
+  height: 0.7rem;
 }
 
 .record {
@@ -48,12 +51,12 @@
 }
 
 .bold {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: bold;
 }
 
 .text {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .button {

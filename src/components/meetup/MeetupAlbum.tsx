@@ -12,6 +12,7 @@ import { getMeetupAlbum } from 'apis/services/meetup'
 import useInfiniteVerticalScroll from 'hooks/useInfiniteVerticalScroll'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
+import { displayValue } from '@tanstack/react-query-devtools/build/lib/utils'
 
 type MeetupAlbum = {
   join: boolean
@@ -103,16 +104,20 @@ function MeetupAlbum({ join }: MeetupAlbum) {
           />
         )}
       </div>
-      <div ref={infiniteRef} className={styles.photos}>
-        {photoInfo?.map((photo) => (
-          <img
-            key={photo.photoId}
-            src={photo.imgUrl}
-            className={styles.photo}
-            onClick={() => onClickOpenModal(photo.photoId)}
-          />
-        ))}
-      </div>
+      {photoInfo.length ? (
+        <div ref={infiniteRef} className={styles.photos}>
+          {photoInfo?.map((photo) => (
+            <img
+              key={photo.photoId}
+              src={photo.imgUrl}
+              className={styles.photo}
+              onClick={() => onClickOpenModal(photo.photoId)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.blank}>등록된 사진이 없습니다</div>
+      )}
     </div>
   )
 }
