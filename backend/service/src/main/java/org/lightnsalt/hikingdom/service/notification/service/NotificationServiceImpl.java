@@ -1,11 +1,10 @@
 package org.lightnsalt.hikingdom.service.notification.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.format.DateTimeFormatter;
+
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.domain.entity.notification.Notification;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.lightnsalt.hikingdom.service.notification.dto.request.FCMNotificationReq;
@@ -18,7 +17,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.format.DateTimeFormatter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -55,10 +55,12 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     @Override
     public CustomSlice<NotificationRes> findNotificationList(String email, Long notificationId, Pageable pageable) {
-        final Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+        final Long memberId = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED))
+            .getId();
 
-        Slice<Notification> notifications = notificationRepositoryCustom.findNotificationsByMemberId(member.getId(), notificationId, pageable);
+        Slice<Notification> notifications = notificationRepositoryCustom.findNotificationsByMemberId(memberId, notificationId, pageable);
+        notificationRepository.markAsReadByMemberId(memberId); // 알림 전체 읽음 처리
 
         return new CustomSlice<>(
                 notifications.map(notification -> new NotificationRes(

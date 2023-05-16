@@ -1,18 +1,6 @@
 package org.lightnsalt.hikingdom.domain.entity.club.record;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -25,15 +13,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
 
 @Entity
-@Table(name = "club_daily_hiking_statistic")
+@Table(name = "club_meetup_hiking_statistic")
 @Getter
 @ToString
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ClubDailyHikingStatistic {
+public class ClubMeetupHikingStatistic {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "BIGINT UNSIGNED")
@@ -63,12 +52,16 @@ public class ClubDailyHikingStatistic {
 	@Column(name = "participation_rate", nullable = false, columnDefinition = "DOUBLE DEFAULT 0")
 	private double participationRate; // in %
 
-	@Column(name = "date", nullable = false)
-	private LocalDateTime date;
+	@ToString.Exclude
+	@JsonIgnore
+	@MapsId
+	@OneToOne
+	@JoinColumn(name = "meetup_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+	private Meetup meetup;
 
 	@Builder
-	public ClubDailyHikingStatistic(Club club, Long totalHikingCount, Long totalMountainCount, Long totalDuration,
-		Long totalDistance, Long totalAlt, double participationRate, LocalDateTime date) {
+	public ClubMeetupHikingStatistic(Club club, Long totalHikingCount, Long totalMountainCount, Long totalDuration,
+									 Long totalDistance, Long totalAlt, double participationRate, Meetup meetup) {
 		this.club = club;
 		this.totalHikingCount = totalHikingCount;
 		this.totalMountainCount = totalMountainCount;
@@ -76,6 +69,6 @@ public class ClubDailyHikingStatistic {
 		this.totalDistance = totalDistance;
 		this.totalAlt = totalAlt;
 		this.participationRate = participationRate;
-		this.date = date;
+		this.meetup = meetup;
 	}
 }
