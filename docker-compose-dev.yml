@@ -73,6 +73,21 @@ services:
       dev-backend-discovery:
         condition: service_healthy
 
+  dev-backend-hiking:
+    container_name: dev-backend-hiking
+    build:
+      context: ./backend/hiking
+      dockerfile: Dockerfile
+    ports:
+      - 9003:3000
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=dev-backend-discovery
+    networks:
+      - dev_hikingdom_net
+    depends_on:
+      dev-backend-discovery:
+        condition: service_healthy
+
   dev-backend-gateway:
     container_name: dev-backend-gateway
     build:
