@@ -11,14 +11,17 @@ import RankList from 'components/common/RankList'
 function WaitingListModal() {
   const queryClient = useQueryClient()
 
-  const { data: clubInfoArray = [] } = useQuery<ClubInfo[]>(['requestClubList'], getClubRequest)
+  const { data: clubInfoArray = [] } = useQuery<ClubInfo[]>(
+    ['requestClubList'],
+    getClubRequest
+  )
 
   // 소모임 신청 취소 함수
   function onClickDeleteClub(clubId: number, clubName: string) {
     deleteClubRequest(clubId)
       .then(() => {
         queryClient.invalidateQueries(['requestClubList'])
-        Toast.addMessage('success', `${clubName}의 가입 신청을 취소했습니다.`)
+        Toast.addMessage('success', `${clubName}의 가입 신청을 취소했습니다`)
       })
       .catch((err) => Toast.addMessage('error', `${err.data.message}`))
   }
@@ -33,9 +36,9 @@ function WaitingListModal() {
           onClickDeleteClub={onClickDeleteClub}
         />
       ) : (
-        <span className={styles.text}>가입 신청한 모임이 없습니다.</span>
+        <span className={styles.text}>가입 신청한 모임이 없습니다</span>
       )}
-  </div>
+    </div>
   )
 }
 

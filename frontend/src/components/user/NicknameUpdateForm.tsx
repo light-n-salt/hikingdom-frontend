@@ -35,18 +35,18 @@ function NicknameUpdateForm() {
       navigate(`/profile/${nickname}`)
     },
     onError: () => {
-      toast.addMessage('error', '이미 존재하는 닉네임입니다.')
+      toast.addMessage('error', '이미 존재하는 닉네임입니다')
     },
   })
 
   const onClickUpdate = () => {
     if (!nickname.trim()) {
-      toast.addMessage('error', '닉네임을 입력해주세요.')
+      toast.addMessage('error', '닉네임을 입력해주세요')
       return
     }
 
     if (!isNicknamePass) {
-      toast.addMessage('error', '닉네임을 형식이 맞지 않습니다.')
+      toast.addMessage('error', '닉네임 형식이 맞지 않습니다.')
       return
     }
     update.mutate()

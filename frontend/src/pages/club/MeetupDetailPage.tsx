@@ -52,7 +52,7 @@ function MeetupDetailPage() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['reviews'])
-        toast.addMessage('success', '후기가 등록되었습니다.')
+        toast.addMessage('success', '후기가 등록되었습니다')
         setContent('')
       },
     }
