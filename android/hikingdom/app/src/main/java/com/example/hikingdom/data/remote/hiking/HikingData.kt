@@ -33,3 +33,16 @@ data class MeetupResponse(
     @SerializedName("message") val message: String,
     @SerializedName("result") val result: List<Meetup>,
 )
+
+
+data class GpsSocketData(
+    @SerializedName("nickname") val nickname: String?,
+    @SerializedName("profileUrl") val profileUrl: String?,
+    @SerializedName("level") val level: Int?,
+    @SerializedName("memberId") val memberId: Int?,
+    @SerializedName("clubId") val clubId: Int?,
+    @SerializedName("meetupId") val meetupId: Int?,
+    @SerializedName("lat") val lat: Double?,
+    @SerializedName("lng") val lng: Double?,
+
+)
