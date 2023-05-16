@@ -8,6 +8,13 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
+import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
+import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
+import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;
+import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupMember;
+import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupReview;
+import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
+import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.club.dto.request.MeetupAddReq;
 import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDailyRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDetailRes;
@@ -15,24 +22,15 @@ import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMonthlyRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.PhotoInfoRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ReviewInfoRes;
-import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
-import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
-import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;
-import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupMember;
-import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupReview;
+import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupAlbumRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
-import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupReviewRepository;
-import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.service.info.repository.MountainInfoRepository;
-import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
-import org.lightnsalt.hikingdom.service.notification.dto.NotificationAddReq;
 import org.lightnsalt.hikingdom.service.notification.dto.event.CreateMeetupNotificationEvent;
-import org.lightnsalt.hikingdom.service.notification.service.NotificationService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +50,6 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	private final MountainInfoRepository mountainInfoRepository;
 	private final MemberRepository memberRepository;
 	private final ClubMemberRepository clubMemberRepository;
-	private final NotificationService notificationService;
 	private final ApplicationEventPublisher eventPublisher;
 
 	@Override

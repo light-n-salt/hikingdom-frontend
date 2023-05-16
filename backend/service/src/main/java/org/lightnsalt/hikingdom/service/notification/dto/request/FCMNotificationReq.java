@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.notification.dto;
+package org.lightnsalt.hikingdom.service.notification.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
