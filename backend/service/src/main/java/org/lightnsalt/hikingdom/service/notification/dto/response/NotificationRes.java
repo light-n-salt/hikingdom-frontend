@@ -10,11 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationRes {
-    @JsonProperty("notificationId")
-    private Long id;
-    private String title;
-    private String body;
-    private String sendAt;
-    @JsonProperty("isRead")
-    private boolean isRead;
+	@JsonProperty("notificationId")
+	private Long id;
+	private String title;
+	private String body;
+	private String sendAt;
+	private String url;
+	@JsonProperty("isRead")
+	private boolean isRead;
 }

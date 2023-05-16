@@ -17,5 +17,6 @@ public class NotificationAddReq {
     private Member member;
     private String title;
     private String body;
+    private String url;
     private LocalDateTime sendAt;
 }
