@@ -5,7 +5,7 @@ type IconTextProps = {
   imgSrc?: string // 이미지 소스
   icon?: React.ReactNode // svg 아이콘 노드
   text: string // 텍스트
-  size?: 'sm' | 'md' | 'lg' // 사이즈
+  size?: 'xs' | 'sm' | 'md' | 'lg' // 사이즈
   isBold?: boolean // font-weight : bold 여부
   isRight?: boolean // 아이콘 위치 텍스트의 오른쪽에 위치 여부
 }

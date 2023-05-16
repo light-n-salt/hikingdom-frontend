@@ -24,14 +24,16 @@ function MemberItem({
     <div className={styles.container}>
       <div className={styles.user}>
         <Image imgUrl={memberInfo.profileUrl} size="sm" isSquare={true} />
-        <span className={styles.nickname}>{memberInfo.nickname}</span>
-        <img src={imgSrc} className={styles.image} />
+        <div className={styles.username}>
+          <span>{memberInfo.nickname}</span>
+          <img src={imgSrc} className={styles.image} />
+        </div>
       </div>
 
       <div className={styles.record}>
         <Info
           title="등산 거리(km)"
-          content={convertToKm(memberInfo.totalDistance)}
+          content={`${(memberInfo.totalDistance / 1000).toFixed()}`}
         />
 
         {onClickJoin && onClickDelete ? (
@@ -50,17 +52,10 @@ function MemberItem({
             />
           </div>
         ) : (
-          <>
-            <Info
-              title="등산 시간"
-              content={convertToTime(memberInfo.totalDuration)}
-            />
-
-            <Info
-              title="등산 횟수"
-              content={`${memberInfo.totalHikingCount}`}
-            />
-          </>
+          <Info
+            title="등산 시간(H)"
+            content={`${(memberInfo.totalDuration / 60).toFixed()}`}
+          />
         )}
       </div>
     </div>

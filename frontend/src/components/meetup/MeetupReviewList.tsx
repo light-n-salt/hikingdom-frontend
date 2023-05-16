@@ -17,7 +17,7 @@ function MeetupReviewList({ reviewInfo }: MeetupReviewsProps) {
       ))}
     </div>
   ) : (
-    <div>등록된 후기가 없습니다</div>
+    <div className={styles.blank}>등록된 후기가 없습니다</div>
   )
 }
 

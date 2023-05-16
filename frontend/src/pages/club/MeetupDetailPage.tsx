@@ -85,11 +85,12 @@ function MeetupDetailPage() {
         title={meetup?.meetupName}
         url={`/club/meetup`}
         color="primary"
+        size="sm"
       />
       <MeetupDetail
         mountain={meetup?.mountainName}
-        date={meetup?.startAt.split(' ')[0]}
-        time={meetup?.startAt.split(' ')[1]}
+        date={meetup?.startAt.split(' ')[0].replaceAll('-', '.').slice(-8)}
+        time={meetup?.startAt.split(' ')[1].slice(0, 5)}
       />
       <div className={`page ${theme} ${styles.content}`}>
         <div className={styles.intro}>
