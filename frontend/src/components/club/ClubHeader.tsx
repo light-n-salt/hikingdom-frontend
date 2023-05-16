@@ -20,7 +20,7 @@ function ClubHeader() {
   }, [])
 
   const { data: clubInfo } = useQuery<ClubSimpleInfo>(
-    ['clubInfo'],
+    ['user', 'clubInfo'],
     () => getClubSimpleInfo(clubId || 0),
     {
       cacheTime: queryTime,
