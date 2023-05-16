@@ -1,3 +1,5 @@
+@use 'src/styles/animations' as *;
+
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
@@ -9,4 +11,5 @@
   width: 100%;
   border-radius: 0.3rem;
   object-fit: cover;
+  @include animation-slide-in-up(normal, 5%);
 }

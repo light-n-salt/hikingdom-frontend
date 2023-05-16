@@ -16,9 +16,9 @@ type MeetupDetailProps = {
 function MeetupDetail({ mountain, date, time }: MeetupDetailProps) {
   return (
     <div className={styles.detail}>
-      <IconText imgSrc={mount} text={mountain} size="sm" />
-      <IconText imgSrc={calendar} text={date} size="sm" />
-      <IconText imgSrc={clock} text={time} size="sm" />
+      <IconText imgSrc={mount} text={mountain} size="md" isBold={true} />
+      <IconText imgSrc={calendar} text={date} size="md" isBold={true} />
+      <IconText imgSrc={clock} text={time} size="md" isBold={true} />
     </div>
   )
 }

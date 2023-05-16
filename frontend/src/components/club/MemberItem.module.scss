@@ -1,19 +1,11 @@
 @use 'src/styles/colors' as *;
 
 .container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 1rem 0 1rem 0.6rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  gap: 0.5rem;
+  padding: 0.5rem;
   background-color: clr(white-clr, light);
-
-  > .user {
-    flex: 1;
-  }
-
-  > .record {
-    flex: 1.4;
-  }
 }
 
 .user {
@@ -22,13 +14,16 @@
   gap: 0.3rem;
 }
 
-.nickname {
-  font-size: 0.8rem;
+.username {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.85rem;
   font-weight: bold;
 }
 
 .image {
-  height: 1rem;
+  height: 0.7rem;
 }
 
 .record {
@@ -48,16 +43,15 @@
 }
 
 .bold {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: bold;
 }
 
 .text {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .button {
   display: flex;
   gap: 0.5rem;
-  padding-right: 0.5rem;
 }

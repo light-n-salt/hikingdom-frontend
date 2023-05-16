@@ -5,6 +5,13 @@
   align-items: center;
   gap: 0.5rem;
 
+  &.xs {
+    img {
+      width: 1.3rem;
+    }
+    font-size: 0.7rem;
+  }
+
   &.sm {
     img {
       width: 1.3rem;
@@ -14,9 +21,9 @@
 
   &.md {
     img {
-      width: 1.6rem;
+      width: 1.5rem;
     }
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   &.lg {

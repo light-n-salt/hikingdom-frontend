@@ -12,6 +12,11 @@ import { getMeetupAlbum } from 'apis/services/meetup'
 import useInfiniteVerticalScroll from 'hooks/useInfiniteVerticalScroll'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
+import { displayValue } from '@tanstack/react-query-devtools/build/lib/utils'
+
+type MeetupAlbum = {
+  join: boolean
+}
 
 type InfiniteAlbumInfo = {
   content: Album[]
@@ -21,7 +26,7 @@ type InfiniteAlbumInfo = {
   pageSize: number
 }
 
-function MeetupAlbum() {
+function MeetupAlbum({ join }: MeetupAlbum) {
   const { meetupId } = useParams() as {
     meetupId: string
   }
@@ -90,23 +95,29 @@ function MeetupAlbum() {
       )}
       <div className={styles.titles}>
         <span className={styles.title}>추억</span>
-        <Button
-          text="추가"
-          color="primary"
-          size="xs"
-          onClick={() => setIsAlbumOpen(true)}
-        />
-      </div>
-      <div ref={infiniteRef} className={styles.photos}>
-        {photoInfo?.map((photo) => (
-          <img
-            key={photo.photoId}
-            src={photo.imgUrl}
-            className={styles.photo}
-            onClick={() => onClickOpenModal(photo.photoId)}
+        {join && (
+          <Button
+            text="추가"
+            color="primary"
+            size="xs"
+            onClick={() => setIsAlbumOpen(true)}
           />
-        ))}
+        )}
       </div>
+      {photoInfo.length ? (
+        <div ref={infiniteRef} className={styles.photos}>
+          {photoInfo?.map((photo) => (
+            <img
+              key={photo.photoId}
+              src={photo.imgUrl}
+              className={styles.photo}
+              onClick={() => onClickOpenModal(photo.photoId)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.blank}>등록된 사진이 없습니다</div>
+      )}
     </div>
   )
 }

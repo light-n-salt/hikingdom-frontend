@@ -30,7 +30,7 @@ function ClubDetailPage() {
 
   function onClickJoinClub() {
     postJoinClub(clubId)
-      .then(() => toast.addMessage('success', '가입이 신청되었습니다.'))
+      .then(() => toast.addMessage('success', '가입신청이 완료되었습니다'))
       .catch((err) => toast.addMessage('error', `${err.data.message}`))
   }
 
@@ -42,8 +42,7 @@ function ClubDetailPage() {
 
   return clubInfo && userInfo ? (
     <div className={`page-gradation upside p-sm ${theme} ${styles.page}`}>
-      <PageHeader title={clubInfo.clubName} url="" color="primary" />
-      {/* <h1 className={styles.title}>{clubInfo.clubName}</h1> */}
+      <PageHeader title={clubInfo.clubName} color="primary" />
       <div className={styles.button}>
         {!userInfo.clubId && (
           <Button

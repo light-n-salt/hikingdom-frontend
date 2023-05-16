@@ -19,8 +19,8 @@ function SearchClubPage() {
   const { theme } = useContext(ThemeContext)
 
   const [query, setQuery] = useState('') // input 태그의 검색 쿼리
-  const [filter, setFilter] = useState('') // 선택된 필터
-  const [clubInfoArray, setClubInfoArray] = useState<ClubInfo[]>(clubInfoEx) // 클럽 정보 배열
+  const [filter, setFilter] = useState('name') // 선택된 필터
+  const [clubInfoArray, setClubInfoArray] = useState<ClubInfo[]>([]) // 클럽 정보 배열
   const [isEnd, setIsEnd] = useState(false) // 무한스크롤 마지막 정보 여부
   const infiniteRef = useRef<HTMLDivElement>(null) // 무한스크롤 ref 요소
 
@@ -86,86 +86,3 @@ function SearchClubPage() {
 }
 
 export default SearchClubPage
-
-const clubInfoEx: ClubInfo[] = [
-  {
-    clubId: 199,
-    clubName: '산타마리아',
-    location: '서울시 노원구',
-    totalMember: 23,
-    totalDuration: 722,
-    totalDistance: 123,
-    participationRate: 87,
-    ranking: 15,
-  },
-  {
-    clubId: 4,
-    clubName: '산타마리아',
-    location: '서울시 노원구',
-    totalMember: 23,
-    totalDuration: 722,
-    totalDistance: 123,
-    participationRate: 87,
-    ranking: 2,
-  },
-  {
-    clubId: 137,
-    clubName: '산타마리아',
-    location: '서울시 노원구',
-    totalMember: 23,
-    totalDuration: 722,
-    totalDistance: 123,
-    participationRate: 87,
-    ranking: 34,
-  },
-  {
-    clubId: 1,
-    clubName: '산타마리아',
-    location: '서울시 노원구',
-    totalMember: 23,
-    totalDuration: 722,
-    totalDistance: 123,
-    participationRate: 87,
-    ranking: 15,
-  },
-  {
-    clubId: 3,
-    clubName: '산타마리아',
-    location: '서울시 노원구',
-    totalMember: 23,
-    totalDuration: 722,
-    totalDistance: 123,
-    participationRate: 87,
-    ranking: 2,
-  },
-  {
-    clubId: 13,
-    clubName: '산타마리아',
-    location: '서울시 노원구',
-    totalMember: 23,
-    totalDuration: 722,
-    totalDistance: 123,
-    participationRate: 87,
-    ranking: 34,
-  },
-  {
-    clubId: 16,
-    clubName: '산타마리아',
-    location: '서울시 노원구',
-    totalMember: 23,
-    totalDuration: 722,
-    totalDistance: 123,
-    participationRate: 87,
-    ranking: 34,
-  },
-  {
-    clubId: 17,
-    clubName: '산타마리아',
-    location: '서울시 노원구',
-    totalMember: 23,
-    totalDuration: 722,
-    totalDistance: 123,
-    participationRate: 87,
-    ranking: 34,
-  },
-]
