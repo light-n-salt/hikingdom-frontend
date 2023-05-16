@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.math.round
-import kotlin.math.roundToInt
 
 class HikingViewModel : ViewModel() {
     var duration = MutableLiveData<String>()
@@ -16,11 +15,16 @@ class HikingViewModel : ViewModel() {
     var isHikingStarted = MutableLiveData<Boolean>()
     var mountainSummitLat = MutableLiveData<Double>()
     var mountainSummitLng = MutableLiveData<Double>()
+    var mountainId = MutableLiveData<Int>()
+    var meetupId = MutableLiveData<Int>()
+    var isMeetup = MutableLiveData<Boolean>()
 
     // 위도, 경도, 고도 list
     var locations = MutableLiveData<ArrayList<Location>>()
 
     init {
+        meetupId.value = 0
+        isMeetup.value = false
         duration.value = "00:00"
         totalDistance.value = "0.000km"
         locations.value = ArrayList()
@@ -32,23 +36,35 @@ class HikingViewModel : ViewModel() {
         mountainSummitLng.value = 0.0
     }
 
-    fun getLocations(){
+    fun meetupClear() {
+        isMeetup.value = false
+        meetupId.value = 0
+        mountainId.value = 0
+        mountainSummitLat.value = 0.0
+        mountainSummitLng.value = 0.0
+    }
+
+    fun mountainClear() {
 
     }
 
-    fun setDuration(d: Int){
+    fun getLocations() {
+
+    }
+
+    fun setDuration(d: Int) {
         duration.value = timeToStr(d)
     }
 
-    fun setTotalDistance(td: Int){
+    fun setTotalDistance(td: Int) {
         round(td.toDouble())
         totalDistance.value = (td / 1000f).toString() + "km"
     }
 
-    fun setCurrentLocation(l : Location){
-        var rLat = round(l.latitude*10000) / 10000
-        var rLong = round(l.longitude*10000) / 10000
-        var rAlt = round(l.altitude*10000) / 10000
+    fun setCurrentLocation(l: Location) {
+        var rLat = round(l.latitude * 10000) / 10000
+        var rLong = round(l.longitude * 10000) / 10000
+        var rAlt = round(l.altitude * 10000) / 10000
         latitude.value = rLat
         longitude.value = rLong
         altitude.value = rAlt
