@@ -41,13 +41,13 @@ function MemberItem({
             <Button
               text="거절"
               color="secondary"
-              size="sm"
+              size="xs"
               onClick={() => onClickDelete(memberInfo.memberId)}
             />
             <Button
               text="수락"
               color="primary"
-              size="sm"
+              size="xs"
               onClick={() => onClickJoin(memberInfo.memberId)}
             />
           </div>

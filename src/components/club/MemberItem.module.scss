@@ -1,19 +1,11 @@
 @use 'src/styles/colors' as *;
 
 .container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 1rem 0 1rem 0.6rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  gap: 0.5rem;
+  padding: 0.5rem;
   background-color: clr(white-clr, light);
-
-  > .user {
-    flex: 1;
-  }
-
-  > .record {
-    flex: 1.4;
-  }
 }
 
 .user {
@@ -62,5 +54,4 @@
 .button {
   display: flex;
   gap: 0.5rem;
-  padding-right: 0.5rem;
 }
