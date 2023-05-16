@@ -9,5 +9,5 @@
 
 .container > div:first-child {
   opacity: 0;
-  @include animation-slide-in-up(normal, 40%);
+  @include animation-slide-in-up(normal, 10%);
 }

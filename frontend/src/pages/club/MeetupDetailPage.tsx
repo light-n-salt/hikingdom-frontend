@@ -96,15 +96,17 @@ function MeetupDetailPage() {
           <MeetupIntroduction content={meetup?.description} />
         </div>
         <MeetupMembers />
-        <MeetupAlbum />
+        <MeetupAlbum join={meetup?.join} />
         {reviews && <MeetupReviewList reviewInfo={reviews} />}
       </div>
-      <TextSendBar
-        placeholder="후기를 입력해주세요"
-        content={content}
-        setContent={setContent}
-        onClick={() => onClickUpdateReview.mutate()}
-      />
+      {meetup?.join && (
+        <TextSendBar
+          placeholder="후기를 입력해주세요"
+          content={content}
+          setContent={setContent}
+          onClick={() => onClickUpdateReview.mutate()}
+        />
+      )}
       {userInfo?.memberId === meetup.meetupHostId ? (
         <Button
           text="삭제"
