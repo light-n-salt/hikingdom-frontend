@@ -83,8 +83,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         // 모달 팝업
         showSelectTypeDialog()
-//        showMeetupDialog()
-//        showMountainDialog()
     }
 
 
@@ -570,7 +568,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
     // dialog_select_hiking_type 띄우기
     private fun showSelectTypeDialog() {
-        // 다이얼로그창 띄우기
+        // dialog 띄우기
         val selectView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_hiking_type, null)
         val mBuilder = AlertDialog.Builder(activityContext)
@@ -588,7 +586,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     }
 
     private fun showMeetupDialog() {
-        // 다이얼로그창 띄우기
+        // dialog 띄우기
         val meetupView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_meetup, null)
         val mBuilder = AlertDialog.Builder(activityContext)
@@ -636,9 +634,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             }
         })
 
-//        val cancelButton = meetupView.findViewById<Button>(R.id.meetup_select_cancel)
-//        cancelButton.setOnClickListener { meetupDialog.dismiss(); showSelectTypeDialog(); hikingViewModel.meetupClear()}
-
         val polishRadioButton = meetupView.findViewById<RadioButton>(R.id.radiobutton_polish)
         // 확인 버튼 클릭 리스너
         val selectCompleteButton = meetupView.findViewById<Button>(R.id.meetup_select_ok)
@@ -646,8 +641,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             // 라디오 버튼 체크 확인
             if (polishRadioButton.isChecked) {
                 // dialog 닫기
-                Toast.makeText(context, "${hikingViewModel.meetupId.value}", Toast.LENGTH_SHORT)
-                    .show()
                 meetupDialog.dismiss()
             }
         }
@@ -660,11 +653,11 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         val mBuilder = AlertDialog.Builder(activityContext)
             .setView(mountainView)
         mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
-        val moutainDialog = mBuilder.show()
+        val mountainDialog = mBuilder.show()
 
         // 취소 버튼 클릭 리스너 -> 버튼 클릭 시 dialog 닫기
         val cancelButton = mountainView.findViewById<Button>(R.id.mountain_select_cancel)
-        cancelButton.setOnClickListener { moutainDialog.dismiss(); showSelectTypeDialog() }
+        cancelButton.setOnClickListener { mountainDialog.dismiss(); showSelectTypeDialog() }
 
 
         // 현재 위치 가져오기
@@ -695,16 +688,41 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 response: Response<MountainResponse>
             ) {
                 Log.d("user!", "${response.body()}")
-                val rv = moutainDialog.findViewById<RecyclerView>(R.id.mountain_rv)
-                val mountainAdapter = MountainAdapter(activityContext, response.body()!!.result)
+                val mountainList = response.body()!!.result
+                val rv = mountainDialog.findViewById<RecyclerView>(R.id.mountain_rv)
+                val mountainAdapter = MountainAdapter(activityContext, mountainList)
                 rv.adapter = mountainAdapter
                 rv.layoutManager = LinearLayoutManager(activityContext)
+
+                // adapter 클릭 리스너 등록
+                mountainAdapter.setItemClickListener(object : MountainAdapter.OnItemClickListener {
+                    override fun onClick(v: View, position: Int) {
+                        // 클릭 시 이벤트
+
+                        // viewModel에 데이터 저장
+                        hikingViewModel.mountainId.value = mountainList[position].mountainId.toInt()
+                        hikingViewModel.mountainSummitLat.value =
+                            mountainList[position].mountainSummitLat
+                        hikingViewModel.mountainSummitLng.value =
+                            mountainList[position].mountainSummitLng
+                    }
+                })
             }
 
             override fun onFailure(call: Call<MountainResponse>, t: Throwable) {
                 Log.d("user!", "fail")
             }
         })
+
+        // 확인 버튼 클릭 리스너
+        val selectCompleteButton = mountainView.findViewById<Button>(R.id.mountain_select_ok)
+        selectCompleteButton.setOnClickListener {
+            mountainDialog.dismiss(); Toast.makeText(
+            context,
+            "${hikingViewModel.mountainId.value}",
+            Toast.LENGTH_SHORT
+        ).show()
+        } // dialog 닫기
     }
 
     override fun onDestroyView() {
