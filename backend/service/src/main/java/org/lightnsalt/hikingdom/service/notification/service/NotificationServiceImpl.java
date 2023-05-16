@@ -37,6 +37,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .title(notificationAddReq.getTitle())
                 .body(notificationAddReq.getBody())
                 .sendAt(notificationAddReq.getSendAt())
+                .url(notificationAddReq.getUrl())
                 .isRead(false)
                 .build();
         final Notification savedNotification = notificationRepository.save(notification);
@@ -65,6 +66,7 @@ public class NotificationServiceImpl implements NotificationService {
                         notification.getTitle(),
                         notification.getBody(),
                         notification.getSendAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                        notification.getUrl(),
                         notification.isRead()
         )));
     }

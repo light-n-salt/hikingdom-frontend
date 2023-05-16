@@ -90,6 +90,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		eventPublisher.publishEvent(new CreateMeetupNotificationEvent(
 				clubMemberRepository.findByClubId(clubId),
 				member,
+				savedMeetup.getId(),
 				savedMeetup.getStartAt()
 		));
 
