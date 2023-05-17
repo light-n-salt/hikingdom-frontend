@@ -48,8 +48,8 @@ class LocationService : Service(), SaveHikingRecordView {
     private lateinit var locationHandler: Handler
     private lateinit var locationLooper: Looper
 
-    private var isMeetup = false
-    private var meetupId: Long? = null
+    var isMeetup = false
+    var meetupId: Long? = null
     private var mountainId: Long = 0
 
     init {
@@ -94,6 +94,8 @@ class LocationService : Service(), SaveHikingRecordView {
 
             // sharedPreference에 LocationService 실행 상태 저장 (for HikingFragment의 '하이킹 시작/종료'버튼 처리)
             saveIsLocationServiceRunning(false)
+            saveIsMeetup(false)
+            saveIsSummit(false)
 
             // 로컬 DB에 지금까지 저장된 위치 데이터 불러오기
             val storedUserLocations = db?.userLocationDao().getUserLocations()
@@ -170,6 +172,7 @@ class LocationService : Service(), SaveHikingRecordView {
 
             // sharedPreference에 LocationService 실행 상태 저장 (for HikingFragment의 '하이킹 시작/종료'버튼 처리)
             saveIsLocationServiceRunning(true)
+            saveIsMeetup(isMeetup)
         }
 
         return START_STICKY
@@ -233,6 +236,7 @@ class LocationService : Service(), SaveHikingRecordView {
     override fun onSaveHikingRecordSuccess(message: String) {
         db?.userLocationDao().deleteAllUserLocations()  // 나중에 지우기 (api 호출 onSuccess에서 처리해줘야함)
         saveIsSummit(false) // sharedPreference에 isSummit 여부 초기화
+        saveIsMeetup(false)
         Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
         Log.d("saveHikingRecordSuccess", message)
     }

@@ -6,6 +6,8 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
@@ -25,22 +27,32 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
 import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.R
 import com.example.hikingdom.data.remote.api.RetrofitTokenInstance
 import com.example.hikingdom.data.remote.hiking.HikingRetrofitInterface
 import com.example.hikingdom.data.remote.hiking.MeetupResponse
 import com.example.hikingdom.data.remote.hiking.MountainResponse
+import com.example.hikingdom.data.remote.hiking.SocketEnterData
+import com.example.hikingdom.data.remote.hiking.SocketGPSData
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.ui.main.hiking.dialog.MeetupAdapter
 import com.example.hikingdom.ui.main.hiking.dialog.MountainAdapter
+import com.example.hikingdom.ui.socket.CircleCropWithTriangleTransformation
 import com.example.hikingdom.utils.*
+import com.google.gson.Gson
+import io.socket.client.IO
+import io.socket.client.Socket
 import net.daum.mf.map.api.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
+import java.util.Timer
+import java.util.TimerTask
 
 
 class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBinding::inflate)
@@ -71,18 +83,28 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     lateinit var hikingFinishBtn: Button
     lateinit var hikingSummitBtn: Button
 
+    private var mSocket: Socket? =null;
+    private var nickname: String? = null
+    private var profileUrl: String? = null
+    private var level: Int? = null
+    private var meetupId: Long? = null
+    private var clubId: Long? = null
+    private var memberId: Long? = null
+
+    val gson: Gson = Gson()
+
+    private val timer : Timer = Timer()
+    var task : TimerTask? = null
+
     override fun initAfterBinding() {
         binding.lifecycleOwner = this
         binding.hikingFragmentViewModel = hikingViewModel
 
         mapView = MapView(requireContext())
         mapViewContainer = binding.hikingMapview
-
 //        db = AppDatabase.getInstance(requireContext())!!    // 로컬 DB
-
         checkPermission()
-//        showMeetupDialog()
-//        showMountainDialog()
+
     }
 
 
@@ -131,6 +153,12 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             // LocationService 이미 start된 상태이므로 binding만 해준다.
             bindHikingService()
 
+            // 모임 하이킹 중일 경우, 웹소켓 연결
+            if (getIsLocationServiceRunning() && getIsMeetup()) {
+                connectSocket()
+            }
+            Log.d("Websocket condtion", getIsLocationServiceRunning().toString() + " " + getIsMeetup().toString())
+
             // 사용자의 실시간 위치 정보 화면에 띄워주기
             loadLocationInfo()
             hikingFinishBtn.visibility = View.VISIBLE
@@ -169,6 +197,13 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 mapView.removePOIItems(removeItems)
             }
             mapView.removeAllPolylines()
+
+            // 웹소켓 종료
+            mSocket?.emit("leave", gson.toJson(SocketEnterData(memberId, meetupId,)))
+            mSocket?.disconnect();
+            mSocket?.off("enter")
+            mSocket?.off("newLocation")
+            task?.cancel()
         }
 
         hikingSummitBtn.setOnClickListener {
@@ -583,6 +618,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 //        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
         val meetupDialog = mBuilder.show()
 
+        meetupDialog.findViewById<TextView>(R.id.to_agreement).setOnClickListener {
+            showLocationSharingAgreementDialog();
+        }
+
         // 데이터 불러오기
         val api = RetrofitTokenInstance.getInstance().create(HikingRetrofitInterface::class.java)
         api.getTodayMeetups().enqueue(object : Callback<MeetupResponse> {
@@ -682,6 +721,20 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         })
     }
 
+    private fun showLocationSharingAgreementDialog() {
+        // dialog 띄우기
+        val meetupView =
+            LayoutInflater.from(activityContext).inflate(R.layout.dialog_detail_agreement, null)
+        val mBuilder = AlertDialog.Builder(activityContext).setView(meetupView)
+//        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
+        val locationAgreementDialog = mBuilder.show()
+
+        // 뒤로가기 버튼을 눌렀을 때 동작
+        locationAgreementDialog.findViewById<Button>(R.id.back_btn).setOnClickListener {
+            locationAgreementDialog.dismiss()
+        }
+    }
+
     fun agreementHikingMeetupModal() {  // 선 선택 혹은 일정 선택 후 하이킹 시작 전 최종으로 뜨는 모달
         // dialog 띄우기
         val selectView =
@@ -693,7 +746,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         // 클릭 리스너 핸들 -> 확인
         val hikingStart = selectView.findViewById<Button>(R.id.hiking_mountain_start_btn)
-        hikingStart.setOnClickListener { meetupDialog.dismiss(); startHiking(); }   // 확인 시 바로 하이킹 시작됨 (인증하기 버튼, 하이킹 종료 버튼으로 바뀜)
+        hikingStart.setOnClickListener { meetupDialog.dismiss(); startHiking();}
 
         // 클릭 리스너 핸들 -> 취소
         val hikingCancel = selectView.findViewById<Button>(R.id.hiking_mountain_cancel_start_btn)
@@ -702,6 +755,13 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
     fun startHiking(){
         startHikingService()
+
+        Log.d("CONDITON", hikingViewModel.isHikingStarted.value.toString() + " " + hikingViewModel.isMeetup.value.toString())
+        // 모임 하이킹 중일 경우, 웹소켓 연결
+        if (hikingViewModel.isMeetup.value == true) {
+            connectSocket()
+        }   // 확인 시 바로 하이킹 시작됨 (인증하기 버튼, 하이킹 종료 버튼으로 바뀜)
+
         showToast("등산 기록을 시작합니다.")
         hikingFinishBtn.visibility = View.VISIBLE
         hikingSummitBtn.visibility = View.VISIBLE
@@ -716,6 +776,151 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 //            hikingViewModel.mountainSummitLat.value = 37.5013   // 임시 값 setting
 //            hikingViewModel.mountainSummitLng.value = 127.0395  // 임시 값 setting
     }
+
+    private fun connectSocket() {
+        // 유저 정보 읽어오기
+        val user = db?.userDao()?.getUser()
+        nickname = user?.nickname
+        profileUrl = user?.profileUrl
+        level = user?.level
+        memberId = user?.memberId
+        clubId = user?.clubId
+        meetupId = locationService?.meetupId
+
+        Log.d("SOCKET1", "Connection success : " + mSocket)
+
+        // 소켓 생성
+        try {
+            mSocket = IO.socket("http://hikingdom.kr:8003")
+            Log.d("SOCKET3", "Connection success : " + mSocket)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("SOCKET", "소켓연결에 실패했습니다." )
+        }
+
+        // 소켓 구독 함수
+        mSocket?.on(
+            Socket.EVENT_CONNECT
+        ) { args: Array<Any?>? ->
+            Log.d("SOCKET5", "소켓 입장" )
+            mSocket?.emit("enter", gson.toJson(SocketEnterData(memberId, meetupId,))) // 입장 메시지 전송
+        }
+        mSocket?.on("enter"){ args: Array<Any> ->
+            val data: SocketEnterData = gson.fromJson(
+                args[0].toString(),
+                SocketEnterData::class.java
+            )
+            onEnter(data)
+        }
+        mSocket?.on("newLocation") { args: Array<Any> ->
+            val data: SocketGPSData = gson.fromJson(
+                args[0].toString(),
+                SocketGPSData::class.java
+            )
+            onNewLocation(data)
+        }
+
+        // 소켓 연결
+        mSocket?.connect()
+
+        // 주기적으로 위치정보 소켓통신
+        sendGPSPeriodically()
+    }
+
+    private fun sendGPSPeriodically() {
+        task = object : TimerTask() {
+            override fun run() {
+                sendGPS()
+            }
+        }
+        timer.schedule(task, 0, 1000)
+    }
+
+    private fun sendGPS() {
+
+        // 현재 위치 정보 받아오기
+        val locationInfo = LocationUtils.getCurrentLocation(requireContext())
+
+        Log.d("sendLocation1", locationInfo.toString());
+
+        if (locationInfo == null) {
+            showToast("위치 정보를 받아오지 못했습니다.")
+            return
+        }
+
+        // 소켓 보내기
+        mSocket?.emit(
+            "newLocation", gson.toJson(
+                SocketGPSData(
+                    nickname,
+                    profileUrl,
+                    level,
+                    memberId,
+                    clubId,
+                    meetupId,
+                    locationInfo[0],
+                    locationInfo[1],
+                )
+            )
+        )
+    }
+
+    // 입장 시 동작
+    private fun onEnter(data: SocketEnterData) {
+        Log.d("enter", data.toString())
+    }
+
+    // gps 정보 수신 시, 커스텀 마커 업데이트
+    private fun onNewLocation(data: SocketGPSData) {
+        activity?.runOnUiThread {
+            // 데이터 추출
+            val nickname = data.nickname
+            val memberId = data.memberId
+            val profileUrl = data.profileUrl
+            val lat = data.lat
+            val lng = data.lng
+
+            Log.d("receivedLocation",  nickname + " " + lat + " " + lng  )
+
+            // 커스텀 마커 생성
+            val customMarker = MapPOIItem()
+            customMarker.itemName = nickname
+            customMarker.tag = (memberId!! + 1).toInt()
+            customMarker.mapPoint = MapPoint.mapPointWithGeoCoord(lat!!, lng!!)
+            customMarker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
+            customMarker.isCustomImageAutoscale =
+                false // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+            customMarker.setCustomImageAnchor(0.5f, 1.0f) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+            Glide.with(this)
+                .asBitmap()
+                .load(profileUrl)
+                .transform(CircleCropWithTriangleTransformation())
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+                    ) {
+                        customMarker.customImageBitmap = resource
+
+                        // 기존 마커 삭제 후 새 마커 추가
+                        val removeItems = mapView.findPOIItemByName(nickname)
+                        if (removeItems != null) {
+                            mapView.removePOIItems(removeItems)
+                        }
+                        mapView.addPOIItem(customMarker)
+                        Log.d("추가", "추가")
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        customMarker.customImageResourceId = R.drawable.custom_marker_red
+                        mapView.addPOIItem(customMarker)
+
+                        Log.d("실패", "실패")
+                    }
+                })
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -735,6 +940,11 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             "onStop LocationList",
             locationService?.locations?.value?.size.toString() + " / " + locationService?.locations?.value.toString()
         )
+        mSocket?.emit("leave", gson.toJson(SocketEnterData(memberId, meetupId,)))
+        mSocket?.disconnect();
+        mSocket?.off("enter")
+        mSocket?.off("newLocation")
+        task?.cancel()
     }
 
     override fun onDestroy() {
