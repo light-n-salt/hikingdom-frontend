@@ -1,10 +1,14 @@
 package com.example.hikingdom.ui.main
 
+import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
 import com.example.hikingdom.R
 import com.example.hikingdom.data.remote.api.RetrofitTokenInstance
 import com.example.hikingdom.data.remote.auth.AuthRetrofitInterface
@@ -30,6 +34,22 @@ class MainActivity: BaseActivity<ActivityMainBinding>(ActivityMainBinding::infla
         binding.mainBottomNavigation.setupWithNavController(navController)
         binding.mainBottomNavigation.itemIconTintList = null
 
+        val myPageMenuItem = binding.mainBottomNavigation.menu.findItem(R.id.menu_myPageFragment)
+
+        var profileImgUrl = db?.userDao()?.getUser()?.profileUrl
+        if (profileImgUrl != null){
+            Glide.with(this).load(profileImgUrl).circleCrop().into(object: CustomTarget<Drawable>() {
+                override fun onResourceReady(resource: Drawable, transition: com.bumptech.glide.request.transition.Transition<in Drawable>?) {
+                    // 리소스가 준비되면 아이콘을 설정합니다.
+                    myPageMenuItem.icon = resource
+                }
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    // 아이콘 로드가 취소될 때의 동작을 정의합니다.
+                    // 이 경우에는 기본 아이콘을 설정합니다.
+                    myPageMenuItem.icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_mypage)
+                }
+            })
+        }
     }
 
     override fun onDestroy() {
