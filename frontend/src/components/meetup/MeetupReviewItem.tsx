@@ -20,14 +20,12 @@ type ReviewProps = {
 
 function MeetupReviewItem({ review }: ReviewProps) {
   const { data: userInfo } = useUserQuery()
-  const { clubId, meetupId } = useParams() as {
-    clubId: string
-    meetupId: string
-  }
+  const { meetupId } = useParams() as { meetupId: string }
   const queryClient = useQueryClient()
 
   const onClickDelete = useMutation(
-    () => deleteReview(parseInt(clubId), parseInt(meetupId), review.reviewId),
+    () =>
+      deleteReview(Number(userInfo?.clubId), Number(meetupId), review.reviewId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['reviews'])

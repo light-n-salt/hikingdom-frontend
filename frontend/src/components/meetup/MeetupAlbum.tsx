@@ -89,7 +89,7 @@ function MeetupAlbum({ join }: MeetupAlbum) {
       )}
       {/* 사진 상세보기 모달 */}
       {isOpen && (
-        <Modal onClick={() => setIsOpen}>
+        <Modal onClick={() => setIsOpen(false)}>
           {photo && <PhotoModal photo={photo} setState={setIsOpen} />}
         </Modal>
       )}
