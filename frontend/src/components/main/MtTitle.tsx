@@ -63,16 +63,16 @@ function MtTitle({ name, maxAlt, timeDuration, assets }: MtTitleProps) {
       <div className={styles.container}>
         {/* 높이 */}
         <div className={styles.content}>
-          <span className={styles.bold}>{Math.floor(maxAlt)}m</span>
           <span className={styles.text}>높이</span>
+          <span className={styles.bold}>{Math.floor(maxAlt)}m</span>
         </div>
 
         <span className={styles.border}>|</span>
 
         {/* 왕복시간 */}
         <div className={styles.content}>
+          <span className={styles.text}>왕복</span>
           <span className={styles.bold}>약 {convertToHour(timeDuration)}</span>
-          <span className={styles.text}>왕복시간</span>
         </div>
         <span className={styles.border}>|</span>
       </div>

@@ -14,8 +14,10 @@ function RankList({
   size = 'lg',
   onClickDeleteClub,
 }: RankListProps) {
+  const paddingClass = size === 'sm' ? 'p-md' : ''
+
   return (
-    <div className={`${styles.container} ${styles[size]}`}>
+    <div className={`${styles.container} ${styles[size]} ${paddingClass}`}>
       {clubInfoArray.map((clubInfo) => (
         <RankItem
           key={clubInfo.clubId}

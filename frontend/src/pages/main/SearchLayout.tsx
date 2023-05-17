@@ -26,8 +26,8 @@ function SearchLayout() {
   }
 
   return (
-    <div className={`page ${theme} p-md ${styles.container}`}>
-      <div className={styles.searchbar}>
+    <div className={`page ${theme} ${styles.container}`}>
+      <div className={`p-md ${styles.searchbar}`}>
         <SearchBar
           value={value}
           placeholder="산을 검색해보세요"

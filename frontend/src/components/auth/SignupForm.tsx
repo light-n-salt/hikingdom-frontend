@@ -119,88 +119,90 @@ function SignupForm() {
           <Loading type="circle" />
         </div>
       )}
-      <div className={styles.flex}>
+      <div className={styles.form}>
+        <div className={styles.flex}>
+          <LabelInput
+            label="이메일"
+            value={email}
+            onChange={changeEmail}
+            isPass={isAuthStatus === 0}
+            isError={isAuthStatus === 2}
+            placeholder={emailCond}
+            disabled={isAuthStatus === 0}
+          />
+          <Button
+            text="인증"
+            color={isEmailPass ? 'primary' : 'gray'}
+            size="md"
+            onClick={onClickValidEmail}
+            disabled={isEmailPass ? false : true}
+          />
+        </div>
+        <div className={styles.flex}>
+          <LabelInput
+            label="인증코드"
+            value={code}
+            onChange={changeCode}
+            isPass={isAuthStatus === 0}
+            isError={isAuthStatus === 2}
+            placeholder={codeCond}
+            disabled={isAuthStatus === 0}
+          />
+          <Button
+            text="확인"
+            color={isCodePass ? 'primary' : 'gray'}
+            size="md"
+            onClick={onClickConfirmEmail}
+          />
+        </div>
+        <div className={styles.flex}>
+          <LabelInput
+            label="닉네임"
+            value={nickname}
+            onChange={changeNickname}
+            isPass={isDupStatus === 0}
+            isError={isDupStatus === 2}
+            placeholder={nicknameCond}
+            disabled={isDupStatus === 0}
+          />
+          <Button
+            text="중복"
+            color={isNicknamePass ? 'primary' : 'gray'}
+            size="md"
+            onClick={onClickCheckNickname}
+          />
+        </div>
         <LabelInput
-          label="이메일"
-          value={email}
-          onChange={changeEmail}
-          isPass={isAuthStatus === 0}
-          isError={isAuthStatus === 2}
-          placeholder={emailCond}
-          disabled={isAuthStatus === 0}
+          ref={passwordRef}
+          label="비밀번호"
+          value={password}
+          onChange={changePw}
+          onKeyDown={(event: React.KeyboardEvent) => {
+            if (event.key === 'Enter') {
+              event?.preventDefault()
+              checkPasswordRef.current && checkPasswordRef.current.focus()
+            }
+          }}
+          isPass={isPwPass}
+          placeholder={pwCond}
+          type="password"
         />
-        <Button
-          text="인증"
-          color={isEmailPass ? 'primary' : 'gray'}
-          size="md"
-          onClick={onClickValidEmail}
-          disabled={isEmailPass ? false : true}
+        <LabelInput
+          ref={checkPasswordRef}
+          label="비밀번호 확인"
+          value={checkPassword}
+          onChange={changeCheckPw}
+          onKeyDown={(event: React.KeyboardEvent) => {
+            if (event.key === 'Enter') {
+              event?.preventDefault()
+              onClickSignup()
+            }
+          }}
+          isPass={isCheckPwPass}
+          placeholder="비밀번호를 확인해주세요"
+          type="password"
         />
       </div>
-      <div className={styles.flex}>
-        <LabelInput
-          label="인증코드"
-          value={code}
-          onChange={changeCode}
-          isPass={isAuthStatus === 0}
-          isError={isAuthStatus === 2}
-          placeholder={codeCond}
-          disabled={isAuthStatus === 0}
-        />
-        <Button
-          text="확인"
-          color={isCodePass ? 'primary' : 'gray'}
-          size="md"
-          onClick={onClickConfirmEmail}
-        />
-      </div>
-      <div className={styles.flex}>
-        <LabelInput
-          label="닉네임"
-          value={nickname}
-          onChange={changeNickname}
-          isPass={isDupStatus === 0}
-          isError={isDupStatus === 2}
-          placeholder={nicknameCond}
-          disabled={isDupStatus === 0}
-        />
-        <Button
-          text="중복"
-          color={isNicknamePass ? 'primary' : 'gray'}
-          size="md"
-          onClick={onClickCheckNickname}
-        />
-      </div>
-      <LabelInput
-        ref={passwordRef}
-        label="비밀번호"
-        value={password}
-        onChange={changePw}
-        onKeyDown={(event: React.KeyboardEvent) => {
-          if (event.key === 'Enter') {
-            event?.preventDefault()
-            checkPasswordRef.current && checkPasswordRef.current.focus()
-          }
-        }}
-        isPass={isPwPass}
-        placeholder={pwCond}
-        type="password"
-      />
-      <LabelInput
-        ref={checkPasswordRef}
-        label="비밀번호 확인"
-        value={checkPassword}
-        onChange={changeCheckPw}
-        onKeyDown={(event: React.KeyboardEvent) => {
-          if (event.key === 'Enter') {
-            event?.preventDefault()
-            onClickSignup()
-          }
-        }}
-        isPass={isCheckPwPass}
-        placeholder="비밀번호를 확인해주세요"
-        type="password"
-      />
       <Button text="회원가입" color="primary" onClick={onClickSignup} />
     </div>
   )

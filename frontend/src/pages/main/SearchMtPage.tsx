@@ -67,7 +67,7 @@ function SearchMtPage() {
   })
 
   return (
-    <div ref={infiniteRef} className={styles.container}>
+    <div ref={infiniteRef} className={`p-md ${styles.container}`}>
       <MtList mtInfoArray={mtInfoArray} size="lg" />
       {isLoading && (
         <div className={styles.loading}>

@@ -20,12 +20,7 @@ function MtContent({ address, peaks, description }: MtContentProps) {
       <Info imgSrc={peaksImg} title="봉우리" content={peaks} />
       {/* <Info imgSrc={transportImg} title="주변 교통" content={transportInfo} /> */}
       <div className={styles.description}>
-        <IconText
-          imgSrc={descriptionImg}
-          text="설명"
-          size="sm"
-          isBold={false}
-        />
+        <IconText imgSrc={descriptionImg} text="설명" size="sm" isBold={true} />
         <span className={styles.text}>{description}</span>
       </div>
     </div>
@@ -41,7 +36,7 @@ type InfoProps = {
 function Info({ imgSrc, title, content }: InfoProps) {
   return (
     <div className={styles.content}>
-      <IconText imgSrc={imgSrc} text={title} size="sm" isBold={false} />
+      <IconText imgSrc={imgSrc} text={title} size="sm" isBold={true} />
       <span className={styles.text}>{content}</span>
     </div>
   )
