@@ -33,11 +33,11 @@ function AlarmItem({ alarm }: { alarm: UserAlarm }) {
       <div className={`${styles['alarm-title-box']}`}>
         <div className={`${styles.title} ${alarmStyle}`}>
           <GoPrimitiveDot className={styles.dot} />
-          <span>{alarm.body}</span>
+          <span>{alarm.title}</span>
         </div>
-        <span>{notiTime}</span>
+        <div className={styles.time}>{notiTime}</div>
       </div>
-      <div className={`${styles.content}`}>{alarm.title}</div>
+      <div className={`${styles.content}`}>{alarm.body}</div>
     </div>
   )
 }
