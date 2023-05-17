@@ -78,5 +78,25 @@
         android:textColor="#707070"
         android:textSize="14sp" />
 
+    <ImageView
+        android:id="@+id/dialog_meetup_no_meetup_iv"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/sad_imoji"
+        android:layout_gravity="center"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/dialog_meetup_no_meetup_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:visibility="visible"
+        android:text="오늘 일정이 없습니다.\n개인 등산을 해보세요!"
+        android:textSize="16sp"/>
 
 </LinearLayout>
+
+</LinearLayout>
+>>>>>>> android/hikingdom/app/src/main/res/layout/dialog_select_meetup.xml
