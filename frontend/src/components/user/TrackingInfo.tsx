@@ -15,14 +15,6 @@ import IconText from 'components/common/IconText'
 import { BiCalendarAlt } from 'react-icons/bi'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 
-declare global {
-  interface Window {
-    kakao: any
-  }
-}
-
-const { kakao } = window
-
 function TrackingInfo({ hikingRecordId }: { hikingRecordId: number }) {
   const { nickname } = useParams() as {
     nickname: string
@@ -45,6 +37,8 @@ function TrackingInfo({ hikingRecordId }: { hikingRecordId: number }) {
     if (!detailRecord) {
       return
     }
+
+    const { kakao } = window;
 
     // 경로 정보
     const route = detailRecord.gpsRoute.gpsRoute
