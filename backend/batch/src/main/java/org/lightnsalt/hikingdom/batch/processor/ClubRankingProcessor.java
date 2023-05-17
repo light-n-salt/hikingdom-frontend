@@ -24,9 +24,14 @@ public class ClubRankingProcessor implements ItemProcessor<Club, ClubRanking> {
 		}
 
 		ClubRanking clubRanking = ClubRanking.builder()
+			.club(club)
 			.ranking(ranking)
 			.score(club.getScore())
 			.setDate(now)
+			.totalMemberCount(club.getTotalMemberCount())
+			.totalMeetupCount(club.getTotalMeetupCount())
+			.totalMountainCount(club.getTotalMountainCount())
+			.totalAssetCount(club.getTotalAssetCount())
 			.build();
 
 		previousScore = club.getScore();
