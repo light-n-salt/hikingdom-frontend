@@ -25,9 +25,9 @@ function TextSendBar({
   return (
     <div className={styles.bar}>
       <input
-        onKeyDown={(event: React.KeyboardEvent) => {
-          if (event.key === 'Enter') {
-            event?.preventDefault()
+        onKeyUp={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter') {
+            e?.preventDefault()
             onClick()
           }
         }}

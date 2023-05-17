@@ -69,12 +69,12 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
         <div>
           <IconText
             icon={<BiCalendarAlt />}
-            text={hiking.startAt.split(' ')[0]}
+            text={hiking.startAt.split(' ')[0].replaceAll('-', '.').slice(2)}
             size="sm"
           />
           <IconText
             icon={<AiOutlineClockCircle />}
-            text={hiking.startAt.split(' ')[1]}
+            text={hiking.startAt.split(' ')[1].slice(0, -3)}
             size="sm"
           />
         </div>

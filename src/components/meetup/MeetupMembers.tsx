@@ -8,7 +8,7 @@ import MemberModal from './MemberModal'
 import { MeetupMemberInfo } from 'types/meetup.interface'
 import { ClubMember } from 'types/club.interface'
 import toast from 'components/common/Toast'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import {
   getMeetupMembers,
@@ -31,7 +31,7 @@ function MeetupMembers() {
 
   // 일정 멤버 조회
   const { data: members } = useQuery<MeetupMemberInfo>(['meetupMembers'], () =>
-    getMeetupMembers(clubId || 0, parseInt(meetupId))
+    getMeetupMembers(clubId || 0, Number(meetupId))
   )
 
   // 모달 ON OFF
@@ -44,22 +44,34 @@ function MeetupMembers() {
   }
 
   // 일정 참여
-  const onClickJoin = () => {
-    if (!clubId) return
-    updateJoin(clubId, parseInt(meetupId)).then(() => {
-      queryClient.invalidateQueries(['meetupMembers'])
-      toast.addMessage('success', '일정에 참여했습니다')
-    })
-  }
+  const { mutate: onClickJoin } = useMutation(
+    () => updateJoin(Number(clubId), Number(meetupId)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['meetupMembers'])
+        queryClient.invalidateQueries(['meetup'])
+        toast.addMessage('success', '일정에 참여했습니다')
+      },
+      onError: (err: any) => {
+        toast.addMessage('error', err.data.message)
+      },
+    }
+  )
 
   // 일정 참여 취소
-  const onClickWithdraw = () => {
-    if (!clubId) return
-    deleteJoin(clubId, parseInt(meetupId)).then(() => {
-      queryClient.invalidateQueries(['meetupMembers'])
-      toast.addMessage('success', '일정을 취소했습니다')
-    })
-  }
+  const { mutate: onClickWithdraw } = useMutation(
+    () => deleteJoin(Number(clubId), Number(meetupId)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['meetupMembers'])
+        queryClient.invalidateQueries(['meetup'])
+        toast.addMessage('success', '일정을 취소했습니다')
+      },
+      onError: (err: any) => {
+        toast.addMessage('error', err.data.message)
+      },
+    }
+  )
 
   return (
     <>
@@ -78,14 +90,14 @@ function MeetupMembers() {
               text="참여취소"
               color="secondary"
               size="xs"
-              onClick={onClickWithdraw}
+              onClick={() => onClickWithdraw()}
             />
           ) : (
             <Button
               text="참여"
               color="primary"
               size="xs"
-              onClick={onClickJoin}
+              onClick={() => onClickJoin()}
             />
           )}
         </div>
