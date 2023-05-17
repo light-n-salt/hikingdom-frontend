@@ -1,6 +1,4 @@
 import React from 'react'
-
-import styles from './MemberModal.module.scss'
 import MemberList from 'components/club/MemberList'
 import { ClubMember } from 'types/club.interface'
 
@@ -10,7 +8,7 @@ type MemberModalProps = {
 
 function MemberModal({ memberList }: MemberModalProps) {
   return (
-    <div className={styles.modal}>
+    <div>
       <MemberList
         title="참여 멤버"
         length={memberList.length}
