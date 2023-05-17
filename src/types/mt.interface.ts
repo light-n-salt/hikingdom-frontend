@@ -22,16 +22,3 @@ export interface MtInfoDetail extends MtInfo {
   description: string
   assets: MtAssetInfo[]
 }
-
-// 에셋 정보
-export interface TodayAssetInfo {
-  assetUrl: string
-  row: number
-  column: number
-}
-
-// 오늘의 모임 산
-export interface TodayClubMt {
-  clubId: number
-  assets: TodayAssetInfo[]
-}
