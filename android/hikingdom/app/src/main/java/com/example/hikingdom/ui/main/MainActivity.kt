@@ -1,7 +1,9 @@
 package com.example.hikingdom.ui.main
 
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -50,9 +52,29 @@ class MainActivity: BaseActivity<ActivityMainBinding>(ActivityMainBinding::infla
                 }
             })
         }
+
+        // 키보드 상태 변경 감지를 위한 ViewTreeObserver 등록
+        val rootView = window.decorView.rootView
+        rootView.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            rootView.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = rootView.height
+            val keyboardHeight = screenHeight - rect.bottom
+
+            if (keyboardHeight > screenHeight * 0.15) {
+                // 키보드가 올라왔을 때의 동작
+                binding.mainBottomNavigation.visibility = View.GONE
+            } else {
+                // 키보드가 사라졌을 때의 동작
+                binding.mainBottomNavigation.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        // ViewTreeObserver 리스너 제거
+        val rootView = window.decorView.rootView
+        rootView.viewTreeObserver.removeOnGlobalLayoutListener { }
     }
 }
