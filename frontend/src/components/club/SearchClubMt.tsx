@@ -27,7 +27,6 @@ function SearchClubMt({ assetInfo }: SearchClubMtProps) {
       value: name,
     }))
     setFilterOptions(options)
-    console.log('check')
   }, [filter])
 
   // function onChangeSetValue(event: React.ChangeEvent<HTMLInputElement>) {

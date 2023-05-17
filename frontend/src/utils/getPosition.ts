@@ -11,6 +11,7 @@ export function getPosition(arr: any[], filter?: string) {
   const uniqueNameList = new Set() // 중복된 name 값을 제거하기 위한 Set 객체
 
   arr[0].position = new THREE.Vector3(0, 0, 0)
+  arr[0].check = false
   uniqueNameList.add('전체')
 
   while (idx < n) {
@@ -30,10 +31,14 @@ export function getPosition(arr: any[], filter?: string) {
         }
         sx += dx
         sz += dz
-        arr[idx].position =
-          filter === arr[idx].mountainName
-            ? new THREE.Vector3(sx, 1, sz)
-            : new THREE.Vector3(sx, 0, sz) // 배열의 각 요소에 위치 정보를 할당
+        if (filter === arr[idx].mountainName) {
+          arr[idx].position = new THREE.Vector3(sx, 1, sz)
+          arr[idx].check = true
+        } else {
+          arr[idx].position = new THREE.Vector3(sx, 0, sz) // 배열의 각 요소에 위치 정보를 할당
+          arr[idx].check = false
+        }
+
         uniqueNameList.add(arr[idx].mountainName)
         idx += 1
       }

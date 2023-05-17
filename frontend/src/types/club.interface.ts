@@ -13,9 +13,9 @@ export interface ClubInfo {
   clubName: string
   location: string
   totalMember: number
-  totalDuration: number
-  totalDistance: number
-  participationRate: number
+  totalMountainCount: number
+  totalMeetupCount: number
+  totalAssetCount: number
   ranking: number
 }
 

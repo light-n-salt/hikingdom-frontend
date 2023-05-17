@@ -145,7 +145,9 @@ export function postJoinClub(clubId: number) {
 
 // 소모임 가입 신청 목록 조회
 export function getClubRequest() {
-  return apiRequest.get(`/members/clubs/my-requests`).then((res) => res.data.result)
+  return apiRequest
+    .get(`/members/clubs/my-requests`)
+    .then((res) => res.data.result)
 }
 
 // 소모임 가입 신청 취소
@@ -175,5 +177,5 @@ export function deleteClubMember(clubId: number, memberId: number) {
 
 // 오늘의 소모임 산 조회 (Main)
 export function getTodayClubMt() {
-  return apiRequest.get(`/info/today/clubs`).then((res) => res.data.result)
+  return apiRequest.get(`/info/today/club`).then((res) => res.data.result)
 }

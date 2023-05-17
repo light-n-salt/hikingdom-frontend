@@ -22,9 +22,9 @@ type InfiniteClubInfo = {
 // 드롭다운 SelectBox에 넘길 옵션 배열
 const filterOptions = [
   { label: '종합랭킹 순', value: '' },
-  { label: '참여도 순', value: 'participation' },
-  { label: '거리 순', value: 'distance' },
-  { label: '시간 순', value: 'time' },
+  { label: '완등 산 순', value: 'mountain' },
+  { label: '에셋 순', value: 'asset' },
+  { label: '멤버 순', value: 'member' },
 ]
 
 function RankPage() {

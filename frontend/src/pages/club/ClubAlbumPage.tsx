@@ -50,7 +50,7 @@ function ClubAlbumPage() {
   })
 
   return (
-    <div className={`page p-sm ${theme}`}>
+    <div className={`page p-md ${theme}`}>
       <div ref={infiniteRef} className={styles.page}>
         {photoList && <AlbumList photoList={photoList} />}
         {isLoading && <Loading size="sm" />}

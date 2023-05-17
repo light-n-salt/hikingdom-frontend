@@ -47,93 +47,62 @@ function MainPage() {
     () => getRanking('', null, 3)
   )
 
-  // const { data: todayClubMt } = useQuery<TodayClubMt>(
-  //   ['todayClubMountain'],
-  //   getTodayClubMt, {
-  //     cacheTime: queryTime,
-  //     staleTime: queryTime,
-  //   }
-  // )
+  const { data: todayClubMt } = useQuery<TodayClubMt>(
+    ['todayClubMountain'],
+    getTodayClubMt,
+    {
+      cacheTime: queryTime,
+      staleTime: queryTime,
+    }
+  )
   const assetArray = getPosition(assetInfo).arr
 
-  // Api 연결되면 삭제할 데이터
-  const todayClubMt = {
-    clubId: 1,
-  }
   return mtInfoArray && clubInfoArray && todayClubMt && assetArray ? (
-    <div className={styles.container}>
-      <div className={styles.section}>
-        <IconText
-          imgSrc={cloud}
-          text="여기 등산 어때요"
-          size="sm"
-          isBold={true}
-        />
-        <div className={styles.scroll}>
-          <MtList mtInfoArray={mtInfoArray} size="sm" />
+    <>
+      {isLoading || isError ? (
+        <Loading />
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.section}>
+            <IconText
+              imgSrc={cloud}
+              text="여기 등산 어때요"
+              size="sm"
+              isBold={true}
+            />
+            <div className={styles.scroll}>
+              <MtList mtInfoArray={mtInfoArray} size="sm" />
+            </div>
+          </div>
+          <div className={styles.section}>
+            <IconText imgSrc={trophy} text="TOP3" size="sm" isBold={true} />
+            <div className={styles.scroll}>
+              <RankList clubInfoArray={clubInfoArray.content} size="sm" />
+            </div>
+          </div>
+          <div
+            className={`${styles.section} ${styles.height}`}
+            onClick={() => {
+              navigate(`/club/${todayClubMt.clubId}/detail`)
+            }}
+          >
+            <IconText
+              imgSrc={mountain}
+              text="오늘의 모임 산"
+              size="sm"
+              isBold={true}
+            />
+            <ClubMountain zoom={5} assetInfo={assetArray} />
+          </div>
         </div>
-      </div>
-      <div className={styles.section}>
-        <IconText imgSrc={trophy} text="TOP3" size="sm" isBold={true} />
-        <div className={styles.scroll}>
-          {/* <RankList clubInfoArray={clubInfoArray.content} size="sm" /> */}
-          <RankList clubInfoArray={clubInfoArrayEx} size="sm" />
-        </div>
-      </div>
-      <div
-        className={`${styles.section} ${styles.height}`}
-        onClick={() => {
-          navigate(`/club/${todayClubMt.clubId}/detail`)
-        }}
-      >
-        <IconText
-          imgSrc={mountain}
-          text="오늘의 모임 산"
-          size="sm"
-          isBold={true}
-        />
-        <ClubMountain zoom={5} assetInfo={assetArray} />
-      </div>
-    </div>
+      )}
+    </>
   ) : (
     <Loading />
   )
 }
 
 export default MainPage
-
-const clubInfoArrayEx = [
-  {
-    clubId: 1,
-    clubName: '산타마리아',
-    location: '서울특별시 강남구',
-    totalMember: 13,
-    totalDuration: 722,
-    totalDistance: 123,
-    participationRate: 87,
-    ranking: 1,
-  },
-  {
-    clubId: 2,
-    clubName: '싸피 8기 1반',
-    location: '서울특별시 강남구',
-    totalMember: 10,
-    totalDuration: 542,
-    totalDistance: 100,
-    participationRate: 100,
-    ranking: 2,
-  },
-  {
-    clubId: 3,
-    clubName: '싸피 8기 전국캠퍼스 등산',
-    location: '전국',
-    totalMember: 15,
-    totalDuration: 183,
-    totalDistance: 73,
-    participationRate: 67,
-    ranking: 3,
-  },
-]
 
 const assetInfo = [
   {

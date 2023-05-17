@@ -4,16 +4,16 @@ import { FaMountain } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import Button from 'components/common/Button'
 import IconText from 'components/common/IconText'
-import shoe from 'assets/images/shoe.png'
 import marker from 'assets/images/marker.png'
 import person from 'assets/images/person.png'
-import hourglass from 'assets/images/hourglass.png'
+import hiking from 'assets/images/hiking.png'
+import plan from 'assets/images/plan.png'
+import asset from 'assets/images/asset.png'
 import goldMedal from 'assets/images/gold_medal.png'
 import bronzeMedal from 'assets/images/bronze_medal.png'
 import silverMedal from 'assets/images/silver_medal.png'
 import { ThemeContext } from 'styles/ThemeProvider'
 import { ClubInfo } from 'types/club.interface'
-import { convertToTime } from 'utils/convertToTime'
 
 type RankItemProps = {
   clubInfo: ClubInfo // 소모임 정보
@@ -26,7 +26,6 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
   const navigate = useNavigate()
 
   const totalMemeber = clubInfo.totalMember.toString() + '명'
-  const totalDistance = clubInfo.totalDistance.toString() + 'km'
 
   // 랭킹 아이콘
   let rankingIcon = null
@@ -69,19 +68,18 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
         )}
       </div>
       <div className={`${styles.info} ${styles[size]}`}>
-        <IconText imgSrc={person} text={totalMemeber} />
         <div className={styles.flexbox}>
-          <IconText
-            imgSrc={hourglass}
-            text={convertToTime(clubInfo.totalDuration)}
-          />
-          <IconText imgSrc={shoe} text={totalDistance} />
+          <IconText imgSrc={person} text={totalMemeber} />
+          {size === 'lg' && (
+            <IconText imgSrc={asset} text={`${clubInfo.totalAssetCount}`} />
+          )}
+        </div>
+        <div className={styles.flexbox}>
+          <IconText imgSrc={hiking} text={`${clubInfo.totalMountainCount}`} />
+          <IconText imgSrc={plan} text={`${clubInfo.totalMeetupCount}`} />
         </div>
       </div>
-      <div className={styles.flexbox}>
-        {size === 'lg' && <IconText imgSrc={marker} text={clubInfo.location} />}
-        <MtRating participationRate={clubInfo.participationRate} />
-      </div>
+      <IconText imgSrc={marker} text={clubInfo.location} />
       {/* 랭킹 아이콘 */}
       {rankingIcon ? (
         <img className={styles.medal} src={rankingIcon} />
@@ -97,26 +95,3 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
 }
 
 export default RankItem
-
-// 참여도에 따른 산모양 5점 별점 아이콘 컴포넌트 반환
-type MtRatingProps = {
-  participationRate: number // 참여도
-}
-
-function MtRating({ participationRate }: MtRatingProps) {
-  const score = Math.round(participationRate / 20)
-
-  return (
-    <div className={styles['mt-rating']}>
-      <p>참여도</p>
-      <div>
-        {[...Array(5)].map((_, index) => (
-          <FaMountain
-            key={`fa-mountain-${index}`}
-            className={index < score ? styles['green'] : styles['gray']}
-          />
-        ))}
-      </div>
-    </div>
-  )
-}
