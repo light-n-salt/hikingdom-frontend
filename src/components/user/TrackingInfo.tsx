@@ -23,11 +23,7 @@ declare global {
 
 const { kakao } = window
 
-type TrackingInfoProps = {
-  hikingRecordId: number
-}
-
-function TrackingInfo({ hikingRecordId }: TrackingInfoProps) {
+function TrackingInfo({ hikingRecordId }: { hikingRecordId: number }) {
   const { nickname } = useParams() as {
     nickname: string
   }
