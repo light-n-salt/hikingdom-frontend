@@ -25,7 +25,7 @@ public class ClubRankingProcessor implements ItemProcessor<ClubRankingDto, ClubR
 			.ranking(ranking)
 			.score(clubRankingDto.getScore())
 			.setDate(LocalDate.now())
-			.totalHikingCount(clubTotalHikingStatistic.getTotalHikingCount())
+			.totalMeetupCount(clubTotalHikingStatistic.getTotalHikingCount())
 			.totalMountainCount(clubTotalHikingStatistic.getTotalMountainCount())
 			.totalDuration(clubTotalHikingStatistic.getTotalDuration())
 			.totalDistance(clubTotalHikingStatistic.getTotalDistance())
