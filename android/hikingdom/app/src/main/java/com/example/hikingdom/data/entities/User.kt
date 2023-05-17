@@ -11,8 +11,8 @@ data class User(
     @SerializedName("nickname") val nickname: String,
     @SerializedName("profileUrl") val profileUrl: String,
     @SerializedName("level") val level: Int,
-    @SerializedName("memberId") val memberId: Int,
-    @SerializedName("clubId") val clubId: Int? = null,
+    @SerializedName("memberId") val memberId: Long,
+    @SerializedName("clubId") val clubId: Long? = null,
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

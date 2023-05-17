@@ -1,6 +1,7 @@
 package com.example.hikingdom.ui.socket
 
 
+import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapShader
 import android.graphics.Canvas
@@ -11,6 +12,7 @@ import android.graphics.Rect
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
@@ -33,6 +35,8 @@ import net.daum.mf.map.api.MapView
 import org.json.JSONException
 import org.json.JSONObject
 import java.security.MessageDigest
+import java.util.Timer
+import java.util.TimerTask
 
 
 class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding::inflate) {
@@ -43,11 +47,14 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
     private var nickname: String? = null
     private var profileUrl: String? = null
     private var level: Int? = null
-    private var meetupId: Int? = null
-    private var clubId: Int? = null
-    private var memberId: Int? = null
+    private var meetupId: Long? = null
+    private var clubId: Long? = null
+    private var memberId: Long? = null
 
     val gson: Gson = Gson()
+
+    val timer = Timer()
+    lateinit var task: TimerTask
 
     override fun initAfterBinding() {
         mapView = MapView(this)
@@ -56,18 +63,14 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
         val mapViewContainer = binding.mapView
         mapViewContainer.addView(mapView)
 
-        // 지도 중심 잡기
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true);
 
         // 클릭 시 소켓 연결
         binding.btnConnect.setOnClickListener {
-            // 소켓 연결 하기
             connectSocket()
         }
-        // 클릭 시 소켓 연결
+        // 클릭 시 위치공유 시작
         binding.btnSend.setOnClickListener {
-            // 소켓 연결 하기
-            sendGPS()
+            sendGPSPeriodically()
         }
     }
 
@@ -77,21 +80,18 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
         mSocket?.disconnect();
         mSocket?.off("enter")
         mSocket?.off("newLocation")
+        timer.cancel()
+        task.cancel()
     }
 
     private fun connectSocket() {
         // 데이터 할당
         val user = db?.userDao()?.getUser()
-        nickname = "이병호"
-        profileUrl = "https://cdn.crowdpic.net/list-thumb/thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg"
-        level = 2
-        memberId = 23
-        clubId = 1
-//        nickname = user?.nickname
-//        profileUrl = user?.profileUrl
-//        level = user?.level
-//        memberId = user?.memberId
-//        clubId = user?.clubId
+        nickname = user?.nickname
+        profileUrl = user?.profileUrl
+        level = user?.level
+        memberId = user?.memberId
+        clubId = user?.clubId
         meetupId = 1
 
         Log.d("SOCKET1", "Connection success : " + mSocket)
@@ -100,8 +100,9 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
         try {
 //            mSocket = IO.socket("https://hikingdom.kr/api/hiking")
 //            mSocket = IO.socket("http://hikingdom.kr:8081", {})
-//            mSocket = IO.socket("http://hikingdom.kr:8003")
-            mSocket = IO.socket("http://192.168.219.102:3000")
+            mSocket = IO.socket("http://hikingdom.kr:8003")
+//            mSocket = IO.socket("http://192.168.219.102:3000")
+//            mSocket = IO.socket("http://70.12.246.181:3000")
             Log.d("SOCKET2", "Connection success : " + mSocket?.id())
             Log.d("SOCKET3", "Connection success : " + mSocket)
         } catch (e: Exception) {
@@ -136,6 +137,15 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
 
         // 소켓 연결
         mSocket?.connect()
+    }
+
+    private fun sendGPSPeriodically() {
+        task = object : TimerTask() {
+            override fun run() {
+                sendGPS()
+            }
+        }
+        timer.schedule(task, 0, 1000)
     }
 
     private fun sendGPS() {
@@ -186,22 +196,18 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
     private fun onNewLocation(data: SocketGPSData) {
         runOnUiThread {
             // 데이터 추출
-            val otherNickname = data.nickname
-            val otherMemberId = data.memberId
-            val otherProfileUrl = data.profileUrl
+            val nickname = data.nickname
+            val memberId = data.memberId
+            val profileUrl = data.profileUrl
             val lat = data.lat
             val lng = data.lng
 
             Log.d("receivedLocation",  nickname + " " + lat + " " + lng  )
 
-//            if (otherNickname == nickname) {
-//                return@runOnUiThread
-//            }
-
             // 커스텀 마커 생성
             val customMarker = MapPOIItem()
-            customMarker.itemName = otherNickname
-            customMarker.tag = otherMemberId!!
+            customMarker.itemName = nickname
+            customMarker.tag = (memberId!! + 1).toInt()
             customMarker.mapPoint = MapPoint.mapPointWithGeoCoord(lat!!, lng!!)
             customMarker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
             customMarker.isCustomImageAutoscale =
@@ -209,7 +215,7 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
             customMarker.setCustomImageAnchor(0.5f, 1.0f) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
             Glide.with(this)
                 .asBitmap()
-                .load(otherProfileUrl)
+                .load(profileUrl)
                 .transform(CircleCropWithTriangleTransformation())
                 .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(
