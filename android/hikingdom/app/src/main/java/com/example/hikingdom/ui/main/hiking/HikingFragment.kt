@@ -83,7 +83,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         checkPermission()
 //        showMeetupDialog()
 //        showMountainDialog()
-    }
 
         // 모달 팝업
         if (hikingViewModel.isHikingStarted.value == false) {
