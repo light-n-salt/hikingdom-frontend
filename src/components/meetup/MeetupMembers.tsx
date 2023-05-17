@@ -49,6 +49,7 @@ function MeetupMembers() {
     updateJoin(clubId, parseInt(meetupId)).then(() => {
       queryClient.invalidateQueries(['meetupMembers'])
       toast.addMessage('success', '일정에 참여했습니다')
+      queryClient.invalidateQueries(['meetup'])
     })
   }
 
@@ -58,6 +59,7 @@ function MeetupMembers() {
     deleteJoin(clubId, parseInt(meetupId)).then(() => {
       queryClient.invalidateQueries(['meetupMembers'])
       toast.addMessage('success', '일정을 취소했습니다')
+      queryClient.invalidateQueries(['meetup'])
     })
   }
 
