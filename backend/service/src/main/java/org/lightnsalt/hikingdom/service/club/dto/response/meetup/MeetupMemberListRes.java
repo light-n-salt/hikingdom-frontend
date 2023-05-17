@@ -1,6 +1,8 @@
-package org.lightnsalt.hikingdom.service.club.dto.response;
+package org.lightnsalt.hikingdom.service.club.dto.response.meetup;
 
 import java.util.List;
+
+import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

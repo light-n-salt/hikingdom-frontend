@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.club.service;
+package org.lightnsalt.hikingdom.service.club.service.meetup;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,12 +16,12 @@ import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupReview;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.club.dto.request.MeetupAddReq;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDailyRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDetailRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMonthlyRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupDailyRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupDetailRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMonthlyRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.PhotoInfoRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.ReviewInfoRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.PhotoInfoRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.ReviewInfoRes;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupAlbumRepository;
@@ -55,6 +55,13 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	@Override
 	@Transactional
 	public Long saveMeetup(String email, Long clubId, MeetupAddReq req) {
+		// 일정 날짜 확인
+		LocalDateTime startAt = LocalDateTime.parse(req.getStartAt() + ":00",
+			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+		if (startAt.isBefore(LocalDateTime.now()))
+			throw new GlobalException(ErrorCode.MEETUP_START_AT_INVALID);
+
 		// club에 속해있는 멤버인지 확인
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
@@ -73,7 +80,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 			.host(member)
 			.name(req.getName())
 			.description(req.getDescription())
-			.startAt(LocalDateTime.parse(req.getStartAt() + ":00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+			.startAt(startAt)
 			.build();
 
 		final Meetup savedMeetup = meetupRepository.save(meetup);
@@ -105,10 +112,6 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
-		log.info("meetup host id is : {}", meetup.getHost().getId());
-		log.info("club host id is : {}", meetup.getClub().getHost().getId());
-		log.info("meetup host member equal : {}", !meetup.getHost().getId().equals(member.getId()));
-		log.info("club host member equal : {}", !meetup.getClub().getHost().getId().equals(member.getId()));
 		// 소모임장 또는 일정 생성자만 삭제할 수 있음
 		if (!meetup.getHost().getId().equals(member.getId()) &&
 			!meetup.getClub().getHost().getId().equals(member.getId())) {
