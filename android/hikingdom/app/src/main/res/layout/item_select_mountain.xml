@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:tintMode="src_atop"
-        android:background="@drawable/ic_hiking"/>
+        android:tintMode="src_atop"/>
 
     <TextView
         android:id="@+id/mountain_name"
@@ -21,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:text="@string/list_item_dummy_name"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -33,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/mountain_name"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -83,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/first_row"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 

@@ -6,6 +6,7 @@ plugins {
     id 'com.google.gms.google-services' // fcm
 }
 
+
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def KAKAOMAP_NATIVE_APP_KEY = properties.getProperty('KAKAOMAP_NATIVE_APP_KEY')
@@ -108,4 +109,13 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
 //    implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx' //FCM-push
+
+    // recycler view
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+
+    // stomp
+    implementation ('io.socket:socket.io-client:2.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+
 }
