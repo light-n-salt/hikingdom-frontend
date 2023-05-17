@@ -13,7 +13,7 @@ public class ClubSearchRes {
 	private String location;
 	private Long totalMember;
 	private Long totalAssetCount;
-	private Long totalHikingCount;
+	private Long totalMeetupCount;
 	private Long totalMountainCount;
 	private Long ranking;
 
@@ -22,7 +22,7 @@ public class ClubSearchRes {
 		this.clubName = club.getName();
 		this.totalMember = club.getTotalMemberCount();
 		this.totalAssetCount = club.getTotalAssetCount();
-		this.totalHikingCount = club.getTotalHikingCount();
+		this.totalMeetupCount = club.getTotalMeetupCount();
 		this.totalMountainCount = club.getTotalMountainCount();
 		this.ranking = ranking;
 
