@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
@@ -619,6 +620,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 //        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
         val meetupDialog = mBuilder.show()
 
+        // 오늘 일정 없을 때 뜨는 뷰 GONE으로 초기화
+        meetupDialog.findViewById<ImageView>(R.id.dialog_meetup_no_meetup_iv).visibility = View.GONE
+        meetupDialog.findViewById<TextView>(R.id.dialog_meetup_no_meetup_tv).visibility = View.GONE
+
         meetupDialog.findViewById<TextView>(R.id.to_agreement).setOnClickListener {
             showLocationSharingAgreementDialog();
         }
@@ -632,35 +637,41 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 val rv = meetupDialog.findViewById<RecyclerView>(R.id.recycler_view_meetup)
                 Log.d("meetup!", "${response.body()}")
                 val meetupList = response.body()!!.result
-                val meetupAdapter = MeetupAdapter(activityContext, meetupList)
-                rv.adapter = meetupAdapter
-                rv.layoutManager = LinearLayoutManager(activityContext)
+                if(meetupList.isNotEmpty()){
+                    val meetupAdapter = MeetupAdapter(activityContext, meetupList)
+                    rv.adapter = meetupAdapter
+                    rv.layoutManager = LinearLayoutManager(activityContext)
 
-                // adapter 클릭 리스너 등록
-                meetupAdapter.setItemClickListener(object : MeetupAdapter.OnItemClickListener {
-                    override fun onClick(v: View, position: Int) {
-                        // viewModel에 데이터 저장
-                        hikingViewModel.isMeetup.value = true
-                        hikingViewModel.meetupId.value = meetupList[position].meetupId
-                        hikingViewModel.mountainId.value = meetupList[position].mountainId
-                        hikingViewModel.mountainName.value = meetupList[position].mountainName
-                        hikingViewModel.mountainSummitLat.value =
-                            meetupList[position].mountainSummitLat
-                        hikingViewModel.mountainSummitLng.value =
-                            meetupList[position].mountainSummitLng
+                    // adapter 클릭 리스너 등록
+                    meetupAdapter.setItemClickListener(object : MeetupAdapter.OnItemClickListener {
+                        override fun onClick(v: View, position: Int) {
+                            // viewModel에 데이터 저장
+                            hikingViewModel.isMeetup.value = true
+                            hikingViewModel.meetupId.value = meetupList[position].meetupId
+                            hikingViewModel.mountainId.value = meetupList[position].mountainId
+                            hikingViewModel.mountainName.value = meetupList[position].mountainName
+                            hikingViewModel.mountainSummitLat.value =
+                                meetupList[position].mountainSummitLat
+                            hikingViewModel.mountainSummitLng.value =
+                                meetupList[position].mountainSummitLng
 
-                        // 클릭 시 이벤트
-                        val agreementRadioButton =
-                            meetupView.findViewById<RadioButton>(R.id.radiobutton_polish)
-                        if (agreementRadioButton.isChecked) {
-                            agreementHikingMeetupModal()
-                            meetupDialog.dismiss()
-                        } else {
-                            Toast.makeText(context, "약관에 동의 후 진행해주세요", Toast.LENGTH_SHORT).show()
+                            // 클릭 시 이벤트
+                            val agreementRadioButton =
+                                meetupView.findViewById<RadioButton>(R.id.radiobutton_polish)
+                            if (agreementRadioButton.isChecked) {
+                                agreementHikingMeetupModal()
+                                meetupDialog.dismiss()
+                            } else {
+                                Toast.makeText(context, "약관에 동의 후 진행해주세요", Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
-                })
+                    })
+                } else {
+                    meetupDialog.findViewById<ImageView>(R.id.dialog_meetup_no_meetup_iv).visibility = View.VISIBLE
+                    meetupDialog.findViewById<TextView>(R.id.dialog_meetup_no_meetup_tv).visibility = View.VISIBLE
+                }
             }
+
 
             override fun onFailure(call: Call<MeetupResponse>, t: Throwable) {
                 Log.d("user!", "fail")
