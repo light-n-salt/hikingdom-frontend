@@ -100,23 +100,29 @@ class LocationService : Service(), SaveHikingRecordView {
             // 로컬 DB에 지금까지 저장된 위치 데이터 불러오기
             val storedUserLocations = db?.userLocationDao().getUserLocations()
             Log.d("storedUserLocations", storedUserLocations.toString())
-            // storedUserLocations를 post api로 서버에 전달, success 시 모든 userLocation 데이터 삭제
-            var gpsRoute = ArrayList<GpsRoute>()
-            for (storedUserLocation in storedUserLocations){
-                gpsRoute.add(GpsRoute(storedUserLocation.latitude, storedUserLocation.longitude, storedUserLocation.altitude))
-            }
-            val maxAlt = storedUserLocations.maxByOrNull { it.altitude }?.altitude
-            val minAlt = storedUserLocations.minByOrNull { it.altitude }?.altitude
-            val totalAlt = maxAlt!! - minAlt!!
-            var saveHikingRecordReq = SaveHikingRecordReq(isMeetup, mountainId, meetupId, ApplicationClass().localDateTimeToString(startAt),
-                totalDistance.value!!, totalAlt, duration.value!!, getIsSummit(), gpsRoute)
-            Log.d("saveHikingRecordReq", saveHikingRecordReq.toString())
+            if(storedUserLocations.isNotEmpty()){
+                // storedUserLocations를 post api로 서버에 전달, success 시 모든 userLocation 데이터 삭제
+                var gpsRoute = ArrayList<GpsRoute>()
+                for (storedUserLocation in storedUserLocations){
+                    gpsRoute.add(GpsRoute(storedUserLocation.latitude, storedUserLocation.longitude, storedUserLocation.altitude))
+                }
+                val maxAlt = storedUserLocations.maxByOrNull { it.altitude }?.altitude
+                val minAlt = storedUserLocations.minByOrNull { it.altitude }?.altitude
+                val totalAlt = maxAlt!! - minAlt!!
+                var saveHikingRecordReq = SaveHikingRecordReq(isMeetup, mountainId, meetupId, ApplicationClass().localDateTimeToString(startAt),
+                    totalDistance.value!!, totalAlt, duration.value!!, getIsSummit(), gpsRoute)
+                Log.d("saveHikingRecordReq", saveHikingRecordReq.toString())
 
-            // 트래킹 정보 저장 API 호출 지점
-            HikingService.saveHikingRecord(this, saveHikingRecordReq)
+                // 트래킹 정보 저장 API 호출 지점
+                HikingService.saveHikingRecord(this, saveHikingRecordReq)
+            } else{
+                Log.d("storedUserLocations is empty","저장된 경로 정보 없음")
+                Toast.makeText(this,"저장된 경로 정보가 없습니다!", Toast.LENGTH_SHORT).show()
+            }
+
+
         }else{
             Log.d(TAG, "foreground service 시작")
-
             // 트래킹 정보 저장 API 호출 시 필요한 데이터들을 intent로 전달받음
             if(intent != null){
                 isMeetup = intent?.getBooleanExtra("isMeetup", false)
@@ -239,6 +245,7 @@ class LocationService : Service(), SaveHikingRecordView {
         saveIsMeetup(false)
         Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
         Log.d("saveHikingRecordSuccess", message)
+        Toast.makeText(this, "경로 데이터가 기록되었습니다!", Toast.LENGTH_SHORT).show()
     }
 
     override fun onSaveHikingRecordFailure(message: String) {
