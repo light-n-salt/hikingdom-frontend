@@ -55,11 +55,10 @@ function ClubMainPage() {
           />
         </Modal>
       )}
-      <div className={`page-gradation upside p-sm ${theme} ${styles.page}`}>
+      <div className={`page-gradation upside p-md ${theme} ${styles.page}`}>
         <ClubRecordInfo
           totalMember={clubInfo.totalMember}
           totalMountainCount={clubInfo.totalMountainCount}
-          // totalHikingCount={clubInfo.totalHikingCount}
           totalMeetupCount={clubInfo.totalMeetupCount}
           totalAssetCount={clubInfo.totalAssetCount}
         />

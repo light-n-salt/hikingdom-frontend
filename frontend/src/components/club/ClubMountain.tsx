@@ -1,8 +1,11 @@
 import * as THREE from 'three'
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { useSpring, animated } from 'react-spring'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { useNavigate } from 'react-router'
 
 type ClubMountainprops = {
   zoom: number
@@ -10,7 +13,6 @@ type ClubMountainprops = {
 }
 
 function ClubMountain({ zoom, assetInfo }: ClubMountainprops) {
-
   return (
     // 속성으로 camera 설정을 해줄 수도 있지만, 딱히 설정하지 않아도 mesh가 보임
     <Canvas
@@ -22,18 +24,24 @@ function ClubMountain({ zoom, assetInfo }: ClubMountainprops) {
         far: 80,
       }}
     >
-        <ambientLight />
-        {/* 
+      <ambientLight />
+      {/* 
 				scene에 존재하는 모든 물체에 전역적으로 빛을 비춰줌
 				방향이 존재하지 않기 때문에, 그림자를 만들 수 없음
 			*/}
 
-        <pointLight position={[10, 10, 10]} />
-        {/* 일광과 같이, 아주 먼 거리의 광원에서 평행으로 진행하는 빛 */}
+      <pointLight position={[10, 10, 10]} />
+      {/* 일광과 같이, 아주 먼 거리의 광원에서 평행으로 진행하는 빛 */}
 
       <group>
         {assetInfo.map((info, index) => (
-          <Mesh key={index} position={info.position} url={info.assetUrl} />
+          <AssetMesh
+            key={index}
+            position={info.position}
+            url={info.assetUrl}
+            meetupId={info.meetupId ? info.meetupId : null}
+            check={info.check}
+          />
         ))}
       </group>
 
@@ -47,22 +55,60 @@ function ClubMountain({ zoom, assetInfo }: ClubMountainprops) {
 export default ClubMountain
 
 // Mesh의 postion 타입 정의 (x축, y축, z축)
-type MeshProps = {
+type AssetMeshProps = {
   position: THREE.Vector3
   url: string
+  meetupId?: number
+  check: boolean
 }
 
 // Mesh 생성 함수
-function Mesh({ position, url, ...props }: MeshProps) {
+function AssetMesh({
+  position,
+  url,
+  meetupId,
+  check,
+  ...props
+}: AssetMeshProps) {
+  const navigate = useNavigate()
   const gltf = useLoader(GLTFLoader, url)
+  const meshRef = useRef<THREE.Mesh>(null)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const animationTime = 1.5 // 애니메이션 진행 시간 (초)
+  let elapsedTime = 0 // 경과한 시간 (초)
+
+  useFrame((state, delta) => {
+    if (check && !isAnimating) {
+      setIsAnimating(true)
+
+      const animate = () => {
+        elapsedTime += delta
+        const progress = Math.min(elapsedTime / animationTime, 1)
+        const newY = THREE.MathUtils.lerp(0, position.y, progress)
+        meshRef.current!.position.setY(newY)
+
+        if (progress < 1) {
+          requestAnimationFrame(animate)
+        }
+      }
+      animate()
+    }
+  })
+
+  const handleOnClick = () => {
+    if (check && meetupId) {
+      navigate(`/club/meetup/${meetupId}/detail`)
+    }
+  }
 
   return (
-    <primitive
-      // React Three Fiber에서는 각 요소가 고유한 ID를 가져야 중복 가능
-      // scene 속성을 가져와 <primitive> 요소의 object 속성에 할당 => 자체 고유한 ID 가능
-      // gltf.scene.clone()을 사용하여, 복사된 THREE.Group을 할당
-      object={gltf.scene.clone()} // 고유한 ID 생성
-      position={position}
-    />
+    <mesh ref={meshRef} position={position} onClick={handleOnClick}>
+      <primitive
+        // React Three Fiber에서는 각 요소가 고유한 ID를 가져야 중복 가능
+        // scene 속성을 가져와 <primitive> 요소의 object 속성에 할당 => 자체 고유한 ID 가능
+        // gltf.scene.clone()을 사용하여, 복사된 THREE.Group을 할당
+        object={gltf.scene.clone()} // 고유한 ID 생성
+      />
+    </mesh>
   )
 }
