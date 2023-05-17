@@ -51,10 +51,10 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
   // 말풍선 스타일
   const chatStyle =
     chat.memberId === userInfo?.memberId ? styles.mine : styles.others
-  const imgStyle = isContinued ? styles.discontinued : ''
+  const imgStyle = isContinued ? styles.continued : styles.discontinued
 
   return user ? (
-    <div className={chatStyle}>
+    <div className={`${chatStyle} ${imgStyle}`}>
       <div
         className={imgStyle}
         onClick={() => navigate(`/profile/${user.nickname}`)}
