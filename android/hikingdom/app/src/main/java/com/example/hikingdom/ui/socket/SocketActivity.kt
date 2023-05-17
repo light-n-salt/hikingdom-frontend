@@ -47,9 +47,9 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
     private var nickname: String? = null
     private var profileUrl: String? = null
     private var level: Int? = null
-    private var meetupId: Int? = null
-    private var clubId: Int? = null
-    private var memberId: Int? = null
+    private var meetupId: Long? = null
+    private var clubId: Long? = null
+    private var memberId: Long? = null
 
     val gson: Gson = Gson()
 
@@ -72,11 +72,6 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
         binding.btnSend.setOnClickListener {
             sendGPSPeriodically()
         }
-
-        val selectView =
-            LayoutInflater.from(this).inflate(R.layout.dialog_detail_agreement, null)
-        val mBuilder = AlertDialog.Builder(this).setView(selectView)
-        val meetupDialog = mBuilder.show()
     }
 
     override fun onDestroy() {
@@ -92,16 +87,11 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
     private fun connectSocket() {
         // 데이터 할당
         val user = db?.userDao()?.getUser()
-        nickname = "이병호"
-        profileUrl = "https://cdn.crowdpic.net/list-thumb/thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg"
-        level = 2
-        memberId = 23
-        clubId = 1
-//        nickname = user?.nickname
-//        profileUrl = user?.profileUrl
-//        level = user?.level
-//        memberId = user?.memberId
-//        clubId = user?.clubId
+        nickname = user?.nickname
+        profileUrl = user?.profileUrl
+        level = user?.level
+        memberId = user?.memberId
+        clubId = user?.clubId
         meetupId = 1
 
         Log.d("SOCKET1", "Connection success : " + mSocket)
@@ -217,7 +207,7 @@ class SocketActivity: BaseActivity<ActivitySocketBinding>(ActivitySocketBinding:
             // 커스텀 마커 생성
             val customMarker = MapPOIItem()
             customMarker.itemName = nickname
-            customMarker.tag = memberId!! + 1
+            customMarker.tag = (memberId!! + 1).toInt()
             customMarker.mapPoint = MapPoint.mapPointWithGeoCoord(lat!!, lng!!)
             customMarker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
             customMarker.isCustomImageAutoscale =
