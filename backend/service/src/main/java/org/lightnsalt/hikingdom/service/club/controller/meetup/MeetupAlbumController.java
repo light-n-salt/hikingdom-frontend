@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.club.controller;
+package org.lightnsalt.hikingdom.service.club.controller.meetup;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.Map;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
-import org.lightnsalt.hikingdom.service.club.service.MeetupAlbumService;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupAlbumRes;
+import org.lightnsalt.hikingdom.service.club.service.meetup.MeetupAlbumService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

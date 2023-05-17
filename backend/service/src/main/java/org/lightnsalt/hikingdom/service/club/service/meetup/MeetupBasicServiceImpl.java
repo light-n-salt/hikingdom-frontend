@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.club.service;
+package org.lightnsalt.hikingdom.service.club.service.meetup;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,12 +16,12 @@ import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupReview;
 import org.lightnsalt.hikingdom.domain.entity.info.MountainInfo;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.club.dto.request.MeetupAddReq;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDailyRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDetailRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMonthlyRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupDailyRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupDetailRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMonthlyRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.PhotoInfoRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.ReviewInfoRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.PhotoInfoRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.ReviewInfoRes;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupAlbumRepository;

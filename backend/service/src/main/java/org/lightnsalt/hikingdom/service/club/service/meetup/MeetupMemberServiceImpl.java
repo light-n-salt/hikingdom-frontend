@@ -1,11 +1,11 @@
-package org.lightnsalt.hikingdom.service.club.service;
+package org.lightnsalt.hikingdom.service.club.service.meetup;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMemberDetailListRes;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupMember;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
@@ -13,7 +13,7 @@ import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepos
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMemberListRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
