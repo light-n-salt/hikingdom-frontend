@@ -1,33 +1,34 @@
-package org.lightnsalt.hikingdom.service.club.dto.response;
+package org.lightnsalt.hikingdom.service.club.dto.response.meetup;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupReview;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ReviewInfoRes {
+public class MeetupReviewRes {
+	@NotNull
 	private Long memberId;
-	private Long reviewId;
+	@NotEmpty
 	private String nickname;
 	private String profileUrl;
+	@NotNull
 	private Integer level;
+	@NotNull
+	private Long reviewId;
+	@NotEmpty
 	private String content;
-	@JsonProperty("isOwner")
-	private boolean isOwner;
 
-	public ReviewInfoRes(MeetupReview meetupReview, boolean isOwner) {
+	public MeetupReviewRes(MeetupReview meetupReview) {
 		this.memberId = meetupReview.getMember().getId();
-		this.reviewId = meetupReview.getId();
 		this.nickname = meetupReview.getMember().getNickname();
 		this.profileUrl = meetupReview.getMember().getProfileUrl();
 		this.level = meetupReview.getMember().getLevel().getId();
+		this.reviewId = meetupReview.getId();
 		this.content = meetupReview.getContent();
-		this.isOwner = isOwner;
 	}
 }

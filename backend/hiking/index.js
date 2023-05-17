@@ -11,6 +11,12 @@ server.listen(PORT, () => {
   console.log(`Server listening at PORT ` + PORT);
 });
 
+// prevent caching
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
 app.get("/", (req, res) => {
   res.json("hiking location share service for hikingdom");
 });

@@ -37,12 +37,10 @@ import org.lightnsalt.hikingdom.service.member.repository.MemberHikingStatisticR
 import org.lightnsalt.hikingdom.service.member.repository.MemberLevelInfoRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.lightnsalt.hikingdom.service.notification.dto.event.CreateClubAssetNotificationEvent;
-import org.lightnsalt.hikingdom.service.notification.dto.event.CreateMeetupNotificationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -70,33 +68,6 @@ public class HikingServiceImpl implements HikingService {
     private final ClubAssetRepository clubAssetRepository;
     private final AssetInfoRepository assetInfoRepository;
     private final ApplicationEventPublisher eventPublisher;
-
-//    @Override
-//    @Transactional
-//    public List<TodayMeetupRes> findTodayMeetup(Long clubId, String date) {
-//        // 소모임이 존재하는지 확인
-//        final boolean isExit = clubRepository.existsById(clubId);
-//        if (!isExit) {
-//            throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
-//        }
-//
-//        // 입력 데이터 가공
-//        String[] element = date.split("-");
-//
-//        // 일정 데이터 가져오기
-//        final List<Meetup> meetups = meetupRepository.findByClubIdAndStartDay(clubId, Integer.parseInt(element[0]),
-//                Integer.parseInt(element[1]),
-//                Integer.parseInt(element[2]));
-//
-//        // 형 변환
-//        return meetups.stream().map(meetup -> {
-//            TodayMeetupRes dto = new TodayMeetupRes(meetup);
-//            // 일정 참여 멤버 가져오기
-//            final int totalMember = meetupMemberRepository.countByMeetupIdAndIsWithdraw(meetup.getId(), false);
-//            dto.setTotalMember(totalMember);
-//            return dto;
-//        }).collect(Collectors.toList());
-//    }
 
     @Override
     @Transactional
@@ -145,7 +116,7 @@ public class HikingServiceImpl implements HikingService {
 
             // 사용자가 속해있는 소모임과 request로 들어온 소모임이 일치하는지 체크
             Club club = meetup.getClub(); // request로 들어온 소모임
-            if(clubMember.getClub().getId() == club.getId()){
+            if(clubMember.getClub().getId().equals(club.getId())){
                 memberHiking = MemberHiking.builder()
                     .member(member)
                     .mountain(mountainInfo)
@@ -276,13 +247,7 @@ public class HikingServiceImpl implements HikingService {
 
         try {
             map = new ObjectMapper().readValue(jsonObj.toString(), Map.class);
-        } catch (JsonParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JsonParseException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

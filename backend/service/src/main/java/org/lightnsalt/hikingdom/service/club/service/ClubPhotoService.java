@@ -1,7 +1,7 @@
 package org.lightnsalt.hikingdom.service.club.service;
 
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupAlbumRes;
 import org.springframework.data.domain.Pageable;
 
 public interface ClubPhotoService {
