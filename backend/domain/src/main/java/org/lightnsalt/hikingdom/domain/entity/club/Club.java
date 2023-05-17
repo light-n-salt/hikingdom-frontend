@@ -66,8 +66,8 @@ public class Club extends BaseTimeEntity {
 	@Column(name = "total_member_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 1")
 	private Long totalMemberCount;
 
-	@Column(name = "total_hiking_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
-	private Long totalHikingCount;
+	@Column(name = "total_meetup_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
+	private Long totalMeetupCount;
 
 	@Column(name = "total_mountain_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalMountainCount;
@@ -93,7 +93,7 @@ public class Club extends BaseTimeEntity {
 
 	@Builder
 	public Club(Member host, BaseAddressInfo baseAddress, String name, String description, Long totalMemberCount,
-		Long totalHikingCount, Long totalMountainCount, Long totalAssetCount, LocalDateTime deletedAt,
+		Long totalMeetupCount, Long totalMountainCount, Long totalAssetCount, LocalDateTime deletedAt,
 		boolean isDeleted,
 		List<ClubAsset> assets, ClubTotalHikingStatistic hikingStatistic) {
 		this.host = host;
@@ -101,7 +101,7 @@ public class Club extends BaseTimeEntity {
 		this.name = name;
 		this.description = description;
 		this.totalMemberCount = totalMemberCount;
-		this.totalHikingCount = totalHikingCount;
+		this.totalMeetupCount = totalMeetupCount;
 		this.totalMountainCount = totalMountainCount;
 		this.totalAssetCount = totalAssetCount;
 		this.deletedAt = deletedAt;
