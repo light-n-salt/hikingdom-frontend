@@ -16,6 +16,7 @@ import com.example.hikingdom.databinding.ActivitySplashBinding
 import com.example.hikingdom.ui.BaseActivity
 import com.example.hikingdom.ui.login.LoginActivity
 import com.example.hikingdom.ui.main.MainActivity
+import com.example.hikingdom.ui.socket.SocketActivity
 import com.example.hikingdom.utils.deleteJWT
 import com.example.hikingdom.utils.getRefreshToken
 import com.example.hikingdom.utils.saveJWT

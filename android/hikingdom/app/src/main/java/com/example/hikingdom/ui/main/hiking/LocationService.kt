@@ -47,8 +47,10 @@ class LocationService : Service(), SaveHikingRecordView {
 
     private lateinit var locationHandler: Handler
     private lateinit var locationLooper: Looper
-    private lateinit var timerHandler: Handler
-    private lateinit var timerLooper: Looper
+
+    private var isMeetup = false
+    private var meetupId: Long? = null
+    private var mountainId: Long = 0
 
     init {
         duration.value = 0
@@ -104,12 +106,23 @@ class LocationService : Service(), SaveHikingRecordView {
             val maxAlt = storedUserLocations.maxByOrNull { it.altitude }?.altitude
             val minAlt = storedUserLocations.minByOrNull { it.altitude }?.altitude
             val totalAlt = maxAlt!! - minAlt!!
-            var saveHikingRecordReq = SaveHikingRecordReq(false, 2, null, ApplicationClass().localDateTimeToString(startAt),
+            var saveHikingRecordReq = SaveHikingRecordReq(isMeetup, mountainId, meetupId, ApplicationClass().localDateTimeToString(startAt),
                 totalDistance.value!!, totalAlt, duration.value!!, getIsSummit(), gpsRoute)
             Log.d("saveHikingRecordReq", saveHikingRecordReq.toString())
+
+            // 트래킹 정보 저장 API 호출 지점
             HikingService.saveHikingRecord(this, saveHikingRecordReq)
         }else{
             Log.d(TAG, "foreground service 시작")
+
+            // 트래킹 정보 저장 API 호출 시 필요한 데이터들을 intent로 전달받음
+            if(intent != null){
+                isMeetup = intent?.getBooleanExtra("isMeetup", false)
+                if(isMeetup){
+                    meetupId =  intent?.getLongExtra(("meetupId"), 0)
+                }
+                mountainId = intent?.getLongExtra("mountainId", 0)
+            }
 
             db?.userLocationDao().deleteAllUserLocations()  // 룸db에 저장되어 있는 내용 전부 삭제
 
