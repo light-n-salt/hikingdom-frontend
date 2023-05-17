@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 import CheckBox from 'components/common/CheckBox'
-import PageHeader from 'components/common/PageHeader'
 import LabelTextArea from 'components/common/LabelTextArea'
 
 function AgreeForm() {
@@ -30,26 +29,7 @@ function AgreeForm() {
 
   return (
     <div className={styles.container}>
-      <PageHeader title="약관동의" url="/login" />
       <div className={styles.form}>
-        <div className={styles.checkbox}>
-          <CheckBox
-            id="disagree-OLDER-14"
-            label="만 14세 미만"
-            isChecked={!isOlder14}
-            onClick={() => {
-              setIsOlder14(false)
-            }}
-          />
-          <CheckBox
-            id="agree-OLDER-14"
-            label="만 14세 이상"
-            isChecked={isOlder14}
-            onClick={() => {
-              setIsOlder14(true)
-            }}
-          />
-        </div>
         <LabelTextArea
           label="이용약관 (필수)"
           value={USAGE_AGREEMENT}
@@ -99,6 +79,24 @@ function AgreeForm() {
             isChecked={isAgreeInfo}
             onClick={() => {
               setIsAgreeInfo(true)
+            }}
+          />
+        </div>
+        <div className={styles.checkbox}>
+          <CheckBox
+            id="disagree-OLDER-14"
+            label="만 14세 미만"
+            isChecked={!isOlder14}
+            onClick={() => {
+              setIsOlder14(false)
+            }}
+          />
+          <CheckBox
+            id="agree-OLDER-14"
+            label="만 14세 이상"
+            isChecked={isOlder14}
+            onClick={() => {
+              setIsOlder14(true)
             }}
           />
         </div>

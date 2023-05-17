@@ -67,19 +67,17 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
           />
         )}
       </div>
-      <div className={`${styles.info} ${styles[size]}`}>
+      <div className={styles.info}>
         <div className={styles.flexbox}>
           <IconText imgSrc={person} text={totalMemeber} />
           {size === 'lg' && (
             <IconText imgSrc={asset} text={`${clubInfo.totalAssetCount}`} />
           )}
-        </div>
-        <div className={styles.flexbox}>
           <IconText imgSrc={hiking} text={`${clubInfo.totalMountainCount}`} />
           <IconText imgSrc={plan} text={`${clubInfo.totalMeetupCount}`} />
         </div>
+        <IconText imgSrc={marker} text={clubInfo.location} />
       </div>
-      <IconText imgSrc={marker} text={clubInfo.location} />
       {/* 랭킹 아이콘 */}
       {rankingIcon ? (
         <img className={styles.medal} src={rankingIcon} />

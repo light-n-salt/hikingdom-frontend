@@ -64,18 +64,22 @@ function MainPage() {
       ) : (
         <div className={styles.container}>
           <div className={styles.section}>
-            <IconText
-              imgSrc={cloud}
-              text="여기 등산 어때요"
-              size="sm"
-              isBold={true}
-            />
+            <div className="p-md">
+              <IconText
+                imgSrc={cloud}
+                text="여기 등산 어때요"
+                size="md"
+                isBold={true}
+              />
+            </div>
             <div className={styles.scroll}>
               <MtList mtInfoArray={mtInfoArray} size="sm" />
             </div>
           </div>
           <div className={styles.section}>
-            <IconText imgSrc={trophy} text="TOP3" size="sm" isBold={true} />
+            <div className="p-md">
+              <IconText imgSrc={trophy} text="TOP3" size="md" isBold={true} />
+            </div>
             <div className={styles.scroll}>
               <RankList clubInfoArray={clubInfoArray.content} size="sm" />
             </div>
@@ -86,12 +90,14 @@ function MainPage() {
               navigate(`/club/${todayClubMt.clubId}/detail`)
             }}
           >
-            <IconText
-              imgSrc={mountain}
-              text="오늘의 모임 산"
-              size="sm"
-              isBold={true}
-            />
+            <div className="p-md">
+              <IconText
+                imgSrc={mountain}
+                text="오늘의 모임 산"
+                size="md"
+                isBold={true}
+              />
+            </div>
             <ClubMountain zoom={5} assetInfo={assetArray} />
           </div>
         </div>

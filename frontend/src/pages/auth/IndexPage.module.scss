@@ -9,12 +9,14 @@
 .content {
   position: absolute;
   display: grid;
-  gap: 15rem;
+  gap: 12rem;
 }
 
 .slogan {
   display: grid;
-  gap: 1rem;
+  gap: 2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
   text-align: center;
   color: clr(white-clr);
 }
