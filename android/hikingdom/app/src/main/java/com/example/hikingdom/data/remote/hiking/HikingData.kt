@@ -19,9 +19,9 @@ data class MountainResponse(
 )
 
 data class Meetup(
-    @SerializedName("meetupId") val meetupId: Int,
+    @SerializedName("meetupId") val meetupId: Long,
     @SerializedName("meetupName") val meetupName: String,
-    @SerializedName("mountainId") val mountainId: Int,
+    @SerializedName("mountainId") val mountainId: Long,
     @SerializedName("mountainName") val mountainName: String,
     @SerializedName("mountainSummitLat") val mountainSummitLat: Double,
     @SerializedName("mountainSummitLng") val mountainSummitLng: Double,

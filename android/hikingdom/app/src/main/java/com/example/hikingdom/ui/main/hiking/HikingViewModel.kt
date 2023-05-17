@@ -16,11 +16,11 @@ class HikingViewModel : ViewModel() {
 
     // related meetup
     var isMeetup = MutableLiveData<Boolean>()
-    var meetupId = MutableLiveData<Int>()
+    var meetupId = MutableLiveData<Long>()
     var meetupName = MutableLiveData<String>()
 
     // related mountain
-    var mountainId = MutableLiveData<Int>()
+    var mountainId = MutableLiveData<Long>()
     var mountainName = MutableLiveData<String>()
     var mountainSummitLat = MutableLiveData<Double>()
     var mountainSummitLng = MutableLiveData<Double>()

@@ -3,6 +3,7 @@ package com.example.hikingdom.data.remote.hiking
 import android.util.Log
 import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.data.remote.BaseRes
+import com.example.hikingdom.data.remote.api.RetrofitTokenInstance
 import com.example.hikingdom.ui.main.hiking.SaveHikingRecordView
 import com.example.hikingdom.utils.NetworkModule
 import retrofit2.Call
@@ -10,7 +11,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object HikingService {
-    val retrofit = NetworkModule.getRetrofit()
+    val retrofit = RetrofitTokenInstance.getInstance()
 
     fun saveHikingRecord(saveHikingRecordView: SaveHikingRecordView, saveHikingRecordReq: SaveHikingRecordReq) {
         val saveHikingRecordService = retrofit.create(HikingRetrofitInterface::class.java)

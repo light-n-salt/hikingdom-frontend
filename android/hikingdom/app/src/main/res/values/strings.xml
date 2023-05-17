@@ -76,7 +76,8 @@
 
     <!--  dialog mountain  -->
     <string name="dialog_mountain_title">산 선택</string>
-    <string name="dialog_agree_mountain_word">을 등산하시겠습니까?</string>
+    <string name="dialog_agree_mountain_content">을 등산하시겠습니까?</string>
+    <string name="dialog_agree_mountain_content_2">확인 버튼을 누르면 등산이 시작됩니다!</string>
 
 
 </resources>
