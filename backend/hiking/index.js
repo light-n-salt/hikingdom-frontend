@@ -51,12 +51,13 @@ io.sockets.on("connection", (socket) => {
   });
 
   // 3) 연결 해제 시, 동작
-  socket.on("leave", (data) => {
+  socket.on('leave', (data) => {
     const leaveData = JSON.parse(data);
     const memberId = leaveData.memberId;
     const meetupId = leaveData.meetupId;
     console.log(`Member #${memberId} left Meetup #${meetupId}`);
 
     socket.leave(`${meetupId}`); // 해당 소켓을 meetupId에서 해제
+    socket.broadcast.to(`${meetupId}`).emit('newLocation', JSON.stringify(leaveData));
   });
 });
