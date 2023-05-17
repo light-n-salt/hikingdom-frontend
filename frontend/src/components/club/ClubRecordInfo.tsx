@@ -6,57 +6,58 @@ import IconText from 'components/common/IconText'
 
 import { convertToKm } from 'utils/convertToKm'
 
-import hot_air_balloon from 'assets/images/hot_air_balloon.png'
-import hourglass from 'assets/images/hourglass.png'
 import person from 'assets/images/person.png'
-import shoe from 'assets/images/shoe.png'
+import hot_air_balloon from 'assets/images/hot_air_balloon.png'
+import hiking from 'assets/images/hiking.png'
+import asset from 'assets/images/asset.png'
+import plan from 'assets/images/plan.png'
 
 type ClubRecordInfoProps = {
-  participationRate: number
-  totalDuration: number
-  totalDistance: number
-  totalAlt: number
+  totalMember: number
+  totalMountainCount: number
+  totalMeetupCount: number
+  totalAssetCount: number
 }
 
 function ClubRecordInfo({
-  participationRate,
-  totalDuration,
-  totalDistance,
-  totalAlt,
+  totalMember,
+  totalMountainCount,
+  totalMeetupCount,
+  totalAssetCount,
 }: ClubRecordInfoProps) {
   const { theme } = useContext(ThemeContext)
 
   return (
     <div className={`content ${theme} ${styles.container}`}>
-      {/* 참여도 */}
+      {/* 참여인원 */}
       <Info
-        title="참여도(%)"
-        content={`${participationRate}`}
+        title="참여 인원"
+        content={totalMember}
         imgSrc={person}
         isBorder={true}
       />
 
-      {/* 시간 */}
+      {/* 에셋 수 */}
       <Info
-        title="총 시간(H)"
-        content={`${(totalDuration / 60).toFixed()}`}
-        imgSrc={hourglass}
+        title="에셋"
+        content={totalAssetCount}
+        imgSrc={asset}
         isBorder={true}
       />
 
-      {/* 거리 */}
+      {/* 완등 횟수 */}
       <Info
-        title="총 거리(km)"
-        content={convertToKm(totalDistance)}
-        imgSrc={shoe}
+        title="완등한 산"
+        content={totalMountainCount}
+        imgSrc={hiking}
         isBorder={true}
       />
 
-      {/* 높이 */}
+      {/* 일정 수 */}
       <Info
-        title="총 높이(km)"
-        content={convertToKm(totalAlt)}
-        imgSrc={hot_air_balloon}
+        title="일정 수"
+        content={totalMeetupCount}
+        imgSrc={plan}
         isBorder={false}
       />
     </div>
@@ -65,7 +66,7 @@ function ClubRecordInfo({
 
 type InfoProps = {
   title: string
-  content: string
+  content: number
   imgSrc: string
   isBorder: boolean
 }
@@ -76,7 +77,7 @@ function Info({ title, content, imgSrc, isBorder }: InfoProps) {
   return (
     <div className={`${styles.content} ${border}`}>
       <span className={styles.text}>{title}</span>
-      <IconText imgSrc={imgSrc} text={content} size="sm" isBold={true} />
+      <IconText imgSrc={imgSrc} text={`${content}`} size="sm" isBold={true} />
     </div>
   )
 }
