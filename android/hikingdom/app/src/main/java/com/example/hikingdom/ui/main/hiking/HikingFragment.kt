@@ -84,12 +84,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 //        showMeetupDialog()
 //        showMountainDialog()
 
-        // 모달 팝업
-        if (hikingViewModel.isHikingStarted.value == false) {
-            showSelectTypeDialog()
-        }
-    }
-
 
     companion object {
         fun newInstance(): HikingFragment = HikingFragment()
@@ -148,20 +142,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         }
 
         hikingStartBtn.setOnClickListener {
-            startHikingService()
-            showToast("등산 기록을 시작합니다.")
-            hikingFinishBtn.visibility = View.VISIBLE
-            hikingSummitBtn.visibility = View.VISIBLE
-            hikingStartBtn.visibility = View.GONE
-
-            saveIsSummit(false) // 완등인증 여부 초기화
-
-            hikingViewModel.mountainSummitLat.value = 0.0  // 완등인증시 사용할 산 정상 위도 초기화
-            hikingViewModel.mountainSummitLng.value = 0.0  // 완등인증시 사용할 산 정상 경도 초기화
-
-            // TODO: 산 목록 api, 오늘 일정 조회 api 호출, 호출하고 응답 잘 받아왔다면 산 정상의 lat, lng 같이 받아온다. 받아온 lat, lng viewmodel에 저장해야함
-//            hikingViewModel.mountainSummitLat.value = 37.5013   // 임시 값 setting
-//            hikingViewModel.mountainSummitLng.value = 127.0395  // 임시 값 setting
+            // 모달 팝업
+            if (hikingViewModel.isHikingStarted.value == false) {
+                showSelectTypeDialog()
+            }
         }
 
         hikingFinishBtn.setOnClickListener {
@@ -178,6 +162,12 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             hikingStartBtn.visibility = View.VISIBLE
 
             finishTime = LocalDateTime.now()    // 종료시간 세팅
+
+            val removeItems = mapView.findPOIItemByName("depart")   // 출발 마커 삭제
+            if (removeItems != null) {
+                mapView.removePOIItems(removeItems)
+            }
+            mapView.removeAllPolylines()
         }
 
         hikingSummitBtn.setOnClickListener {
@@ -423,7 +413,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     }
 
     private fun setMarkerSetting() {    // 마커를 찍기 위한 기본 세팅
-        customMarker.itemName = "Custom Marker"
+        customMarker.itemName = "custom marker"
         customMarker.tag = 1
 //        val mapPoint = MapPoint.mapPointWithGeoCoord(37.480426, 126.900177) //마커 표시할 위도경도
 //        customMarker.mapPoint = MARKER_POINT
@@ -515,7 +505,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         // 출발 좌표에 마커 그리기
 //        val firstExistingLocation = existingLocationList[0]
         val customMarker = MapPOIItem()
-        customMarker.itemName = "Custom Marker"
+        customMarker.itemName = "depart"
         customMarker.tag = 1
         customMarker.mapPoint = MapPoint.mapPointWithGeoCoord(lat, lng)
         customMarker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
@@ -681,7 +671,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         })
     }
 
-    fun agreementHikingMeetupModal() {
+    fun agreementHikingMeetupModal() {  // 선 선택 혹은 일정 선택 후 하이킹 시작 전 최종으로 뜨는 모달
         // dialog 띄우기
         val selectView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_hiking_agreement, null)
@@ -692,11 +682,28 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         // 클릭 리스너 핸들 -> 확인
         val hikingStart = selectView.findViewById<Button>(R.id.hiking_mountain_start_btn)
-        hikingStart.setOnClickListener { meetupDialog.dismiss() }
+        hikingStart.setOnClickListener { meetupDialog.dismiss(); startHiking(); }   // 확인 시 바로 하이킹 시작됨 (인증하기 버튼, 하이킹 종료 버튼으로 바뀜)
 
         // 클릭 리스너 핸들 -> 취소
         val hikingCancel = selectView.findViewById<Button>(R.id.hiking_mountain_cancel_start_btn)
         hikingCancel.setOnClickListener { meetupDialog.dismiss();hikingViewModel.meetupClear(); showSelectTypeDialog() }
+    }
+
+    fun startHiking(){
+        startHikingService()
+        showToast("등산 기록을 시작합니다.")
+        hikingFinishBtn.visibility = View.VISIBLE
+        hikingSummitBtn.visibility = View.VISIBLE
+        hikingStartBtn.visibility = View.GONE
+
+        saveIsSummit(false) // 완등인증 여부 초기화
+
+        hikingViewModel.mountainSummitLat.value = 0.0  // 완등인증시 사용할 산 정상 위도 초기화
+        hikingViewModel.mountainSummitLng.value = 0.0  // 완등인증시 사용할 산 정상 경도 초기화
+
+        // TODO: 산 목록 api, 오늘 일정 조회 api 호출, 호출하고 응답 잘 받아왔다면 산 정상의 lat, lng 같이 받아온다. 받아온 lat, lng viewmodel에 저장해야함
+//            hikingViewModel.mountainSummitLat.value = 37.5013   // 임시 값 setting
+//            hikingViewModel.mountainSummitLng.value = 127.0395  // 임시 값 setting
     }
 
     override fun onDestroyView() {
