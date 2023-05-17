@@ -32,11 +32,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
-            android:text="@string/dialog_agree_mountain_word"
+            android:text="@string/dialog_agree_mountain_content"
             android:textAlignment="center"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+
     </LinearLayout>
+    <TextView
+    android:id="@+id/selected_hiking_mountain_content"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="15dp"
+    android:text="@string/dialog_agree_mountain_content_2"
+    android:textAlignment="center"
+    android:textSize="22sp"
+    android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
