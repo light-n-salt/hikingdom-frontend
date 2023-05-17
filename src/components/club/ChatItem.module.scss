@@ -40,7 +40,11 @@
   gap: 0.3rem;
   width: 100%;
 
-  .discontinued {
+  &.discontinued {
+    margin-top: 0.8rem;
+  }
+
+  .continued {
     visibility: hidden;
     > img {
       height: 0;
