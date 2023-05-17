@@ -15,6 +15,7 @@ public class ClubSearchRes {
 	private Long totalAssetCount;
 	private Long totalMeetupCount;
 	private Long totalMountainCount;
+	private Long score;
 	private Long ranking;
 
 	public ClubSearchRes(Club club, Long ranking) {
@@ -24,6 +25,8 @@ public class ClubSearchRes {
 		this.totalAssetCount = club.getTotalAssetCount();
 		this.totalMeetupCount = club.getTotalMeetupCount();
 		this.totalMountainCount = club.getTotalMountainCount();
+		this.score = club.getScore();
+
 		this.ranking = ranking;
 
 		if (club.getBaseAddress() != null) {
