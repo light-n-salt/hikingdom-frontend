@@ -41,7 +41,6 @@ import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.ui.main.hiking.dialog.MeetupAdapter
 import com.example.hikingdom.ui.main.hiking.dialog.MountainAdapter
-import com.example.hikingdom.ui.socket.CircleCropWithTriangleTransformation
 import com.example.hikingdom.utils.*
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -199,7 +198,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             mapView.removeAllPolylines()
 
             // 웹소켓 종료
-            mSocket?.emit("leave", gson.toJson(SocketEnterData(memberId, meetupId,)))
+            mSocket?.emit("leave", gson.toJson(SocketEnterData(nickname, memberId, meetupId)))
             mSocket?.disconnect();
             mSocket?.off("enter")
             mSocket?.off("newLocation")
@@ -803,7 +802,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             Socket.EVENT_CONNECT
         ) { args: Array<Any?>? ->
             Log.d("SOCKET5", "소켓 입장" )
-            mSocket?.emit("enter", gson.toJson(SocketEnterData(memberId, meetupId,))) // 입장 메시지 전송
+            mSocket?.emit("enter", gson.toJson(SocketEnterData(nickname, memberId, meetupId))) // 입장 메시지 전송
         }
         mSocket?.on("enter"){ args: Array<Any> ->
             val data: SocketEnterData = gson.fromJson(
@@ -819,6 +818,13 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             )
             onNewLocation(data)
         }
+        mSocket?.on("leave") { args: Array<Any> ->
+            val data: SocketEnterData = gson.fromJson(
+                args[0].toString(),
+                SocketEnterData::class.java
+            )
+            onLeave(data)
+        }
 
         // 소켓 연결
         mSocket?.connect()
@@ -833,7 +839,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 sendGPS()
             }
         }
-        timer.schedule(task, 0, 1000)
+        timer.schedule(task, 0, 20000)
     }
 
     private fun sendGPS() {
@@ -880,8 +886,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             val lat = data.lat
             val lng = data.lng
 
-            Log.d("receivedLocation",  nickname + " " + lat + " " + lng  )
-
             // 커스텀 마커 생성
             val customMarker = MapPOIItem()
             customMarker.itemName = nickname
@@ -914,10 +918,22 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                     override fun onLoadCleared(placeholder: Drawable?) {
                         customMarker.customImageResourceId = R.drawable.custom_marker_red
                         mapView.addPOIItem(customMarker)
-
                         Log.d("실패", "실패")
                     }
                 })
+        }
+    }
+
+    private fun onLeave(data: SocketEnterData) {
+        activity?.runOnUiThread {
+            // 데이터 추출
+            val nickname = data.nickname
+
+            // 기존 마커 삭제
+            val removeItems = mapView.findPOIItemByName(nickname)
+            if (removeItems != null) {
+                mapView.removePOIItems(removeItems)
+            }
         }
     }
 
@@ -940,10 +956,11 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             "onStop LocationList",
             locationService?.locations?.value?.size.toString() + " / " + locationService?.locations?.value.toString()
         )
-        mSocket?.emit("leave", gson.toJson(SocketEnterData(memberId, meetupId,)))
+        mSocket?.emit("leave", gson.toJson(SocketEnterData(nickname, memberId, meetupId)))
         mSocket?.disconnect();
         mSocket?.off("enter")
         mSocket?.off("newLocation")
+        mSocket?.off("leave")
         task?.cancel()
     }
 

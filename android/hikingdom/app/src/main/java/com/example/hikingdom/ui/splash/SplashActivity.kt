@@ -17,7 +17,6 @@ import com.example.hikingdom.databinding.ActivitySplashBinding
 import com.example.hikingdom.ui.BaseActivity
 import com.example.hikingdom.ui.login.LoginActivity
 import com.example.hikingdom.ui.main.MainActivity
-import com.example.hikingdom.ui.socket.SocketActivity
 import com.example.hikingdom.utils.deleteJWT
 import com.example.hikingdom.utils.getRefreshToken
 import com.example.hikingdom.utils.saveJWT
@@ -33,7 +32,6 @@ class SplashActivity: BaseActivity<ActivitySplashBinding>(ActivitySplashBinding:
     override fun initAfterBinding() {
         Log.d("autoLogin1", "autoLogin")
         autoLogin() // 자동 로그인 로직 실행
-//        getFcmToken()   // fcm token 확인
 
         val logo: ImageView = binding.logo
         val catchphrase: TextView = binding.catchphrase
@@ -96,20 +94,5 @@ class SplashActivity: BaseActivity<ActivitySplashBinding>(ActivitySplashBinding:
 
     override fun onAutoLoginFailure(code: Int, message: String) {
         startActivityWithClear(LoginActivity::class.java)
-    }
-
-    fun getFcmToken(){
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            Log.d("getFcmToken", token)
-        })
     }
 }
