@@ -185,7 +185,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 activity?.unbindService(connection)
             }
             bound = false
-            showToast("등산 기록을 종료합니다.")
             hikingFinishBtn.visibility = View.GONE
             hikingSummitBtn.visibility = View.GONE
             hikingStartBtn.visibility = View.VISIBLE
@@ -248,6 +247,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 lastLng = it.longitude
 
                 setDepartMarker(lastLat, lastLng)
+
+                showToast("경로 기록을 시작합니다!")
             } else {
                 val polyline = MapPolyline()
                 Log.d(
@@ -746,7 +747,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         // 클릭 리스너 핸들 -> 확인
         val hikingStart = selectView.findViewById<Button>(R.id.hiking_mountain_start_btn)
-        hikingStart.setOnClickListener { meetupDialog.dismiss(); startHiking();}
+        hikingStart.setOnClickListener { meetupDialog.dismiss(); showToast("출발 마커가 찍힐 때까지 잠시 기다려 주세요."); startHiking();}
 
         // 클릭 리스너 핸들 -> 취소
         val hikingCancel = selectView.findViewById<Button>(R.id.hiking_mountain_cancel_start_btn)
@@ -762,7 +763,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             connectSocket()
         }   // 확인 시 바로 하이킹 시작됨 (인증하기 버튼, 하이킹 종료 버튼으로 바뀜)
 
-        showToast("등산 기록을 시작합니다.")
         hikingFinishBtn.visibility = View.VISIBLE
         hikingSummitBtn.visibility = View.VISIBLE
         hikingStartBtn.visibility = View.GONE
