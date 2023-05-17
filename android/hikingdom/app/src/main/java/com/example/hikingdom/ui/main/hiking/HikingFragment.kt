@@ -83,6 +83,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         checkPermission()
 //        showMeetupDialog()
 //        showMountainDialog()
+    }
 
 
     companion object {
@@ -361,6 +362,9 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     fun startHikingService() {
         val startServiceIntent = Intent(activity, LocationService::class.java)
 //            ContextCompat.startForegroundService(this.requireContext(), Intent(this.requireContext(), LocationService::class.java))
+        startServiceIntent.putExtra("isMeetup", hikingViewModel.isMeetup.value)
+        startServiceIntent.putExtra("meetupId", hikingViewModel.meetupId.value)
+        startServiceIntent.putExtra("mountainId", hikingViewModel.mountainId.value)
         activity?.startService(startServiceIntent)
         Intent(activity, LocationService::class.java).also { intent ->
             activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
@@ -369,7 +373,14 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
     fun bindHikingService() {
         Intent(activity, LocationService::class.java).also { intent ->
-            activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            run {
+                // 트래킹 정보 저장 API 호출 시 필요한 데이터들을 intent로 전달
+                intent.putExtra("isMeetup", false)
+                intent.putExtra("meetupId", 0L)
+                intent.putExtra("mountainId", 0L)
+
+                activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            }
         }
     }
 
@@ -651,7 +662,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 mountainAdapter.setItemClickListener(object : MountainAdapter.OnItemClickListener {
                     override fun onClick(v: View, position: Int) {
                         // viewModel에 데이터 저장
-                        hikingViewModel.mountainId.value = mountainList[position].mountainId.toInt()
+                        hikingViewModel.mountainId.value = mountainList[position].mountainId
                         hikingViewModel.mountainName.value = mountainList[position].name
                         hikingViewModel.mountainSummitLat.value =
                             mountainList[position].mountainSummitLat
