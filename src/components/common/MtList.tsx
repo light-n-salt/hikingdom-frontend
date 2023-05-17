@@ -9,8 +9,10 @@ type MtListProps = {
 }
 
 function MtList({ mtInfoArray, size = 'lg' }: MtListProps) {
+  const paddingClass = size === 'sm' ? 'p-md' : ''
+
   return (
-    <div className={`${styles.container} ${styles[size]}`}>
+    <div className={`${styles.container} ${styles[size]} ${paddingClass}`}>
       {mtInfoArray.map((mtInfo) => (
         <MtItem key={mtInfo.mountainId} mtInfo={mtInfo} size={size} />
       ))}
