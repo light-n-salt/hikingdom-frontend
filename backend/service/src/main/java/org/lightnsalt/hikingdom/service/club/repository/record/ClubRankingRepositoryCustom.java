@@ -44,15 +44,15 @@ public class ClubRankingRepositoryCustom extends ClubSearchRepository {
 		return selectClubRankingBySort(date, clubRanking.ranking.asc(), clubId, pageable);
 	}
 
-	public Slice<ClubSearchRes> sortClubRankingByParticipationRate(LocalDate date, Long clubId, Pageable pageable) {
-		return selectClubRankingBySort(date, clubRanking.participationRate.desc(), clubId, pageable);
+	public Slice<ClubSearchRes> sortClubRankingByMountainCount(LocalDate date, Long clubId, Pageable pageable) {
+		return selectClubRankingBySort(date, clubRanking.totalMountainCount.desc(), clubId, pageable);
 	}
 
-	public Slice<ClubSearchRes> sortClubRankingByTotalDistance(LocalDate date, Long clubId, Pageable pageable) {
-		return selectClubRankingBySort(date, clubRanking.totalDistance.desc(), clubId, pageable);
+	public Slice<ClubSearchRes> sortClubRankingByAssetCount(LocalDate date, Long clubId, Pageable pageable) {
+		return selectClubRankingBySort(date, clubRanking.totalAssetCount.desc(), clubId, pageable);
 	}
 
-	public Slice<ClubSearchRes> sortClubRankingByTotalDuration(LocalDate date, Long clubId, Pageable pageable) {
-		return selectClubRankingBySort(date, clubRanking.totalDuration.desc(), clubId, pageable);
+	public Slice<ClubSearchRes> sortClubRankingByMemberCount(LocalDate date, Long clubId, Pageable pageable) {
+		return selectClubRankingBySort(date, clubRanking.totalMemberCount.desc(), clubId, pageable);
 	}
 }

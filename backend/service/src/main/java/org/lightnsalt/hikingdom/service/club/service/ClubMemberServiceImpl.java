@@ -147,6 +147,10 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 			member.getId(), now);
 		meetupMemberRepository.deleteAll(participatingEvents);
 
+		// 소모임 멤버 숫자 업데이트
+		clubRepository.updateClubMemberCount(clubId, clubMember.getClub().getTotalMemberCount() - 1,
+			LocalDateTime.now());
+
 		// 소모임 탈퇴 처리
 		clubMemberRepository.deleteById(clubMember.getId());
 	}
