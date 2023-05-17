@@ -62,22 +62,9 @@ public class ClubRanking {
 	@Column(name = "total_asset_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalAssetCount;
 
-	@Column(name = "total_duration", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
-	private Long totalDuration; // in seconds
-
-	@Column(name = "total_distance", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
-	private Long totalDistance; // in metres
-
-	@Column(name = "total_alt", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
-	private Long totalAlt; // in metres
-
-	@Column(name = "participation_rate", nullable = false, columnDefinition = "DOUBLE DEFAULT 0")
-	private double participationRate; // in %
-
 	@Builder
 	public ClubRanking(Club club, Long ranking, Long score, LocalDate setDate, Long totalMemberCount,
-		Long totalMeetupCount, Long totalMountainCount, Long totalAssetCount, Long totalDuration, Long totalDistance,
-		Long totalAlt, double participationRate) {
+		Long totalMeetupCount, Long totalMountainCount, Long totalAssetCount) {
 		this.club = club;
 		this.ranking = ranking;
 		this.score = score;
@@ -86,9 +73,5 @@ public class ClubRanking {
 		this.totalMeetupCount = totalMeetupCount;
 		this.totalMountainCount = totalMountainCount;
 		this.totalAssetCount = totalAssetCount;
-		this.totalDuration = totalDuration;
-		this.totalDistance = totalDistance;
-		this.totalAlt = totalAlt;
-		this.participationRate = participationRate;
 	}
 }

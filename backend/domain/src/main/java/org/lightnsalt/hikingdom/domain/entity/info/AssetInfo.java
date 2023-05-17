@@ -46,11 +46,15 @@ public class AssetInfo {
 	@Column(name = "get_condition", nullable = false, length = 512)
 	private String getCondition;
 
+	@Column(name = "score", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
+	private Integer score;
+
 	@Builder
-	public AssetInfo(String name, String assetUrl, String getCondition, MountainInfo mountain) {
+	public AssetInfo(MountainInfo mountain, String name, String assetUrl, String getCondition, Integer score) {
+		this.mountain = mountain;
 		this.name = name;
 		this.assetUrl = assetUrl;
 		this.getCondition = getCondition;
-		this.mountain = mountain;
+		this.score = score;
 	}
 }

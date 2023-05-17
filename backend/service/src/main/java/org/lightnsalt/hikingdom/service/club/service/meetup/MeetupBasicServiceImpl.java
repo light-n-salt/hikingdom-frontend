@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
+import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;
@@ -93,6 +94,10 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 
 		meetupMemberRepository.save(meetupMember);
 
+		// 소모임 정보 업데이트
+		Club club = clubMember.getClub();
+		clubRepository.updateClubTotalMeetupCount(club.getId(), club.getTotalMeetupCount() + 1, LocalDateTime.now());
+
 		// 비동기 알림
 		eventPublisher.publishEvent(new CreateMeetupNotificationEvent(
 				clubMemberRepository.findByClubId(clubId),
@@ -109,6 +114,8 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 	public void removeMeetup(String email, Long clubId, Long meetupId) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+		final Club club = clubRepository.findById(clubId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.CLUB_NOT_FOUND));
 		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
@@ -130,10 +137,11 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 		meetupAlbumRepository.deleteAllByMeetupId(meetupId);
 		meetupReviewRepository.deleteAllByMeetupId(meetupId);
 
-		// TODO: 일정 통계 삭제
-
 		// 일정 삭제
 		meetupRepository.deleteById(meetup.getId());
+
+		// 소모임 정보 업데이트
+		clubRepository.updateClubTotalMeetupCount(club.getId(), club.getTotalMeetupCount() - 1, LocalDateTime.now());
 	}
 
 	@Override

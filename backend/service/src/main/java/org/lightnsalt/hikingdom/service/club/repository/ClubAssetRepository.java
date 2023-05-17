@@ -12,4 +12,6 @@ public interface ClubAssetRepository extends JpaRepository<ClubAsset, Long> {
 	List<ClubAsset> findAllByClubId(@Param("clubId") Long clubId);
 
 	ClubAsset findByMeetupId(Long meetupId);
+
+	boolean existsByClubIdAndAssetId(Long clubId, Long assetId);
 }
