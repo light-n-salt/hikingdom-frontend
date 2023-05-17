@@ -81,6 +81,9 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 //        db = AppDatabase.getInstance(requireContext())!!    // 로컬 DB
 
         checkPermission()
+//        showMeetupDialog()
+//        showMountainDialog()
+    }
 
         // 모달 팝업
         if (hikingViewModel.isHikingStarted.value == false) {
@@ -634,22 +637,13 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         val mountainDialog = mBuilder.show()
 
         // 현재 위치 가져오기
-        val locationManager: LocationManager =
-            getSystemService(requireContext(), LocationManager::class.java)!!
-        // 위치 권한 체크
-        if (ActivityCompat.checkSelfPermission(
-                activityContext, Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                activityContext, Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Toast.makeText(activityContext, "위치 권한이 없습니다.", Toast.LENGTH_SHORT).show()
+        val locationInfo = LocationUtils.getCurrentLocation(activityContext)
+        if (locationInfo == null) {
+            Toast.makeText(activityContext, "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
             return
         }
-        val loc_Current: Location =
-            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
-        val cur_lat = loc_Current.getLatitude();
-        val cur_lng = loc_Current.getLongitude();
+        val cur_lat = locationInfo[0]
+        val cur_lng = locationInfo[1]
 
         // 데이터 불러오기
         val api = RetrofitTokenInstance.getInstance().create(HikingRetrofitInterface::class.java)

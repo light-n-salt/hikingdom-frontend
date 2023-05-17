@@ -22,19 +22,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
 
     override fun initAfterBinding() {
         webViewSetting()
-
-// 예시
-//        val api = RetrofitTokenInstance.getInstance().create(AuthRetrofitInterface::class.java)
-//        binding.button3.setOnClickListener{
-//            api.getUserInfo().enqueue(object: Callback<UserResponse> {
-//                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-//                    Log.d("user!", "${response.body()}")
-//                }
-//                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-//                    Log.d("user!", "fail")
-//                }
-//            })
-//        }
     }
 
     // 로그인 성공 시, 동작시킬 함수
