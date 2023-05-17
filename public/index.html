@@ -114,6 +114,9 @@
         localStorage.setItem('accessToken', accessToken)
         localStorage.setItem('refreshToken', refreshToken)
       }
+      function saveFcmToken(fcmToken) {
+        sessionStorage.setItem('fcmToken', fcmToken)
+      }
     </script>
   </head>
   <body>
