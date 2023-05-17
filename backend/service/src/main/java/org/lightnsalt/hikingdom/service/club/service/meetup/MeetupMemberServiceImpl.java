@@ -1,11 +1,12 @@
-package org.lightnsalt.hikingdom.service.club.service;
+package org.lightnsalt.hikingdom.service.club.service.meetup;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMemberDetailListRes;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupMember;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
@@ -13,7 +14,7 @@ import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupMemberRepos
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMemberListRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,9 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 		final Meetup meetup = meetupRepository.findById(meetupId)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
 
+		if (meetup.getStartAt().isBefore(LocalDateTime.now()))
+			throw new GlobalException(ErrorCode.MEETUP_ALREADY_DONE);
+
 		meetupMemberRepository.save(MeetupMember.builder().meetup(meetup).member(member).build());
 	}
 
@@ -54,7 +58,12 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final MeetupMember meetupMember = meetupMemberRepository.findByMeetupIdAndMemberId(meetupId,
-			member.getId()).orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
+			member.getId()).orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_JOINED));
+		final Meetup meetup = meetupRepository.findById(meetupId)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEETUP_NOT_FOUND));
+
+		if (meetup.getStartAt().isBefore(LocalDateTime.now()))
+			throw new GlobalException(ErrorCode.MEETUP_ALREADY_DONE);
 
 		meetupMemberRepository.delete(meetupMember);
 	}
@@ -62,7 +71,6 @@ public class MeetupMemberServiceImpl implements MeetupMemberService {
 	@Override
 	@Transactional
 	public List<MeetupMemberDetailListRes> findMeetupMemberDetail(Long clubId, Long meetupId) {
-
 		// 형 변환
 		return getMeetupMember(clubId, meetupId).stream()
 			.map(meetupMember -> new MeetupMemberDetailListRes(meetupMember.getMember()))

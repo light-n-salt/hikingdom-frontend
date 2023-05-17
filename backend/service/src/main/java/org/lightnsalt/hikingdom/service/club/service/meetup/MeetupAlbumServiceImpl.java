@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.club.service;
+package org.lightnsalt.hikingdom.service.club.service.meetup;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.common.util.S3FileUtil;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;

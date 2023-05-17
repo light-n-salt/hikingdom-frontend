@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.club.controller;
+package org.lightnsalt.hikingdom.service.club.controller.meetup;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +11,10 @@ import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.service.club.dto.request.MeetupAddReq;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDailyRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDetailRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMonthlyRes;
-import org.lightnsalt.hikingdom.service.club.service.MeetupBasicService;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupDailyRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupDetailRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMonthlyRes;
+import org.lightnsalt.hikingdom.service.club.service.meetup.MeetupBasicService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
