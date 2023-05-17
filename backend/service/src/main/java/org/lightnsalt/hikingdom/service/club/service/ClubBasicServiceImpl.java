@@ -106,7 +106,7 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		// 땅 에셋 기본 추가
 		clubAssetRepository.save(ClubAsset.builder()
 			.club(savedclub)
-			.asset(assetInfoRepository.findById(0L)
+			.asset(assetInfoRepository.findById(1L) // 땅 기본 에셋은 무조건 1번이어야 함!
 				.orElseThrow(() -> new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR)))
 			.build());
 
