@@ -65,7 +65,7 @@ function MeetupDetailPage() {
       onSuccess: () => {
         toast.addMessage('success', '일정이 삭제되었습니다')
 
-        navigate(`/club/${clubId}/main`)
+        navigate(`/club/main`)
       },
       onError: (err: any) => {
         if (err.status === 400) {
@@ -87,6 +87,7 @@ function MeetupDetailPage() {
         color="primary"
         size="sm"
       />
+
       <MeetupDetail
         mountain={meetup?.mountainName}
         date={meetup?.startAt.split(' ')[0].replaceAll('-', '.').slice(-8)}
@@ -108,14 +109,16 @@ function MeetupDetailPage() {
           onClick={() => onClickUpdateReview.mutate()}
         />
       )}
-      {userInfo?.memberId === meetup.meetupHostId ? (
-        <Button
-          text="삭제"
-          color="red"
-          size="xs"
-          onClick={() => onClickDeleteMeetup.mutate()}
-        />
-      ) : null}
+      <div className={styles.btn}>
+        {userInfo?.memberId === meetup.meetupHostId ? (
+          <Button
+            text="삭제"
+            color="red"
+            size="xs"
+            onClick={() => onClickDeleteMeetup.mutate()}
+          />
+        ) : null}
+      </div>
     </div>
   )
 }
