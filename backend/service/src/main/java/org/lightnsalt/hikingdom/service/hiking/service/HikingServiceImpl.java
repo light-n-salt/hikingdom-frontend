@@ -104,6 +104,7 @@ public class HikingServiceImpl implements HikingService {
 
         Meetup meetup;
         MemberHiking memberHiking;
+
         // 개인 등산인지 소모임 일정 등산인지 확인
         if(hikingRecordReq.getIsMeetup()){  // 소모임 일정 등산
             meetup = meetupRepository.findById(hikingRecordReq.getMeetupId())
@@ -116,53 +117,58 @@ public class HikingServiceImpl implements HikingService {
 
             // 사용자가 속해있는 소모임과 request로 들어온 소모임이 일치하는지 체크
             Club club = meetup.getClub(); // request로 들어온 소모임
-            if(clubMember.getClub().getId().equals(club.getId())){
-                memberHiking = MemberHiking.builder()
-                    .member(member)
-                    .mountain(mountainInfo)
-                    .meetup(meetup)
-                    .isMeetup(hikingRecordReq.getIsMeetup())
-                    .startAt(startAt)
-                    .endAt(endAt)
-                    .totalDuration((long) hikingRecordReq.getTotalDuration())
-                    .totalDistance((long) hikingRecordReq.getTotalDistance())
-                    .totalAlt((long) hikingRecordReq.getMaxAlt())
-                    .isSummit(hikingRecordReq.getIsSummit())
-                    .build();
-
-                if(hikingRecordReq.getIsSummit()){  // 완등 시
-                    // ClubTotalHikingStatistic 업데이트
-
-
-                    // ClubAsset 업데이트
-                    ClubAsset clubAsset = clubAssetRepository.findByMeetupId(hikingRecordReq.getMeetupId());
-                    if(clubAsset == null) { // clubAsset이 없으면 이 데이터는 이 일정에서 처음으로 완등한 데이터임. clubAsset 생성
-                        AssetInfo assetInfo = assetInfoRepository.findByMountainId(mountainInfo.getId());
-                        if(assetInfo != null){
-                            clubAssetRepository.save(ClubAsset.builder()
-                                .club(club)
-                                .asset(assetInfo)
-                                .meetup(meetup)
-                                .build());
-
-                            // 비동기 알림
-                            eventPublisher.publishEvent(new CreateClubAssetNotificationEvent(
-                                clubMemberRepository.findByClubId(club.getId()),
-                                assetInfo
-                            ));
-                        }else{
-                            throw new GlobalException(ErrorCode.ASSET_NOT_FOUND);
-                        }
-                    }else{
-                        // 이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우 PASS
-                        log.info("이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우");
-                    }
-                }
-
-            } else{
+            if (!clubMember.getClub().getId().equals(club.getId()))
                 throw new GlobalException(ErrorCode.CLUB_MEMBER_UNAUTHORIZED);
-            }
 
+            memberHiking = MemberHiking.builder()
+                .member(member)
+                .mountain(mountainInfo)
+                .meetup(meetup)
+                .isMeetup(hikingRecordReq.getIsMeetup())
+                .startAt(startAt)
+                .endAt(endAt)
+                .totalDuration((long)hikingRecordReq.getTotalDuration())
+                .totalDistance((long)hikingRecordReq.getTotalDistance())
+                .totalAlt((long)hikingRecordReq.getMaxAlt())
+                .isSummit(hikingRecordReq.getIsSummit())
+                .build();
+
+            if (hikingRecordReq.getIsSummit()) {  // 완등 시
+                // ClubTotalHikingStatistic 업데이트
+
+                // ClubAsset 업데이트
+                ClubAsset clubAsset = clubAssetRepository.findByMeetupId(hikingRecordReq.getMeetupId());
+                if (clubAsset == null) { // clubAsset이 없으면 이 데이터는 이 일정에서 처음으로 완등한 데이터임. clubAsset 생성
+                    AssetInfo assetInfo = assetInfoRepository.findByMountainId(mountainInfo.getId());
+
+                    if (assetInfo == null)
+                        throw new GlobalException(ErrorCode.ASSET_NOT_FOUND);
+
+                    // 전에 완등한 산이었는지 확인
+                    boolean isNewMountain = !clubAssetRepository.existsByClubIdAndAssetId(club.getId(),
+                        assetInfo.getId());
+
+                    clubAssetRepository.save(ClubAsset.builder()
+                        .club(club)
+                        .asset(assetInfo)
+                        .meetup(meetup)
+                        .build());
+
+                    clubRepository.updateClubMountainCountAndAssetCountAndScore(club.getId(),
+                        isNewMountain ? club.getTotalMountainCount() + 1 :
+                            club.getTotalMountainCount(), club.getTotalAssetCount() + 1,
+                        club.getScore() + assetInfo.getScore(), LocalDateTime.now());
+
+                    // 비동기 알림
+                    eventPublisher.publishEvent(new CreateClubAssetNotificationEvent(
+                        clubMemberRepository.findByClubId(club.getId()),
+                        assetInfo
+                    ));
+                } else {
+                    // 이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우 PASS
+                    log.info("이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우");
+                }
+            }
         }else{  // 개인 등산일 경우
             memberHiking = MemberHiking.builder()
                     .member(member)
