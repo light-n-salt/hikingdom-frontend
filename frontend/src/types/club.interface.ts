@@ -39,10 +39,10 @@ export interface TodayClubMt {
 export interface ClubDetailInfo {
   clubName: string
   isJoin: boolean
-  participationRate: number
-  totalDuration: number
-  totalDistance: number
-  totalAlt: number
+  totalMember: number
+  totalMountainCount: number
+  totalMeetupCount: number
+  totalAssetCount: number
   description: string
   assets: AssetInfo[]
 }
