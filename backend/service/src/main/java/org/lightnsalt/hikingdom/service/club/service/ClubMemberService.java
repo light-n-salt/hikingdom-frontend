@@ -3,7 +3,7 @@ package org.lightnsalt.hikingdom.service.club.service;
 import java.util.List;
 import java.util.Map;
 
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMemberDetailListRes;
 
 public interface ClubMemberService {
 	void sendClubJoinRequest(String email, Long clubId);

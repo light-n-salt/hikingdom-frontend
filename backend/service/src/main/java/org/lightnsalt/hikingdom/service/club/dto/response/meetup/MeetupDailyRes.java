@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.service.club.dto.response;
+package org.lightnsalt.hikingdom.service.club.dto.response.meetup;
 
 import java.time.format.DateTimeFormatter;
 

@@ -1,9 +1,9 @@
-package org.lightnsalt.hikingdom.service.club.service;
+package org.lightnsalt.hikingdom.service.club.service.meetup;
 
 import java.util.List;
 
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupAlbumRes;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 

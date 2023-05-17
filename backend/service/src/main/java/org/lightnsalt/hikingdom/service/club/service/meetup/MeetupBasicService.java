@@ -1,11 +1,11 @@
-package org.lightnsalt.hikingdom.service.club.service;
+package org.lightnsalt.hikingdom.service.club.service.meetup;
 
 import java.util.List;
 
 import org.lightnsalt.hikingdom.service.club.dto.request.MeetupAddReq;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDailyRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupDetailRes;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMonthlyRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupDailyRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupDetailRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMonthlyRes;
 
 public interface MeetupBasicService {
 	Long saveMeetup(String email, Long clubId, MeetupAddReq req);

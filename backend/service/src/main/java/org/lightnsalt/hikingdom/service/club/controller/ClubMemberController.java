@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMemberDetailListRes;
 import org.lightnsalt.hikingdom.service.club.service.ClubMemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

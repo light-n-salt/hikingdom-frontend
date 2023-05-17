@@ -1,6 +1,4 @@
-package org.lightnsalt.hikingdom.service.club.dto.response;
-
-import java.time.format.DateTimeFormatter;
+package org.lightnsalt.hikingdom.service.club.dto.response.meetup;
 
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;
 
@@ -13,17 +11,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MeetupAlbumRes {
+public class PhotoInfoRes {
 	private Long photoId;
+	private String imgUrl;
 	@JsonProperty("isOwner")
 	private boolean isOwner;
-	private String imgUrl;
-	private String createdAt;
 
-	public MeetupAlbumRes(MeetupAlbum meetupAlbum, boolean isOwner) {
+	public PhotoInfoRes(MeetupAlbum meetupAlbum, boolean isOwner) {
 		this.photoId = meetupAlbum.getId();
-		this.isOwner = isOwner;
 		this.imgUrl = meetupAlbum.getImgUrl();
-		this.createdAt = meetupAlbum.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		this.isOwner = isOwner;
 	}
 }

@@ -1,9 +1,10 @@
-package org.lightnsalt.hikingdom.service.club.dto.response;
+package org.lightnsalt.hikingdom.service.club.dto.response.meetup;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.Meetup;
+import org.lightnsalt.hikingdom.service.club.dto.response.MemberShortRes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
