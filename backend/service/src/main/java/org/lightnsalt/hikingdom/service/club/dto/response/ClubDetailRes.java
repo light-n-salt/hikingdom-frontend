@@ -17,7 +17,7 @@ public class ClubDetailRes {
 	private boolean isJoin;
 	private Long totalMember;
 	private Long totalAssetCount;
-	private Long totalHikingCount;
+	private Long totalMeetupCount;
 	private Long totalMountainCount;
 	private String description;
 	private List<ClubAssetRes> assets;
@@ -27,7 +27,7 @@ public class ClubDetailRes {
 		this.isJoin = isJoin;
 		this.totalMember = club.getTotalMemberCount();
 		this.totalAssetCount = club.getTotalAssetCount();
-		this.totalHikingCount = club.getTotalHikingCount();
+		this.totalMeetupCount = club.getTotalMeetupCount();
 		this.totalMountainCount = club.getTotalMountainCount();
 		this.description = club.getDescription();
 		this.assets = assets.stream().map(ClubAssetRes::new).collect(Collectors.toList());
