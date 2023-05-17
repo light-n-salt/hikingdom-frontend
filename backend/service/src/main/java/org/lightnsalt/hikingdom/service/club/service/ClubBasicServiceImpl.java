@@ -21,6 +21,7 @@ import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
 import org.lightnsalt.hikingdom.service.club.repository.record.ClubTotalHikingStatisticRepository;
 import org.lightnsalt.hikingdom.domain.entity.info.BaseAddressInfo;
+import org.lightnsalt.hikingdom.service.info.repository.AssetInfoRepository;
 import org.lightnsalt.hikingdom.service.info.repository.BaseAddressInfoRepository;
 import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
@@ -42,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ClubBasicServiceImpl implements ClubBasicService {
 	private static final String LOCATION_CODE_PATTERN = "\\d{10}";
 
+	private final AssetInfoRepository assetInfoRepository;
 	private final ClubRepository clubRepository;
 	private final ClubAssetRepository clubAssetRepository;
 	private final ClubMemberRepository clubMemberRepository;
@@ -99,6 +101,13 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		final Club savedclub = clubRepository.save(club);
 		clubTotalHikingStatisticRepository.save(ClubTotalHikingStatistic.builder()
 			.club(savedclub)
+			.build());
+
+		// 땅 에셋 기본 추가
+		clubAssetRepository.save(ClubAsset.builder()
+			.club(savedclub)
+			.asset(assetInfoRepository.findById(0L)
+				.orElseThrow(() -> new GlobalException(ErrorCode.INTERNAL_SERVER_ERROR)))
 			.build());
 
 		clubMemberRepository.save(ClubMember.builder()
