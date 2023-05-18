@@ -39,7 +39,7 @@ public class ClubPhotoServiceImpl implements ClubPhotoService {
 
 		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotosByClubId(photoId, clubId, pageable);
 		return new CustomSlice<>(
-			list.map(meetupAlbum -> new MeetupAlbumRes(meetupAlbum, member)));
+			list.map(meetupAlbum -> new MeetupAlbumRes(meetupAlbum, meetupAlbum.getMember())));
 	}
 
 	@Transactional
