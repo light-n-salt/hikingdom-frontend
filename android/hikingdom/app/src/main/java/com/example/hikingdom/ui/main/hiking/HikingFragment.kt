@@ -206,6 +206,9 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             mSocket?.off("enter")
             mSocket?.off("newLocation")
             task?.cancel()
+
+            // 지도 마커 삭제
+            mapView?.removeAllPOIItems()
         }
 
         hikingSummitBtn.setOnClickListener {
