@@ -15,7 +15,15 @@ import IconText from 'components/common/IconText'
 import { BiCalendarAlt } from 'react-icons/bi'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 
-function TrackingInfo({ hikingRecordId }: { hikingRecordId: number }) {
+type TrackingInfoProps = {
+  hikingRecordId: number
+  isandroid?: boolean
+}
+
+function TrackingInfo({
+  hikingRecordId,
+  isandroid = false,
+}: TrackingInfoProps) {
   const { nickname } = useParams() as {
     nickname: string
   }
@@ -93,9 +101,11 @@ function TrackingInfo({ hikingRecordId }: { hikingRecordId: number }) {
     polyline.setMap(map)
   }, [detailRecord])
 
+  const isPad = isandroid ? null : styles.pad
+
   return detailRecord ? (
-    <div className={styles.tracking}>
-      <h2>{detailRecord.mountainName} 트래킹 기록</h2>
+    <div className={`${styles.tracking} ${isPad}`}>
+      {!isandroid && <h2>{detailRecord.mountainName} 트래킹 기록</h2>}
 
       <div className={`${styles.container} ${styles.gap}`}>
         <IconText
