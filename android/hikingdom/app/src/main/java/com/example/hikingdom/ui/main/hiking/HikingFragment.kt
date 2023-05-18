@@ -4,17 +4,23 @@ package com.example.hikingdom.ui.main.hiking
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.location.Location
-import android.location.LocationManager
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
@@ -23,7 +29,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,11 +47,18 @@ import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.ui.main.hiking.dialog.MeetupAdapter
 import com.example.hikingdom.ui.main.hiking.dialog.MountainAdapter
 import com.example.hikingdom.ui.socket.CircleCropWithTriangleTransformation
-import com.example.hikingdom.utils.*
+import com.example.hikingdom.utils.LocationUtils
+import com.example.hikingdom.utils.getIsLocationServiceRunning
+import com.example.hikingdom.utils.getIsMeetup
+import com.example.hikingdom.utils.getIsSummit
+import com.example.hikingdom.utils.saveIsSummit
 import com.google.gson.Gson
 import io.socket.client.IO
 import io.socket.client.Socket
-import net.daum.mf.map.api.*
+import net.daum.mf.map.api.MapPOIItem
+import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapPolyline
+import net.daum.mf.map.api.MapView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -83,7 +95,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     lateinit var hikingFinishBtn: Button
     lateinit var hikingSummitBtn: Button
 
-    private var mSocket: Socket? =null;
+    private var mSocket: Socket? = null;
     private var nickname: String? = null
     private var profileUrl: String? = null
     private var level: Int? = null
@@ -93,8 +105,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
     val gson: Gson = Gson()
 
-    private val timer : Timer = Timer()
-    var task : TimerTask? = null
+    private val timer: Timer = Timer()
+    var task: TimerTask? = null
 
     override fun initAfterBinding() {
         binding.lifecycleOwner = this
@@ -596,18 +608,43 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         // dialog 띄우기
         val selectView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_hiking_type, null)
-        val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)
-        // TODO: 못나가게 막기
-//        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
-        val meetupDialog = mBuilder.show()
 
-        // 클릭 리스너 핸들 -> 일정 등산, 개인 등산
+        val dialog = AlertDialog.Builder(activityContext).create()
+        dialog.setView(selectView)
+
+        // 다이얼로그의 모서리를 둥글게 만들기
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.decorView?.setBackgroundResource(android.R.color.transparent)
+        dialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.9).toInt(), // Set custom width as a percentage of the screen width
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setGravity(Gravity.CENTER) // Set dialog window gravity to center
+        dialog.window?.attributes?.apply {
+            flags = flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            dimAmount = 0.6f
+        }
+        dialog.window?.setBackgroundDrawableResource(R.drawable.radius_10) // Set background image
+
+        // TODO: Prevent dismissing on outside touch
+        // dialog.setCancelable(false)
+
+        dialog.show()
+
+        // Click listener handles: meetup hiking, individual hiking
         val meetupHikingStart = selectView.findViewById<Button>(R.id.meetup_hiking_start_btn)
         val individualHikingStart =
             selectView.findViewById<Button>(R.id.individual_hiking_start_btn)
 
-        meetupHikingStart.setOnClickListener { showMeetupDialog(); meetupDialog.dismiss() }
-        individualHikingStart.setOnClickListener { showMountainDialog();meetupDialog.dismiss() }
+        meetupHikingStart.setOnClickListener {
+            showMeetupDialog()
+            dialog.dismiss()
+        }
+        individualHikingStart.setOnClickListener {
+            showMountainDialog()
+            dialog.dismiss()
+        }
     }
 
     private fun showMeetupDialog() {
