@@ -13,22 +13,26 @@ public class MemberRequestClubRes {
 	private Long clubId;
 	private String clubName;
 	private String location;
-	private int totalMember;
-	private int totalDuration;
-	private int totalDistance;
-	private double participationRate;
-	private int ranking;
+	private Long totalMember;
+	private Long totalAssetCount;
+	private Long totalMeetupCount;
+	private Long totalMountainCount;
+	private Long ranking;
 
-	public MemberRequestClubRes(Club club, int ranking) {
+	public MemberRequestClubRes(Club club, Long ranking) {
 		this.clubId = club.getId();
 		this.clubName = club.getName();
-		this.location = club.getBaseAddress().getGugunName();
-		this.totalMember = Math.toIntExact(club.getTotalMemberCount());
-		if (club.getHikingStatistic() != null) {
-			this.totalDuration = Math.round(club.getHikingStatistic().getTotalDuration());
-			this.totalDistance = Math.round(club.getHikingStatistic().getTotalDistance());
-			this.participationRate = club.getHikingStatistic().getParticipationRate();
-		}
+		this.totalMember = club.getTotalMemberCount();
+		this.totalAssetCount = club.getTotalAssetCount();
+		this.totalMeetupCount = club.getTotalMeetupCount();
+		this.totalMountainCount = club.getTotalMountainCount();
 		this.ranking = ranking;
+
+		if (club.getBaseAddress() != null) {
+			this.location = club.getBaseAddress().getSidoName() +
+				(club.getBaseAddress().getGugunName() != null ? " " + club.getBaseAddress().getGugunName() : "");
+		} else {
+			this.location = "전국";
+		}
 	}
 }
