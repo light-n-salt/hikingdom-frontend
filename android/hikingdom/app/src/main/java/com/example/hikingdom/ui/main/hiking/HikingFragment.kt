@@ -651,9 +651,25 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         // dialog 띄우기
         val meetupView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_meetup, null)
-        val mBuilder = AlertDialog.Builder(activityContext).setView(meetupView)
+
+        val meetupDialog = AlertDialog.Builder(activityContext).create();
+        meetupDialog.setView(meetupView);
 //        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
-        val meetupDialog = mBuilder.show()
+
+        meetupDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        meetupDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        meetupDialog.window?.decorView?.setBackgroundResource(android.R.color.transparent)
+        meetupDialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.9).toInt(), // Set custom width as a percentage of the screen width
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        meetupDialog.window?.setGravity(Gravity.CENTER) // Set dialog window gravity to center
+        meetupDialog.window?.attributes?.apply {
+            flags = flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            dimAmount = 0.6f
+        }
+        meetupDialog.window?.setBackgroundDrawableResource(R.drawable.radius_10) // Set background image
+        meetupDialog.show();
 
         meetupDialog.findViewById<TextView>(R.id.to_agreement).setOnClickListener {
             showLocationSharingAgreementDialog();
