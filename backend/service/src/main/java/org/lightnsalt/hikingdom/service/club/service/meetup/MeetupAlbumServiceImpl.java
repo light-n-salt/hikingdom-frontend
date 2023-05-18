@@ -88,14 +88,14 @@ public class MeetupAlbumServiceImpl implements MeetupAlbumService {
 	public CustomSlice<MeetupAlbumRes> findMeetupAlbumList(String email, Long clubId, Long meetupId, Long photoId,
 		Pageable pageable) {
 		// 회원 정보 가져오기
-		final Long memberId = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED)).getId();
+		final Member member = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		// 사진 정보 가져오기
 		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotos(photoId, meetupId, pageable);
 
 		// 형 변환
 		return new CustomSlice<>(
-			list.map(meetupAlbum -> new MeetupAlbumRes(meetupAlbum, meetupAlbum.getMember().getId().equals(memberId))));
+			list.map(meetupAlbum -> new MeetupAlbumRes(meetupAlbum, member)));
 	}
 
 	@Override
