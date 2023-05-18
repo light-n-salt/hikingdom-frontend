@@ -4,6 +4,7 @@
 .container {
   display: flex;
   align-items: center;
+  justify-content: center;
   position: relative;
   margin: 1rem 0rem;
   width: 100%;
@@ -24,15 +25,13 @@
 .icon {
   @include z-index(content);
   display: flex;
-  align-items: center;
+  position: absolute;
+  left: 0;
   font-size: 2rem;
   cursor: pointer;
 }
 
 .title {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
   white-space: nowrap;
   font-weight: 700;
 

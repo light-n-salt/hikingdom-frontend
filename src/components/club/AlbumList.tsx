@@ -24,21 +24,23 @@ function AlbumList({ photoList }: AlbumListProps) {
   }
 
   return (
-    <div className={styles.container}>
+    <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
           {photo && <PhotoModal photo={photo} setState={setIsOpen} />}
         </Modal>
       )}
-      {photoList.map((photo) => (
-        <img
-          key={photo.photoId}
-          src={photo.imgUrl}
-          className={styles.img}
-          onClick={() => onClickOpenModal(photo.photoId)}
-        />
-      ))}
-    </div>
+      <div className={styles.container}>
+        {photoList.map((photo) => (
+          <img
+            key={photo.photoId}
+            src={photo.imgUrl}
+            className={styles.img}
+            onClick={() => onClickOpenModal(photo.photoId)}
+          />
+        ))}
+      </div>
+    </>
   )
 }
 

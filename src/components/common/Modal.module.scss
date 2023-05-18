@@ -1,7 +1,9 @@
 @use 'src/styles/z-index' as *;
+@use 'src/styles/animations' as *;
 
 .modal {
   @include z-index(modal);
+  @include animation-clear(fast);
   display: flex;
   justify-content: center;
   align-items: center;

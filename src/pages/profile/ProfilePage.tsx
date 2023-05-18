@@ -38,8 +38,10 @@ function ProfilePage() {
         totalHikingCount={data?.totalHikingCount}
         totalMountainCount={data?.totalMountainCount}
       />
-      <div className={styles.title}>등산기록</div>
-      <PastMeetupList />
+      <div className={styles.meetups}>
+        <div className={styles.title}>등산기록</div>
+        <PastMeetupList />
+      </div>
     </div>
   )
 }

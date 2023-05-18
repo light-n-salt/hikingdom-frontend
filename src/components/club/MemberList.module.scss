@@ -7,22 +7,18 @@
   width: 100%;
 }
 
-.content {
+.title {
   display: flex;
   justify-content: space-between;
-  padding: 0.6rem 1rem;
-  border-bottom: 0.1rem solid clr(secondary-clr, dark);
-}
-
-.text {
+  padding: 0.5rem 1rem 0.5rem 0.7rem;
   font-size: 1rem;
   font-weight: bold;
   color: clr(primary-clr);
 }
 
 @for $i from 1 through 10 {
-  .list > div:nth-child(#{$i}) {
+  .container > div:nth-child(#{$i}) {
     opacity: 0;
-    @include animation-slide-in-left(normal, 5%, #{($i - 1) * 0.1}s);
+    @include animation-slide-in-up(normal, 50%, #{($i - 1) * 0.05}s);
   }
 }

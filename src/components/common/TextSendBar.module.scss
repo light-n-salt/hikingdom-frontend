@@ -5,9 +5,9 @@
   @include z-index(content);
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.5rem;
   width: 100%;
-  padding: 0 0.5rem;
+  padding: 0 0.3rem;
 }
 
 .input {
@@ -15,6 +15,11 @@
   padding: 0.6rem 0.7rem;
   margin-bottom: 0.5rem;
   border-radius: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  font-weight: 700;
   box-shadow: inset 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.input::placeholder {
+  color: transparentize(clr(gray-clr, light), 0.5);
 }
