@@ -141,7 +141,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		if (memberLogoutReq != null && memberLogoutReq.getFcmToken() != null) {
 			memberFcmTokenRepository.deleteByMemberIdAndBody(member.getId(), memberLogoutReq.getFcmToken());
 		}
-		
+
 		// redis에서 refresh token 삭제
 		if (redisUtil.getValue("RT" + email) != null) {
 			redisUtil.deleteValue("RT" + email);
@@ -263,12 +263,12 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 		// dto에 담아 리턴
 		return clubMemberList.stream().map(clubJoinRequest -> {
-			int ranking = 0;
+			Long ranking = 0L;
 			if (clubJoinRequest.getClub() != null) {
 				var clubRanking = clubRankingRepository.findTop1ByClubIdOrderBySetDate(
 					clubJoinRequest.getClub().getId());
 				if (clubRanking != null) {
-					ranking = Math.toIntExact(clubRanking.getRanking());
+					ranking = clubRanking.getRanking();
 				}
 			}
 			assert clubJoinRequest.getClub() != null;
