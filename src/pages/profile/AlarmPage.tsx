@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import styles from './AlarmPage.module.scss'
 import { ThemeContext } from 'styles/ThemeProvider'
 import { UserAlarm } from 'types/user.interface'
 
@@ -18,7 +19,7 @@ function AlarmPage() {
   )
 
   return (
-    <div className={`page p-sm ${theme} mobile `}>
+    <div className={`page p-md ${theme}`}>
       <PageHeader title="알림 내역" url={`/profile/${userInfo?.nickname}`} />
       {alarmList && <AlarmList alarmList={alarmList} />}
     </div>

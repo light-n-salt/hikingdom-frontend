@@ -54,13 +54,6 @@ function NicknameUpdateForm() {
 
   return (
     <div className={`content ${theme} ${styles.nickname}`}>
-      <Button
-        text="취소"
-        color="secondary"
-        size="sm"
-        onClick={() => navigate(`/profile/${userInfo?.nickname}`)}
-      />
-
       <LabelInput
         label="닉네임"
         value={nickname}

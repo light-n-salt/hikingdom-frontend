@@ -6,7 +6,7 @@
   gap: 0.5rem;
 }
 
-@for $i from 1 through 15 {
+@for $i from 1 through 21 {
   .container > img:nth-child(#{$i}) {
     opacity: 0;
     @include animation-slide-in-up(normal, 50%, #{($i - 1) * 0.04}s);

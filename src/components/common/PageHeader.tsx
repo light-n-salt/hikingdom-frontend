@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { FiChevronLeft } from 'react-icons/fi'
 
 type PageHeaderProps = {
-  title: string // 제목
+  title?: string // 제목
   url?: string // 이동할 URL 주소
   color?: 'dark' | 'light' | 'primary' // 색깔
   size?: 'sm' | 'md' | 'lg' // 크기
 }
 
 function PageHeader({
-  title,
+  title = ' ',
   url = undefined,
   color = 'dark',
   size = 'md',

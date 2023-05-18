@@ -5,7 +5,7 @@ import { UserAlarm } from 'types/user.interface'
 
 function AlarmList({ alarmList }: { alarmList: UserAlarm[] }) {
   return (
-    <div className={`${styles['alarm-list']}`}>
+    <div className={`${styles.alarms}`}>
       {alarmList.map((alarm) => (
         <AlarmItem key={alarm.notificationId} alarm={alarm} />
       ))}
