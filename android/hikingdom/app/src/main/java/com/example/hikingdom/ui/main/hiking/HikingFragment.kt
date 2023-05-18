@@ -31,6 +31,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -437,7 +438,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         /* 현위치 트래킹 모드 및 나침반 모드를 설정한다.
         TrackingModeOnWithHeading: 현위치 트랙킹 모드 On + 나침반 모드 On, 단말의 위치에 따라 지도 중심이 이동하며 단말의 방향에 따라 지도가 회전한다. */
         mapView.currentLocationTrackingMode =
-            MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading //
+            MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading //
 //        if(mapView.isShowingCurrentLocationMarker){
 //            Log.d("isShowing 1", "true")
 //        }else{
@@ -1077,12 +1078,14 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         hikingStart.setOnClickListener {
             hikingRecordResultDialog.dismiss()
             // MyPageFragment로 이동
-            val fragment = MypageFragment()
-            val fragmentManager = activity?.supportFragmentManager
-            val fragmentTransaction = fragmentManager?.beginTransaction()
-            fragmentTransaction?.replace(R.id.menu_myPageFragment, fragment)
-//            fragmentTransaction?.addToBackStack(null)
-            fragmentTransaction?.commit()
+            findNavController().navigate(R.id.action_hikingFragment_to_myPageFragment)
+
+//            val fragment = MypageFragment()
+//            val fragmentManager = activity?.supportFragmentManager
+//            val fragmentTransaction = fragmentManager?.beginTransaction()
+//            fragmentTransaction?.replace(R.id.nav_host_fragment_container, fragment)
+////            fragmentTransaction?.addToBackStack(null)
+//            fragmentTransaction?.commit()
         }
     }
 
