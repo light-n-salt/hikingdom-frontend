@@ -794,16 +794,34 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_hiking_agreement, null)
         selectView.findViewById<TextView>(R.id.selected_hiking_mountain).text =
             hikingViewModel.mountainName.value
-        val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)
-        val meetupDialog = mBuilder.show()
+
+        val dialog = AlertDialog.Builder(activityContext).create()
+        dialog.setView(selectView);
+
+        // 다이얼로그의 모서리를 둥글게 만들기
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.decorView?.setBackgroundResource(android.R.color.transparent)
+        dialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.9).toInt(), // Set custom width as a percentage of the screen width
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setGravity(Gravity.CENTER) // Set dialog window gravity to center
+        dialog.window?.attributes?.apply {
+            flags = flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            dimAmount = 0.6f
+        }
+        dialog.window?.setBackgroundDrawableResource(R.drawable.radius_10) // Set background image
+
+        dialog.show()
 
         // 클릭 리스너 핸들 -> 확인
         val hikingStart = selectView.findViewById<Button>(R.id.hiking_mountain_start_btn)
-        hikingStart.setOnClickListener { meetupDialog.dismiss(); startHiking();}
+        hikingStart.setOnClickListener { dialog.dismiss(); startHiking(); }
 
         // 클릭 리스너 핸들 -> 취소
         val hikingCancel = selectView.findViewById<Button>(R.id.hiking_mountain_cancel_start_btn)
-        hikingCancel.setOnClickListener { meetupDialog.dismiss();hikingViewModel.meetupClear(); showSelectTypeDialog() }
+        hikingCancel.setOnClickListener { dialog.dismiss();hikingViewModel.meetupClear(); showSelectTypeDialog() }
     }
 
     fun startHiking(){
