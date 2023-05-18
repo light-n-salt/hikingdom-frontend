@@ -10,6 +10,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteAlbum } from 'apis/services/clubs'
 
 import useUserQuery from 'hooks/useUserQuery'
+import Image from 'components/common/Image'
+import IconText from './IconText'
+import { BiCalendarAlt } from 'react-icons/bi'
+import { AiOutlineClockCircle } from 'react-icons/ai'
 
 type PhotoModalProps = {
   photo: Album
@@ -42,6 +46,22 @@ function PhotoModal({ photo, setState }: PhotoModalProps) {
 
   return (
     <div className={styles.container}>
+      <div className={styles.user}>
+        <Image size="xs" imgUrl={photo.profileUrl} />
+        <span>{photo.nickname}</span>
+      </div>
+      <div className={`${styles.date}`}>
+        <IconText
+          icon={<BiCalendarAlt className={styles.icon} />}
+          text={photo.createdAt.split(' ')[0]}
+          size="sm"
+        />
+        <IconText
+          icon={<AiOutlineClockCircle className={styles.icon} />}
+          text={photo.createdAt.split(' ')[1]}
+          size="sm"
+        />
+      </div>
       <div className={styles.siren} onClick={onClickReport}>
         <HiLightBulb /> 신고하기
       </div>
