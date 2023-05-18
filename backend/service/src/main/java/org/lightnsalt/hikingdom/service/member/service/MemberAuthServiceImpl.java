@@ -44,12 +44,9 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 
 		// save FCM token
 		String fcmToken = memberLoginReq.getFcmToken();
-		if (fcmToken != null) {
+		if (fcmToken != null && fcmToken.length() > 0) {
 			if (!memberFcmTokenRepository.existsByMemberIdAndBody(member.getId(), fcmToken)) {
-				MemberFcmToken memberFcmToken = MemberFcmToken.builder()
-					.member(member)
-					.body(fcmToken)
-					.build();
+				MemberFcmToken memberFcmToken = MemberFcmToken.builder().member(member).body(fcmToken).build();
 
 				memberFcmTokenRepository.save(memberFcmToken);
 			}
@@ -61,12 +58,9 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 		redisUtil.deleteValue("RT" + email);
 		redisUtil.setValueWithExpiration("RT" + email, refreshToken.substring(7), jwtTokenUtil.refreshExpiration);
 
-		log.info("Successful Login: " + email);
+		log.debug("Successful Login: " + email);
 
-		return MemberTokenRes.builder()
-			.accessToken(accessToken)
-			.refreshToken(refreshToken)
-			.build();
+		return MemberTokenRes.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 	}
 
 	@Override
@@ -87,9 +81,6 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 		// redisUtil.deleteValue("RT" + email);
 		// redisUtil.setValueWithExpiration("RT" + email, refreshToken.substring(7), jwtTokenUtil.refreshExpiration);
 
-		return MemberTokenRes.builder()
-			.accessToken(accessToken)
-			.refreshToken("Bearer " + oldRefreshToken)
-			.build();
+		return MemberTokenRes.builder().accessToken(accessToken).refreshToken("Bearer " + oldRefreshToken).build();
 	}
 }
