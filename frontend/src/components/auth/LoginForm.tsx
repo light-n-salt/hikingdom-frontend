@@ -1,19 +1,19 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import sytles from './LoginForm.module.scss'
 import { useNavigate } from 'react-router-dom'
-import { login, getUserInfo } from 'apis/services/users'
+import { login } from 'apis/services/users'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 import LabelInput from 'components/common/LabelInput'
 import TextButton from 'components/common/TextButton'
 import useAuthInput from 'hooks/useAuthInput'
-import { useSetRecoilState } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 function LoginForm() {
   const navigate = useNavigate()
-  const setUserInfo = useSetRecoilState(userInfoState)
-
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+  const queryClient = useQueryClient()
   const {
     value: email,
     onChange: changeEmail,
@@ -23,10 +23,12 @@ function LoginForm() {
     value: password,
     onChange: changePw,
     isPass: isPwPass,
+    condition: condition,
   } = useAuthInput({ type: 'password' }) // 사용자 인증 input 커스텀 훅
 
   // 로그인 api 요청
   function onClickLogin() {
+    queryClient.invalidateQueries(['user'])
     // 이메일 형식이 맞고, 비밀번호가 입력된 경우에만 요청을 보냄
     if (!isEmailPass || !password) {
       toast.addMessage('error', `이메일과 비밀번호를 정확하게 입력해주세요`)
@@ -34,7 +36,6 @@ function LoginForm() {
     }
     login(email, password)
       .then(() => {
-        getUserInfo(setUserInfo)
         navigate('/main')
       })
       .catch((err) => {
@@ -46,18 +47,32 @@ function LoginForm() {
     <div className={sytles.container}>
       <div className={sytles.inputs}>
         <LabelInput
+          ref={emailRef}
           label="이메일"
           value={email}
           onChange={changeEmail}
+          onKeyDown={(event: React.KeyboardEvent) => {
+            if (event.key === 'Enter') {
+              event?.preventDefault()
+              passwordRef.current && passwordRef.current.focus()
+            }
+          }}
           isPass={isEmailPass}
           placeholder="이메일을 입력해주세요"
         />
         <LabelInput
+          ref={passwordRef}
           label="비밀번호"
           value={password}
           onChange={changePw}
+          onKeyDown={(event: React.KeyboardEvent) => {
+            if (event.key === 'Enter') {
+              event?.preventDefault()
+              onClickLogin()
+            }
+          }}
           isPass={isPwPass}
-          placeholder="비밀번호를 입력해주세요"
+          placeholder={condition}
           type="password"
         />
         <TextButton

@@ -3,23 +3,27 @@
 .container {
   position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   width: 100%;
   padding: 0.8rem;
-  background-color: clr(secondary-clr, dark);
+  background-color: clr(secondary-clr);
   color: clr(primary-clr);
 }
 
 .title {
   display: flex;
   align-items: center;
+  transform: translateX(-8%);
   gap: 0.5rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-55%);
 }
 
-.icon {
+.trophy {
   width: 2rem;
+}
+
+.search {
+  position: absolute;
+  right: 1rem;
+  transform: translateY(10%);
 }

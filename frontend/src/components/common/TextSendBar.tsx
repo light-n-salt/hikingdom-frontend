@@ -7,16 +7,37 @@ import airplane from 'assets/images/airplane.png'
 
 type TextSendBarProps = {
   placeholder: string
+  content: string
+  setContent: (params: string) => void
+  onClick: () => void
 }
 
-function TextSendBar({ placeholder }: TextSendBarProps) {
-  const onClickSubmit = () => {
-    console.log('submit')
+function TextSendBar({
+  placeholder,
+  content,
+  setContent,
+  onClick,
+}: TextSendBarProps) {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value)
   }
+
   return (
     <div className={styles.bar}>
-      <input type="text" placeholder={placeholder} className={styles.input} />
-      <IconButton imgSrc={airplane} size="md" onClick={onClickSubmit} />
+      <input
+        onKeyUp={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter') {
+            e?.preventDefault()
+            onClick()
+          }
+        }}
+        onChange={onChange}
+        value={content}
+        type="text"
+        placeholder={placeholder}
+        className={styles.input}
+      />
+      <IconButton imgSrc={airplane} size="md" onClick={onClick} />
     </div>
   )
 }

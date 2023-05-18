@@ -4,6 +4,14 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-weight: 600;
+
+  &.xs {
+    img {
+      width: 1.3rem;
+    }
+    font-size: 0.7rem;
+  }
 
   &.sm {
     img {
@@ -14,20 +22,20 @@
 
   &.md {
     img {
-      width: 1.6rem;
+      width: 1.5rem;
     }
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   &.lg {
     img {
-      width: 1.9em;
+      width: 1.7rem;
     }
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
   &.bold {
-    font-weight: bold;
+    font-weight: 800;
   }
 
   &.right {

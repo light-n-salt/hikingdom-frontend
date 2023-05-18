@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useContext } from 'react'
 import styles from './Calendar.module.scss'
+import { useNavigate, useParams } from 'react-router'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import {
   format,
@@ -12,6 +13,7 @@ import {
   endOfWeek,
   isSameMonth,
 } from 'date-fns'
+import Button from 'components/common/Button'
 import IconButton from 'components/common/IconButton'
 import { ThemeContext } from 'styles/ThemeProvider'
 
@@ -31,9 +33,11 @@ function Calendar({
   onClickDate,
 }: CalendarProps) {
   const { theme } = useContext(ThemeContext)
+  const navigate = useNavigate()
+
   // 오늘 날짜 기반으로, 현재 달력이 바라보는 날짜 설정
   const [currentDate, setCurrentDate] = useState(today)
-
+  // 현재 달력이 바라보는 날짜를 기반으로, 달력의 시작일자와 마지막 일자 반환
   const { calendarStart, calendarEnd } = useMemo(() => {
     const monthStart = startOfMonth(currentDate) // 현 월의 시작 일자
     const monthEnd = endOfMonth(currentDate) // 현 월의 마지막 일자
@@ -59,10 +63,8 @@ function Calendar({
 
   // 월 변경 시마다, 해당 월의 첫 일로 setCurrentDate 업데이트
   function onChangeSetCurrentDate(event: React.ChangeEvent<HTMLInputElement>) {
-    console.log(event.target.value)
     const [year, month] = event.target.value.split('-')
     const date = new Date(parseInt(year), parseInt(month) - 1)
-    console.log(date)
     setCurrentDate(date)
   }
 
@@ -120,6 +122,14 @@ function Calendar({
         ))}
       </div>
       <div className={`${styles.gridbox} ${styles.calendar}`}>{dateboxes}</div>
+      <div className={styles.button}>
+        <Button
+          text="일정생성"
+          color="primary"
+          size="sm"
+          onClick={() => navigate(`/club/meetup/create`)}
+        />
+      </div>
     </div>
   )
 }

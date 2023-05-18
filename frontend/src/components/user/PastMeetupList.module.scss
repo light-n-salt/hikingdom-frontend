@@ -1,8 +1,21 @@
-@use 'src/styles/colors' as *;
+@use 'src/styles/animations' as *;
 
-.meetup-list {
+.scroll {
+  overflow-y: auto;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+.list {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 0.5rem;
+}
+
+@for $i from 1 through 3 {
+  .list > div:nth-child(#{$i}) {
+    opacity: 0;
+    @include animation-slide-in-up(normal, 40%, #{($i - 1) * 0.1}s);
+  }
 }

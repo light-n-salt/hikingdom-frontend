@@ -4,20 +4,21 @@
 .container {
   display: flex;
   flex-direction: column;
-  position: relative;
   align-items: flex-start;
-  padding: 1rem 1.5rem;
+  position: relative;
   font-weight: 600;
   cursor: pointer;
 
   &.sm {
+    gap: 0.8rem;
     min-width: 13rem;
-    gap: 0.4rem;
+    padding: 1.2rem 0.5rem 1.2rem 1rem;
   }
 
   &.lg {
+    gap: 0.7rem;
     width: 100%;
-    gap: 0.6rem;
+    padding: 1rem 1rem 1rem 1.5rem;
   }
 }
 
@@ -29,22 +30,16 @@
 }
 
 .title {
-  margin: 0 0 0 1rem;
+  margin: 0 0 0 0.4rem;
   color: clr(primary-clr);
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
 .info {
   display: flex;
-
-  &.sm {
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-  &.lg {
-    gap: 1.5rem;
-  }
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .flexbox {
@@ -55,7 +50,7 @@
 .medal {
   position: absolute;
   top: 0;
-  transform: translateX(-20%) translateY(-20%);
+  transform: translateX(-30%) translateY(-20%);
   left: 0;
   width: 2.5rem;
 }
@@ -66,7 +61,7 @@
   left: 0;
   background-color: clr(primary-clr);
   min-width: 1.8rem;
-  padding: 0.1rem;
+  padding: 0.2rem 0.1rem 0.1rem;
   border-radius: 0.7rem 0 0.2rem 0;
   color: clr(white-clr, light);
   font-size: 1rem;

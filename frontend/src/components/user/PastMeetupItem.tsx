@@ -19,14 +19,14 @@ import Modal from 'components/common/Modal'
 
 import { UserHiking } from 'types/user.interface'
 import { convertToKm } from 'utils/convertToKm'
-import { useRecoilValue } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
+import { convertToTime } from 'utils/convertToTime'
+import useUserQuery from 'hooks/useUserQuery'
 
 export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
-  const userInfo = useRecoilValue(userInfoState)
+  const { data: userInfo } = useUserQuery()
 
   // 일정 상세보기로 이동하는 함수
   const onClickOpenModal = () => {
@@ -36,7 +36,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
   // 그룹 일정 상세보기로 이동하는 함수
   const onClickGroup = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation() // 부모 이벤트 버블링 방지
-    navigate(`/club/${userInfo.clubId}/meetup/${hiking.meetupId}/detail`)
+    navigate(`/club/meetup/${hiking.meetupId}/detail`)
   }
 
   return (
@@ -47,7 +47,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
         </Modal>
       )}
       <div
-        className={`content ${theme} ${styles['meetup-item']}`}
+        className={`content ${theme} ${styles.container}`}
         onClick={onClickOpenModal}
       >
         <div className={styles.title}>
@@ -66,20 +66,24 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
           )}
         </div>
 
-        <div>
+        <div className={styles.flexbox}>
           <IconText
             icon={<BiCalendarAlt />}
-            text={hiking.startAt.split(' ')[0]}
+            text={hiking.startAt.split(' ')[0].replaceAll('-', '.').slice(2)}
             size="sm"
           />
           <IconText
             icon={<AiOutlineClockCircle />}
-            text={hiking.startAt.split(' ')[1]}
+            text={hiking.startAt.split(' ')[1].slice(0, -3)}
             size="sm"
           />
         </div>
-        <div>
-          <IconText imgSrc={time} text={hiking.totalDuration} size="sm" />
+        <div className={styles.flexbox}>
+          <IconText
+            imgSrc={time}
+            text={convertToTime(hiking.totalDuration)}
+            size="sm"
+          />
           <IconText
             imgSrc={distance}
             text={convertToKm(hiking.totalDistance) + 'km'}

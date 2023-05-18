@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './CreateClubForm.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { checkClubName, getLocationCode, createClub } from 'apis/services/clubs'
@@ -8,6 +8,8 @@ import PageHeader from 'components/common/PageHeader'
 import LabelInput from 'components/common/LabelInput'
 import LabelTextArea from 'components/common/LabelTextArea'
 import SelectBox from 'components/common/SelectBox'
+import Label from 'components/common/Label'
+import { useQueryClient } from '@tanstack/react-query'
 
 type locationCode = {
   dongCode: string
@@ -22,6 +24,8 @@ type Option = {
 
 function CreateClubForm() {
   const navigate = useNavigate()
+  const client = useQueryClient()
+
   const [name, setName] = useState('')
   const [isNamePass, setIsNamePass] = useState(false)
   const [description, setDescription] = useState('')
@@ -29,6 +33,9 @@ function CreateClubForm() {
   const [sidoCode, setSidoCode] = useState('')
   const [gugunOptions, setGugunOptions] = useState<Option[]>([])
   const [gugunCode, setGugunCode] = useState('')
+
+  const sidoRef = useRef<HTMLDivElement>(null)
+  const gugunRef = useRef<HTMLDivElement>(null)
 
   // 첫 마운트 시 시도 코드 가져오기
   useEffect(() => {
@@ -76,10 +83,13 @@ function CreateClubForm() {
 
   // 클릭 시, 모임이름 중복 체크 api 요청
   function onClickCheckName() {
-    if (!name) return
+    if (!name.trim()) {
+      toast.addMessage('error', '모임 이름을 입력해주세요')
+      return
+    }
     checkClubName(name)
       .then(() => {
-        toast.addMessage('success', '중복확인 되었습니다.')
+        toast.addMessage('success', '중복확인 되었습니다')
         setIsNamePass(true)
       })
       .catch((err) => {
@@ -89,10 +99,15 @@ function CreateClubForm() {
 
   // 클릭 시, 모임 생성 api 요청
   function onClickCreateClub() {
-    if (!isNamePass || description.trim() || !gugunCode) return
+    if (!isNamePass || !description.trim() || !gugunCode) {
+      toast.addMessage('error', '입력 정보를 확인해주세요')
+      return
+    }
     createClub(name, description, gugunCode).then((res) => {
+      toast.addMessage('success', '모임을 생성했습니다')
+      client.invalidateQueries(['user'])
       const clubId = res.data.result.clubId
-      navigate(`/club/main/${clubId}`)
+      navigate(`/club/${clubId}/main`)
     })
   }
 
@@ -117,19 +132,30 @@ function CreateClubForm() {
       <LabelTextArea
         label="소개문구"
         value={description}
+        onKeyDown={(event: React.KeyboardEvent) => {
+          if (event.key === 'Enter') {
+            event?.preventDefault()
+            sidoRef.current && sidoRef.current.focus()
+          }
+        }}
         onChange={onChangeSetDescription}
       />
-      <div className={styles.dropdown}>
-        <SelectBox
-          options={sidoOptions}
-          defaultLabel="시/도 선택"
-          setValue={setSidoCode}
-        />
-        <SelectBox
-          options={gugunOptions}
-          defaultLabel="구/군 선택"
-          setValue={setGugunCode}
-        />
+      <div className={styles.location}>
+        <Label label="지역선택" />
+        <div className={styles.dropdown}>
+          <SelectBox
+            ref={sidoRef}
+            options={sidoOptions}
+            defaultLabel="시/도 선택"
+            setValue={setSidoCode}
+          />
+          <SelectBox
+            ref={gugunRef}
+            options={gugunOptions}
+            defaultLabel="구/군 선택"
+            setValue={setGugunCode}
+          />
+        </div>
       </div>
       <div className={styles.buttons}>
         <Button

@@ -1,51 +1,60 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef, useMemo } from 'react'
+import useUserQuery from 'hooks/useUserQuery'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubAlbumPage.module.scss'
 import AlbumList from 'components/club/AlbumList'
-
+import Loading from 'components/common/Loading'
 import { Album } from 'types/club.interface'
+import { getClubAlbum } from 'apis/services/clubs'
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import { useInfiniteQuery } from '@tanstack/react-query'
 
-// Todo: API 연결
+type InfiniteAlbumInfo = {
+  content: Album[]
+  hasNext: boolean
+  hasPrevious: boolean
+  numberOfElements: number
+  pageSize: number
+}
 
 function ClubAlbumPage() {
   const { theme } = useContext(ThemeContext)
+  const infiniteRef = useRef<HTMLDivElement>(null)
 
-  const photoList: Album[] = [
-    {
-      photoId: 0,
-      memberId: 0,
-      imgUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-      createdAt: 'YYYY-MM-DD HH:mm',
-    },
-    {
-      photoId: 1,
-      memberId: 1,
-      imgUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-      createdAt: 'YYYY-MM-DD HH:mm',
-    },
-    {
-      photoId: 2,
-      memberId: 2,
-      imgUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-      createdAt: 'YYYY-MM-DD HH:mm',
-    },
-    {
-      photoId: 3,
-      memberId: 3,
-      imgUrl:
-        'https://i.namu.wiki/i/IMJTGYaO0v6OYa5iro8bLfHuxdiXflvRQ4BdsMVOEvhFP2VBF74QAdMc4PFs-dJcYu-b9aRFeEnajUO1nDQeDg.webp',
-      createdAt: 'YYYY-MM-DD HH:mm',
-    },
-  ]
-  const cnt = 4
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
+
+  const { data, isLoading, fetchNextPage, hasNextPage } =
+    useInfiniteQuery<InfiniteAlbumInfo>({
+      queryKey: ['photos'],
+      queryFn: ({ pageParam = null }) => {
+        return getClubAlbum(clubId || 0, pageParam, 21)
+      },
+      getNextPageParam: (lastPage) => {
+        return lastPage.hasNext
+          ? lastPage.content.slice(-1)[0].photoId
+          : undefined
+      },
+      enabled: !!clubId,
+    })
+
+  const photoList = useMemo(() => {
+    if (!data) return []
+    return data.pages.flatMap((page) => page.content)
+  }, [data])
+
+  useInfiniteScroll({
+    ref: infiniteRef,
+    loadMore: fetchNextPage,
+    isEnd: !hasNextPage,
+  })
 
   return (
-    <div className={`page p-sm ${theme}`}>
-      <div className={styles.cnt}>[ {cnt} ]</div>
-      <AlbumList photoList={photoList} />
+    <div className={`page p-md ${theme}`}>
+      <div ref={infiniteRef} className={styles.page}>
+        {photoList && <AlbumList photoList={photoList} />}
+        {isLoading && <Loading size="sm" />}
+      </div>
     </div>
   )
 }

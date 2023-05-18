@@ -1,7 +1,9 @@
 @use 'src/styles/colors' as *;
 @use 'src/styles/animations' as *;
+@use 'src/styles/z-index' as *;
 
 .container {
+  @include z-index(toast);
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
@@ -23,7 +25,6 @@
   border-radius: 0.5rem;
   background-color: clr(white-clr, light);
   color: clr(tertiary-clr);
-  font-size: 1rem;
   font-weight: 600;
   max-width: 80%;
   box-shadow: -1px 3px 5px 0px clr(shadow-clr);

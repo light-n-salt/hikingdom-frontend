@@ -1,3 +1,5 @@
+@use 'src/styles/animations' as *;
+
 .container {
   display: flex;
   flex-direction: column;
@@ -5,4 +7,11 @@
   overflow-y: scroll;
   width: 100%;
   padding-bottom: 1rem;
+}
+
+@for $i from 1 through 10 {
+  .container > div:nth-child(#{$i}) {
+    opacity: 0;
+    @include animation-slide-in-up(normal, 40%, #{($i - 1) * 0.1}s);
+  }
 }

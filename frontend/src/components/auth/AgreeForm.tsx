@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 import CheckBox from 'components/common/CheckBox'
-import PageHeader from 'components/common/PageHeader'
 import LabelTextArea from 'components/common/LabelTextArea'
 
 function AgreeForm() {
@@ -30,7 +29,6 @@ function AgreeForm() {
 
   return (
     <div className={styles.container}>
-      <PageHeader title="약관동의" url="/login" />
       <div className={styles.form}>
         <LabelTextArea
           label="이용약관 (필수)"
@@ -41,14 +39,6 @@ function AgreeForm() {
         />
         <div className={styles.checkbox}>
           <CheckBox
-            id="agree-USAGE-AGREEMENT"
-            label="동의"
-            isChecked={isAgreeUsage}
-            onClick={() => {
-              setIsAgreeUsage(true)
-            }}
-          />
-          <CheckBox
             id="disagree-USAGE-AGREEMENT"
             label="동의 안함"
             isChecked={!isAgreeUsage}
@@ -56,22 +46,12 @@ function AgreeForm() {
               setIsAgreeUsage(false)
             }}
           />
-        </div>
-        <div className={styles.checkbox}>
           <CheckBox
-            id="agree-OLDER-14"
-            label="만 14세 이상"
-            isChecked={isOlder14}
+            id="agree-USAGE-AGREEMENT"
+            label="동의"
+            isChecked={isAgreeUsage}
             onClick={() => {
-              setIsOlder14(true)
-            }}
-          />
-          <CheckBox
-            id="disagree-OLDER-14"
-            label="만 14세 미만"
-            isChecked={!isOlder14}
-            onClick={() => {
-              setIsOlder14(false)
+              setIsAgreeUsage(true)
             }}
           />
         </div>
@@ -86,6 +66,14 @@ function AgreeForm() {
         />
         <div className={styles.checkbox}>
           <CheckBox
+            id="disagree-INFO"
+            label="동의 안함"
+            isChecked={!isAgreeInfo}
+            onClick={() => {
+              setIsAgreeInfo(false)
+            }}
+          />
+          <CheckBox
             id="agree-INFO"
             label="동의"
             isChecked={isAgreeInfo}
@@ -93,12 +81,22 @@ function AgreeForm() {
               setIsAgreeInfo(true)
             }}
           />
+        </div>
+        <div className={styles.checkbox}>
           <CheckBox
-            id="disagree-INFO"
-            label="동의 안함"
-            isChecked={!isAgreeInfo}
+            id="disagree-OLDER-14"
+            label="만 14세 미만"
+            isChecked={!isOlder14}
             onClick={() => {
-              setIsAgreeInfo(false)
+              setIsOlder14(false)
+            }}
+          />
+          <CheckBox
+            id="agree-OLDER-14"
+            label="만 14세 이상"
+            isChecked={isOlder14}
+            onClick={() => {
+              setIsOlder14(true)
             }}
           />
         </div>

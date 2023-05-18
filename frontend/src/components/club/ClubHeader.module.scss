@@ -1,29 +1,34 @@
 @use 'src/styles/colors' as *;
 @use 'src/styles/animations' as *;
 
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  position: relative;
+  padding: 1.5rem 0rem 0.8rem;
+  width: 100%;
+}
+
 .header {
   display: flex;
+  justify-content: center;
   align-items: center;
   position: relative;
   width: 100%;
-  padding-top: 2rem;
-  padding-bottom: 1.8rem;
 }
 
 .title {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
   font-size: 1.6rem;
-  font-weight: bold;
+  font-weight: 800;
   color: clr(primary-clr);
 }
 
 .chat {
   position: absolute;
-  left: 90%;
-  transform: translate(-50%, 0);
-  padding-top: 0.4rem;
+  top: 50%;
+  transform: translate(0, -40%);
+  right: 1rem;
 }
 
 .nav {
@@ -31,32 +36,35 @@
   align-items: center;
   justify-content: space-evenly;
   width: 100%;
-  // padding: 0.5rem 0;
 }
 
-.button {
-  padding: 0.7rem 1.2rem;
+.nav > a {
+  padding: 0.6rem 1.1rem;
   font-size: 1.1rem;
-  font-weight: 600;
-  color: clr(gray-clr);
-}
+  font-weight: 800;
+  cursor: pointer;
 
-.disabled {
-  color: clr(gray-clr);
-}
+  &.inactive {
+    color: clr(gray-clr);
 
-.active {
-  position: relative;
-  color: clr(primary-clr);
+    &:hover {
+      color: clr(gray-clr, dark);
+    }
+  }
 
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -0rem;
-    width: 100%;
-    height: 0.15rem;
-    background-color: clr(primary-clr);
-    @include animation-slide-in-right(fast, 30%);
+  &.active {
+    position: relative;
+    color: clr(primary-clr);
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -0rem;
+      width: 100%;
+      height: 0.15rem;
+      background-color: clr(primary-clr);
+      @include animation-slide-in-right(fast, 30%);
+    }
   }
 }

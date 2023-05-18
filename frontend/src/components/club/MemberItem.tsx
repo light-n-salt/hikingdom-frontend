@@ -1,11 +1,12 @@
 import React from 'react'
-
+import { useNavigate } from 'react-router-dom'
 import styles from './MemberItem.module.scss'
 import Image from 'components/common/Image'
 import Button from 'components/common/Button'
 import LEVEL_TO_IMG from 'constants/levels'
 import { convertToKm } from 'utils/convertToKm'
 import { ClubMember } from 'types/club.interface'
+import { convertToTime } from 'utils/convertToTime'
 
 type MemberItemProps = {
   memberInfo: ClubMember
@@ -18,46 +19,47 @@ function MemberItem({
   onClickJoin,
   onClickDelete,
 }: MemberItemProps) {
+  const navigate = useNavigate()
   const imgSrc = LEVEL_TO_IMG[memberInfo.level]
 
   return (
     <div className={styles.container}>
-      <div className={styles.user}>
+      <div
+        className={styles.user}
+        onClick={() => navigate(`/profile/${memberInfo.nickname}`)}
+      >
         <Image imgUrl={memberInfo.profileUrl} size="sm" isSquare={true} />
-        <span className={styles.nickname}>{memberInfo.nickname}</span>
-        <img src={imgSrc} className={styles.image} />
+        <div className={styles.username}>
+          <span>{memberInfo.nickname}</span>
+          <img src={imgSrc} className={styles.level} />
+        </div>
       </div>
 
-      <div className={styles.record}>
+      <div className={styles.flexbox}>
         <Info
-          title="등산 거리(km)"
-          content={convertToKm(memberInfo.totalDistance)}
+          title="총 거리(km)"
+          content={`${(memberInfo.totalDistance / 1000).toFixed()}`}
         />
-
         {onClickJoin && onClickDelete ? (
           <div className={styles.button}>
             <Button
               text="거절"
               color="secondary"
-              size="sm"
+              size="xs"
               onClick={() => onClickDelete(memberInfo.memberId)}
             />
             <Button
               text="수락"
               color="primary"
-              size="sm"
+              size="xs"
               onClick={() => onClickJoin(memberInfo.memberId)}
             />
           </div>
         ) : (
-          <>
-            <Info title="등산 시간" content={`${memberInfo.totalDuration}`} />
-
-            <Info
-              title="등산 횟수"
-              content={`${memberInfo.totalHikingCount}`}
-            />
-          </>
+          <Info
+            title="총시간(h)"
+            content={`${(memberInfo.totalDuration / 60).toFixed()}`}
+          />
         )}
       </div>
     </div>
@@ -71,9 +73,9 @@ type InfoProps = {
 
 function Info({ title, content }: InfoProps) {
   return (
-    <div className={styles.content}>
-      <span className={styles.text}>{title}</span>
-      <span className={styles.bold}>{content}</span>
+    <div className={styles.record}>
+      <span className={styles.title}>{title}</span>
+      <span className={styles.content}>{content}</span>
     </div>
   )
 }

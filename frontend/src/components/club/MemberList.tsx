@@ -19,10 +19,10 @@ function MemberList({
   onClickDelete,
 }: MemberListProps) {
   return (
-    <div className={styles.list}>
-      <div className={styles.content}>
-        <span className={styles.text}>{title}</span>
-        <span className={styles.text}>{`(${length} 명)`}</span>
+    <div className={styles.container}>
+      <div className={styles.title}>
+        <span>{title}</span>
+        <span>{`(${length} 명)`}</span>
       </div>
       {memberList.map((memberInfo: ClubMember) => (
         <MemberItem

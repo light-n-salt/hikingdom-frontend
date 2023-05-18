@@ -4,15 +4,17 @@
   gap: 1rem;
 }
 
-.alarm {
-  position: absolute;
-  right: 1.5rem;
-  top: 1.5rem;
+.meetups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rme;
+  width: 100%;
 }
 
 .title {
   align-self: flex-start;
+  margin-left: 0.5rem;
   color: clr(primary-clr);
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: 700;
 }

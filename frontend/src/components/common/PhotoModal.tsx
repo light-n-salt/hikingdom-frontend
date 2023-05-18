@@ -1,12 +1,15 @@
 import React from 'react'
 import styles from './PhotoModal.module.scss'
-
 import toast from 'components/common/Toast'
 
 import { Album } from 'types/club.interface'
 import { HiTrash, HiLightBulb } from 'react-icons/hi'
 
 import { report } from 'apis/services/users'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { deleteAlbum } from 'apis/services/clubs'
+
+import useUserQuery from 'hooks/useUserQuery'
 
 type PhotoModalProps = {
   photo: Album
@@ -14,9 +17,21 @@ type PhotoModalProps = {
 }
 
 function PhotoModal({ photo, setState }: PhotoModalProps) {
-  const onClickDelete = () => {
-    console.log('delete')
-  }
+  const queryClient = useQueryClient()
+  const { data: userInfo } = useUserQuery()
+
+  const onClickDelete = useMutation(
+    () => deleteAlbum(Number(userInfo?.clubId), photo.photoId),
+    {
+      onSuccess: () => {
+        // 모임 앨범, 일정 앨범 query key 모두 무효화
+        queryClient.invalidateQueries(['photos'])
+        queryClient.invalidateQueries(['meetupPhotos'])
+        setState(false)
+        toast.addMessage('success', '사진이 삭제되었습니다')
+      },
+    }
+  )
 
   const onClickReport = () => {
     report('ALBUM', photo.photoId).then(() => {
@@ -32,7 +47,10 @@ function PhotoModal({ photo, setState }: PhotoModalProps) {
       </div>
       <img src={photo.imgUrl} className={styles.img} />
       {photo.isOwner && (
-        <HiTrash className={styles.delete} onClick={onClickDelete} />
+        <HiTrash
+          className={styles.delete}
+          onClick={() => onClickDelete.mutate()}
+        />
       )}
     </div>
   )

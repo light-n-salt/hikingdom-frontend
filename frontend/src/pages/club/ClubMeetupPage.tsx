@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './ClubMeetupPage.module.scss'
 import Calendar from 'components/club/Calendar'
 import MeetupList from 'components/club/MeetupList'
 import { getMonthMeetups, getDateMeetups } from 'apis/services/clubs'
-import { useParams } from 'react-router-dom'
 import { MeetupInfo } from 'types/meetup.interface'
+import { format } from 'date-fns'
+import useUserQuery from 'hooks/useUserQuery'
 
 function ClubMeetupPage() {
-  const { clubId } = useParams()
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId?.toString()
 
   const [monthMeetups, setMonthMeetups] = useState([])
   const [dateMeetups, setDateMeetups] = useState<MeetupInfo[]>([])
 
+  // 월별 일정을 가져오는 함수
   function onChangeGetMonthMeetups(month: string) {
     if (!clubId) return
     getMonthMeetups(clubId, month).then((res) => {
@@ -19,12 +22,20 @@ function ClubMeetupPage() {
     })
   }
 
+  // 일별 일정을 가져오는 함수
   function onClickGetDateMeetups(date: string) {
     if (!clubId) return
     getDateMeetups(clubId, date).then((res) => {
       setDateMeetups(res.data.result)
     })
   }
+
+  // 마운트 시 오늘 일정 가져오기
+  useEffect(() => {
+    const today = new Date()
+    const stringToday = format(today, 'yyyy-MM-dd')
+    onClickGetDateMeetups(stringToday)
+  }, [])
 
   return (
     <div className={`page p-md ${styles.container}`}>
@@ -40,34 +51,3 @@ function ClubMeetupPage() {
 }
 
 export default ClubMeetupPage
-
-const monthEx = [15, 17]
-const meetupInfoEx = [
-  {
-    description: '아주 좋아용',
-    meetupHostId: 1,
-    meetupId: 2,
-    meetupName: '우리 모임',
-    mountainName: '관악산',
-    startAt: '2014-02-23 12:23',
-    totalMember: 5,
-  },
-  {
-    description: '아주 좋아용 하라랄라라 에그타르트',
-    meetupHostId: 3,
-    meetupId: 4,
-    meetupName: '최고당',
-    mountainName: '도봉산',
-    startAt: '2014-02-23 2:23',
-    totalMember: 154,
-  },
-  {
-    description: '아주 좋아용 하라랄라라 에그타르트',
-    meetupHostId: 3,
-    meetupId: 7,
-    meetupName: '최고당',
-    mountainName: '도봉산',
-    startAt: '2014-02-23 2:23',
-    totalMember: 154,
-  },
-]

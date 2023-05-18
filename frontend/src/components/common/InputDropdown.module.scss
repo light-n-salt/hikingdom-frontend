@@ -1,0 +1,24 @@
+@use 'src/styles/colors' as *;
+
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10rem;
+  background-color: clr(white-clr, light);
+  box-shadow: 0 0 4px clr(shadow-clr);
+  // gap: 2rem;
+}
+
+.input {
+  padding: 0.1rem 0.7rem;
+  border-left: 2px solid clr(primary-clr);
+  font-size: 1.1rem;
+  // background: clr(white-clr);
+}
+
+.input::placeholder {
+  color: transparentize(clr(gray-clr, light), 0.4);
+  font-weight: 600;
+}

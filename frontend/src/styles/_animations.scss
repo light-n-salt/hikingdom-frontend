@@ -17,7 +17,8 @@
   $animation,
   $function,
   $direction: normal,
-  $fillmode: forwards
+  $fillmode: forwards,
+  // $iteration: 1
 ) {
   animation-delay: $delay;
   animation-duration: $duration;
@@ -25,6 +26,7 @@
   animation-timing-function: $function;
   animation-direction: $direction; // 애니메이션의 진행 방향
   animation-fill-mode: $fillmode; // 애니메이션이 끝난 뒤의 상태
+  // animation-iteration-count: $iteration;
 }
 
 // 아래로 내려오면서 보이는 애니메이션
@@ -194,3 +196,41 @@
     }
   }
 }
+
+// 흐려졌다가 선명해지는 애니메이션
+@mixin animation-clear($speed: 'normal', $delay: 0) {
+  @include animation(
+    $delay,
+    func-animation-speed($speed),
+    animation-clear,
+    ease-out
+  );
+
+  @keyframes animation-clear {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+// 둥둥 떠있는 애니메이션
+// @mixin float($speed: 'normal', $delay: 0, $iteration: 'infinite') {
+//   @include animation($delay, func-animation-speed($speed), float, $iteration);
+
+//   @keyframes float {
+//     0% {
+//       transform: translateY(0);
+//     }
+
+//     50% {
+//       transform: translateY(-1rem);
+//     }
+
+//     100% {
+//       transform: translateY(0);
+//     }
+//   }
+// }

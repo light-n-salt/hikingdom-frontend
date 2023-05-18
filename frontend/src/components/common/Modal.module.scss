@@ -1,20 +1,22 @@
 @use 'src/styles/z-index' as *;
+@use 'src/styles/animations' as *;
 
 .modal {
   @include z-index(modal);
+  @include animation-clear(fast);
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: #00000063;
 }
 
 .content {
-  max-width: 90vw;
-  max-height: 80vh;
   overflow: scroll;
+  max-width: 90%;
+  max-height: 80%;
 }

@@ -1,6 +1,13 @@
+@use 'src/styles/animations' as *;
+
 .container {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
+}
+
+.container > div:first-child {
+  opacity: 0;
+  @include animation-slide-in-up(normal, 10%);
 }

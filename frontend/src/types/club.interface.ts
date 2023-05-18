@@ -13,32 +13,38 @@ export interface ClubInfo {
   clubName: string
   location: string
   totalMember: number
-  totalDuration: string
-  totalDistance: number
-  participationRate: number
+  totalMountainCount: number
+  totalMeetupCount: number
+  totalAssetCount: number
   ranking: number
 }
 
 // 에셋 정보
 // 소모임 산 조회
 export interface AssetInfo {
-  mountainName: string | undefined
-  meetupId: number | undefined
+  mountainName?: string | undefined
+  meetupId?: number | undefined
   assetUrl: string
-  row: number
-  column: number
+  row?: number
+  column?: number
+}
+
+// 오늘의 모임 산
+export interface TodayClubMt {
+  clubId: number
+  assets: AssetInfo[]
 }
 
 // 소모임 상세 조회
 export interface ClubDetailInfo {
   clubName: string
   isJoin: boolean
-  participationRate: number
-  totalDuration: number
-  totalDistance: number
-  totalAlt: number
+  totalMember: number
+  totalMountainCount: number
+  totalMeetupCount: number
+  totalAssetCount: number
   description: string
-  asset: AssetInfo[]
+  assets: AssetInfo[]
 }
 
 // 소모임 멤버
@@ -63,10 +69,9 @@ export interface ClubMemberList {
 // 일정 사진 조회
 export interface Album {
   photoId: number
-  memberId: number
   imgUrl: string
-  createdAt: string
-  isOwner?: boolean
+  isOwner: boolean
+  createdAt?: string
 }
 
 // 지역 코드 조회

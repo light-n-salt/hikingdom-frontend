@@ -8,13 +8,6 @@
   width: 100%;
 }
 
-.label {
-  margin: 0 0 0 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: clr(tertiary-clr);
-}
-
 .input {
   width: 100%;
   padding: 0.6rem;
@@ -22,11 +15,12 @@
   border-radius: 0.5rem;
   background-color: clr(white-clr, light);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
+  transition: all ease-in-out 0.15s;
 
   // 유효성 검사 실시했을 때, 에러 표시
   &.error {
-    border: 3px solid transparentize(clr(red-clr, light), 0.4);
+    border: 3px solid transparentize(clr(red-clr, light), 0.5);
   }
   &.pass {
     border: 3px solid clr(primary-clr);
@@ -38,7 +32,7 @@
 }
 
 .input::placeholder {
-  color: transparentize(clr(gray-clr, light), 0.4);
+  color: transparentize(clr(gray-clr, light), 0.5);
 }
 
 .input:disabled {

@@ -10,13 +10,6 @@
   width: 100%;
 }
 
-.label {
-  margin: 0 0 0 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: clr(tertiary-clr);
-}
-
 .input {
   width: 100%;
   padding: 0.6rem;
@@ -43,14 +36,28 @@
   @include z-index(content);
   position: absolute;
   top: 4rem;
-  min-width: 100%;
+  left: 1%;
+  min-width: 98%;
+  max-height: 15rem;
+  overflow-y: auto;
+  box-shadow: 0 2px 3px 0 clr(shadow-clr);
+}
+
+.options {
+  &::-webkit-scrollbar {
+    display: block;
+    width: 0.5rem;
+    background-color: clr(white-clr, light);
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: clr(primary-clr, light);
+  }
 }
 
 .option {
   width: 100%;
   padding: 0.6rem;
-  border: 3px solid clr(secondary-clr);
-  border-radius: 0.5rem;
   background-color: clr(white-clr, light);
   font-size: 1rem;
   font-weight: 600;

@@ -1,14 +1,27 @@
+@use 'src/styles/colors' as *;
+
 .container {
+  position: relative;
   justify-content: center;
-  gap: 15rem;
   overflow: hidden;
-  height: 100%;
+}
+
+.content {
+  position: absolute;
+  display: grid;
+  gap: 12rem;
+}
+
+.slogan {
+  display: grid;
+  gap: 2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  color: clr(white-clr);
 }
 
 .video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  width: 100vw;
   filter: brightness(0.5);
 }

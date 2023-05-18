@@ -4,10 +4,11 @@ import { FaMountain } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import Button from 'components/common/Button'
 import IconText from 'components/common/IconText'
-import shoe from 'assets/images/shoe.png'
 import marker from 'assets/images/marker.png'
 import person from 'assets/images/person.png'
-import hourglass from 'assets/images/hourglass.png'
+import hiking from 'assets/images/hiking.png'
+import plan from 'assets/images/plan.png'
+import asset from 'assets/images/asset.png'
 import goldMedal from 'assets/images/gold_medal.png'
 import bronzeMedal from 'assets/images/bronze_medal.png'
 import silverMedal from 'assets/images/silver_medal.png'
@@ -25,7 +26,6 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
   const navigate = useNavigate()
 
   const totalMemeber = clubInfo.totalMember.toString() + '명'
-  const totalDistance = clubInfo.totalDistance.toString() + 'km'
 
   // 랭킹 아이콘
   let rankingIcon = null
@@ -53,7 +53,11 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
       onClick={() => navigate(`/club/${clubInfo.clubId}/detail`)}
     >
       <div className={styles.header}>
-        <span className={styles.title}>{clubInfo.clubName}</span>
+        <h3 className={styles.title}>
+          {clubInfo.clubName.length > 9
+            ? clubInfo.clubName.slice(0, 9) + '...'
+            : clubInfo.clubName}
+        </h3>
         {onClickDeleteClub && (
           <Button
             text="신청 취소"
@@ -63,48 +67,29 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
           />
         )}
       </div>
-      <div className={`${styles.info} ${styles[size]}`}>
-        <IconText imgSrc={person} text={totalMemeber} />
+      <div className={styles.info}>
         <div className={styles.flexbox}>
-          <IconText imgSrc={hourglass} text={clubInfo.totalDuration} />
-          <IconText imgSrc={shoe} text={totalDistance} />
+          <IconText imgSrc={person} text={totalMemeber} />
+          {size === 'lg' && (
+            <IconText imgSrc={asset} text={`${clubInfo.totalAssetCount}`} />
+          )}
+          <IconText imgSrc={hiking} text={`${clubInfo.totalMountainCount}`} />
+          <IconText imgSrc={plan} text={`${clubInfo.totalMeetupCount}`} />
         </div>
-      </div>
-      <div className={styles.flexbox}>
-        {size === 'lg' && <IconText imgSrc={marker} text={clubInfo.location} />}
-        <MtRating participationRate={clubInfo.participationRate} />
+        <IconText imgSrc={marker} text={clubInfo.location} />
       </div>
       {/* 랭킹 아이콘 */}
       {rankingIcon ? (
         <img className={styles.medal} src={rankingIcon} />
-      ) : (
+      ) : clubInfo.ranking ? (
         <div className={styles.rank}>{clubInfo.ranking}</div>
+      ) : (
+        <div className={styles.rank}>
+          <FaMountain />
+        </div>
       )}
     </div>
   )
 }
 
 export default RankItem
-
-// 참여도에 따른 산모양 5점 별점 아이콘 컴포넌트 반환
-type MtRatingProps = {
-  participationRate: number // 참여도
-}
-
-function MtRating({ participationRate }: MtRatingProps) {
-  const score = Math.round(participationRate / 20)
-
-  return (
-    <div className={styles['mt-rating']}>
-      <p>참여도</p>
-      <div>
-        {[...Array(5)].map((_, index) => (
-          <FaMountain
-            key={`fa-mountain-${index}`}
-            className={index < score ? styles['green'] : styles['gray']}
-          />
-        ))}
-      </div>
-    </div>
-  )
-}

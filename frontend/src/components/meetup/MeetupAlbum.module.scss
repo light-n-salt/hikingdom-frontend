@@ -15,19 +15,29 @@
 .title {
   color: clr(primary-clr);
   font-size: 0.9rem;
-  font-weight: bold;
+  font-weight: 800;
 }
 
 .photos {
-  overflow: scroll;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: 0.5rem;
+  -webkit-overflow-scrolling: touch; /* 모바일에서 부드러운 스크롤 지원 */
 }
 
 .photo {
   aspect-ratio: 1/1;
-  width: 100%;
+  width: 30%;
   border-radius: 0.3rem;
   object-fit: cover;
+}
+
+.blank {
+  padding: 10% 0;
+  background-color: clr(secondary-clr);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  color: clr(gray-clr);
+  text-align: center;
 }

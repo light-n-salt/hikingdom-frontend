@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
       const refreshToken = localStorage.getItem('refreshToken') // recoil에서 refreshToken 읽어오기
 
       axios
-        .post(`${process.env.REACT_APP_API_BASE_URL}/refresh-token`, {
+        .post(`${process.env.REACT_APP_API_BASE_URL}/members/auth/refresh-token`, {
           refreshToken,
         })
         .then((response) => {
@@ -62,7 +62,7 @@ axiosInstance.interceptors.response.use(
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
           toast.addMessage('error', `다시 로그인 해주세요`)
-          location.replace(location.protocol + '//' + location.host + '/login')
+          // location.replace(location.protocol + '//' + location.host + '/login')
           return Promise.reject(error)
         })
       // } else if (error.response?.status === 401) {

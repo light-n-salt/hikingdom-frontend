@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styles from './MeetupMembers.module.scss'
 
 import Image from 'components/common/Image'
@@ -8,57 +8,70 @@ import MemberModal from './MemberModal'
 import { MeetupMemberInfo } from 'types/meetup.interface'
 import { ClubMember } from 'types/club.interface'
 import toast from 'components/common/Toast'
-
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import {
   getMeetupMembers,
   getMembersDetail,
-  updateMeetup,
-  deleteMeetup,
+  updateJoin,
+  deleteJoin,
 } from 'apis/services/meetup'
+import useUserQuery from 'hooks/useUserQuery'
 
 function MeetupMembers() {
+  const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
-  const [members, setMembers] = useState<MeetupMemberInfo>()
   const [memberDetail, setMemberDetail] = useState<ClubMember[]>()
-  const { clubId, meetupId } = useParams() as {
-    clubId: string
+  const { meetupId } = useParams() as {
     meetupId: string
   }
 
-  const updateMembers = () => {
-    getMeetupMembers(parseInt(clubId), parseInt(meetupId)).then((res) =>
-      setMembers(res)
-    )
-  }
+  const { data: userInfo } = useUserQuery()
+  const clubId = userInfo?.clubId
+
+  // 일정 멤버 조회
+  const { data: members } = useQuery<MeetupMemberInfo>(['meetupMembers'], () =>
+    getMeetupMembers(clubId || 0, Number(meetupId))
+  )
 
   // 모달 ON OFF
   const onClickDetail = () => {
+    if (!clubId) return
     setIsOpen(true)
-    getMembersDetail(parseInt(clubId), parseInt(meetupId)).then((res) =>
+    getMembersDetail(clubId, parseInt(meetupId)).then((res) =>
       setMemberDetail(res)
     )
   }
 
   // 일정 참여
-  const onClickJoin = () => {
-    updateMeetup(parseInt(clubId), parseInt(meetupId)).then(() => {
-      updateMembers()
-      toast.addMessage('success', '일정에 참여했습니다')
-    })
-  }
+  const { mutate: onClickJoin } = useMutation(
+    () => updateJoin(Number(clubId), Number(meetupId)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['meetupMembers'])
+        queryClient.invalidateQueries(['meetup'])
+        toast.addMessage('success', '일정에 참여했습니다')
+      },
+      onError: (err: any) => {
+        toast.addMessage('error', err.data.message)
+      },
+    }
+  )
 
   // 일정 참여 취소
-  const onClickWithdraw = () => {
-    deleteMeetup(parseInt(clubId), parseInt(meetupId)).then(() => {
-      updateMembers()
-      toast.addMessage('success', '일정을 취소했습니다')
-    })
-  }
-
-  useEffect(() => {
-    updateMembers()
-  }, [])
+  const { mutate: onClickWithdraw } = useMutation(
+    () => deleteJoin(Number(clubId), Number(meetupId)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['meetupMembers'])
+        queryClient.invalidateQueries(['meetup'])
+        toast.addMessage('success', '일정을 취소했습니다')
+      },
+      onError: (err: any) => {
+        toast.addMessage('error', err.data.message)
+      },
+    }
+  )
 
   return (
     <>
@@ -77,19 +90,19 @@ function MeetupMembers() {
               text="참여취소"
               color="secondary"
               size="xs"
-              onClick={onClickWithdraw}
+              onClick={() => onClickWithdraw()}
             />
           ) : (
             <Button
               text="참여"
               color="primary"
               size="xs"
-              onClick={onClickJoin}
+              onClick={() => onClickJoin()}
             />
           )}
         </div>
         <div className={styles.members}>
-          {members?.memberInfo.map((member) => (
+          {members?.memberInfo.slice(0, 6).map((member) => (
             <Image
               key={member.memberId}
               imgUrl={member.profileUrl}

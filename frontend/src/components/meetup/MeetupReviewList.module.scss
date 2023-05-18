@@ -1,5 +1,10 @@
 @use 'src/styles/colors' as *;
 
 .reviews {
+  flex: 1;
   width: 100%;
+}
+
+.blank {
+  padding: 2rem 0;
 }

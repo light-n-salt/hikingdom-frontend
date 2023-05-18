@@ -7,6 +7,7 @@ import calendar from 'assets/images/calendar.png'
 import IconText from 'components/common/IconText'
 import { ThemeContext } from 'styles/ThemeProvider'
 import { MeetupInfo } from 'types/meetup.interface'
+import { useNavigate, useParams } from 'react-router'
 
 type MeetupItemProps = {
   meetupInfo: MeetupInfo
@@ -14,12 +15,18 @@ type MeetupItemProps = {
 
 function MeetupItem({ meetupInfo }: MeetupItemProps) {
   const { theme } = useContext(ThemeContext)
-  const [date, time] = meetupInfo.startAt.split(' ')
+  const navigate = useNavigate()
+
+  const date = meetupInfo.startAt.split(' ')[0].replaceAll('-', '.').slice(-8)
+  const time = meetupInfo.startAt.split(' ')[1].slice(0, 5)
 
   return (
-    <div className={`content ${theme} ${styles.container}`}>
+    <div
+      className={`content ${theme} ${styles.container}`}
+      onClick={() => navigate(`/club/meetup/${meetupInfo.meetupId}/detail`)}
+    >
       <div className={styles.header}>
-        <h3>{meetupInfo.meetupName}</h3>
+        <div className={styles.title}>{meetupInfo.meetupName}</div>
         <IconText
           imgSrc={person}
           text={meetupInfo.totalMember.toString()}

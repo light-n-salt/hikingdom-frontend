@@ -14,13 +14,13 @@
 .title {
   color: clr(primary-clr);
   font-size: 0.9rem;
-  font-weight: bold;
+  font-weight: 800;
 }
 
 .members {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.5rem;
 }
 

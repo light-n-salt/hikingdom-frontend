@@ -6,11 +6,17 @@
   gap: 0.5rem;
   width: 100%;
   padding: 1.5rem;
+  cursor: pointer;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .flexbox {

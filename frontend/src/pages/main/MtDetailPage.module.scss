@@ -1,8 +1,9 @@
 @use 'src/styles/colors' as *;
 
-.detail {
+.container {
   display: flex;
   position: relative;
+  padding-top: 1rem;
   background-color: clr(white-clr, light);
 }
 
@@ -14,5 +15,5 @@
   width: 100%;
   height: 30%;
   object-fit: cover;
-  filter: brightness(90%) saturate(80%);
+  filter: brightness(80%) saturate(80%);
 }

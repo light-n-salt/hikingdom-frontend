@@ -1,54 +1,50 @@
 @use 'src/styles/colors' as *;
 
-.alarm-box {
+.alarm {
   padding: 1rem;
 
   &.read {
     background-color: clr(shadow-clr, light);
   }
+}
 
-  .alarm-title-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
+.alarm-title-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
 
-    .alarm-title {
-      display: flex;
-      align-items: center;
+  .time {
+    color: $gray;
+    font-size: 0.7rem;
+  }
+}
 
-      > span {
-        font-size: 1.1rem;
-        font-weight: bold;
-      }
+.title {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
 
-      &.unread {
-        .dot {
-          color: $red;
-          font-size: 1.5rem;
-        }
-      }
+  > svg {
+    font-size: 1.4rem;
+  }
 
-      &.read {
-        .dot {
-          color: clr(shadow-clr, light);
-          font-size: 1.5rem;
-        }
-      }
-    }
-
-    > span {
-      color: $gray;
-      font-size: 0.8rem;
+  &.unread {
+    .dot {
+      color: $red;
     }
   }
 
-  .alarm-content {
-    white-space: nowrap;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    padding-left: 1.5rem;
+  &.read {
+    .dot {
+      color: clr(shadow-clr, light);
+    }
   }
+}
+
+.content {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 1.5rem;
 }

@@ -2,17 +2,16 @@
 
 .container {
   display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 1rem 0 1rem 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  gap: 0.5rem;
+  padding: 0.5rem;
   background-color: clr(white-clr, light);
-
   > .user {
-    flex: 1;
+    flex: 5;
   }
 
-  > .record {
-    flex: 1.4;
+  > .flexbox {
+    flex: 4;
   }
 }
 
@@ -22,42 +21,43 @@
   gap: 0.3rem;
 }
 
-.nickname {
-  font-size: 0.8rem;
+.username {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.9rem;
   font-weight: bold;
 }
 
-.image {
-  height: 1rem;
+.level {
+  height: 0.8rem;
+}
+
+.flexbox {
+  display: flex;
+  align-items: center;
 }
 
 .record {
-  display: flex;
-  align-items: center;
-
-  > .content {
-    flex: 1;
-  }
-}
-
-.content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
 }
 
-.bold {
-  font-size: 1rem;
-  font-weight: bold;
+.title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: clr(gray-clr);
 }
 
-.text {
-  font-size: 0.7rem;
+.content {
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .button {
   display: flex;
   gap: 0.5rem;
-  padding-right: 0.5rem;
 }

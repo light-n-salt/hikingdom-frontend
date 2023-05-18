@@ -1,34 +1,16 @@
 import React from 'react'
 import styles from './NavigationBar.module.scss'
-import IconButton from './IconButton'
 import {
   IoPeopleOutline,
   IoHomeOutline,
   IoPodiumOutline,
 } from 'react-icons/io5'
-import { getUserInfo } from 'apis/services/users'
-import { useSetRecoilState } from 'recoil'
-import { userInfoState } from 'recoil/atoms'
-import { User } from 'types/user.interface'
-import { useQuery } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 import Loading from './Loading'
 import { NavLink } from 'react-router-dom'
-import Image from 'components/common/Image'
+import useUserQuery from 'hooks/useUserQuery'
 
 function NavigationBar() {
-  const navigate = useNavigate()
-
-  const setUserInfo = useSetRecoilState(userInfoState)
-
-  const {
-    data: userInfo,
-    isLoading,
-    isError,
-  } = useQuery<User>(['user'], () => getUserInfo(setUserInfo), {
-    cacheTime: Infinity,
-    staleTime: Infinity,
-  })
+  const { data: userInfo, isLoading, isError } = useUserQuery()
 
   return (
     <>
@@ -54,9 +36,7 @@ function NavigationBar() {
             <IoPodiumOutline />
           </NavLink>
           <NavLink
-            to={
-              userInfo?.clubId ? `/club/${userInfo.clubId}/main` : '/club/none'
-            }
+            to={userInfo?.clubId ? `/club/main` : '/club/none'}
             className={({ isActive }) =>
               isActive ? styles.active : styles.inactive
             }

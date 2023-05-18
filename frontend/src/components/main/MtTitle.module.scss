@@ -1,12 +1,25 @@
 @use 'src/styles/colors' as *;
 
+.asset {
+  position: absolute;
+
+  &.open {
+    top: -100%;
+  }
+
+  &.close {
+    top: -25%;
+    right: -35%;
+  }
+}
+
 .mttitle {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   width: 90%;
-  padding: 1.5rem 1rem 1rem;
+  padding: 1.5rem;
   gap: 1.2rem;
 }
 

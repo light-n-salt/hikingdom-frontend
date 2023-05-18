@@ -1,0 +1,36 @@
+@use 'src/styles/colors' as *;
+@use 'src/styles/animations' as *;
+
+.page {
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+
+  > div {
+    @include animation-slide-in-up(normal, 10%);
+  }
+}
+
+// .title {
+//   font-size: 1.6rem;
+//   font-weight: 800;
+//   color: clr(primary-clr);
+//   padding-top: 1.5rem;
+// }
+
+.button {
+  align-self: flex-end;
+  padding-bottom: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.intro {
+  margin-top: 1.2rem;
+  width: 100%;
+}
+
+.image {
+  margin: 3rem;
+  width: 80%;
+  // height: 80%;
+}

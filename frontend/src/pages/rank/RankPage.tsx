@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
+import React, { useContext, useRef, useState, useMemo } from 'react'
 import styles from './RankPage.module.scss'
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { getRanking } from 'apis/services/clubs'
 import Dropdown from 'components/common/Dropdown'
 import RankList from 'components/common/RankList'
@@ -22,9 +22,9 @@ type InfiniteClubInfo = {
 // 드롭다운 SelectBox에 넘길 옵션 배열
 const filterOptions = [
   { label: '종합랭킹 순', value: '' },
-  { label: '참여도 순', value: 'participation' },
-  { label: '거리 순', value: 'distance' },
-  { label: '시간 순', value: 'time' },
+  { label: '완등 산 순', value: 'mountain' },
+  { label: '에셋 순', value: 'asset' },
+  { label: '멤버 순', value: 'member' },
 ]
 
 function RankPage() {

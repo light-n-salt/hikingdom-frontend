@@ -1,7 +1,16 @@
+@use 'src/styles/animations' as *;
+
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
   gap: 0.5rem;
+}
+
+@for $i from 1 through 15 {
+  .container > img:nth-child(#{$i}) {
+    opacity: 0;
+    @include animation-slide-in-up(normal, 50%, #{($i - 1) * 0.04}s);
+  }
 }
 
 .img {

@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { forwardRef, ForwardedRef } from 'react'
 import styles from './LabelInput.module.scss'
+import Label from 'components/common/Label'
 
 type LabelInputProps = {
   label: string // 라벨 텍스트
   value: string // input태그 value
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void // input 변화시 동작할 함수
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void // input 변화시 동작할 함수
+  onKeyDown?: (event: React.KeyboardEvent) => void
   isPass?: boolean // pass 여부 -> border 초록색
   isError?: boolean // error 여부 -> border 빨간색
   placeholder?: string // placeholder
@@ -12,25 +14,28 @@ type LabelInputProps = {
   disabled?: boolean // input 태그 dsiabled
 }
 
-function LabelInput({
-  label,
-  value,
-  onChange,
-  isPass = false,
-  isError = false,
-  placeholder = '',
-  type = 'text',
-  disabled = false,
-}: LabelInputProps) {
+const LabelInput = forwardRef(function LabelInput(
+  {
+    label,
+    value,
+    onChange,
+    onKeyDown,
+    isPass = false,
+    isError = false,
+    placeholder = '',
+    type = 'text',
+    disabled = false,
+  }: LabelInputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
   const error = isError ? styles.error : ''
   const pass = isPass ? styles.pass : ''
 
   return (
     <div className={styles.container}>
-      <label className={styles.label} htmlFor={`label-input-${label}`}>
-        {label}
-      </label>
+      <Label label={label} />
       <input
+        ref={ref}
         id={`label-input-${label}`}
         value={value}
         onChange={onChange}
@@ -38,9 +43,10 @@ function LabelInput({
         className={`${styles.input} ${error} ${pass}`}
         type={type}
         disabled={disabled}
+        onKeyDown={onKeyDown}
       />
     </div>
   )
-}
+})
 
 export default LabelInput

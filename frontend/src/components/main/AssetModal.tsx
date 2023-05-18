@@ -1,0 +1,36 @@
+import React, { useContext } from 'react'
+import { ThemeContext } from 'styles/ThemeProvider'
+import styles from './AssetModal.module.scss'
+
+import IconButton from 'components/common/IconButton'
+import { IoIosClose } from 'react-icons/io'
+
+type AssetModalProps = {
+  name: string
+  getCondition: string
+  onClick: () => void
+}
+
+function AssetModal({ name, getCondition, onClick }: AssetModalProps) {
+  const { theme } = useContext(ThemeContext)
+
+  return (
+    <div className={`content ${theme} ${styles.modal}`}>
+      <IconButton
+        icon={<IoIosClose />}
+        color="gray"
+        size="lg"
+        onClick={onClick}
+      />
+      <div className={styles.content}>
+        <div className={styles.title}> {name}</div>
+
+        <div className={styles.condition}>
+          획득 조건 : <span className={styles.description}>{getCondition}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default AssetModal
