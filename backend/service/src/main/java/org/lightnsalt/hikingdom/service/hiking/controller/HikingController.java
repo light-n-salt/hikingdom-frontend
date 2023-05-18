@@ -33,7 +33,7 @@ public class HikingController {
 
 	@PostMapping
 	public ResponseEntity<CustomResponseBody> hikingRecordAdd(Authentication authentication, @RequestBody HikingRecordReq hikingRecordReq) {
-		Long hikingRecordId = hikingService.saveHikingRecord(authentication.getName(), hikingRecordReq);
+		String hikingRecordId = hikingService.saveHikingRecord(authentication.getName(), hikingRecordReq).toString();
 		return new ResponseEntity<>(BaseResponseBody.of("등산 기록 생성에 성공했습니다", hikingRecordId), HttpStatus.CREATED);
 	}
 }
