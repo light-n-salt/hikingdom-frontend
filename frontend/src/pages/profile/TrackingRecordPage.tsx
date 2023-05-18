@@ -7,7 +7,9 @@ function TrackingRecordPage() {
     hikingRecordId: string
     nickname: string
   }
-  return <TrackingInfo hikingRecordId={Number(hikingRecordId)} />
+  return (
+    <TrackingInfo hikingRecordId={Number(hikingRecordId)} isandroid={true} />
+  )
 }
 
 export default TrackingRecordPage

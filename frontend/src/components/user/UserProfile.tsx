@@ -15,6 +15,7 @@ import toast from 'components/common/Toast'
 import { BiEdit } from 'react-icons/bi'
 import { HiLightBulb } from 'react-icons/hi'
 import { FiChevronLeft } from 'react-icons/fi'
+import { FaSun, FaMoon } from 'react-icons/fa'
 import { UserRecord, User } from 'types/user.interface'
 import LEVEL_TO_IMG from 'constants/levels'
 import bell from 'assets/images/bell.png'
@@ -36,7 +37,7 @@ export default function UserProfile({
   totalHikingCount,
   totalMountainCount,
 }: UserProfileProps) {
-  const { theme } = useContext(ThemeContext)
+  const { theme, toggleTheme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const { nickname: userNickname } = useParams() as { nickname: string }
@@ -52,6 +53,8 @@ export default function UserProfile({
   // 로그아웃, 수정, 알람버튼 숨기기
   // 신고하기 보이기
   const stranger = userNickname !== userInfo?.nickname ? styles.stranger : ''
+
+  const themeIcon = theme === 'light' ? <FaSun /> : <FaMoon />
 
   return (
     <div className={styles.profile}>
@@ -78,6 +81,12 @@ export default function UserProfile({
       </div>
       <div className={`content ${theme} ${styles.record}`}>
         <div className={`${stranger} ${styles.btns}`}>
+          {/* <IconButton
+            icon={themeIcon}
+            size="sm"
+            color="gray"
+            onClick={toggleTheme}
+          /> */}
           <IconButton
             icon={<BiEdit />}
             size="sm"

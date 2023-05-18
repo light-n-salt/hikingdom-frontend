@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styles from './MeetupReviewItem.module.scss'
 import { useParams } from 'react-router-dom'
-
+import { ThemeContext } from 'styles/ThemeProvider'
 import Image from 'components/common/Image'
 import IconButton from 'components/common/IconButton'
 
@@ -19,6 +19,7 @@ type ReviewProps = {
 }
 
 function MeetupReviewItem({ review }: ReviewProps) {
+  const { theme } = useContext(ThemeContext)
   const { data: userInfo } = useUserQuery()
   const { meetupId } = useParams() as { meetupId: string }
   const queryClient = useQueryClient()
@@ -41,7 +42,7 @@ function MeetupReviewItem({ review }: ReviewProps) {
   })
 
   return (
-    <div className={styles.review}>
+    <div className={`${styles[theme]} ${styles.review}`}>
       <Image size="sm" imgUrl={review.profileUrl} isSquare={true} />
 
       <div className={styles.content}>

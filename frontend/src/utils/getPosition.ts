@@ -5,7 +5,7 @@ export function getPosition(arr: any[], filter?: string) {
   let sz = -2.5
   const n = arr.length
 
-  let k = 1
+  let k = 0
   let m = 5
   let idx = 1
   const uniqueNameList = new Set() // 중복된 name 값을 제거하기 위한 Set 객체
@@ -21,10 +21,6 @@ export function getPosition(arr: any[], filter?: string) {
       [-1, 0],
       [0, -1],
     ]) {
-      if (k % 4 === 0) {
-        m += 1
-      }
-
       for (let i = 0; i < m; i++) {
         if (idx >= n) {
           return { arr, uniqueNameList: Array.from(uniqueNameList) } // arr와 uniqueArr 함께 반환
@@ -36,6 +32,11 @@ export function getPosition(arr: any[], filter?: string) {
 
         uniqueNameList.add(arr[idx].mountainName)
         idx += 1
+      }
+      if (k % 2 === 0) {
+        if (k !== 0) {
+          m += 1
+        }
       }
       k += 1
     }
