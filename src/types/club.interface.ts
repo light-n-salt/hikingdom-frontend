@@ -71,7 +71,9 @@ export interface Album {
   photoId: number
   imgUrl: string
   isOwner: boolean
-  createdAt?: string
+  createdAt: string
+  nickname: string
+  profileUrl: string
 }
 
 // 지역 코드 조회
