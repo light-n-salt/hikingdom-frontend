@@ -116,7 +116,7 @@ class LocationService : Service(), SaveHikingRecordView {
                 val minAlt = storedUserLocations.minByOrNull { it.altitude }?.altitude
                 val totalAlt = maxAlt!! - minAlt!!
                 var saveHikingRecordReq = SaveHikingRecordReq(isMeetup, mountainId, meetupId, ApplicationClass().localDateTimeToString(startAt),
-                    totalDistance.value!!, totalAlt, duration.value!!, getIsSummit(), gpsRoute)
+                    totalDistance.value!!, totalAlt, duration.value!!, true, gpsRoute)
                 Log.d("saveHikingRecordReq", saveHikingRecordReq.toString())
 
                 // 트래킹 정보 저장 API 호출 지점
