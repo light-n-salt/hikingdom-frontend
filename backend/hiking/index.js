@@ -58,6 +58,6 @@ io.sockets.on("connection", (socket) => {
     console.log(`Member #${memberId} left Meetup #${meetupId}`);
 
     socket.leave(`${meetupId}`); // 해당 소켓을 meetupId에서 해제
-    socket.broadcast.to(`${meetupId}`).emit('newLocation', JSON.stringify(leaveData));
+    socket.broadcast.to(`${meetupId}`).emit('leave', JSON.stringify(leaveData));
   });
 });
