@@ -1,1 +1,3 @@
-# S08P31A102
+![README_HEADER](./assets/readme_header.png)
+
+# HIKINGDOM
