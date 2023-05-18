@@ -15,6 +15,7 @@ import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.webkit.WebView
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioButton
@@ -25,11 +26,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
+import com.example.hikingdom.ApplicationClass.Companion.BASE_URL
 import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.R
 import com.example.hikingdom.data.remote.api.RetrofitTokenInstance
@@ -42,6 +45,7 @@ import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.ui.main.hiking.dialog.MeetupAdapter
 import com.example.hikingdom.ui.main.hiking.dialog.MountainAdapter
+import com.example.hikingdom.ui.main.mypage.MypageFragment
 import com.example.hikingdom.utils.*
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -130,6 +134,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         override fun onServiceDisconnected(arg0: ComponentName) {
             bound = false
+
+
         }
     }
 
@@ -178,31 +184,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         }
 
         hikingFinishBtn.setOnClickListener {
-            val stopServiceIntent = Intent(activity, LocationService::class.java)
-            stopServiceIntent.action = ACTION_STOP
-            activity?.startService(stopServiceIntent)
-            Intent(activity, LocationService::class.java).also { intent ->
-                activity?.unbindService(connection)
-            }
-            bound = false
-            hikingFinishBtn.visibility = View.GONE
-            hikingSummitBtn.visibility = View.GONE
-            hikingStartBtn.visibility = View.VISIBLE
-
-            finishTime = LocalDateTime.now()    // 종료시간 세팅
-
-            val removeItems = mapView.findPOIItemByName("depart")   // 출발 마커 삭제
-            if (removeItems != null) {
-                mapView.removePOIItems(removeItems)
-            }
-            mapView.removeAllPolylines()
-
-            // 웹소켓 종료
-            mSocket?.emit("leave", gson.toJson(SocketEnterData(nickname, memberId, meetupId)))
-            mSocket?.disconnect();
-            mSocket?.off("enter")
-            mSocket?.off("newLocation")
-            task?.cancel()
+            finishHikingAndClearAll()
         }
 
         hikingSummitBtn.setOnClickListener {
@@ -282,9 +264,29 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             Log.d("setHikingService", "false")
         }
 
-//        locationService.lastLocation.observe(this){
-//            hikingViewModel.setTotalAltitude(it.altitude)
+//        locationService?.isHikingFinished?.observe(this){
+//            Log.d("isHikingFinished", it.toString())
+//            if(it){
+//                // 결과 모달창 띄우기
+//                showHikingRecordResultDialog()
+//
+//                // 완상복구
+//                hikingViewModel.isHikingFinished.value = false
+//            }
 //        }
+
+        locationService?.hikingRecordId?.observe(this){
+            Log.d("isHikingFinished", it.toString())
+            if(it != 0L){
+                hikingViewModel.hikingRecordId.value = it
+
+                // 결과 모달창 띄우기
+                showHikingRecordResultDialog()
+
+                // 완상복구
+                hikingViewModel.isHikingFinished.value = false
+            }
+        }
     }
 
     private fun checkPermission() {
@@ -506,12 +508,12 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             lastLat = lastExistingLocation.latitude
             lastLng = lastExistingLocation.longitude
 
-//            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
-//            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
-//            val mapPointBounds = MapPointBounds(polyline.mapPoints)
-//            val padding = 100 // px
-//
-//            mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
+            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
+            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
+            val mapPointBounds = MapPointBounds(polyline.mapPoints)
+            val padding = 300 // px
+
+            mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
         } else {
             Log.d("existingLocationList", "is Null or Empty")
         }
@@ -948,6 +950,62 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         }
     }
 
+    private fun finishHikingAndClearAll(){
+        val stopServiceIntent = Intent(activity, LocationService::class.java)
+        stopServiceIntent.action = ACTION_STOP
+        activity?.startService(stopServiceIntent)
+        Intent(activity, LocationService::class.java).also { intent ->
+            activity?.unbindService(connection)
+        }
+        bound = false
+        hikingFinishBtn.visibility = View.GONE
+        hikingSummitBtn.visibility = View.GONE
+        hikingStartBtn.visibility = View.VISIBLE
+
+        finishTime = LocalDateTime.now()    // 종료시간 세팅
+
+        val removeItems = mapView.findPOIItemByName("depart")   // 출발 마커 삭제
+        if (removeItems != null) {
+            mapView.removePOIItems(removeItems)
+        }
+        mapView.removeAllPolylines()
+
+        // 웹소켓 종료
+        mSocket?.emit("leave", gson.toJson(SocketEnterData(nickname, memberId, meetupId)))
+        mSocket?.disconnect();
+        mSocket?.off("enter")
+        mSocket?.off("newLocation")
+        task?.cancel()
+    }
+
+    private fun showHikingRecordResultDialog() {
+        // dialog 띄우기
+        val selectView =
+            LayoutInflater.from(activityContext).inflate(R.layout.dialog_hiking_record_result, null)
+
+        val webView = selectView.findViewById<WebView>(R.id.finish_hiking_result_webview)
+
+        val nickname = db?.userDao()?.getUser()?.nickname
+//        val hikingRecordId = hikingViewModel.hikingRecordId.value
+        val hikingRecordId = hikingViewModel.hikingRecordId.value
+        webViewSetting(activityContext, webView, BASE_URL + "profile/"+ nickname + "/tracking/" + hikingRecordId)
+
+        val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)
+        val hikingRecordResultDialog = mBuilder.show()
+
+        // 클릭 리스너 핸들 -> 확인
+        val hikingStart = selectView.findViewById<Button>(R.id.finish_hiking_result_confirm)
+        hikingStart.setOnClickListener {
+            hikingRecordResultDialog.dismiss()
+            // MyPageFragment로 이동
+            val fragment = MypageFragment()
+            val fragmentManager = activity?.supportFragmentManager
+            val fragmentTransaction = fragmentManager?.beginTransaction()
+            fragmentTransaction?.replace(R.id.menu_myPageFragment, fragment)
+//            fragmentTransaction?.addToBackStack(null)
+            fragmentTransaction?.commit()
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
