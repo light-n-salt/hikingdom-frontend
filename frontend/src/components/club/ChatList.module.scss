@@ -1,6 +1,6 @@
 .chats {
   flex: 1;
-  overflow-x: hidden;
+  overflow-x: wrap;
   overflow-y: scroll;
   display: flex;
   flex-direction: column-reverse;

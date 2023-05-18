@@ -7,13 +7,14 @@
   align-items: center;
   width: 100%;
   padding: 0.8rem;
-  background-color: clr(secondary-clr, dark);
+  background-color: clr(secondary-clr);
   color: clr(primary-clr);
 }
 
 .title {
   display: flex;
   align-items: center;
+  transform: translateX(-8%);
   gap: 0.5rem;
 }
 
@@ -24,4 +25,5 @@
 .search {
   position: absolute;
   right: 1rem;
+  transform: translateY(10%);
 }

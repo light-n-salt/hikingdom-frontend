@@ -197,6 +197,25 @@
   }
 }
 
+// 흐려졌다가 선명해지는 애니메이션
+@mixin animation-clear($speed: 'normal', $delay: 0) {
+  @include animation(
+    $delay,
+    func-animation-speed($speed),
+    animation-clear,
+    ease-out
+  );
+
+  @keyframes animation-clear {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
 // 둥둥 떠있는 애니메이션
 // @mixin float($speed: 'normal', $delay: 0, $iteration: 'infinite') {
 //   @include animation($delay, func-animation-speed($speed), float, $iteration);
