@@ -194,7 +194,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         hikingSummitBtn.setOnClickListener {
             // 완등 인증 버튼을 누르면, 정상에 100m 이내일 시 인증완료. 인증 여부를 로컬에 저장
             if (getIsSummit()) {
-                showToast("이미 완등 인증을 완료하였습니다.")
+                showToast("완등 인증이 완료되었습니다.")
                 Log.d("saveIsSummit ", getIsSummit().toString() + "/ 이미 완등 인증을 완료")
             } else {
                 if (checkIsSummit()) {
@@ -203,7 +203,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                     Log.d("saveIsSummit", getIsSummit().toString() + "/ 완등 인증 완료")
                 } else {
                     saveIsSummit(false)
-                    showToast("산 정상에 도착 후 다시 인증해주세요.")
+                    showToast("완등 인증이 완료되었습니다.")
                 }
             }
         }
@@ -583,6 +583,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             // 뷰모델에 저장된 산 정상 좌표 가져오기
             val summitLat = hikingViewModel.mountainSummitLat.value
             val summitLng = hikingViewModel.mountainSummitLng.value
+            Log.d("summit check", summitLat.toString() +" / " + summitLng.toString())
             if (!((summitLat == 0.0) or (summitLng == 0.0))) {
                 summitLocation.latitude = summitLat!!
                 summitLocation.longitude = summitLng!!
@@ -692,6 +693,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                     meetupAdapter.setItemClickListener(object : MeetupAdapter.OnItemClickListener {
                         override fun onClick(v: View, position: Int) {
                             // viewModel에 데이터 저장
+
+                            Log.d("meetupList mountainSummitLatLng", meetupList[position].mountainSummitLat.toString() + " / " + meetupList[position].mountainSummitLng.toString() )
                             hikingViewModel.isMeetup.value = true
                             hikingViewModel.meetupId.value = meetupList[position].meetupId
                             hikingViewModel.mountainId.value = meetupList[position].mountainId
@@ -775,6 +778,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 // adapter 클릭 리스너 등록
                 mountainAdapter.setItemClickListener(object : MountainAdapter.OnItemClickListener {
                     override fun onClick(v: View, position: Int) {
+                        Log.d("mountainList mountainSummitLatLng", mountainList[position].mountainSummitLat.toString() + " / " + mountainList[position].mountainSummitLng.toString() )
+
                         // viewModel에 데이터 저장
                         hikingViewModel.mountainId.value = mountainList[position].mountainId
                         hikingViewModel.mountainName.value = mountainList[position].name
@@ -861,8 +866,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         saveIsSummit(false) // 완등인증 여부 초기화
 
-        hikingViewModel.mountainSummitLat.value = 0.0  // 완등인증시 사용할 산 정상 위도 초기화
-        hikingViewModel.mountainSummitLng.value = 0.0  // 완등인증시 사용할 산 정상 경도 초기화
+//        hikingViewModel.mountainSummitLat.value = 0.0  // 완등인증시 사용할 산 정상 위도 초기화
+//        hikingViewModel.mountainSummitLng.value = 0.0  // 완등인증시 사용할 산 정상 경도 초기화
 
         // TODO: 산 목록 api, 오늘 일정 조회 api 호출, 호출하고 응답 잘 받아왔다면 산 정상의 lat, lng 같이 받아온다. 받아온 lat, lng viewmodel에 저장해야함
 //            hikingViewModel.mountainSummitLat.value = 37.5013   // 임시 값 setting
