@@ -1,8 +1,6 @@
 @use 'src/styles/colors' as *;
 
 .button {
-  box-shadow: -1px 3px 5px 0px clr(shadow-clr, light);
-  font-weight: 800;
   white-space: nowrap;
   transition: ease-in-out 0.1s;
 
@@ -11,27 +9,36 @@
   }
 
   &.xs {
-    padding: 0.3rem 0.4rem;
+    padding: 0.3rem 0.6rem;
     border-radius: 0.2rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    box-shadow: -1px 1px 2px 0px clr(shadow-clr, light);
   }
 
   &.sm {
     padding: 0.4rem 0.8rem;
     border-radius: 0.3rem;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 900;
+    box-shadow: -1px 2px 2px 0px clr(shadow-clr, light);
   }
 
   &.md {
     padding: 0.6rem 1.2rem;
     border-radius: 0.4rem;
     font-size: 1.1rem;
+    font-weight: 800;
+    box-shadow: -1px 3px 3px 0px clr(shadow-clr, light);
   }
 
   &.lg {
     padding: 0.6rem 1.6rem;
     border-radius: 0.5rem;
     font-size: 1.3rem;
+    font-weight: 800;
     width: 100%;
+    box-shadow: -1px 4px 4px 0px clr(shadow-clr, light);
   }
 
   &.primary {

@@ -47,7 +47,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
         </Modal>
       )}
       <div
-        className={`content ${theme} ${styles['meetup-item']}`}
+        className={`content ${theme} ${styles.container}`}
         onClick={onClickOpenModal}
       >
         <div className={styles.title}>
@@ -66,7 +66,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
           )}
         </div>
 
-        <div>
+        <div className={styles.flexbox}>
           <IconText
             icon={<BiCalendarAlt />}
             text={hiking.startAt.split(' ')[0].replaceAll('-', '.').slice(2)}
@@ -78,7 +78,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
             size="sm"
           />
         </div>
-        <div>
+        <div className={styles.flexbox}>
           <IconText
             imgSrc={time}
             text={convertToTime(hiking.totalDuration)}

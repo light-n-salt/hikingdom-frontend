@@ -77,7 +77,7 @@ export function signup(
 
 // 로그인
 export function login(email: string, password: string) {
-  const fcmToken = sessionStorage.getItem('fcmToken')
+  const fcmToken = sessionStorage.getItem('fcmToken') || ''
 
   return apiRequest
     .post(`/members/auth/login`, {

@@ -6,11 +6,7 @@ import { getClubInfo } from 'apis/services/clubs'
 import { deleteClub } from 'apis/services/clubs'
 import { useQuery } from '@tanstack/react-query'
 import { ClubDetailInfo } from 'types/club.interface'
-import Modal from 'components/common/Modal'
-import Toast from 'components/common/Toast'
 import Loading from 'components/common/Loading'
-import TextButton from 'components/common/TextButton'
-import DeleteModal from 'components/club/DeleteModal'
 import SearchClubMt from 'components/club/SearchClubMt'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
@@ -18,9 +14,6 @@ import useUserQuery from 'hooks/useUserQuery'
 
 function ClubMainPage() {
   const { theme } = useContext(ThemeContext)
-  const navigate = useNavigate()
-
-  const [isOpen, setIsOpen] = useState(false)
 
   const { data: userInfo } = useUserQuery()
   const clubId = userInfo?.clubId
@@ -33,28 +26,8 @@ function ClubMainPage() {
     }
   )
 
-  function onClickDeleteClub() {
-    if (!clubId) return
-    deleteClub(clubId).then(() => {
-      Toast.addMessage('success', `${clubInfo?.clubName}에서 탈퇴하셨습니다`)
-      navigate('/club/none')
-    })
-  }
-
   return clubInfo ? (
     <>
-      {isOpen && (
-        <Modal onClick={() => setIsOpen(false)}>
-          <DeleteModal
-            title="모임을 탈퇴하시겠습니까?"
-            content1={`주최한 일정이 존재하면, \n삭제 또는 완료해야 탈퇴가능합니다`}
-            content2="탈퇴한 모임은 다시 가입을 신청해야 합니다"
-            buttonText="모임 탈퇴"
-            onClickDelete={onClickDeleteClub}
-            onClickCloseModal={() => setIsOpen(false)}
-          />
-        </Modal>
-      )}
       <div className={`page-gradation upside p-md ${theme} ${styles.page}`}>
         <ClubRecordInfo
           totalMember={clubInfo.totalMember}
@@ -66,14 +39,6 @@ function ClubMainPage() {
           <MeetupIntroduction content={clubInfo.description} />
         </div>
         <SearchClubMt assetInfo={assetInfo} />
-        <div className={styles.button}>
-          <TextButton
-            text="모임탈퇴"
-            size="sm"
-            color="gray"
-            onClick={() => setIsOpen(true)}
-          />
-        </div>
       </div>
     </>
   ) : (

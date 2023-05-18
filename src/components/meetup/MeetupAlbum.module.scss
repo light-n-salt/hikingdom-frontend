@@ -15,7 +15,7 @@
 .title {
   color: clr(primary-clr);
   font-size: 0.9rem;
-  font-weight: bold;
+  font-weight: 800;
 }
 
 .photos {
@@ -37,5 +37,7 @@
   padding: 10% 0;
   background-color: clr(secondary-clr);
   border-radius: 0.5rem;
+  font-weight: 600;
+  color: clr(gray-clr);
   text-align: center;
 }

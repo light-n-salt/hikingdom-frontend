@@ -80,7 +80,7 @@ function MeetupDetailPage() {
       <Loading />
     </div>
   ) : (
-    <div className={`page p-sm ${theme} ${styles.page}`}>
+    <div className={`page p-md ${theme} ${styles.page}`}>
       <PageHeader
         title={meetup?.meetupName}
         url={`/club/meetup`}

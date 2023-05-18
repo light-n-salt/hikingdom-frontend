@@ -27,7 +27,7 @@ function MtDetailPage() {
   )
 
   return mtInfo ? (
-    <div className={`page p-sm ${styles.detail}`}>
+    <div className={`page p-sm ${styles.container}`}>
       <img src={mtInfo.imgUrl} className={styles.image} />
       <PageHeader title="" url="/main" color="light" />
       <MtDetail mtInfo={mtInfo} />
