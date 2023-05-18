@@ -24,20 +24,22 @@ function MemberItem({
 
   return (
     <div className={styles.container}>
-      <div className={styles.user} onClick={() => navigate(`/profile/${memberInfo.nickname}`)}>
+      <div
+        className={styles.user}
+        onClick={() => navigate(`/profile/${memberInfo.nickname}`)}
+      >
         <Image imgUrl={memberInfo.profileUrl} size="sm" isSquare={true} />
         <div className={styles.username}>
           <span>{memberInfo.nickname}</span>
-          <img src={imgSrc} className={styles.image} />
+          <img src={imgSrc} className={styles.level} />
         </div>
       </div>
 
-      <div className={styles.record}>
+      <div className={styles.flexbox}>
         <Info
-          title="등산 거리(km)"
+          title="총 거리(km)"
           content={`${(memberInfo.totalDistance / 1000).toFixed()}`}
         />
-
         {onClickJoin && onClickDelete ? (
           <div className={styles.button}>
             <Button
@@ -55,7 +57,7 @@ function MemberItem({
           </div>
         ) : (
           <Info
-            title="등산 시간(H)"
+            title="총시간(h)"
             content={`${(memberInfo.totalDuration / 60).toFixed()}`}
           />
         )}
@@ -71,9 +73,9 @@ type InfoProps = {
 
 function Info({ title, content }: InfoProps) {
   return (
-    <div className={styles.content}>
-      <span className={styles.text}>{title}</span>
-      <span className={styles.bold}>{content}</span>
+    <div className={styles.record}>
+      <span className={styles.title}>{title}</span>
+      <span className={styles.content}>{content}</span>
     </div>
   )
 }

@@ -26,11 +26,14 @@
 
   .chatContent {
     width: fit-content;
-    padding: 0.5rem;
+    padding: 0.4rem 0.5rem;
     border-radius: 0.5rem;
     background-color: clr(primary-clr, light);
     color: clr(white-clr, light);
-    box-shadow: -1px 2px 3px 0px clr(shadow-clr, light);
+    font-size: 0.9rem;
+    white-space: wrap;
+    word-break: break-all;
+    box-shadow: -1px 2px 2px 0px clr(shadow-clr, light);
   }
 }
 
@@ -58,16 +61,18 @@
 
   .chatContent {
     width: fit-content;
-    padding: 0.5rem;
+    padding: 0.4rem 0.5rem;
     border-radius: 0.5rem;
+    font-size: 0.9rem;
+    word-break: break-all;
 
     &.light {
       @include light-theme;
-      box-shadow: -1px 2px 3px 0px clr(shadow-clr);
+      box-shadow: -1px 2px 2px 0px clr(shadow-clr);
     }
     &.dark {
       @include dark-theme;
-      box-shadow: -1px 2px 3px 0px clr(shadow-clr, light);
+      box-shadow: -1px 2px 2px 0px clr(shadow-clr, light);
     }
   }
 
@@ -82,6 +87,7 @@
     align-items: center;
     gap: 0.3rem;
     font-size: 0.8rem;
+    font-weight: 600;
   }
 
   .level {

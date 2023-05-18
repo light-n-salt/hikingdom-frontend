@@ -53,11 +53,11 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
       onClick={() => navigate(`/club/${clubInfo.clubId}/detail`)}
     >
       <div className={styles.header}>
-        <span className={styles.title}>
+        <h3 className={styles.title}>
           {clubInfo.clubName.length > 9
             ? clubInfo.clubName.slice(0, 9) + '...'
             : clubInfo.clubName}
-        </span>
+        </h3>
         {onClickDeleteClub && (
           <Button
             text="신청 취소"

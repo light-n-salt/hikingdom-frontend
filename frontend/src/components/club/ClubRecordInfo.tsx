@@ -76,7 +76,7 @@ function Info({ title, content, imgSrc, isBorder }: InfoProps) {
 
   return (
     <div className={`${styles.content} ${border}`}>
-      <span className={styles.text}>{title}</span>
+      <span className={styles.title}>{title}</span>
       <IconText imgSrc={imgSrc} text={`${content}`} size="sm" isBold={true} />
     </div>
   )
