@@ -23,7 +23,7 @@ function WebMargin() {
       ) : (
         <div className={styles.background}>
           <div className={styles.mountain}>
-            <ClubMountain zoom={3} assetInfo={assetArray} />
+            <ClubMountain zoom={4} assetInfo={assetArray} />
           </div>
           <div className={styles.mobile}>
             <Outlet />
