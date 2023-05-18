@@ -653,7 +653,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_meetup, null)
 
         val meetupDialog = AlertDialog.Builder(activityContext).create();
-        meetupDialog.setView(meetupView);
+        meetupDialog.setView(meetupView)
 //        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
 
         meetupDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -669,10 +669,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             dimAmount = 0.6f
         }
         meetupDialog.window?.setBackgroundDrawableResource(R.drawable.radius_10) // Set background image
-        meetupDialog.show();
+        meetupDialog.show()
 
         meetupDialog.findViewById<TextView>(R.id.to_agreement).setOnClickListener {
-            showLocationSharingAgreementDialog();
+            showLocationSharingAgreementDialog()
         }
 
         // 데이터 불러오기
@@ -705,7 +705,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                         val agreementRadioButton =
                             meetupView.findViewById<RadioButton>(R.id.radiobutton_polish)
                         if (agreementRadioButton.isChecked) {
-                            agreementHikingMeetupModal()
+                            showAgreementHikingMeetupModal()
                             meetupDialog.dismiss()
                         } else {
                             Toast.makeText(context, "약관에 동의 후 진행해주세요", Toast.LENGTH_SHORT).show()
@@ -724,9 +724,26 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         // 다이얼로그창 띄우기
         val mountainView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_select_mountain, null)
-        val mBuilder = AlertDialog.Builder(activityContext).setView(mountainView)
-//        mBuilder.setCancelable(false) // 바깥 터치시 dialog 닫히는 것을 방지
-        val mountainDialog = mBuilder.show()
+
+        val mountainDialog = AlertDialog.Builder(activityContext).create()
+        mountainDialog.setView(mountainView)
+
+        // 다이얼로그의 모서리를 둥글게 만들기
+        mountainDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        mountainDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        mountainDialog.window?.decorView?.setBackgroundResource(android.R.color.transparent)
+        mountainDialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.9).toInt(), // Set custom width as a percentage of the screen width
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        mountainDialog.window?.setGravity(Gravity.CENTER) // Set dialog window gravity to center
+        mountainDialog.window?.attributes?.apply {
+            flags = flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            dimAmount = 0.6f
+        }
+        mountainDialog.window?.setBackgroundDrawableResource(R.drawable.radius_10) // Set background image
+
+        mountainDialog.show()
 
         // 현재 위치 가져오기
         val locationInfo = LocationUtils.getCurrentLocation(activityContext)
@@ -762,7 +779,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                             mountainList[position].mountainSummitLng
 
                         // 클릭 시 이벤트
-                        agreementHikingMeetupModal()
+                        showAgreementHikingMeetupModal()
                         mountainDialog.dismiss()
                     }
                 })
@@ -788,7 +805,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         }
     }
 
-    fun agreementHikingMeetupModal() {  // 선 선택 혹은 일정 선택 후 하이킹 시작 전 최종으로 뜨는 모달
+    private fun showAgreementHikingMeetupModal() {  // 선 선택 혹은 일정 선택 후 하이킹 시작 전 최종으로 뜨는 모달
         // dialog 띄우기
         val selectView =
             LayoutInflater.from(activityContext).inflate(R.layout.dialog_hiking_agreement, null)
