@@ -40,7 +40,7 @@ function PwUpdateForm() {
     value: checkPassword,
     onChange: changeCheckPw,
     isPass: isCheckPwPass,
-  } = useCheckPw({ password })
+  } = useCheckPw({ password: newPassword })
 
   const update = useMutation(
     () => updatePw(password, newPassword, checkPassword),

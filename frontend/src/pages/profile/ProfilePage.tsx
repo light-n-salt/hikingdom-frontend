@@ -26,7 +26,7 @@ function ProfilePage() {
   return !userInfo || isError || isLoading ? (
     <Loading size="sm" />
   ) : (
-    <div className={`page p-sm ${theme} ${styles.profile}`}>
+    <div className={`page p-md ${theme} ${styles.profile}`}>
       <UserProfile
         profileUrl={data?.profileUrl}
         nickname={data?.nickname}

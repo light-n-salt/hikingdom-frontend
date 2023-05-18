@@ -86,6 +86,9 @@ function CreateMeetupForm() {
       toast.addMessage('error', '모든 항목을 정확하게 기입해주세요')
       return
     }
+    if (new Date(date) < new Date()) {
+      toast.addMessage('error', '과거 날짜에는 일정을 생성할 수 없습니다')
+    }
     const startAt = date + ' ' + time
     createMeetup(clubId, name, mountainId, startAt, description).then((res) => {
       const meetupId = res.data.result.id

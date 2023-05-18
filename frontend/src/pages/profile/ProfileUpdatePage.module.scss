@@ -1,10 +1,25 @@
 @use 'src/styles/colors' as *;
+@use 'src/styles/animations' as *;
+@use 'src/styles/z-index' as *;
 
 .profile {
   gap: 0.8rem;
 }
 
-.signout {
-  align-self: flex-start;
-  margin: 1rem;
+.profile > div:nth-child(2) {
+  @include z-index(content);
+}
+
+@for $i from 3 through 4 {
+  .profile > div:nth-child(#{$i}) {
+    opacity: 0;
+    @include animation-slide-in-up(normal, 20%, #{($i - 3) * 0.1}s);
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-end;
+  margin: 0.5rem 1rem;
 }

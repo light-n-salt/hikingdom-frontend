@@ -60,11 +60,11 @@
 
   &.light {
     @include light-theme;
-    box-shadow: -1px 2px 3px 0px clr(shadow-clr);
+    box-shadow: -1px 1px 2px 0px clr(shadow-clr);
   }
   &.dark {
     @include dark-theme;
-    box-shadow: -1px 2px 3px 0px clr(shadow-clr, light);
+    box-shadow: -1px 1px 2px 0px clr(shadow-clr, light);
   }
 }
 
