@@ -35,6 +35,8 @@ import MeetupDetailPage from 'pages/club/MeetupDetailPage'
 import ProfilePage from 'pages/profile/ProfilePage'
 import ProfileUpdatePage from 'pages/profile/ProfileUpdatePage'
 import AlarmPage from 'pages/profile/AlarmPage'
+import TrackingRecordPage from 'pages/profile/TrackingRecordPage'
+
 import NotFoundPage from 'pages/NotFoundPage'
 import PrivateRoute from 'pages/PrivateRoute'
 import sendRefreshToken from 'utils/sendRefreshToken'
@@ -82,6 +84,10 @@ function App() {
           {/* 마이페이지 */}
           <Route path="/profile/:nickname" element={<ProfilePage />} />
           <Route path="/profile/update" element={<ProfileUpdatePage />} />
+          <Route
+            path="/profile/:nickname/tracking/:hikingRecordId"
+            element={<TrackingRecordPage />}
+          />
           <Route path="/alarm" element={<AlarmPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
