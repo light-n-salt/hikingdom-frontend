@@ -4,15 +4,12 @@ package com.example.hikingdom.ui.main.hiking
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.ComponentName
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -22,6 +19,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
@@ -29,6 +27,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,18 +46,11 @@ import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.ui.main.hiking.dialog.MeetupAdapter
 import com.example.hikingdom.ui.main.hiking.dialog.MountainAdapter
 import com.example.hikingdom.ui.socket.CircleCropWithTriangleTransformation
-import com.example.hikingdom.utils.LocationUtils
-import com.example.hikingdom.utils.getIsLocationServiceRunning
-import com.example.hikingdom.utils.getIsMeetup
-import com.example.hikingdom.utils.getIsSummit
-import com.example.hikingdom.utils.saveIsSummit
+import com.example.hikingdom.utils.*
 import com.google.gson.Gson
 import io.socket.client.IO
 import io.socket.client.Socket
-import net.daum.mf.map.api.MapPOIItem
-import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapPolyline
-import net.daum.mf.map.api.MapView
+import net.daum.mf.map.api.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -95,7 +87,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     lateinit var hikingFinishBtn: Button
     lateinit var hikingSummitBtn: Button
 
-    private var mSocket: Socket? = null;
+    private var mSocket: Socket? =null;
     private var nickname: String? = null
     private var profileUrl: String? = null
     private var level: Int? = null
@@ -105,8 +97,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
     val gson: Gson = Gson()
 
-    private val timer: Timer = Timer()
-    var task: TimerTask? = null
+    private val timer : Timer = Timer()
+    var task : TimerTask? = null
 
     override fun initAfterBinding() {
         binding.lifecycleOwner = this
@@ -197,7 +189,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 activity?.unbindService(connection)
             }
             bound = false
-            showToast("등산 기록을 종료합니다.")
             hikingFinishBtn.visibility = View.GONE
             hikingSummitBtn.visibility = View.GONE
             hikingStartBtn.visibility = View.VISIBLE
@@ -260,6 +251,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 lastLng = it.longitude
 
                 setDepartMarker(lastLat, lastLng)
+
+                showToast("경로 기록을 시작합니다!")
             } else {
                 val polyline = MapPolyline()
                 Log.d(
@@ -671,6 +664,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         meetupDialog.window?.setBackgroundDrawableResource(R.drawable.radius_10) // Set background image
         meetupDialog.show()
 
+        // 오늘 일정 없을 때 뜨는 뷰 GONE으로 초기화
+        meetupDialog.findViewById<ImageView>(R.id.dialog_meetup_no_meetup_iv).visibility = View.GONE
+        meetupDialog.findViewById<TextView>(R.id.dialog_meetup_no_meetup_tv).visibility = View.GONE
+
         meetupDialog.findViewById<TextView>(R.id.to_agreement).setOnClickListener {
             showLocationSharingAgreementDialog()
         }
@@ -684,35 +681,41 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 val rv = meetupDialog.findViewById<RecyclerView>(R.id.recycler_view_meetup)
                 Log.d("meetup!", "${response.body()}")
                 val meetupList = response.body()!!.result
-                val meetupAdapter = MeetupAdapter(activityContext, meetupList)
-                rv.adapter = meetupAdapter
-                rv.layoutManager = LinearLayoutManager(activityContext)
+                if(meetupList.isNotEmpty()){
+                    val meetupAdapter = MeetupAdapter(activityContext, meetupList)
+                    rv.adapter = meetupAdapter
+                    rv.layoutManager = LinearLayoutManager(activityContext)
 
-                // adapter 클릭 리스너 등록
-                meetupAdapter.setItemClickListener(object : MeetupAdapter.OnItemClickListener {
-                    override fun onClick(v: View, position: Int) {
-                        // viewModel에 데이터 저장
-                        hikingViewModel.isMeetup.value = true
-                        hikingViewModel.meetupId.value = meetupList[position].meetupId
-                        hikingViewModel.mountainId.value = meetupList[position].mountainId
-                        hikingViewModel.mountainName.value = meetupList[position].mountainName
-                        hikingViewModel.mountainSummitLat.value =
-                            meetupList[position].mountainSummitLat
-                        hikingViewModel.mountainSummitLng.value =
-                            meetupList[position].mountainSummitLng
+                    // adapter 클릭 리스너 등록
+                    meetupAdapter.setItemClickListener(object : MeetupAdapter.OnItemClickListener {
+                        override fun onClick(v: View, position: Int) {
+                            // viewModel에 데이터 저장
+                            hikingViewModel.isMeetup.value = true
+                            hikingViewModel.meetupId.value = meetupList[position].meetupId
+                            hikingViewModel.mountainId.value = meetupList[position].mountainId
+                            hikingViewModel.mountainName.value = meetupList[position].mountainName
+                            hikingViewModel.mountainSummitLat.value =
+                                meetupList[position].mountainSummitLat
+                            hikingViewModel.mountainSummitLng.value =
+                                meetupList[position].mountainSummitLng
 
-                        // 클릭 시 이벤트
-                        val agreementRadioButton =
-                            meetupView.findViewById<RadioButton>(R.id.radiobutton_polish)
-                        if (agreementRadioButton.isChecked) {
-                            showAgreementHikingMeetupModal()
-                            meetupDialog.dismiss()
-                        } else {
-                            Toast.makeText(context, "약관에 동의 후 진행해주세요", Toast.LENGTH_SHORT).show()
+                            // 클릭 시 이벤트
+                            val agreementRadioButton =
+                                meetupView.findViewById<RadioButton>(R.id.radiobutton_polish)
+                            if (agreementRadioButton.isChecked) {
+                                showAgreementHikingMeetupModal()
+                                meetupDialog.dismiss()
+                            } else {
+                                Toast.makeText(context, "약관에 동의 후 진행해주세요", Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
-                })
+                    })
+                } else {
+                    meetupDialog.findViewById<ImageView>(R.id.dialog_meetup_no_meetup_iv).visibility = View.VISIBLE
+                    meetupDialog.findViewById<TextView>(R.id.dialog_meetup_no_meetup_tv).visibility = View.VISIBLE
+                }
             }
+
 
             override fun onFailure(call: Call<MeetupResponse>, t: Throwable) {
                 Log.d("user!", "fail")
@@ -834,7 +837,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         // 클릭 리스너 핸들 -> 확인
         val hikingStart = selectView.findViewById<Button>(R.id.hiking_mountain_start_btn)
-        hikingStart.setOnClickListener { dialog.dismiss(); startHiking(); }
+        hikingStart.setOnClickListener { dialog.dismiss(); showToast("출발 마커가 찍힐 때까지 잠시 기다려 주세요."); startHiking();}
 
         // 클릭 리스너 핸들 -> 취소
         val hikingCancel = selectView.findViewById<Button>(R.id.hiking_mountain_cancel_start_btn)
@@ -850,7 +853,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             connectSocket()
         }   // 확인 시 바로 하이킹 시작됨 (인증하기 버튼, 하이킹 종료 버튼으로 바뀜)
 
-        showToast("등산 기록을 시작합니다.")
         hikingFinishBtn.visibility = View.VISIBLE
         hikingSummitBtn.visibility = View.VISIBLE
         hikingStartBtn.visibility = View.GONE
