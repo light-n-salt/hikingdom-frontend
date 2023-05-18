@@ -13,6 +13,8 @@ class HikingViewModel : ViewModel() {
     var longitude = MutableLiveData<Double>()
     var altitude = MutableLiveData<Double>()
     var isHikingStarted = MutableLiveData<Boolean>()
+    var isHikingFinished = MutableLiveData<Boolean>()
+    var hikingRecordId = MutableLiveData<Long>()
 
     // related meetup
     var isMeetup = MutableLiveData<Boolean>()
@@ -41,6 +43,8 @@ class HikingViewModel : ViewModel() {
         longitude.value = 0.0
         altitude.value = 0.0
         isHikingStarted.value = false
+        isHikingFinished.value = false
+        hikingRecordId.value = 0
         mountainSummitLat.value = 0.0
         mountainSummitLng.value = 0.0
     }
