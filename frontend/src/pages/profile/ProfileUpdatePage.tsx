@@ -8,8 +8,10 @@ import PwUpdateForm from 'components/user/PwUpdateForm'
 import TextButton from 'components/common/TextButton'
 import toast from 'components/common/Toast'
 import { useMutation } from '@tanstack/react-query'
-import { signout } from 'apis/services/users'
+import { logout, signout } from 'apis/services/users'
 import { useNavigate } from 'react-router-dom'
+import PageHeader from 'components/common/PageHeader'
+import Button from 'components/common/Button'
 
 function ProfileUpdatePage() {
   const { theme } = useContext(ThemeContext)
@@ -21,18 +23,30 @@ function ProfileUpdatePage() {
     },
   })
 
+  const onClickLogout = () => {
+    logout()
+    navigate('/')
+  }
+
   return (
-    <div className={`page p-sm ${theme} ${styles.profile}`}>
-      <div className={styles.signout}>
+    <div className={`page p-md ${theme} ${styles.profile}`}>
+      <PageHeader color="dark" />
+      <ImageUpdateForm />
+      <NicknameUpdateForm />
+      <PwUpdateForm />
+      <div className={styles.buttons}>
+        <Button
+          text={'로그아웃'}
+          size={'sm'}
+          color={'secondary'}
+          onClick={onClickLogout}
+        />
         <TextButton
           text="회원탈퇴"
           color="red"
           onClick={() => onClickWithdraw.mutate()}
         />
       </div>
-      <ImageUpdateForm />
-      <NicknameUpdateForm />
-      <PwUpdateForm />
     </div>
   )
 }

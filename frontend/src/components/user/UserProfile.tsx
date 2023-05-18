@@ -21,6 +21,7 @@ import bell from 'assets/images/bell.png'
 
 import { logout, report } from 'apis/services/users'
 import useUserQuery from 'hooks/useUserQuery'
+import PageHeader from 'components/common/PageHeader'
 
 interface UserProfileProps extends UserRecord, User {}
 
@@ -40,10 +41,6 @@ export default function UserProfile({
   const [isOpen, setIsOpen] = useState(false)
   const { nickname: userNickname } = useParams() as { nickname: string }
   const { data: userInfo } = useUserQuery()
-  const onClickLogout = () => {
-    logout()
-    navigate('/')
-  }
 
   const onClickReport = () => {
     report('MEMBER', userNickname).then(() => {
@@ -64,12 +61,16 @@ export default function UserProfile({
         </Modal>
       )}
       <div className={`${styles['alarm-siren']}`}>
-        <FiChevronLeft onClick={() => navigate(-1)} className={styles.icon} />
+        <PageHeader color="dark" />
         <div className={`${stranger} ${styles.siren}`} onClick={onClickReport}>
           <HiLightBulb /> 신고하기
         </div>
         <div className={`${stranger} ${styles.alarm}`}>
-          <IconButton imgSrc={bell} onClick={() => navigate('/alarm')} />
+          <IconButton
+            size="sm"
+            imgSrc={bell}
+            onClick={() => navigate('/alarm')}
+          />
         </div>
       </div>
       <div className={`content ${theme} ${styles.img}`}>
@@ -77,13 +78,6 @@ export default function UserProfile({
       </div>
       <div className={`content ${theme} ${styles.record}`}>
         <div className={`${stranger} ${styles.btns}`}>
-          <Button
-            text={'로그아웃'}
-            size={'sm'}
-            color={'secondary'}
-            onClick={onClickLogout}
-          />
-
           <IconButton
             icon={<BiEdit />}
             size="sm"
