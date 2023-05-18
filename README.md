@@ -60,5 +60,5 @@ HIKINGDOM은 다음을 대상으로 등산에 필요한 모든 서비스를 한 
         <img src="https://img.shields.io/badge/Amazon_EC2-FF9900?logo=amazonec2&logoColor=white"/>
         <img src="https://img.shields.io/badge/Amazon_S3-569A31?logo=amazons3&logoColor=white"/>
     </div>
-  </tr>s
+  </tr>
 <table>
