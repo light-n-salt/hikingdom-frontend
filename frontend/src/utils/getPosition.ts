@@ -31,13 +31,8 @@ export function getPosition(arr: any[], filter?: string) {
         }
         sx += dx
         sz += dz
-        if (filter === arr[idx].mountainName) {
-          arr[idx].position = new THREE.Vector3(sx, 1, sz)
-          arr[idx].check = true
-        } else {
-          arr[idx].position = new THREE.Vector3(sx, 0, sz) // 배열의 각 요소에 위치 정보를 할당
-          arr[idx].check = false
-        }
+        arr[idx].position = new THREE.Vector3(sx, 0, sz) // 배열의 각 요소에 위치 정보를 할당
+        arr[idx].check = filter === arr[idx].mountainName
 
         uniqueNameList.add(arr[idx].mountainName)
         idx += 1

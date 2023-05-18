@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import React, { useRef, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { useSpring, animated } from 'react-spring'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
@@ -74,24 +73,28 @@ function AssetMesh({
   const gltf = useLoader(GLTFLoader, url)
   const meshRef = useRef<THREE.Mesh>(null)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [prevCheck, setPrevCheck] = useState(false)
   const animationTime = 1.5 // 애니메이션 진행 시간 (초)
   let elapsedTime = 0 // 경과한 시간 (초)
 
-  useFrame((state, delta) => {
-    if (check && !isAnimating) {
+  useEffect(() => {
+    if (check && !prevCheck) {
       setIsAnimating(true)
+    }
+    setPrevCheck(check)
+  }, [check, prevCheck])
 
-      const animate = () => {
-        elapsedTime += delta
-        const progress = Math.min(elapsedTime / animationTime, 1)
-        const newY = THREE.MathUtils.lerp(0, position.y, progress)
-        meshRef.current!.position.setY(newY)
+  useFrame((state, delta) => {
+    if (isAnimating) {
+      elapsedTime += delta
+      const progress = Math.min(elapsedTime / animationTime, 1)
+      const newY = THREE.MathUtils.lerp(0, 1, progress)
+      meshRef.current!.position.setY(newY)
 
-        if (progress < 1) {
-          requestAnimationFrame(animate)
-        }
+      if (progress >= 1) {
+        setIsAnimating(false)
+        elapsedTime = 0
       }
-      animate()
     }
   })
 
