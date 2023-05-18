@@ -46,7 +46,7 @@ public class AssetInfo {
 	@Column(name = "get_condition", nullable = false, length = 512)
 	private String getCondition;
 
-	@Column(name = "score", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
+	@Column(name = "score", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Integer score;
 
 	@Builder
