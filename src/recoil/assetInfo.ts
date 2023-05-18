@@ -271,4 +271,124 @@ export const assetInfo = [
     row: 0,
     column: 0,
   },
+  {
+    mountainName: '가리산',
+    meetupId: 1,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/flower27.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '감악산',
+    meetupId: 3,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/flower28.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '가리산',
+    meetupId: 1,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree29.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '감악산',
+    meetupId: 3,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree30.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '가리산',
+    meetupId: 1,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree31.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '감악산',
+    meetupId: 3,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree75.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '가리산',
+    meetupId: 1,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/flower32.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '감악산',
+    meetupId: 3,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree40.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '감악산',
+    meetupId: 3,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree58.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '가리산',
+    meetupId: 1,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree49.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '감악산',
+    meetupId: 3,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree50.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '가리산',
+    meetupId: 1,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree51.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '감악산',
+    meetupId: 3,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree68.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '가리산',
+    meetupId: 1,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/flower42.gltf',
+    row: 0,
+    column: 0,
+  },
+  {
+    mountainName: '감악산',
+    meetupId: 3,
+    assetUrl:
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/asset/tree60.gltf',
+    row: 0,
+    column: 0,
+  },
 ]
