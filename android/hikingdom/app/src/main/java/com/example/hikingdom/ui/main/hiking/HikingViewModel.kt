@@ -79,7 +79,7 @@ class HikingViewModel : ViewModel() {
     fun setCurrentLocation(l: Location) {
         var rLat = round(l.latitude * 10000) / 10000
         var rLong = round(l.longitude * 10000) / 10000
-        var rAlt = round(l.altitude * 10000) / 10000
+        var rAlt = round(l.altitude * 10) / 10
         latitude.value = rLat
         longitude.value = rLong
         altitude.value = rAlt
