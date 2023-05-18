@@ -38,7 +38,7 @@ function TrackingInfo({ hikingRecordId }: { hikingRecordId: number }) {
       return
     }
 
-    const { kakao } = window;
+    const { kakao } = window
 
     // 경로 정보
     const route = detailRecord.gpsRoute.gpsRoute
