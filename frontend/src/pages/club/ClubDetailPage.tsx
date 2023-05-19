@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubDetailPage.module.scss'
@@ -16,7 +16,6 @@ import PageHeader from 'components/common/PageHeader'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 import ClubMountain from 'components/club/ClubMountain'
-import { assetInfo } from 'recoil/assetInfo'
 
 function ClubDetailPage() {
   const { theme } = useContext(ThemeContext)
@@ -36,7 +35,10 @@ function ClubDetailPage() {
       .catch((err) => toast.addMessage('error', `${err.data.message}`))
   }
 
-  const assetArray = getPosition(assetInfo).arr
+  const assetArray = useMemo(() => {
+    if (!clubInfo?.assets) return []
+    return getPosition(clubInfo.assets).arr
+  }, [clubInfo])
 
   useEffect(() => {
     if (clubId === userInfo?.clubId) {
