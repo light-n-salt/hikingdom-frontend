@@ -1,8 +1,25 @@
 @use 'src/styles/colors' as *;
 
 .container {
+  display: flex;
+  flex-direction: column;
   position: relative;
   padding: 0.5rem;
+  gap: 0.5rem;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 1rem;
 }
 
 .img {
@@ -12,6 +29,7 @@
 
 .siren {
   position: absolute;
+  right: 0;
   padding: 0.3rem;
   color: clr(gray-clr);
   font-size: 0.8rem;
