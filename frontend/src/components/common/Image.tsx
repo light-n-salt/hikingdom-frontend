@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './Image.module.scss'
 
 type ImageProps = {
-  size: 'sm' | 'md' | 'lg' // 사이즈
+  size: 'xs' | 'sm' | 'md' | 'lg' // 사이즈
   imgUrl: string // 이미지 url
   isSquare?: boolean // 사각형 여부
 }

@@ -89,11 +89,7 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
             text={convertToKm(hiking.totalDistance) + 'km'}
             size="sm"
           />
-          <IconText
-            imgSrc={height}
-            text={convertToKm(hiking.maxAlt) + 'km'}
-            size="sm"
-          />
+          <IconText imgSrc={height} text={`${hiking.maxAlt} m`} size="sm" />
         </div>
       </div>
     </>

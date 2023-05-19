@@ -29,7 +29,7 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 	void updateClubMemberCount(@Param("clubId") Long clubId, @Param("totalMemberCount") Long totalMemberCount,
 		@Param("now") LocalDateTime now);
 
-	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Modifying
 	@Query("UPDATE Club c "
 		+ "SET c.totalMountainCount = :totalMountainCount, c.totalAssetCount = :totalAssetCount, "
 		+ "c.score = :score, c.modifiedAt = :now "

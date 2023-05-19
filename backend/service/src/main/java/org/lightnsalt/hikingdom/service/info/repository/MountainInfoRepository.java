@@ -15,7 +15,9 @@ public interface MountainInfoRepository extends JpaRepository<MountainInfo, Long
 
 	@Query(value = "SELECT * "
 		+ "FROM mountain_info AS m "
-		+ "WHERE ST_Distance_Sphere(Point(:lng,:lat),POINT(m.top_lng, m.top_lat)) <= :distance", nativeQuery = true)
+		+ "WHERE ST_Distance_Sphere(Point(:lng,:lat),POINT(m.top_lng, m.top_lat)) <= :distance "
+		+ "ORDER BY ST_Distance_Sphere(Point(:lng,:lat),POINT(m.top_lng, m.top_lat)) "
+		+ "LIMIT 5 ", nativeQuery = true)
 	List<MountainInfo> findByLocation(@Param("lng") double lng, @Param("lat") double lat,
 		@Param("distance") double distance);
 }

@@ -15,7 +15,15 @@ import IconText from 'components/common/IconText'
 import { BiCalendarAlt } from 'react-icons/bi'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 
-function TrackingInfo({ hikingRecordId }: { hikingRecordId: number }) {
+type TrackingInfoProps = {
+  hikingRecordId: number
+  isandroid?: boolean
+}
+
+function TrackingInfo({
+  hikingRecordId,
+  isandroid = false,
+}: TrackingInfoProps) {
   const { nickname } = useParams() as {
     nickname: string
   }
@@ -53,9 +61,20 @@ function TrackingInfo({ hikingRecordId }: { hikingRecordId: number }) {
         (totalLng += path.lng)
     })
 
-    // 좌표 중심 계산?
-    // const midLat: number = totalLat / route.length
-    // const midLng: number = totalLng / route.length
+    const startMarker = new kakao.maps.Marker({
+      position: linePath[0],
+    })
+
+    const imageSrc =
+      'https://tistory2.daumcdn.net/tistory/3056305/skin/images/map-marker-red.png' // 마커이미지의 주소입니다
+    const imageSize = new kakao.maps.Size(35, 35) // 마커이미지의 크기입니다
+
+    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
+
+    const endMarker = new kakao.maps.Marker({
+      position: linePath[route.length - 1],
+      image: markerImage,
+    })
 
     // 지도 그리는 정보
     const container = document.getElementById('map')
@@ -77,12 +96,16 @@ function TrackingInfo({ hikingRecordId }: { hikingRecordId: number }) {
       strokeStyle: 'solid', // 선의 스타일입니다
     })
 
+    startMarker.setMap(map)
+    endMarker.setMap(map)
     polyline.setMap(map)
   }, [detailRecord])
 
+  const isPad = isandroid ? null : styles.pad
+
   return detailRecord ? (
-    <div className={styles.tracking}>
-      <h2>{detailRecord.mountainName} 트래킹 기록</h2>
+    <div className={`${styles.tracking} ${isPad}`}>
+      {!isandroid && <h2>{detailRecord.mountainName} 트래킹 기록</h2>}
 
       <div className={`${styles.container} ${styles.gap}`}>
         <IconText
