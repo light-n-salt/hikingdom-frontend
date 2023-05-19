@@ -50,6 +50,19 @@ function PhotoModal({ photo, setState }: PhotoModalProps) {
         <Image size="xs" imgUrl={photo.profileUrl} />
         <span>{photo.nickname}</span>
       </div>
+      {photo.isOwner ? (
+        <div className={styles.siren} onClick={onClickReport}>
+          <HiLightBulb /> 신고하기
+        </div>
+      ) : (
+        <div className={styles.icon}>
+          <HiTrash
+            className={styles.delete}
+            onClick={() => onClickDelete.mutate()}
+          />
+        </div>
+      )}
+
       <div className={`${styles.date}`}>
         <IconText
           icon={<BiCalendarAlt className={styles.icon} />}
@@ -62,16 +75,7 @@ function PhotoModal({ photo, setState }: PhotoModalProps) {
           size="sm"
         />
       </div>
-      <div className={styles.siren} onClick={onClickReport}>
-        <HiLightBulb /> 신고하기
-      </div>
       <img src={photo.imgUrl} className={styles.img} />
-      {photo.isOwner && (
-        <HiTrash
-          className={styles.delete}
-          onClick={() => onClickDelete.mutate()}
-        />
-      )}
     </div>
   )
 }

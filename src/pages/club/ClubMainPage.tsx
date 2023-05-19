@@ -11,7 +11,6 @@ import SearchClubMt from 'components/club/SearchClubMt'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 import useUserQuery from 'hooks/useUserQuery'
-import { assetInfo } from 'recoil/assetInfo'
 
 function ClubMainPage() {
   const { theme } = useContext(ThemeContext)
@@ -39,7 +38,7 @@ function ClubMainPage() {
         <div className={styles.intro}>
           <MeetupIntroduction content={clubInfo.description} />
         </div>
-        <SearchClubMt assetInfo={assetInfo} />
+        <SearchClubMt assetInfo={clubInfo.assets} />
       </div>
     </>
   ) : (
