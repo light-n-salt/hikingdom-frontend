@@ -17,7 +17,6 @@ import Loading from 'components/common/Loading'
 import ClubMountain from 'components/club/ClubMountain'
 import { untilMidnight } from 'utils/untilMidnight'
 import { getPosition } from 'utils/getPosition'
-import { assetInfo } from 'recoil/assetInfo'
 
 type InfiniteClubInfo = {
   content: ClubInfo[]
@@ -56,7 +55,11 @@ function MainPage() {
       staleTime: queryTime,
     }
   )
-  const assetArray = getPosition(assetInfo).arr
+
+  const assetArray = useMemo(() => {
+    if (!todayClubMt?.assets) return []
+    return getPosition(todayClubMt.assets).arr
+  }, [todayClubMt])
 
   return mtInfoArray && clubInfoArray && todayClubMt && assetArray ? (
     <>
