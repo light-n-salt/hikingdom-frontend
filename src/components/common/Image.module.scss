@@ -4,6 +4,15 @@
   object-fit: cover;
   border-radius: 50%;
 
+  &.xs {
+    width: 1.5rem;
+    height: 1.5rem;
+
+    &.square {
+      border-radius: 0.28rem;
+    }
+  }
+
   &.sm {
     width: 2.8rem;
     height: 2.8rem;
