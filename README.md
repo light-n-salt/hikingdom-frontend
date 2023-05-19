@@ -2,6 +2,10 @@
 
 # HIKINGDOM
 
+### 프로젝트 진행 기간
+
+2023.04.10. ~ 2023.05.19. (7주)
+
 ## 1. 서비스 소개
 
 젊은 층에 등산 열풍이 불고 있습니다. 진입 장벽이 낮고, 소확성(작지만 확실한 성취) 트렌드가 되면서 등산을 중심으로 젊은 층만의 문화가 나타나고 있습니다.
@@ -62,3 +66,60 @@ HIKINGDOM은 다음을 대상으로 등산에 필요한 모든 서비스를 한 
     </div>
   </tr>
 <table>
+
+## 상세 페이지
+
+| 화면                                                                                                               | 기능 설명                          |
+| ------------------------------------------------------------------------------------------------------------------ | ---------------------------------- |
+| ![메인 및 산 검색 화면](./assets/%EA%B2%80%EC%83%89top3%EC%98%A4%EB%8A%98%EC%9D%98%EB%AA%A8%EC%9E%84%EC%82%B0.gif) | 메인 및 산 검색 화면               |
+| ![모임 메인 화면](./assets/%EB%AA%A8%EC%9E%84%EB%A9%94%EC%9D%B8.gif)                                               | 소모임 메인 화면                   |
+| ![모임 멤버 목록 화면](./assets/%EB%AA%A8%EC%9E%84%EB%A9%A4%EB%B2%84.gif)                                          | 소모임 멤버 목록 조회 화면         |
+| ![모임 일정 화면](./assets/%EB%AA%A8%EC%9E%84%EC%9D%BC%EC%A0%95.gif)                                               | 소모임 일정 조회 및 후기 작성 화면 |
+| ![모임 앨범 화면](./assets/%EB%AA%A8%EC%9E%84%EC%95%A8%EB%B2%94.gif)                                               | 소모임 앨범 조회 화면              |
+| ![모임 채팅 화면](./assets/%EB%AA%A8%EC%9E%84%EC%B1%84%ED%8C%85.gif)                                               | 소모임 채팅 화면                   |
+| ![모임 검색 화면](./assets/%EC%86%8C%EB%AA%A8%EC%9E%84%EA%B2%80%EC%83%89.gif)                                      | 소모임 검색 화면                   |
+
+## 프로젝트 구조
+
+### 시스템 아키텍처
+
+![시스템 아키텍처](./assets/%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98.png)
+
+## 팀 소개
+
+<table>
+    <tr>
+        <td height="140px" align="center"> 
+            <a href="https://github.com/teamzamong">
+              <img src="https://avatars.githubusercontent.com/u/77232235?v=4?s=140" width="140px" /> <br/> <br/> 강희연
+            </a>
+        </td>
+        <td height="140px" align="center"> 
+            <a href="https://github.com/Byongho96">
+              <img src="https://avatars.githubusercontent.com/u/47059013?v=4?s=140" width="140px" /> <br/> <br/> 이병호
+            </a>
+        </td>
+        <td height="140px" align="center"> 
+            <a href="https://github.com/hyeonjin2">
+              <img src="https://avatars.githubusercontent.com/u/91713287?v=4?s=140" width="140px" /> <br/> <br/> 이현진
+            </a>
+        </td>
+        <td height="140px" align="center"> 
+            <a href="https://github.com/Yeji-J">
+              <img src="https://avatars.githubusercontent.com/u/109321850?v=4?s=140" width="140px" /> <br/> <br/> 정예지
+            </a>
+        </td>
+        <td height="140px" align="center"> 
+            <a href="https://github.com/heeheejj">
+              <img src="https://avatars.githubusercontent.com/u/64790176?v=4?s=140" width="140px" /> <br/> <br/> 정희주
+            </a>
+        </td>
+        <td height="140px" align="center"> 
+            <a href="https://github.com/hyejin0705">
+              <img src="https://avatars.githubusercontent.com/u/109321988?v=4?s=140" width="140px" /> <br/> <br/> 조혜진
+            </a>
+        </td>
+    </tr>
+</table>
+
+<br />
