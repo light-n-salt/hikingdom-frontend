@@ -138,6 +138,15 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
             // 사용자의 실시간 위치 정보 화면에 띄워주기
             loadLocationInfo()
+
+            // 서비스에 바인드된 후에 처리될 동작
+            binder?.let{
+                // 모임 하이킹 중일 경우, 웹소켓 연결
+                if (locationService?.isMeetup == true) {
+                    connectSocket()
+                }   // 확인 시 바로 하이킹 시작됨 (인증하기 버튼, 하이킹 종료 버튼으로 바뀜)
+                Log.d("Websocket condition after service bind", getIsLocationServiceRunning().toString() + " " + (locationService?.isMeetup).toString())
+            }
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
@@ -145,6 +154,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
 
         }
+
+
     }
 
     fun setHikingService() {
@@ -171,7 +182,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             if (getIsLocationServiceRunning() && locationService?.isMeetup == true) {
                 connectSocket()
             }
-            Log.d("Websocket condtion", getIsLocationServiceRunning().toString() + " " + (locationService?.isMeetup).toString())
+            Log.d("Websocket condition 2", getIsLocationServiceRunning().toString() + " " + (locationService?.isMeetup).toString())
 
             // 사용자의 실시간 위치 정보 화면에 띄워주기
             loadLocationInfo()
@@ -306,6 +317,9 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 hikingViewModel.isHikingFinished.value = false
             }
         }
+
+
+
     }
 
     private fun checkPermission() {
@@ -434,9 +448,9 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         Intent(activity, LocationService::class.java).also { intent ->
             run {
                 // 트래킹 정보 저장 API 호출 시 필요한 데이터들을 intent로 전달
-                intent.putExtra("isMeetup", false)
-                intent.putExtra("meetupId", 0L)
-                intent.putExtra("mountainId", 0L)
+                intent.putExtra("isMeetup", hikingViewModel.isMeetup.value)
+                intent.putExtra("meetupId", hikingViewModel.meetupId.value)
+                intent.putExtra("mountainId", hikingViewModel.mountainId.value)
                 intent.putExtra("summitLat", hikingViewModel.mountainSummitLat.value)
                 intent.putExtra("summitLng", hikingViewModel.mountainSummitLng.value)
 
@@ -897,12 +911,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
     fun startHiking(){
         startHikingService()
-
-        Log.d("CONDITON", hikingViewModel.isHikingStarted.value.toString() + " " + hikingViewModel.isMeetup.value.toString())
-        // 모임 하이킹 중일 경우, 웹소켓 연결
-        if (hikingViewModel.isMeetup.value == true) {
-            connectSocket()
-        }   // 확인 시 바로 하이킹 시작됨 (인증하기 버튼, 하이킹 종료 버튼으로 바뀜)
 
         hikingFinishBtn.visibility = View.VISIBLE
         hikingSummitBtn.visibility = View.VISIBLE
