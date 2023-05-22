@@ -19,6 +19,7 @@ function MtDetail({ mtInfo }: MtDetailProps) {
           maxAlt={mtInfo.maxAlt}
           timeDuration={mtInfo.totalDuration}
           assets={mtInfo.assets}
+          checkPeak={mtInfo.checkPeak}
         />
       )}
       <MtContent
