@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 
-const MAX_FILE_SIZE = 1024 * 1024 // 1MB 이하 사진만 업로드
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB 이하 사진만 업로드
 
 type AlbumModalProps = {
   clubId: number | undefined
@@ -63,7 +63,7 @@ function AlbumModal({ setIsOpen, clubId }: AlbumModalProps) {
       for (let i = 0; i < fileList.length; i++) {
         // 용량 초과시 return
         if (fileList[i].size > MAX_FILE_SIZE) {
-          toast.addMessage('error', '사진은 1MB이하로 올릴 수 있습니다')
+          toast.addMessage('error', '사진은 10MB이하로 올릴 수 있습니다')
           return
         }
         formData.append('photos', fileList[i])
