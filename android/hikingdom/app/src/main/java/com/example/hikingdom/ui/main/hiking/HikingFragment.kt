@@ -216,6 +216,14 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     }
 
     fun loadLocationInfo() {
+        if(locationService?.summitLocation != null){
+            if(locationService?.summitLocation?.latitude != null && locationService?.summitLocation?.longitude != null){
+                setSummitMarker(locationService?.summitLocation?.latitude!!, locationService?.summitLocation?.longitude!!)
+            }else{
+                Log.d("departMarker setting fail", "summitLocation latitude or longitude is null")
+            }
+            Log.d("departMarker setting fail", "summitLocation is null")
+        }
 
         locationService?.totalDistance?.observe(this) {
             Log.d("HikingFragment", it.toString())
@@ -523,14 +531,23 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             lastLat = lastExistingLocation.latitude
             lastLng = lastExistingLocation.longitude
 
-            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
-            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
-            val mapPointBounds = MapPointBounds(polyline.mapPoints)
-            val padding = 300 // px
-
-            mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
+//            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
+//            // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
+//            val mapPointBounds = MapPointBounds(polyline.mapPoints)
+//            val padding = 300 // px
+//
+//            mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
         } else {
             Log.d("existingLocationList", "is Null or Empty")
+        }
+
+        if(locationService?.summitLocation != null){
+            if(locationService?.summitLocation?.latitude != null && locationService?.summitLocation?.longitude != null){
+                setSummitMarker(locationService?.summitLocation?.latitude!!, locationService?.summitLocation?.longitude!!)
+            }else{
+                Log.d("departMarker setting fail", "summitLocation latitude or longitude is null")
+            }
+            Log.d("departMarker setting fail", "summitLocation is null")
         }
     }
 
@@ -574,15 +591,34 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         customMarker.mapPoint = MapPoint.mapPointWithGeoCoord(lat, lng)
         customMarker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
 
-        customMarker.customImageResourceId = R.drawable.custom_marker_red_25 // 마커 이미지.
+        customMarker.customImageResourceId = R.drawable.depart_maker_35 // 마커 이미지.
 
         customMarker.isCustomImageAutoscale =
             false // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
 
         customMarker.setCustomImageAnchor(
-            0.7f, 1.0f
+            0.5f, 1.0f
         ) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
+        mapView.addPOIItem(customMarker)
+    }
+
+    private fun setSummitMarker(lat: Double, lng: Double) {
+        // 출발 좌표에 마커 그리기
+//        val firstExistingLocation = existingLocationList[0]
+        val customMarker = MapPOIItem()
+        customMarker.itemName = "summit"
+        customMarker.tag = 1
+        customMarker.mapPoint = MapPoint.mapPointWithGeoCoord(lat, lng)
+        customMarker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
+        customMarker.customImageResourceId = R.drawable.summit_marker_50// 마커 이미지.
+
+        customMarker.isCustomImageAutoscale =
+            false // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+
+        customMarker.setCustomImageAnchor(
+            0.5f, 1.0f
+        ) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
         mapView.addPOIItem(customMarker)
     }
