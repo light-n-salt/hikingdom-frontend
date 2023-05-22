@@ -93,4 +93,8 @@
   &.siren {
     display: block;
   }
+
+  &.email {
+    visibility: hidden;
+  }
 }
