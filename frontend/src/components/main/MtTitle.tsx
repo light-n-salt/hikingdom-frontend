@@ -8,6 +8,7 @@ import Modal from 'components/common/Modal'
 import AssetModal from './AssetModal'
 
 import { MtAssetInfo } from 'types/mt.interface'
+import thousandSeparator from 'utils/thousandSeparator'
 
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
@@ -72,7 +73,7 @@ function MtTitle({
         {/* 높이 */}
         <div className={styles.content}>
           <span className={styles.text}>높이</span>
-          <span className={styles.bold}>{Math.floor(maxAlt)}m</span>
+          <span className={styles.bold}>{thousandSeparator(maxAlt)}m</span>
         </div>
 
         {/* 왕복시간 */}
