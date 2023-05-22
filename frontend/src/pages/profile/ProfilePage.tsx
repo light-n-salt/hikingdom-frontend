@@ -37,6 +37,7 @@ function ProfilePage() {
         totalDuration={data?.totalDuration}
         totalHikingCount={data?.totalHikingCount}
         totalMountainCount={data?.totalMountainCount}
+        unreadNotificationCount={data?.unreadNotificationCount}
       />
       <div className={styles.meetups}>
         <div className={styles.title}>등산기록</div>

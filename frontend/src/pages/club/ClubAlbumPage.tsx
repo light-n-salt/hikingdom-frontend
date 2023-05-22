@@ -51,10 +51,14 @@ function ClubAlbumPage() {
 
   return (
     <div className={`page p-md ${theme}`}>
-      <div ref={infiniteRef} className={styles.page}>
-        {photoList && <AlbumList photoList={photoList} />}
-        {isLoading && <Loading size="sm" />}
-      </div>
+      {photoList.length === 0 ? (
+        <div className={styles.blank}>등록된 사진이 없습니다</div>
+      ) : (
+        <div ref={infiniteRef} className={styles.page}>
+          <AlbumList photoList={photoList} />
+          {isLoading && <Loading size="sm" />}
+        </div>
+      )}
     </div>
   )
 }

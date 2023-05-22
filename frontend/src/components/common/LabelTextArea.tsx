@@ -10,6 +10,7 @@ type LabelTextAreaProps = {
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void // textarea의 input 변경시 동작할 함수
   onKeyDown?: (event: React.KeyboardEvent) => void
   disabled?: boolean // textarea 태그 disabled
+  isPass?: boolean
 }
 
 const LabelTextArea = forwardRef(function LabelTextArea(
@@ -21,9 +22,11 @@ const LabelTextArea = forwardRef(function LabelTextArea(
     onChange = () => {},
     onKeyDown,
     disabled = false,
+    isPass = false,
   }: LabelTextAreaProps,
   ref: ForwardedRef<HTMLTextAreaElement>
 ) {
+  const pass = isPass ? styles.pass : ''
   return (
     <div className={styles.container}>
       <Label label={label} />
@@ -35,7 +38,7 @@ const LabelTextArea = forwardRef(function LabelTextArea(
         onKeyDown={onKeyDown}
         placeholder={placeholder}
         disabled={disabled}
-        className={`${styles.textarea} ${styles[size]}`}
+        className={`${styles.textarea} ${styles[size]} ${pass}`}
       />
     </div>
   )

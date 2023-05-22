@@ -35,7 +35,22 @@
 }
 
 .alarm {
-  padding: 1rem;
+  position: relative;
+  margin: 1rem;
+
+  &.unread {
+    &::after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0.1rem;
+      right: 0;
+      width: 0.6rem;
+      height: 0.6rem;
+      border-radius: 50%;
+      background-color: clr(red-clr);
+    }
+  }
 }
 
 .img {

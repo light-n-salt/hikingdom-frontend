@@ -17,6 +17,8 @@
   background-color: clr(white-clr, light);
   font-size: 1rem;
 
+  transition: border ease-in-out 0.2s;
+
   &.sm {
     min-height: 10rem;
   }
@@ -27,6 +29,10 @@
 
   &.lg {
     min-height: 20rem;
+  }
+
+  &.pass {
+    border: 3px solid clr(primary-clr);
   }
 }
 
