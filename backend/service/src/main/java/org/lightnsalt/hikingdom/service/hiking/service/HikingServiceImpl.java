@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.service.hiking.service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -148,8 +149,18 @@ public class HikingServiceImpl implements HikingService {
 					boolean isNewMountain = !clubAssetRepository.existsByClubIdAndAssetId(club.getId(),
 						assetInfo.getId());
 
+					// asset 좌표 계산
+					final int totalCount = (int)clubAssetRepository.countByClubId(meetup.getClub().getId());
+
+					final ClubAsset lastAsset = totalCount == 0 ? null :
+						clubAssetRepository.findAllByClubIdOrderByCreatedAt(meetup.getClub().getId())
+							.get(totalCount - 1);
+					Map<String, Double> coordinate = calcAssetCoordinate(totalCount, lastAsset);
+
 					clubAssetRepository.save(ClubAsset.builder()
 						.club(club)
+						.rowIndex(coordinate.get("row"))
+						.colIndex(coordinate.get("col"))
 						.asset(assetInfo)
 						.meetup(meetup)
 						.build());
@@ -247,6 +258,90 @@ public class HikingServiceImpl implements HikingService {
 			member.updateMemberLevel(memberLevelInfo);
 		}
 		return savedMemberHiking.getId();
+	}
+
+	private Map<String, Double> calcAssetCoordinate(int count, ClubAsset lastAsset) {
+		log.info("total number of assets : {}", count);
+		// lastAssetSide
+		// 규칙
+		// 1 -> 5, 2 -> 5, 3 -> 5
+		// 4 -> 6, 5 -> 6
+		// 6 -> 7, 7 -> 7
+		// ...
+		// maxNumber = lastAssetSide == 1 ? 5 : (lastAssetSide - 1) / 2 + 4
+		// [1, 0],[0, 1],[-1, 0],[0, -1] -> lastAssetSide % 4 + 1
+
+		// 계산
+		double row = 0D;
+		double col = 0D;
+		int index = 0;
+
+		// 필요한 변수
+		int lastAssetSide = lastAsset == null ? 1 : lastAsset.getCurNumber();
+		double preRow = lastAsset == null ? -2.5 : lastAsset.getRowIndex();
+		double preCol = lastAsset == null ? -2.5 : lastAsset.getColIndex();
+
+		int[] dr = {1, 0, -1, 0};
+		int[] dc = {0, 1, 0, -1};
+
+		// 첫번째 줄이라면 -> 규칙 적용 X (규칙이 다름)
+		if (lastAssetSide == 1) {
+			// 아직 첫번째 줄을 채우는 중이라면
+			if (count < 5) {
+				// 마저 채우기
+				row = preRow + dr[index];
+				col = preCol + dc[index];
+			}
+			// 다음 줄로 넘어가야하는 순서라면
+			else {
+				// index++해서 방향에 변화주기
+				index++;
+				row = preRow + dr[index];
+				col = preCol + dc[index];
+			}
+		}
+		// 첫번째 줄이 아니라면 -> 규칙 적용
+		else {
+			// 현재 줄에서 몇 번째 에셋이 추가되어야하는지 계산
+			count -= 5;
+			int cnt = 0;
+			int number = 5;
+			int preNum = number;
+			while (count >= 0) {
+				count -= number;
+				if (cnt == 1) {
+					cnt = 0;
+					preNum = number;
+					number++;
+				}
+				cnt++;
+			}
+			count += preNum;
+			// 현재 줄에서의 최대 개수 계산
+			int maxNumber = (lastAssetSide - 1) / 2 + 4;
+
+			// 아직 줄을 채우는 중이라면
+			if (count < maxNumber) {
+				// 마저 채우기
+				index = (lastAssetSide - 1) % 4;
+				row = preRow + dr[index];
+				col = preCol + dc[index];
+			}
+			// 다음 줄로 넘어가야하는 순서라면
+			else {
+				// index++해서 방향에 변화주기
+				index = lastAssetSide % 4;
+				row = preRow + dr[index];
+				col = preCol + dc[index];
+			}
+		}
+
+		// 값 리턴
+		Map<String, Double> coordinate = new HashMap<>();
+		coordinate.put("row", row);
+		coordinate.put("col", col);
+
+		return coordinate;
 	}
 
 	public static Map<String, Object> getMapFromJsonObject(JsonObject jsonObj) {

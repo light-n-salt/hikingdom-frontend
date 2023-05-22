@@ -14,4 +14,8 @@ public interface ClubAssetRepository extends JpaRepository<ClubAsset, Long> {
 	ClubAsset findByMeetupId(Long meetupId);
 
 	boolean existsByClubIdAndAssetId(Long clubId, Long assetId);
+
+	List<ClubAsset> findAllByClubIdOrderByCreatedAt(Long id);
+
+	int countByClubId(Long id);
 }
