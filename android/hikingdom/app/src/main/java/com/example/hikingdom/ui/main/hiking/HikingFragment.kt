@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
@@ -35,6 +36,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.example.hikingdom.ApplicationClass.Companion.BASE_URL
 import com.example.hikingdom.BuildConfig
@@ -899,6 +903,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             Socket.EVENT_CONNECT
         ) { args: Array<Any?>? ->
             Log.d("SOCKET5", "소켓 입장" )
+            Log.d("SOCKET5", nickname + " " + memberId + " " + meetupId )
             mSocket?.emit("enter", gson.toJson(SocketEnterData(nickname, memberId, meetupId))) // 입장 메시지 전송
         }
         mSocket?.on("enter"){ args: Array<Any> ->
@@ -936,7 +941,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 sendGPS()
             }
         }
-        timer.schedule(task, 0, 20000)
+        timer.schedule(task, 0, 3000)
     }
 
     private fun sendGPS() {
@@ -983,6 +988,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             val lat = data.lat
             val lng = data.lng
 
+            Log.d("getLocation", data.toString())
+
             // 커스텀 마커 생성
             val customMarker = MapPOIItem()
             customMarker.itemName = nickname
@@ -992,10 +999,23 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             customMarker.isCustomImageAutoscale =
                 false // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
             customMarker.setCustomImageAnchor(0.5f, 1.0f) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+
+            // Glide로 이미지 로드 및 처리를 위한 RequestOptions 설정
+            val requestOptions = RequestOptions()
+                .transform(
+                    MultiTransformation<Bitmap>(
+                        CircleCrop(),
+                        BorderTransformation(20, Color.WHITE),
+                        TriangleTransformation(30, Color.RED)
+                    )
+                )
+                .override(200, 200)
+
+
             Glide.with(this)
                 .asBitmap()
                 .load(profileUrl)
-                .transform(CircleCropWithTriangleTransformation())
+                .apply(requestOptions)
                 .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(
                         resource: Bitmap,
@@ -1055,6 +1075,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         mapView.removeAllPolylines()
 
         // 웹소켓 종료
+        Log.d("SOCEKT_LEAVE", nickname + " " + memberId + " " + meetupId)
         mSocket?.emit("leave", gson.toJson(SocketEnterData(nickname, memberId, meetupId)))
         mSocket?.disconnect();
         mSocket?.off("enter")
@@ -1112,6 +1133,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             "onStop LocationList",
             locationService?.locations?.value?.size.toString() + " / " + locationService?.locations?.value.toString()
         )
+        Log.d("SOCEKT_LEAVE", nickname + " " + memberId + " " + meetupId)
         mSocket?.emit("leave", gson.toJson(SocketEnterData(nickname, memberId, meetupId)))
         mSocket?.disconnect();
         mSocket?.off("enter")
