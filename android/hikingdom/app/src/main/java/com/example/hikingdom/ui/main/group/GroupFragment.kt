@@ -31,8 +31,9 @@ class GroupFragment(): BaseFragment<FragmentGroupBinding>(FragmentGroupBinding::
 
     private lateinit var mFilePathCallback: ValueCallback<Array<Uri>>
     private lateinit var fileChooserLauncher: ActivityResultLauncher<Intent>
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         fileChooserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
@@ -53,9 +54,7 @@ class GroupFragment(): BaseFragment<FragmentGroupBinding>(FragmentGroupBinding::
                 }
             }
         }
-    }
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+
         // Room에서 사용자 정보 읽어오기
         var user = db?.userDao()?.getUser()
 
@@ -71,8 +70,8 @@ class GroupFragment(): BaseFragment<FragmentGroupBinding>(FragmentGroupBinding::
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
     }
 
