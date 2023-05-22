@@ -1137,8 +1137,9 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         val nickname = db?.userDao()?.getUser()?.nickname
 //        val hikingRecordId = hikingViewModel.hikingRecordId.value
         val hikingRecordId = hikingViewModel.hikingRecordId.value
+
         hikingViewModel.hikingRecordId.value = 0L
-        webViewSetting(activityContext, webView, BASE_URL + "profile/"+ nickname + "/tracking/" + hikingRecordId)
+        webViewSetting(webView, BASE_URL + "profile/"+ nickname + "/tracking/" + hikingRecordId)
 
         val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)
         val hikingRecordResultDialog = mBuilder.show()

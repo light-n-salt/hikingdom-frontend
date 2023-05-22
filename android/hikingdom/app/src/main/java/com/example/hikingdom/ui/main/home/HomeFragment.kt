@@ -13,7 +13,8 @@ import com.example.hikingdom.utils.getRefreshToken
 class HomeFragment(): BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     override fun initAfterBinding() {
-        webViewSetting(activityContext, binding.homeWebview, HOME_WEB_URL)
+        webViewSetting(binding.homeWebview, HOME_WEB_URL)
+        swipeReloadWebview(binding.swipeRefreshLayout, binding.homeWebview)
     }
 
     companion object {
