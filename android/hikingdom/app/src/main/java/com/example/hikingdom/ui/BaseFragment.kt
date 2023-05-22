@@ -14,6 +14,7 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import com.example.hikingdom.config.WebInterface
 import com.example.hikingdom.data.local.AppDatabase
@@ -64,7 +65,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
     }
 
     // fragment의 webView 레아이웃을 셋팅하는 함수
-    fun webViewSetting(context: Activity, webView: WebView, url: String){
+    fun webViewSetting(webView: WebView, url: String){
         var refreshToken = getRefreshToken() // sharedPreference에서 refresh token 가져오기
         var accessToken = getAccessToken() // sharedPreference에서 access token 가져오기
 
@@ -72,7 +73,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true   // 웹뷰 자바스크립트 허용
         webView.settings.domStorageEnabled = true   // 웹뷰 로컬 스토리지 허용
-        webView.addJavascriptInterface(WebInterface(context), "Kotlin") // 웹뷰와의 인터페이스 연결
+        webView.addJavascriptInterface(WebInterface(activityContext), "Kotlin") // 웹뷰와의 인터페이스 연결
 
         // 웹뷰로 http 리소스 불러 오기 허용
         val webSetting: WebSettings = webView.settings
@@ -101,6 +102,13 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
             }
         })
 
+    }
+
+    fun swipeReloadWebview(swipeRefreshLayout: SwipeRefreshLayout, webView: WebView){
+        swipeRefreshLayout.setOnRefreshListener {
+            webView.reload()
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
 }

@@ -937,7 +937,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 sendGPS()
             }
         }
-        timer.schedule(task, 0, 20000)
+        timer.schedule(task, 0, 3000)
     }
 
     private fun sendGPS() {
@@ -1073,7 +1073,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         val nickname = db?.userDao()?.getUser()?.nickname
 //        val hikingRecordId = hikingViewModel.hikingRecordId.value
         val hikingRecordId = hikingViewModel.hikingRecordId.value
-        webViewSetting(activityContext, webView, BASE_URL + "profile/"+ nickname + "/tracking/" + hikingRecordId)
+        webViewSetting(webView, BASE_URL + "profile/"+ nickname + "/tracking/" + hikingRecordId)
 
         val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)
         val hikingRecordResultDialog = mBuilder.show()

@@ -12,11 +12,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/primary</item>
         <!-- Customize your theme here. -->
-        <item name="android:textViewStyle">@font/applesdgothicneoregular</item>
-        <item name="buttonStyle">@font/applesdgothicneoregular</item>
-        <item name="editTextStyle">@font/applesdgothicneoregular</item>
-        <item name="radioButtonStyle">@font/applesdgothicneoregular</item>
-        <item name="checkboxStyle">@font/applesdgothicneoregular</item>
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
         <!-- Remove the title bar -->
         <item name="windowNoTitle">true</item>
     </style>

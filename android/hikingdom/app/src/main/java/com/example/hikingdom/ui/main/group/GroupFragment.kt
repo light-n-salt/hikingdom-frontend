@@ -21,10 +21,12 @@ class GroupFragment(): BaseFragment<FragmentGroupBinding>(FragmentGroupBinding::
         // 사용자가 가입한 그룹이 있으면, 그룹 페이지로 이동
         // 없으면, 그룹 없음 페이지로 이동
         if (user?.clubId != null) {
-            webViewSetting(activityContext, binding.groupWebview, GROUP_WEB_URL)
+            webViewSetting(binding.groupWebview, GROUP_WEB_URL)
         } else {
-            webViewSetting(activityContext, binding.groupWebview, NONE_GROUP_WEB_URL)
+            webViewSetting(binding.groupWebview, NONE_GROUP_WEB_URL)
         }
+
+        swipeReloadWebview(binding.swipeRefreshLayout, binding.groupWebview)
     }
 
     companion object {
