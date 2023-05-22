@@ -161,21 +161,19 @@ public class HikingServiceImpl implements HikingService {
 						.club(club)
 						.rowIndex(coordinate.get("row"))
 						.colIndex(coordinate.get("col"))
+						.curNumber(coordinate.get("curNumber").intValue())
 						.asset(assetInfo)
 						.meetup(meetup)
 						.build());
 
 					clubRepository.updateClubMountainCountAndAssetCountAndScore(club.getId(),
-						isNewMountain ? club.getTotalMountainCount() + 1 :
-							club.getTotalMountainCount(), club.getTotalAssetCount() + 1,
-						club.getScore() + assetInfo.getScore(), LocalDateTime.now());
+						isNewMountain ? club.getTotalMountainCount() + 1 : club.getTotalMountainCount(),
+						club.getTotalAssetCount() + 1, club.getScore() + assetInfo.getScore(), LocalDateTime.now());
 
 					// 비동기 알림
-					eventPublisher.publishEvent(new CreateClubAssetNotificationEvent(
-						clubMemberRepository.findByClubId(club.getId()),
-						assetInfo,
-						club.getId()
-					));
+					eventPublisher.publishEvent(
+						new CreateClubAssetNotificationEvent(clubMemberRepository.findByClubId(club.getId()), assetInfo,
+							club.getId()));
 				} else {
 					// 이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우 PASS
 					log.info("이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우");
@@ -274,6 +272,7 @@ public class HikingServiceImpl implements HikingService {
 		// 계산
 		double row = 0D;
 		double col = 0D;
+		double curNumber = 1;
 		int index = 0;
 
 		// 필요한 변수
@@ -288,6 +287,7 @@ public class HikingServiceImpl implements HikingService {
 		if (lastAssetSide == 1) {
 			// 아직 첫번째 줄을 채우는 중이라면
 			if (count < 5) {
+				log.info("curNumber = {} and count < 5", curNumber);
 				// 마저 채우기
 				row = preRow + dr[index];
 				col = preCol + dc[index];
@@ -295,6 +295,8 @@ public class HikingServiceImpl implements HikingService {
 			// 다음 줄로 넘어가야하는 순서라면
 			else {
 				// index++해서 방향에 변화주기
+				log.info("curNumber = {} and count >= 5", curNumber);
+				curNumber++;
 				index++;
 				row = preRow + dr[index];
 				col = preCol + dc[index];
@@ -317,22 +319,27 @@ public class HikingServiceImpl implements HikingService {
 				cnt++;
 			}
 			count += preNum;
+			log.info("count is {}", count);
 			// 현재 줄에서의 최대 개수 계산
-			int maxNumber = (lastAssetSide - 1) / 2 + 4;
+			int maxNumber = lastAssetSide % 2 == 0 ? lastAssetSide / 2 + 4 : (lastAssetSide - 1) / 2 + 4;
+			log.info("maxNumber is {}", maxNumber);
 
-			// 아직 줄을 채우는 중이라면
-			if (count < maxNumber) {
-				// 마저 채우기
-				index = (lastAssetSide - 1) % 4;
-				row = preRow + dr[index];
-				col = preCol + dc[index];
-			}
-			// 다음 줄로 넘어가야하는 순서라면
-			else {
+			// 다음 줄로 넘어왔다면
+			if (count == 0) {
+				curNumber = lastAssetSide + 1;
 				// index++해서 방향에 변화주기
 				index = lastAssetSide % 4;
 				row = preRow + dr[index];
 				col = preCol + dc[index];
+			}
+			// 아직 줄을 채우는 중이라면
+			else {
+				curNumber = lastAssetSide;
+				// 마저 채우기
+				index = (lastAssetSide - 1) % 4;
+				row = preRow + dr[index];
+				col = preCol + dc[index];
+
 			}
 		}
 
@@ -340,6 +347,7 @@ public class HikingServiceImpl implements HikingService {
 		Map<String, Double> coordinate = new HashMap<>();
 		coordinate.put("row", row);
 		coordinate.put("col", col);
+		coordinate.put("curNumber", curNumber);
 
 		return coordinate;
 	}
