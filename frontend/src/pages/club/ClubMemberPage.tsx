@@ -14,7 +14,7 @@ import MemberList from 'components/club/MemberList'
 import useUserQuery from 'hooks/useUserQuery'
 import TextButton from 'components/common/TextButton'
 import Modal from 'components/common/Modal'
-import DeleteModal from 'components/club/DeleteModal'
+import ConfirmModal from 'components/club/ConfirmModal'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
@@ -75,7 +75,7 @@ function ClubMemberPage() {
     <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
-          <DeleteModal
+          <ConfirmModal
             title="모임을 탈퇴하시겠습니까?"
             content1={`주최한 일정이 존재하면, \n삭제 또는 완료해야 탈퇴가능합니다`}
             content2="탈퇴한 모임은 다시 가입을 신청해야 합니다"

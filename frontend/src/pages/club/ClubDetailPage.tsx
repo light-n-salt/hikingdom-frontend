@@ -35,11 +35,6 @@ function ClubDetailPage() {
       .catch((err) => toast.addMessage('error', `${err.data.message}`))
   }
 
-  const assetArray = useMemo(() => {
-    if (!clubInfo?.assets) return []
-    return getPosition(clubInfo.assets).arr
-  }, [clubInfo])
-
   useEffect(() => {
     if (clubId === userInfo?.clubId) {
       navigate('/club/main')
@@ -68,7 +63,7 @@ function ClubDetailPage() {
       <div className={styles.intro}>
         <MeetupIntroduction content={clubInfo.description} />
       </div>
-      <ClubMountain zoom={3} assetInfo={assetArray} />
+      <ClubMountain zoom={3} assetInfo={clubInfo.assets} />
     </div>
   ) : (
     <Loading />

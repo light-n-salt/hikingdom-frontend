@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 
-import styles from './DeleteModal.module.scss'
+import styles from './ConfirmModal.module.scss'
 import Button from 'components/common/Button'
 
-type DeleteModalProps = {
+type ConfirmModalProps = {
   title: string
   content1?: string
   content2?: string
@@ -13,14 +13,14 @@ type DeleteModalProps = {
   onClickCloseModal: () => void
 }
 
-function DeleteModal({
+function ConfirmModal({
   title,
   content1,
   content2,
   buttonText,
   onClickDelete,
   onClickCloseModal,
-}: DeleteModalProps) {
+}: ConfirmModalProps) {
   return (
     <div className={styles.modal}>
       <div className={styles.content}>
@@ -46,4 +46,4 @@ function DeleteModal({
   )
 }
 
-export default DeleteModal
+export default ConfirmModal

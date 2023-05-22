@@ -61,19 +61,27 @@ function TrackingInfo({
         (totalLng += path.lng)
     })
 
-    const startMarker = new kakao.maps.Marker({
-      position: linePath[0],
-    })
+    const startImageSrc =
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/blue_pin.png' // 마커이미지의 주소입니다
 
-    const imageSrc =
-      'https://tistory2.daumcdn.net/tistory/3056305/skin/images/map-marker-red.png' // 마커이미지의 주소입니다
+    const endImageSrc =
+      'https://lightnsalt.s3.ap-northeast-2.amazonaws.com/red_pin.png' // 마커이미지의 주소입니다
     const imageSize = new kakao.maps.Size(35, 35) // 마커이미지의 크기입니다
 
-    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
+    const startMarkerImage = new kakao.maps.MarkerImage(
+      startImageSrc,
+      imageSize
+    )
+    const endMarkerImage = new kakao.maps.MarkerImage(endImageSrc, imageSize)
+
+    const startMarker = new kakao.maps.Marker({
+      position: linePath[0],
+      image: startMarkerImage,
+    })
 
     const endMarker = new kakao.maps.Marker({
       position: linePath[route.length - 1],
-      image: markerImage,
+      image: endMarkerImage,
     })
 
     // 지도 그리는 정보

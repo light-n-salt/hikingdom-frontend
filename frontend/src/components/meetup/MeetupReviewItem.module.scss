@@ -47,7 +47,17 @@
 .siren {
   display: flex;
   font-size: 0.8rem;
-  > svg {
-    color: clr(red-clr);
+  cursor: pointer;
+
+  &.red {
+    > svg {
+      color: clr(red-clr);
+    }
+  }
+
+  &.gray {
+    > svg {
+      color: clr(gray-clr);
+    }
   }
 }
