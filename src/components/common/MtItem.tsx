@@ -20,7 +20,7 @@ function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
       onClick={() => navigate(`/mountain/${mtInfo.mountainId}/detail`)}
     >
       <img className={styles.img} src={mtInfo.imgUrl} />
-      <h3 className={styles.title}>{mtInfo.name}</h3>
+      <div className={styles.title}>{mtInfo.name}</div>
       <div className={styles.flexbox}>
         <IconText imgSrc={hotAirBalloon} text="높이" />
         {Math.floor(mtInfo.maxAlt)} m

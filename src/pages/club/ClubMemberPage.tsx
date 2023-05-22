@@ -77,8 +77,7 @@ function ClubMemberPage() {
         <Modal onClick={() => setIsOpen(false)}>
           <ConfirmModal
             title="모임을 탈퇴하시겠습니까?"
-            content1={`주최한 일정이 존재하면, \n삭제 또는 완료해야 탈퇴가능합니다`}
-            content2="탈퇴한 모임은 다시 가입을 신청해야 합니다"
+            content={`주최한 일정이 존재하면, \n삭제 또는 완료해야 탈퇴가능합니다`}
             buttonText="모임 탈퇴"
             onClickDelete={onClickDeleteClub}
             onClickCloseModal={() => setIsOpen(false)}
