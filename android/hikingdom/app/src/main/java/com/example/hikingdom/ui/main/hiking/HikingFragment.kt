@@ -164,10 +164,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             bindHikingService()
 
             // 모임 하이킹 중일 경우, 웹소켓 연결
-            if (getIsLocationServiceRunning() && getIsMeetup()) {
+            if (getIsLocationServiceRunning() && locationService?.isMeetup == true) {
                 connectSocket()
             }
-            Log.d("Websocket condtion", getIsLocationServiceRunning().toString() + " " + getIsMeetup().toString())
+            Log.d("Websocket condtion", getIsLocationServiceRunning().toString() + " " + (locationService?.isMeetup).toString())
 
             // 사용자의 실시간 위치 정보 화면에 띄워주기
             loadLocationInfo()
