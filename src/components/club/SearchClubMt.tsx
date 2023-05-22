@@ -3,7 +3,8 @@ import styles from './SearchClubMt.module.scss'
 import { AssetInfo } from 'types/club.interface'
 import Dropdown from 'components/common/Dropdown'
 import ClubMountain from 'components/club/ClubMountain'
-import { getPosition } from 'utils/getPosition'
+// import { getPosition } from 'utils/getPosition'
+import { searchAsset } from 'utils/searchAsset'
 
 type SearchClubMtProps = {
   assetInfo: AssetInfo[]
@@ -11,13 +12,11 @@ type SearchClubMtProps = {
 
 function SearchClubMt({ assetInfo }: SearchClubMtProps) {
   const [filterOptions, setFilterOptions] = useState<any[]>([])
-  const [assetArray, setAssetArray] = useState<any[]>([])
 
   const [filter, setFilter] = useState('') // 선택된 필터 옵션 value
 
   useEffect(() => {
-    const data = getPosition(assetInfo, filter)
-    setAssetArray(data.arr)
+    const data = searchAsset(assetInfo, filter)
 
     const options = data.uniqueNameList.map((name) => ({
       label: name,
@@ -28,7 +27,7 @@ function SearchClubMt({ assetInfo }: SearchClubMtProps) {
 
   return (
     <>
-      <ClubMountain zoom={3.5} assetInfo={assetArray} />
+      <ClubMountain zoom={3.5} assetInfo={assetInfo} />
       <div className={styles.select}>
         <Dropdown
           options={filterOptions}
