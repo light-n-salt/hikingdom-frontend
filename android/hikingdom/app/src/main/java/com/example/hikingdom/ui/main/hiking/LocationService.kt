@@ -100,7 +100,6 @@ class LocationService : Service(), SaveHikingRecordView {
 
             // sharedPreference에 LocationService 실행 상태 저장 (for HikingFragment의 '하이킹 시작/종료'버튼 처리)
             saveIsLocationServiceRunning(false)
-            saveIsMeetup(false)
 
             // 로컬 DB에 지금까지 저장된 위치 데이터 불러오기
             val storedUserLocations = db?.userLocationDao().getUserLocations()
@@ -183,7 +182,6 @@ class LocationService : Service(), SaveHikingRecordView {
 
             // sharedPreference에 LocationService 실행 상태 저장 (for HikingFragment의 '하이킹 시작/종료'버튼 처리)
             saveIsLocationServiceRunning(true)
-            saveIsMeetup(isMeetup)
         }
 
         return START_STICKY
@@ -247,7 +245,6 @@ class LocationService : Service(), SaveHikingRecordView {
     override fun onSaveHikingRecordSuccess(message: String, savedHikingRecordId: String) {
         db?.userLocationDao().deleteAllUserLocations()  // 나중에 지우기 (api 호출 onSuccess에서 처리해줘야함)
         saveIsSummit(false) // sharedPreference에 isSummit 여부 초기화
-        saveIsMeetup(false)
         Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
         Log.d("saveHikingRecordSuccess", message)
         Toast.makeText(this, "경로 데이터가 기록되었습니다!", Toast.LENGTH_SHORT).show()
