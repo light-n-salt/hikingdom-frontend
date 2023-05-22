@@ -107,7 +107,7 @@ function CreateClubForm() {
       toast.addMessage('success', '모임을 생성했습니다')
       client.invalidateQueries(['user'])
       const clubId = res.data.result.clubId
-      navigate(`/club/${clubId}/main`)
+      navigate(`/club/main`)
     })
   }
 
@@ -118,6 +118,7 @@ function CreateClubForm() {
         <LabelInput
           label="모임이름"
           value={name}
+          isPass={isNamePass}
           onChange={onChangeSetName}
           disabled={isNamePass ? true : false}
         />
@@ -139,6 +140,7 @@ function CreateClubForm() {
           }
         }}
         onChange={onChangeSetDescription}
+        isPass={description.trim() ? true : false}
       />
       <div className={styles.location}>
         <Label label="지역선택" />
@@ -161,7 +163,9 @@ function CreateClubForm() {
         <Button
           text="생성하기"
           color={
-            !isNamePass || description.trim() || !gugunCode ? 'gray' : 'primary'
+            !isNamePass || !description.trim() || !gugunCode
+              ? 'gray'
+              : 'primary'
           }
           onClick={onClickCreateClub}
         />

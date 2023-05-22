@@ -5,50 +5,56 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  gap: 1.5rem;
+  gap: 1rem;
   background-color: white;
 
-  &.pad {
-    padding: 2rem;
+  &.padding {
+    padding: 1.7rem 1.7rem;
   }
 }
 
 .map {
   width: 100%;
-  height: 300px;
+  height: 19rem;
 }
 
-.container {
+.flexbox {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   width: 100%;
 
-  > .content {
-    flex: 1;
-  }
-
   &.gap {
     gap: 1rem;
   }
+
+  > .item {
+    flex: 1;
+  }
+
+  > .item:nth-child(2) {
+    border-left: 1px solid clr(gray-clr, light);
+    border-right: 1px solid clr(gray-clr, light);
+  }
 }
 
-.content {
+.item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.5rem 0;
-  border: 1px solid clr(gray-clr);
+  padding: 0.2rem 0;
   gap: 0.3rem;
 }
 
-.bold {
-  font-size: 1.2rem;
-  font-weight: bold;
+.itemTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: clr(gray-clr);
 }
 
-.text {
+.itemContent {
   font-size: 1rem;
+  font-weight: 700;
 }
 
 .icon {

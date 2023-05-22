@@ -5,3 +5,12 @@
   width: 100%;
   padding-top: 0.5rem;
 }
+
+.blank {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  color: clr(gray-clr, light);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
