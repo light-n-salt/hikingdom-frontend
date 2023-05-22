@@ -32,10 +32,15 @@ object LocationUtils {
             Toast.makeText(context, "위치 권한이 없습니다.", Toast.LENGTH_SHORT).show()
             return null
         }
-        val loc_Current: Location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
-        val cur_lat = loc_Current.getLatitude();
-        val cur_lng = loc_Current.getLongitude();
+        val currentLocation: Location? = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 
-        return doubleArrayOf(cur_lat, cur_lng)
+        if (currentLocation !== null) {
+            val cur_lat = currentLocation.getLatitude();
+            val cur_lng = currentLocation.getLongitude();
+
+            return doubleArrayOf(cur_lat, cur_lng)
+        }
+
+        return null
     }
 }
