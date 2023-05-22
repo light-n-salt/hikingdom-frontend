@@ -324,6 +324,8 @@ public class HikingServiceImpl implements HikingService {
 			int maxNumber = lastAssetSide % 2 == 0 ? lastAssetSide / 2 + 4 : (lastAssetSide - 1) / 2 + 4;
 			log.info("maxNumber is {}", maxNumber);
 
+			if (count == maxNumber)
+				count = 0;
 			// 다음 줄로 넘어왔다면
 			if (count == 0) {
 				curNumber = lastAssetSide + 1;
