@@ -36,17 +36,22 @@ function ClubMountain({ zoom, assetInfo }: ClubMountainprops) {
         {assetInfo.map((info, index) => (
           <AssetMesh
             key={index}
-            position={info.position}
+            // position={info.position}
             url={info.assetUrl}
             meetupId={info.meetupId ? info.meetupId : null}
             check={info.check}
+            position={
+              info.row && info.column
+                ? new THREE.Vector3(info.row, 0, info.column)
+                : info.position
+            }
           />
         ))}
       </group>
 
       {/* target: 카메라의 주시점. x, y, z 축 순으로 설정할 수 있다.
           enableDamping: true를 설정할 경우, 드래그 시의 애니메이션을 부드럽게 한다. 디폴트 값은 false. */}
-      <OrbitControls 
+      <OrbitControls
         enableDamping={true}
         minDistance={13} // 최소 확대 거리 설정
         maxDistance={40} // 최대 확대 거리 설정
