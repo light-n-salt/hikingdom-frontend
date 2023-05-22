@@ -10,9 +10,9 @@
   cursor: pointer;
 
   &.sm {
-    gap: 0.8rem;
+    gap: 0.7rem;
     min-width: 13rem;
-    padding: 1.2rem 0.5rem 1.2rem 1rem;
+    padding: 1.3rem 0.4rem 1.3rem 0.9rem;
   }
 
   &.lg {
@@ -33,13 +33,13 @@
   margin: 0 0 0 0.4rem;
   color: clr(primary-clr);
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .info {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.7rem;
 }
 
 .flexbox {
