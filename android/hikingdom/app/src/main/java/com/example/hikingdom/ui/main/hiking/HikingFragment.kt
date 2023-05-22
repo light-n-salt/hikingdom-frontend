@@ -193,17 +193,17 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         hikingSummitBtn.setOnClickListener {
             // 완등 인증 버튼을 누르면, 정상에 100m 이내일 시 인증완료. 인증 여부를 로컬에 저장
-            Log.d("getIsSummit", getIsSummit().toString() + "/ 완등 인증 여부")
-            if (getIsSummit()) {
+            Log.d("getIsSummit", (locationService?.isSummit).toString() + "/ 완등 인증 여부")
+            if (locationService?.isSummit == true) {
                 showToast("이미 완등 인증을 완료하였습니다.")
-                Log.d("saveIsSummit ", getIsSummit().toString() + "/ 이미 완등 인증을 완료")
+                Log.d("saveIsSummit ", (locationService?.isSummit).toString() + "/ 이미 완등 인증을 완료")
             } else {
                 if (checkIsSummit()) {
-                    saveIsSummit(true)
+                    locationService?.isSummit = true
                     showToast("완등 인증이 완료되었습니다.")
-                    Log.d("saveIsSummit", getIsSummit().toString() + "/ 완등 인증 완료")
+                    Log.d("saveIsSummit", (locationService?.isSummit).toString() + "/ 완등 인증 완료")
                 } else {
-                    saveIsSummit(false)
+                    locationService?.isSummit = false
                     showToast("산 정상에 도착 후 다시 인증해주세요.")
                 }
             }
@@ -290,6 +290,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 showHikingRecordResultDialog()
 
                 // 완상복구
+                locationService?.hikingRecordId?.value = 0L
                 hikingViewModel.isHikingFinished.value = false
             }
         }
@@ -409,6 +410,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         startServiceIntent.putExtra("isMeetup", hikingViewModel.isMeetup.value)
         startServiceIntent.putExtra("meetupId", hikingViewModel.meetupId.value)
         startServiceIntent.putExtra("mountainId", hikingViewModel.mountainId.value)
+        startServiceIntent.putExtra("summitLat", hikingViewModel.mountainSummitLat.value)
+        startServiceIntent.putExtra("summitLng", hikingViewModel.mountainSummitLng.value)
         activity?.startService(startServiceIntent)
         Intent(activity, LocationService::class.java).also { intent ->
             activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
@@ -422,6 +425,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 intent.putExtra("isMeetup", false)
                 intent.putExtra("meetupId", 0L)
                 intent.putExtra("mountainId", 0L)
+                intent.putExtra("summitLat", hikingViewModel.mountainSummitLat.value)
+                intent.putExtra("summitLng", hikingViewModel.mountainSummitLng.value)
 
                 activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
             }
@@ -581,21 +586,18 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     private fun checkIsSummit(): Boolean {    // 현재 위치로 완등여부 확인
         val location = locationService?.currentLocation?.value
         if (location != null) {
-            val summitLocation = Location("")
             // 뷰모델에 저장된 산 정상 좌표 가져오기
-            val summitLat = hikingViewModel.mountainSummitLat.value
-            val summitLng = hikingViewModel.mountainSummitLng.value
-            Log.d("summit check", summitLat.toString() +" / " + summitLng.toString())
-            if (!((summitLat == 0.0) or (summitLng == 0.0))) {
-                summitLocation.latitude = summitLat!!
-                summitLocation.longitude = summitLng!!
-
+            val summitLocation = locationService?.summitLocation
+//            val summitLat = locationService.summitLocation
+//            val summitLng = hikingViewModel.mountainSummitLng.value
+            if (summitLocation != null && (summitLocation.latitude != 0.0) && (summitLocation.longitude != 0.0)) {
+                Log.d("summit check", summitLocation.toString())
                 val distance = summitLocation.distanceTo(location)
 //            val distance = Location.distanceBetween(location.latitude, location.longitude, summitLocation.latitude, summitLocation.longitude)
                 Log.d("distance", distance.toString())
-                return distance < 200   // 200m 이내에 있으면 완등으로 판단
+                return distance < 500   // 200m 이내에 있으면 완등으로 판단
             } else {
-                Log.d("checkIsSummit", "getMountainSummitLat() or getMountainSummitLng() is 0.0")
+                Log.d("checkIsSummit", "summitLocation is null or summitLocation.latitude is 0.0 or summitLocation.longitude is 0.0")
             }
         }
         return false
@@ -866,8 +868,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         hikingSummitBtn.visibility = View.VISIBLE
         hikingStartBtn.visibility = View.GONE
 
-        saveIsSummit(false) // 완등인증 여부 초기화
-
         // TODO: 산 목록 api, 오늘 일정 조회 api 호출, 호출하고 응답 잘 받아왔다면 산 정상의 lat, lng 같이 받아온다. 받아온 lat, lng viewmodel에 저장해야함
 //            hikingViewModel.mountainSummitLat.value = 37.5013   // 임시 값 setting
 //            hikingViewModel.mountainSummitLng.value = 127.0395  // 임시 값 setting
@@ -1072,6 +1072,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         val nickname = db?.userDao()?.getUser()?.nickname
 //        val hikingRecordId = hikingViewModel.hikingRecordId.value
         val hikingRecordId = hikingViewModel.hikingRecordId.value
+        hikingViewModel.hikingRecordId.value = 0L
         webViewSetting(activityContext, webView, BASE_URL + "profile/"+ nickname + "/tracking/" + hikingRecordId)
 
         val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)

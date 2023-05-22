@@ -49,11 +49,11 @@ fun getIsLocationServiceRunning(): Boolean =
 //fun getIsMeetup(): Boolean =
 //    mSharedPreferences.getBoolean("isMeetup", false)
 //
-fun saveIsSummit(boolean: Boolean){ //
-    val editor = mSharedPreferences.edit()
-    editor.putBoolean("isSummit", boolean)
-    editor.apply()
-}
-
-fun getIsSummit(): Boolean =
-    mSharedPreferences.getBoolean("isSummit", false)
+//fun saveIsSummit(boolean: Boolean){ //
+//    val editor = mSharedPreferences.edit()
+//    editor.putBoolean("isSummit", boolean)
+//    editor.apply()
+//}
+//
+//fun getIsSummit(): Boolean =
+//    mSharedPreferences.getBoolean("isSummit", false)
