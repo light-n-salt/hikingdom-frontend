@@ -62,13 +62,18 @@ public class ClubAsset extends BaseTimeEntity {
 	@Column(name = "cur_number")
 	private Integer curNumber;
 
+	@Column(name="cur_count")
+	private Integer curCount;
+
 	@Builder
-	public ClubAsset(Club club, AssetInfo asset, Meetup meetup, double rowIndex, double colIndex, Integer curNumber) {
+	public ClubAsset(Club club, AssetInfo asset, Meetup meetup, double rowIndex, double colIndex, Integer curNumber,
+		Integer curCount) {
 		this.club = club;
 		this.asset = asset;
 		this.meetup = meetup;
 		this.rowIndex = rowIndex;
 		this.colIndex = colIndex;
 		this.curNumber = curNumber;
+		this.curCount = curCount;
 	}
 }
