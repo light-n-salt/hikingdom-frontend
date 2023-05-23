@@ -476,10 +476,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         mapView.currentLocationTrackingMode =
             MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading //
 
-        mapView.setCustomCurrentLocationMarkerTrackingImage(
-            R.drawable.current_marker,
-            MapPOIItem.ImageOffset(34, 34)
-        )
 //        if(mapView.isShowingCurrentLocationMarker){
 //            Log.d("isShowing 1", "true")
 //        }else{
