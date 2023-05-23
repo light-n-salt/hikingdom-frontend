@@ -9,7 +9,7 @@ function SignupPage() {
 
   return (
     <div className={`page-gradation p-lg ${theme} ${styles.container}`}>
-      <PageHeader title="회원가입" url="/login" />
+      <PageHeader title="회원가입" url="/login" color="primary" />
       <SignupForm />
     </div>
   )
