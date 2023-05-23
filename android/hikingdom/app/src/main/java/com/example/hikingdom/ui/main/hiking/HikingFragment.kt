@@ -9,8 +9,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.location.Location
-import android.location.LocationManager
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -29,8 +27,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,7 +49,6 @@ import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.ui.main.hiking.dialog.MeetupAdapter
 import com.example.hikingdom.ui.main.hiking.dialog.MountainAdapter
-import com.example.hikingdom.ui.main.mypage.MypageFragment
 import com.example.hikingdom.utils.*
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -95,7 +90,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     lateinit var hikingFinishBtn: Button
     lateinit var hikingSummitBtn: Button
 
-    private var mSocket: Socket? =null;
+    private var mSocket: Socket? = null;
     private var nickname: String? = null
     private var profileUrl: String? = null
     private var level: Int? = null
@@ -105,8 +100,8 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
     val gson: Gson = Gson()
 
-    private val timer : Timer = Timer()
-    var task : TimerTask? = null
+    private val timer: Timer = Timer()
+    var task: TimerTask? = null
 
     override fun initAfterBinding() {
         binding.lifecycleOwner = this
@@ -140,12 +135,15 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             loadLocationInfo()
 
             // 서비스에 바인드된 후에 처리될 동작
-            binder?.let{
+            binder?.let {
                 // 모임 하이킹 중일 경우, 웹소켓 연결
                 if (locationService?.isMeetup == true) {
                     connectSocket()
                 }   // 확인 시 바로 하이킹 시작됨 (인증하기 버튼, 하이킹 종료 버튼으로 바뀜)
-                Log.d("Websocket condition after service bind", getIsLocationServiceRunning().toString() + " " + (locationService?.isMeetup).toString())
+                Log.d(
+                    "Websocket condition after service bind",
+                    getIsLocationServiceRunning().toString() + " " + (locationService?.isMeetup).toString()
+                )
             }
         }
 
@@ -182,7 +180,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             if (getIsLocationServiceRunning() && locationService?.isMeetup == true) {
                 connectSocket()
             }
-            Log.d("Websocket condition 2", getIsLocationServiceRunning().toString() + " " + (locationService?.isMeetup).toString())
+            Log.d(
+                "Websocket condition 2",
+                getIsLocationServiceRunning().toString() + " " + (locationService?.isMeetup).toString()
+            )
 
             // 사용자의 실시간 위치 정보 화면에 띄워주기
             loadLocationInfo()
@@ -227,10 +228,13 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
     }
 
     fun loadLocationInfo() {
-        if(locationService?.summitLocation != null){
-            if(locationService?.summitLocation?.latitude != null && locationService?.summitLocation?.longitude != null){
-                setSummitMarker(locationService?.summitLocation?.latitude!!, locationService?.summitLocation?.longitude!!)
-            }else{
+        if (locationService?.summitLocation != null) {
+            if (locationService?.summitLocation?.latitude != null && locationService?.summitLocation?.longitude != null) {
+                setSummitMarker(
+                    locationService?.summitLocation?.latitude!!,
+                    locationService?.summitLocation?.longitude!!
+                )
+            } else {
                 Log.d("departMarker setting fail", "summitLocation latitude or longitude is null")
             }
             Log.d("departMarker setting fail", "summitLocation is null")
@@ -304,9 +308,9 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 //            }
 //        }
 
-        locationService?.hikingRecordId?.observe(this){
+        locationService?.hikingRecordId?.observe(this) {
             Log.d("isHikingFinished", it.toString())
-            if(it != 0L){
+            if (it != 0L) {
                 hikingViewModel.hikingRecordId.value = it
 
                 // 결과 모달창 띄우기
@@ -317,7 +321,6 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 hikingViewModel.isHikingFinished.value = false
             }
         }
-
 
 
     }
@@ -472,6 +475,11 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         TrackingModeOnWithHeading: 현위치 트랙킹 모드 On + 나침반 모드 On, 단말의 위치에 따라 지도 중심이 이동하며 단말의 방향에 따라 지도가 회전한다. */
         mapView.currentLocationTrackingMode =
             MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading //
+
+        mapView.setCustomCurrentLocationMarkerTrackingImage(
+            R.drawable.current_marker,
+            MapPOIItem.ImageOffset(34, 34)
+        )
 //        if(mapView.isShowingCurrentLocationMarker){
 //            Log.d("isShowing 1", "true")
 //        }else{
@@ -555,10 +563,13 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             Log.d("existingLocationList", "is Null or Empty")
         }
 
-        if(locationService?.summitLocation != null){
-            if(locationService?.summitLocation?.latitude != null && locationService?.summitLocation?.longitude != null){
-                setSummitMarker(locationService?.summitLocation?.latitude!!, locationService?.summitLocation?.longitude!!)
-            }else{
+        if (locationService?.summitLocation != null) {
+            if (locationService?.summitLocation?.latitude != null && locationService?.summitLocation?.longitude != null) {
+                setSummitMarker(
+                    locationService?.summitLocation?.latitude!!,
+                    locationService?.summitLocation?.longitude!!
+                )
+            } else {
                 Log.d("departMarker setting fail", "summitLocation latitude or longitude is null")
             }
             Log.d("departMarker setting fail", "summitLocation is null")
@@ -651,7 +662,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 Log.d("distance", distance.toString())
                 return distance < 500   // 200m 이내에 있으면 완등으로 판단
             } else {
-                Log.d("checkIsSummit", "summitLocation is null or summitLocation.latitude is 0.0 or summitLocation.longitude is 0.0")
+                Log.d(
+                    "checkIsSummit",
+                    "summitLocation is null or summitLocation.latitude is 0.0 or summitLocation.longitude is 0.0"
+                )
             }
         }
         return false
@@ -742,7 +756,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 val rv = meetupDialog.findViewById<RecyclerView>(R.id.recycler_view_meetup)
                 Log.d("meetup!", "${response.body()}")
                 val meetupList = response.body()!!.result
-                if(meetupList.isNotEmpty()){
+                if (meetupList.isNotEmpty()) {
                     val meetupAdapter = MeetupAdapter(activityContext, meetupList)
                     rv.adapter = meetupAdapter
                     rv.layoutManager = LinearLayoutManager(activityContext)
@@ -752,7 +766,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                         override fun onClick(v: View, position: Int) {
                             // viewModel에 데이터 저장
 
-                            Log.d("meetupList mountainSummitLatLng", meetupList[position].mountainSummitLat.toString() + " / " + meetupList[position].mountainSummitLng.toString() )
+                            Log.d(
+                                "meetupList mountainSummitLatLng",
+                                meetupList[position].mountainSummitLat.toString() + " / " + meetupList[position].mountainSummitLng.toString()
+                            )
                             hikingViewModel.isMeetup.value = true
                             hikingViewModel.meetupId.value = meetupList[position].meetupId
                             hikingViewModel.mountainId.value = meetupList[position].mountainId
@@ -769,13 +786,16 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                                 showAgreementHikingMeetupModal()
                                 meetupDialog.dismiss()
                             } else {
-                                Toast.makeText(context, "약관에 동의 후 진행해주세요", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "약관에 동의 후 진행해주세요", Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         }
                     })
                 } else {
-                    meetupDialog.findViewById<ImageView>(R.id.dialog_meetup_no_meetup_iv).visibility = View.VISIBLE
-                    meetupDialog.findViewById<TextView>(R.id.dialog_meetup_no_meetup_tv).visibility = View.VISIBLE
+                    meetupDialog.findViewById<ImageView>(R.id.dialog_meetup_no_meetup_iv).visibility =
+                        View.VISIBLE
+                    meetupDialog.findViewById<TextView>(R.id.dialog_meetup_no_meetup_tv).visibility =
+                        View.VISIBLE
                 }
             }
 
@@ -836,7 +856,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
                 // adapter 클릭 리스너 등록
                 mountainAdapter.setItemClickListener(object : MountainAdapter.OnItemClickListener {
                     override fun onClick(v: View, position: Int) {
-                        Log.d("mountainList mountainSummitLatLng", mountainList[position].mountainSummitLat.toString() + " / " + mountainList[position].mountainSummitLng.toString() )
+                        Log.d(
+                            "mountainList mountainSummitLatLng",
+                            mountainList[position].mountainSummitLat.toString() + " / " + mountainList[position].mountainSummitLng.toString()
+                        )
 
                         // viewModel에 데이터 저장
                         hikingViewModel.mountainId.value = mountainList[position].mountainId
@@ -902,14 +925,14 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         // 클릭 리스너 핸들 -> 확인
         val hikingStart = selectView.findViewById<Button>(R.id.hiking_mountain_start_btn)
-        hikingStart.setOnClickListener { dialog.dismiss(); showToast("출발 마커가 찍힐 때까지 잠시 기다려 주세요."); startHiking();}
+        hikingStart.setOnClickListener { dialog.dismiss(); showToast("출발 마커가 찍힐 때까지 잠시 기다려 주세요."); startHiking(); }
 
         // 클릭 리스너 핸들 -> 취소
         val hikingCancel = selectView.findViewById<Button>(R.id.hiking_mountain_cancel_start_btn)
         hikingCancel.setOnClickListener { dialog.dismiss();hikingViewModel.meetupClear(); showSelectTypeDialog() }
     }
 
-    fun startHiking(){
+    fun startHiking() {
         startHikingService()
 
         hikingFinishBtn.visibility = View.VISIBLE
@@ -939,18 +962,21 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             Log.d("SOCKET3", "Connection success : " + mSocket)
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.d("SOCKET", "소켓연결에 실패했습니다." )
+            Log.d("SOCKET", "소켓연결에 실패했습니다.")
         }
 
         // 소켓 구독 함수
         mSocket?.on(
             Socket.EVENT_CONNECT
         ) { args: Array<Any?>? ->
-            Log.d("SOCKET5", "소켓 입장" )
-            Log.d("SOCKET5", nickname + " " + memberId + " " + meetupId )
-            mSocket?.emit("enter", gson.toJson(SocketEnterData(nickname, memberId, meetupId))) // 입장 메시지 전송
+            Log.d("SOCKET5", "소켓 입장")
+            Log.d("SOCKET5", nickname + " " + memberId + " " + meetupId)
+            mSocket?.emit(
+                "enter",
+                gson.toJson(SocketEnterData(nickname, memberId, meetupId))
+            ) // 입장 메시지 전송
         }
-        mSocket?.on("enter"){ args: Array<Any> ->
+        mSocket?.on("enter") { args: Array<Any> ->
             val data: SocketEnterData = gson.fromJson(
                 args[0].toString(),
                 SocketEnterData::class.java
@@ -1042,7 +1068,10 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
             customMarker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
             customMarker.isCustomImageAutoscale =
                 false // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-            customMarker.setCustomImageAnchor(0.5f, 1.0f) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+            customMarker.setCustomImageAnchor(
+                0.5f,
+                1.0f
+            ) // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
             // Glide로 이미지 로드 및 처리를 위한 RequestOptions 설정
             val requestOptions = RequestOptions()
@@ -1098,7 +1127,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         }
     }
 
-    private fun finishHikingAndClearAll(){
+    private fun finishHikingAndClearAll() {
         val stopServiceIntent = Intent(activity, LocationService::class.java)
         stopServiceIntent.action = ACTION_STOP
         activity?.startService(stopServiceIntent)
@@ -1137,11 +1166,13 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         val nickname = db?.userDao()?.getUser()?.nickname
 //        val hikingRecordId = hikingViewModel.hikingRecordId.value
         val hikingRecordId = hikingViewModel.hikingRecordId.value
+
         hikingViewModel.hikingRecordId.value = 0L
-        webViewSetting(activityContext, webView, BASE_URL + "profile/"+ nickname + "/tracking/" + hikingRecordId)
+        webViewSetting(webView, BASE_URL + "profile/" + nickname + "/tracking/" + hikingRecordId)
 
         val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)
         val hikingRecordResultDialog = mBuilder.show()
+        hikingRecordResultDialog.window?.setBackgroundDrawableResource(R.drawable.radius_10)
 
         // 클릭 리스너 핸들 -> 확인
         val hikingStart = selectView.findViewById<Button>(R.id.finish_hiking_result_confirm)

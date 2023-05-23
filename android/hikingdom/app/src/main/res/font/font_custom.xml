@@ -3,10 +3,38 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <font
-        android:font="@font/applesdgothicneoregular"
+        android:font="@font/suite_light"
+        android:fontWeight="300"
+        android:fontStyle="normal"
+        />
+    <font
+        android:font="@font/suite_regular"
         android:fontWeight="400"
         android:fontStyle="normal"
-        app:font="@font/applesdgothicneoregular"
-        app:fontWeight="600"
-        app:fontStyle="normal"/>
+        />
+    <font
+        android:font="@font/suite_medium"
+        android:fontWeight="500"
+        android:fontStyle="normal"
+        />
+    <font
+        android:font="@font/suite_semi_bold"
+        android:fontWeight="600"
+        android:fontStyle="normal"
+        />
+    <font
+        android:font="@font/suite_bold"
+        android:fontWeight="700"
+        android:fontStyle="normal"
+        />
+    <font
+        android:font="@font/suite_extra_bold"
+        android:fontWeight="700"
+        android:fontStyle="normal"
+        />
+    <font
+        android:font="@font/suite_heavy"
+        android:fontWeight="700"
+        android:fontStyle="normal"
+        />
 </font-family>

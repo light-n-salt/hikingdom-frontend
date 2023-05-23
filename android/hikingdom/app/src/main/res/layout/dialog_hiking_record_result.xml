@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_marginTop="5dp"
-        android:text="등산 기록이 저장되었습니다.\n마이페이지에서도 확인할 수 있어요!"
+        android:text="@string/dialog_result_title"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -23,19 +23,20 @@
         android:id="@+id/finish_hiking_result_webview"
         android:layout_width="match_parent"
         android:layout_height="435dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginTop="10dp"
         android:clickable="false"
-        android:focusableInTouchMode="false"
-        android:layout_marginHorizontal="10dp" />
+        android:focusableInTouchMode="false" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:gravity="center"
         android:orientation="horizontal">
+
         <android.widget.Button
             android:id="@+id/finish_hiking_result_confirm"
-            android:layout_width="25dp"
+            android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -49,17 +50,17 @@
     </LinearLayout>
 
 
-<!--    <android.widget.Button-->
-<!--        android:id="@+id/finish_hiking_result_confirm"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_gravity="end"-->
-<!--        android:textAlignment="textEnd"-->
-<!--        android:layout_weight="1"-->
-<!--        android:background="@color/transparent"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        android:text="@string/button_ok"-->
-<!--        android:textColor="@color/primary"-->
-<!--        android:textSize="18sp"-->
-<!--        android:textStyle="bold" />-->
+    <!--    <android.widget.Button-->
+    <!--        android:id="@+id/finish_hiking_result_confirm"-->
+    <!--        android:layout_width="50dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_gravity="end"-->
+    <!--        android:textAlignment="textEnd"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:background="@color/transparent"-->
+    <!--        android:layout_marginEnd="10dp"-->
+    <!--        android:text="@string/button_ok"-->
+    <!--        android:textColor="@color/primary"-->
+    <!--        android:textSize="18sp"-->
+    <!--        android:textStyle="bold" />-->
 </LinearLayout>

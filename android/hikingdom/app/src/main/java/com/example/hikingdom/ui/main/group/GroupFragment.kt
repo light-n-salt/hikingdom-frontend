@@ -66,8 +66,10 @@ class GroupFragment(): BaseFragment<FragmentGroupBinding>(FragmentGroupBinding::
         if (user?.clubId != null) {
             webViewSettingWithFileUpload(activityContext, binding.groupWebview, GROUP_WEB_URL)
         } else {
-            webViewSetting(activityContext, binding.groupWebview, NONE_GROUP_WEB_URL)
+            webViewSetting(binding.groupWebview, NONE_GROUP_WEB_URL)
         }
+
+        swipeReloadWebview(binding.swipeRefreshLayout, binding.groupWebview)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

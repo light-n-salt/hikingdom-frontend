@@ -23,7 +23,10 @@ import retrofit2.Response
 
 class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate), LoginView {
 
+    lateinit var webView: WebView
+
     override fun initAfterBinding() {
+        // 웹뷰 초기 설정
         webViewSetting()
     }
 
@@ -34,7 +37,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
 
     // WebView 셋팅
     fun webViewSetting(){
-        val webView = binding.loginWebview
+        webView = binding.loginWebview
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
@@ -56,6 +59,13 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
                 })
             }
         })
+
+        // 아래로 당겼을 때, WebView 새로고침
+        val swipeRefreshLayout = binding.swipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener {
+            webView.reload()
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     fun getFcmToken(): String {
