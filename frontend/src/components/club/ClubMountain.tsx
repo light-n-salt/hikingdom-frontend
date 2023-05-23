@@ -36,15 +36,10 @@ function ClubMountain({ zoom, assetInfo }: ClubMountainprops) {
         {assetInfo.map((info, index) => (
           <AssetMesh
             key={index}
-            // position={info.position}
+            position={new THREE.Vector3(info.row, 0, info.column)}
             url={info.assetUrl}
             meetupId={info.meetupId ? info.meetupId : null}
             check={info.check}
-            position={
-              info.row && info.column
-                ? new THREE.Vector3(info.row, 0, info.column)
-                : info.position
-            }
           />
         ))}
       </group>

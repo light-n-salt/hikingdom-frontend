@@ -97,7 +97,7 @@ function MainPage() {
                 isBold={true}
               />
             </div>
-            <ClubMountain zoom={5} assetInfo={todayClubMt.assets} />
+            <ClubMountain zoom={3.5} assetInfo={todayClubMt.assets} />
           </div>
         </div>
       )}
