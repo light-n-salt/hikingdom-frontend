@@ -7,6 +7,7 @@ type MemberListProps = {
   title: string
   length: number
   memberList: ClubMember[]
+  hostId?: number
   onClickJoin?: (params: number) => void
   onClickDelete?: (params: number) => void
 }
@@ -15,6 +16,7 @@ function MemberList({
   title,
   length,
   memberList,
+  hostId,
   onClickJoin,
   onClickDelete,
 }: MemberListProps) {
@@ -30,6 +32,7 @@ function MemberList({
           memberInfo={memberInfo}
           onClickJoin={onClickJoin}
           onClickDelete={onClickDelete}
+          hostId={hostId}
         />
       ))}
     </div>
