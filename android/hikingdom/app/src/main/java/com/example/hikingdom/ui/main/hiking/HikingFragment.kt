@@ -9,8 +9,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.location.Location
-import android.location.LocationManager
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -29,8 +27,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,7 +49,6 @@ import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
 import com.example.hikingdom.ui.main.hiking.dialog.MeetupAdapter
 import com.example.hikingdom.ui.main.hiking.dialog.MountainAdapter
-import com.example.hikingdom.ui.main.mypage.MypageFragment
 import com.example.hikingdom.utils.*
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -1143,6 +1138,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
 
         val mBuilder = AlertDialog.Builder(activityContext).setView(selectView)
         val hikingRecordResultDialog = mBuilder.show()
+        hikingRecordResultDialog.window?.setBackgroundDrawableResource(R.drawable.radius_10)
 
         // 클릭 리스너 핸들 -> 확인
         val hikingStart = selectView.findViewById<Button>(R.id.finish_hiking_result_confirm)
