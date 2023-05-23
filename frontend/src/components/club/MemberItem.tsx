@@ -36,7 +36,7 @@ function MemberItem({
         onClick={() => navigate(`/profile/${memberInfo.nickname}`)}
       >
         <Image imgUrl={memberInfo.profileUrl} size="sm" isSquare={true} />
-        <img className={`${styles.hostImg} ${isHost}`} src={host}/>
+        <img className={`${styles.hostImg} ${isHost}`} src={host} />
         <div className={styles.username}>
           <span>{memberInfo.nickname}</span>
           <img src={imgSrc} className={styles.level} />
@@ -45,8 +45,10 @@ function MemberItem({
 
       <div className={styles.flexbox}>
         <Info
-          title="총 거리(km)"
-          content={`${thousandSeparator((memberInfo.totalDistance / 1000).toFixed())}`}
+          title="거리(km)"
+          content={`${thousandSeparator(
+            (memberInfo.totalDistance / 1000).toFixed()
+          )}`}
         />
         {onClickJoin && onClickDelete ? (
           <div className={styles.button}>
@@ -65,7 +67,7 @@ function MemberItem({
           </div>
         ) : (
           <Info
-            title="총시간(h)"
+            title="시간(h)"
             content={`${(memberInfo.totalDuration / 60).toFixed()}`}
           />
         )}
