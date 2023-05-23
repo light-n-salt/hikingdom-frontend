@@ -26,7 +26,8 @@ public class MemberHikingRepositoryCustom {
 			.where(
 				isLast(hikingRecordId),
 				memberHiking.member.id.eq(memberId))
-			.orderBy(memberHiking.startAt.desc())
+			.orderBy(memberHiking.endAt.desc())
+			.orderBy(memberHiking.id.desc())
 			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 
