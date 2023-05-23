@@ -17,42 +17,18 @@ type InfiniteMeetupInfo = {
   pageSize: number
 }
 
-export default function PastMeetupList() {
-  const { nickname } = useParams() as { nickname: string }
-  const infiniteRef = useRef<HTMLDivElement>(null)
+type PastMeetupListProps = {
+  records: UserHiking[]
+}
 
-  const { data, isLoading, fetchNextPage, hasNextPage } =
-    useInfiniteQuery<InfiniteMeetupInfo>({
-      queryKey: ['pastMeetup'],
-      queryFn: ({ pageParam = null }) => {
-        return getPastMeetups(nickname, pageParam)
-      },
-      getNextPageParam: (lastPage) => {
-        return lastPage.hasNext
-          ? lastPage.content.slice(-1)[0].meetupId
-          : undefined
-      },
-    })
-
-  const records = useMemo(() => {
-    if (!data) return []
-    return data.pages.flatMap((page) => page.content)
-  }, [data])
-
-  useInfiniteScroll({
-    ref: infiniteRef,
-    loadMore: fetchNextPage,
-    isEnd: !hasNextPage,
-  })
-
+export default function PastMeetupList({ records }: PastMeetupListProps) {
   return (
-    <div ref={infiniteRef} className={styles.scroll}>
+    <div className={styles.scroll}>
       <div className={styles.list}>
         {records?.map((hiking) => (
           <PastMeetupItem key={hiking.hikingRecordId} hiking={hiking} />
         ))}
       </div>
-      {isLoading && <Loading size="sm" />}
     </div>
   )
 }

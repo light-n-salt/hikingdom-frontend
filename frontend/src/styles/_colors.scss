@@ -8,6 +8,7 @@ $white: #f5f5f5;
 $black: #222222;
 $gray: #999999;
 $lime: #bde5a6;
+$green: #85a075;
 $red: #ff0c0c;
 $orange: #b8a721;
 $blue: #2d40be;
@@ -53,6 +54,11 @@ $colors: (
     base: $lime,
     light: lighten($lime, $lighten),
     dark: darken($lime, $darken),
+  ),
+  green-clr: (
+    base: $green,
+    light: lighten($green, $lighten),
+    dark: darken($green, $darken),
   ),
   red-clr: (
     base: $red,

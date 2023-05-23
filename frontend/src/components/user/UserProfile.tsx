@@ -69,7 +69,7 @@ export default function UserProfile({
         </Modal>
       )}
       <div className={`${styles['alarm-siren']}`}>
-        <PageHeader color="dark" />
+        <PageHeader color="primary" />
         <div className={`${stranger} ${styles.siren}`} onClick={onClickReport}>
           <HiLightBulb /> 신고하기
         </div>
@@ -86,12 +86,12 @@ export default function UserProfile({
       </div>
       <div className={`content ${theme} ${styles.record}`}>
         <div className={`${stranger} ${styles.btns}`}>
-          {/* <IconButton
+          <IconButton
             icon={themeIcon}
             size="sm"
             color="gray"
             onClick={toggleTheme}
-          /> */}
+          />
           <IconButton
             icon={<BiEdit />}
             size="sm"

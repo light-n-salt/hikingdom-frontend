@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './MemberItem.module.scss'
 import Image from 'components/common/Image'
 import Button from 'components/common/Button'
 import LEVEL_TO_IMG from 'constants/levels'
 import { ClubMember } from 'types/club.interface'
+
+import { ThemeContext } from 'styles/ThemeProvider'
 import thousandSeparator from 'utils/thousandSeparator'
 import host from 'assets/images/host.png'
 
@@ -23,11 +25,12 @@ function MemberItem({
 }: MemberItemProps) {
   const navigate = useNavigate()
   const imgSrc = LEVEL_TO_IMG[memberInfo.level]
+  const { theme } = useContext(ThemeContext)
 
   const isHost = memberInfo.memberId === hostId ? null : styles.hidden
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles[theme]}`}>
       <div
         className={styles.user}
         onClick={() => navigate(`/profile/${memberInfo.nickname}`)}

@@ -2,9 +2,10 @@
 
 .alarm {
   padding: 1rem;
+  cursor: pointer;
 
   &.read {
-    background-color: clr(shadow-clr, light);
+    background-color: transparentize(clr(gray-clr, light), 0.7);
   }
 }
 
