@@ -111,8 +111,10 @@ function TrackingInfo({
   const paddingClass = isandroid ? null : styles.padding
 
   return detailRecord ? (
-    <div className={`${styles.tracking} ${paddingClass}`}>
-      {!isandroid && <h2>{detailRecord.mountainName} 트래킹 기록</h2>}
+    <div className={`${styles.container} ${paddingClass}`}>
+      {!isandroid && (
+        <p className={styles.title}>{detailRecord.mountainName} 트래킹 기록</p>
+      )}
 
       <div className={`${styles.flexbox} ${styles.gap}`}>
         <IconText

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './MemberItem.module.scss'
 import Image from 'components/common/Image'
@@ -7,6 +7,7 @@ import LEVEL_TO_IMG from 'constants/levels'
 import { convertToKm } from 'utils/convertToKm'
 import { ClubMember } from 'types/club.interface'
 import { convertToTime } from 'utils/convertToTime'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 type MemberItemProps = {
   memberInfo: ClubMember
@@ -21,9 +22,10 @@ function MemberItem({
 }: MemberItemProps) {
   const navigate = useNavigate()
   const imgSrc = LEVEL_TO_IMG[memberInfo.level]
+  const { theme } = useContext(ThemeContext)
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles[theme]}`}>
       <div
         className={styles.user}
         onClick={() => navigate(`/profile/${memberInfo.nickname}`)}

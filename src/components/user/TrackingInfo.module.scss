@@ -1,6 +1,6 @@
 @use 'src/styles/colors' as *;
 
-.tracking {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,6 +11,11 @@
   &.padding {
     padding: 1.7rem 1.7rem;
   }
+}
+
+.title {
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 .map {
