@@ -30,6 +30,17 @@
   gap: 0.3rem;
 }
 
+.hostImg {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  width: 2rem;
+
+  &.hidden {
+    display: none;
+  }
+}
+
 .username {
   display: flex;
   align-items: center;

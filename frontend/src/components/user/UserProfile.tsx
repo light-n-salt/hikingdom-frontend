@@ -109,7 +109,7 @@ export default function UserProfile({
             />
           )}
         </div>
-        <span className={styles.email}>{email}</span>
+        <span className={`${stranger} ${styles.email}`}>{email}</span>
         <UserInfo
           totalAlt={totalAlt}
           totalDistance={totalDistance}
