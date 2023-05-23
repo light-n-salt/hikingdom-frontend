@@ -63,7 +63,7 @@ function ClubDetailPage() {
       <div className={styles.intro}>
         <MeetupIntroduction content={clubInfo.description} />
       </div>
-      <ClubMountain zoom={3} assetInfo={clubInfo.assets} />
+      <ClubMountain zoom={2} assetInfo={clubInfo.assets} />
     </div>
   ) : (
     <Loading />

@@ -27,7 +27,7 @@ function SearchClubMt({ assetInfo }: SearchClubMtProps) {
 
   return (
     <>
-      <ClubMountain zoom={3.5} assetInfo={assetInfo} />
+      <ClubMountain zoom={2.5} assetInfo={assetInfo} />
       <div className={styles.select}>
         <Dropdown
           options={filterOptions}
