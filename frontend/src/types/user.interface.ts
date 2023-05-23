@@ -61,10 +61,12 @@ export interface UserHikingDetail {
 
 // 전체 알림 조회
 export interface UserAlarm {
-  notificationId: number
+  category: string
   title: string
   body: string
   sendAt: string
+  clubId: number
+  meetupId?: number  
+  notificationId: number
   isRead: boolean
-  url: string
 }

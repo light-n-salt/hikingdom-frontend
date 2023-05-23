@@ -117,7 +117,7 @@ function TrackingInfo({
       <div className={`${styles.flexbox} ${styles.gap}`}>
         <IconText
           icon={<BiCalendarAlt className={styles.icon} />}
-          text={detailRecord.startAt.split(' ')[0]}
+          text={detailRecord.startAt.split(' ')[0].replaceAll('-', '.')}
           size="sm"
         />
         <IconText
