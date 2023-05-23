@@ -14,13 +14,14 @@
 
 // 그라데이션 다크모드 테마
 @mixin dark-gradation-theme() {
-  background: linear-gradient(clr(lime-clr, dark), clr(tertiary-clr));
+  background-color: clr(tertiary-clr);
+  // background: linear-gradient(clr(green-clr), clr(tertiary-clr));
   color: clr(white-clr, light);
 }
 
 // upside down 그라데이션 다크모드 테마
 @mixin upside-down-dark-gradation-theme() {
-  background: linear-gradient(clr(tertiary-clr) 30%, clr(lime-clr, dark));
+  background: linear-gradient(clr(tertiary-clr) 30%, clr(green-clr, dark));
   color: clr(white-clr, light);
 }
 

@@ -20,7 +20,11 @@ function AlarmPage() {
 
   return (
     <div className={`page p-md ${theme}`}>
-      <PageHeader title="알림 내역" url={`/profile/${userInfo?.nickname}`} />
+      <PageHeader
+        color="primary"
+        title="알림 내역"
+        url={`/profile/${userInfo?.nickname}`}
+      />
       {alarmList && <AlarmList alarmList={alarmList} />}
     </div>
   )

@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useRecoilState } from 'recoil'
+import { themeState } from 'recoil/atoms'
 
 interface Props {
   children: React.ReactNode
@@ -10,7 +12,7 @@ export const ThemeContext = React.createContext({
 })
 
 export default function ThemeProvider({ children }: Props) {
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useRecoilState(themeState)
 
   const toggleTheme = () => {
     setTheme((theme) => {

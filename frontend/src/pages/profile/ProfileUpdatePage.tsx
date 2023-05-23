@@ -30,7 +30,7 @@ function ProfileUpdatePage() {
 
   return (
     <div className={`page p-md ${theme} ${styles.profile}`}>
-      <PageHeader color="dark" />
+      <PageHeader color="primary" />
       <ImageUpdateForm />
       <NicknameUpdateForm />
       <PwUpdateForm />

@@ -4,5 +4,12 @@
   margin: 0 0 0 0.3rem;
   font-size: 0.9rem;
   font-weight: 800;
-  color: transparentize(clr(tertiary-clr), 0.1);
+
+  &.light {
+    color: transparentize(clr(tertiary-clr), 0.1);
+  }
+
+  &.dark {
+    color: clr(white-clr, light);
+  }
 }

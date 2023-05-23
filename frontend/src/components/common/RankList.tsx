@@ -7,12 +7,14 @@ type RankListProps = {
   clubInfoArray: ClubInfo[] // 소모임 정보 배열
   size?: 'sm' | 'lg' // 사이즈
   onClickDeleteClub?: (clubId: number, clubName: string) => void // 소모임 삭제버튼 여부
+  filter?: string
 }
 
 function RankList({
   clubInfoArray,
   size = 'lg',
   onClickDeleteClub,
+  filter = '',
 }: RankListProps) {
   const paddingClass = size === 'sm' ? 'p-md' : ''
 
@@ -20,7 +22,7 @@ function RankList({
     <div className={`${styles.container} ${styles[size]} ${paddingClass}`}>
       {clubInfoArray.map((clubInfo) => (
         <RankItem
-          key={clubInfo.clubId}
+          key={`${filter}-${clubInfo.clubId}`}
           clubInfo={clubInfo}
           size={size}
           onClickDeleteClub={onClickDeleteClub}
