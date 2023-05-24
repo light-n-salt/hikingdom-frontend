@@ -21,7 +21,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import com.example.hikingdom.config.WebInterface
 import com.example.hikingdom.data.local.AppDatabase
@@ -114,13 +113,6 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflate<VB>) 
             }
         })
 
-    }
-
-    fun swipeReloadWebview(swipeRefreshLayout: SwipeRefreshLayout, webView: WebView){
-        swipeRefreshLayout.setOnRefreshListener {
-            webView.reload()
-            swipeRefreshLayout.isRefreshing = false
-        }
     }
 
 }

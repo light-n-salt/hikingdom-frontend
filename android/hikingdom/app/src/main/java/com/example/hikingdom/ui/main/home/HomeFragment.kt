@@ -14,7 +14,6 @@ class HomeFragment(): BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inf
 
     override fun initAfterBinding() {
         webViewSetting(binding.homeWebview, HOME_WEB_URL)
-        swipeReloadWebview(binding.swipeRefreshLayout, binding.homeWebview)
     }
 
     companion object {

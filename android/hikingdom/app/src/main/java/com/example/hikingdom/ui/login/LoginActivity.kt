@@ -60,12 +60,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
             }
         })
 
-        // 아래로 당겼을 때, WebView 새로고침
-        val swipeRefreshLayout = binding.swipeRefreshLayout
-        swipeRefreshLayout.setOnRefreshListener {
-            webView.reload()
-            swipeRefreshLayout.isRefreshing = false
-        }
     }
 
     fun getFcmToken(): String {
