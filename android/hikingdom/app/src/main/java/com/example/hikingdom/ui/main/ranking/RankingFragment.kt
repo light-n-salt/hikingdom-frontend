@@ -12,7 +12,6 @@ class RankingFragment(): BaseFragment<FragmentRankingBinding>(FragmentRankingBin
 
     override fun initAfterBinding() {
         webViewSetting(binding.rankingWebview, RANKING_WEB_URL)
-        swipeReloadWebview(binding.swipeRefreshLayout, binding.rankingWebview)
     }
 
     companion object {

@@ -68,8 +68,6 @@ class GroupFragment(): BaseFragment<FragmentGroupBinding>(FragmentGroupBinding::
         } else {
             webViewSetting(binding.groupWebview, NONE_GROUP_WEB_URL)
         }
-
-        swipeReloadWebview(binding.swipeRefreshLayout, binding.groupWebview)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

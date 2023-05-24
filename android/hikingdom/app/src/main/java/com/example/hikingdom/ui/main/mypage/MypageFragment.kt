@@ -17,7 +17,6 @@ class MypageFragment(): BaseFragment<FragmentMypageBinding>(FragmentMypageBindin
 
         // 사용자 닉네임이 해당하는 프로필 페이지로 이동
         webViewSetting(binding.mypageWebview,MYPAGE_WEB_URL + '/' + user?.nickname)
-        swipeReloadWebview(binding.swipeRefreshLayout, binding.mypageWebview)
     }
 
     companion object {
