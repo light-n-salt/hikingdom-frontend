@@ -51,7 +51,7 @@ public class MeetupReviewController {
 				bindingResult.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
 		}
 
-		Long reviewId = meetupReviewService.saveMeetupReview(authentication.getName(), clubId, meetupId,
+		Long reviewId = meetupReviewService.addMeetupReview(authentication.getName(), clubId, meetupId,
 			meetupReviewReq);
 
 		return new ResponseEntity<>(BaseResponseBody.of("일정 후기 생성에 성공했습니다", Map.of("reviewId", reviewId)),

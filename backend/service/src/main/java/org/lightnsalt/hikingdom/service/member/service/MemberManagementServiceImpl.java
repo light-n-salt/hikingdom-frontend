@@ -128,7 +128,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		// fcm token 삭제
 		memberFcmTokenRepository.deleteAllByMemberId(member.getId());
 
-		memberRepository.updateMemberWithdraw(member.getId(), true, now);
+		memberRepository.updateIsWithdrawAndWithdrawAtById(true, now, member.getId());
 	}
 
 	@Transactional
@@ -171,7 +171,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
 		}
 
-		memberRepository.setPasswordById(passwordEncoder.encode(memberChangePasswordReq.getNewPassword()),
+		memberRepository.updatePasswordById(passwordEncoder.encode(memberChangePasswordReq.getNewPassword()),
 			member.getId());
 	}
 
@@ -191,7 +191,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 
-		memberRepository.setNicknameById(newNickname, member.getId());
+		memberRepository.updateNicknameById(newNickname, member.getId());
 
 		// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
 		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
@@ -213,7 +213,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 		try {
 			String url = s3FileUtil.upload(photo, "members/" + memberId + "/profiles");
-			memberRepository.setProfileUrlById(url, memberId);
+			memberRepository.updateProfileUrlById(url, memberId);
 
 			// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
 			final ClubMember clubMember = clubMemberRepository.findByMemberId(memberId)

@@ -21,10 +21,10 @@ public class LocationInfoController {
 	private final LocationInfoService locationInfoService;
 
 	@GetMapping
-	public ResponseEntity<CustomResponseBody> sidoList(@RequestParam(required = false, defaultValue = "sido") String query,
+	public ResponseEntity<CustomResponseBody> locationInfoList(@RequestParam(required = false, defaultValue = "sido") String query,
 		@RequestParam(required = false, defaultValue = "0000000000") String word) {
 		return new ResponseEntity<>(
-			BaseResponseBody.of("지역 정보 검색에 성공했습니다", locationInfoService.findBaseAddressInfoList(query, word)),
+			BaseResponseBody.of("지역 정보 검색에 성공했습니다", locationInfoService.findLocationInfoList(query, word)),
 			HttpStatus.OK);
 	}
 }

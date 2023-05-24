@@ -55,7 +55,7 @@ public class MeetupBasicServiceImpl implements MeetupBasicService {
 
 	@Override
 	@Transactional
-	public Long saveMeetup(String email, Long clubId, MeetupAddReq req) {
+	public Long addMeetup(String email, Long clubId, MeetupAddReq req) {
 		// 일정 날짜 확인
 		LocalDateTime startAt = LocalDateTime.parse(req.getStartAt() + ":00",
 			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

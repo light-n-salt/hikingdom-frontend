@@ -29,7 +29,7 @@ public class MeetupMemberController {
 	private final MeetupMemberService meetupMemberService;
 
 	@PostMapping("/join")
-	public ResponseEntity<CustomResponseBody> meetupJoinSave(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> meetupJoinAdd(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long meetupId) {
 		meetupMemberService.addJoinMeetup(authentication.getName(), clubId, meetupId);
 		return new ResponseEntity<>(BaseResponseBody.of("일정 참여에 성공했습니다"), HttpStatus.CREATED);
