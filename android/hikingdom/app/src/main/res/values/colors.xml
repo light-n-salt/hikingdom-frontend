@@ -17,6 +17,7 @@
     <color name="primaryVariant">#065446</color>
     <color name="secondary">#E8F2E9</color>
     <color name="secondaryDark">#C7E0CA</color>
+    <color name="lime">#cdf4b2</color>
     <color name="transparent">#00ff0000</color>
     <color name="form_error">#F44336</color>
 

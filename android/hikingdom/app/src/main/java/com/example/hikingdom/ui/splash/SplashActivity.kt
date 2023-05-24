@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.R
 import com.example.hikingdom.data.remote.api.RetrofitInstance
 import com.example.hikingdom.data.remote.auth.AuthRetrofitInterface
@@ -20,8 +19,6 @@ import com.example.hikingdom.ui.main.MainActivity
 import com.example.hikingdom.utils.deleteJWT
 import com.example.hikingdom.utils.getRefreshToken
 import com.example.hikingdom.utils.saveJWT
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,12 +30,12 @@ class SplashActivity: BaseActivity<ActivitySplashBinding>(ActivitySplashBinding:
         Log.d("autoLogin1", "autoLogin")
         autoLogin() // 자동 로그인 로직 실행
 
+        val image: ImageView = binding.image
         val logo: ImageView = binding.logo
-        val catchphrase: TextView = binding.catchphrase
-        val slideFromLeftAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_from_left)
-        val slideFromRightAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_from_right)
-        logo.startAnimation(slideFromLeftAnimation)
-        catchphrase.startAnimation(slideFromRightAnimation)
+        val slideFromDownAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_from_down)
+        val slideFromUpAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_from_up)
+        logo.startAnimation(slideFromDownAnimation)
+        image.startAnimation(slideFromUpAnimation)
     }
 
     private fun autoLogin() {
