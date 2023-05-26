@@ -405,7 +405,7 @@ class HikingFragment() : BaseFragment<FragmentHikingBinding>(FragmentHikingBindi
         ) {
 //            Log.d("askPermissionForBackgroundUsage", "조건문 true")
             AlertDialog.Builder(this.requireContext()).setTitle("백그라운드 권한 설정")
-                .setMessage("백그라운드 위치 권한을 설정하지 않으면, 백그라운드 경로 기록 서비스를 이용할 수 없어요.")
+                .setMessage("하이킹덤은 앱이 종료되었거나 사용 중이 아닐 때도 위치 데이터를 수집하여 등산 경로 기록 및 저장 기능을 지원합니다.")
                 .setPositiveButton("설정", DialogInterface.OnClickListener { dialog, which ->
                     ActivityCompat.requestPermissions(
                         this.requireActivity(), arrayOf<String>(
