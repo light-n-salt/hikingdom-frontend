@@ -30,12 +30,12 @@ public class ClubSearchRepositoryCustom extends ClubSearchRepository {
 			.select(Projections.constructor(ClubSearchRes.class, club,
 				Expressions.cases()
 					.when(clubRanking.setDate.eq(today)).then(clubRanking.ranking)
-					.when(clubRanking.setDate.eq(today.minusDays(1))).then(clubRanking.ranking)
 					.otherwise((Long)null).as("ranking")))
 			.from(club)
-			.leftJoin(clubRanking).on(club.id.eq(clubRanking.club.id))
+			.leftJoin(clubRanking)
+			.on(club.id.eq(clubRanking.club.id).and(clubRanking.setDate.eq(today)))
 			.where(whereClause)
-			.orderBy(clubRanking.ranking.desc())
+			.orderBy(clubRanking.ranking.asc().nullsLast())
 			.limit(pageable.getPageSize() + 1L)
 			.fetch();
 

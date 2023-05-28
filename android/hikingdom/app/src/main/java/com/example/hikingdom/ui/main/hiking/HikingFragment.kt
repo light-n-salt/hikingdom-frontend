@@ -10,6 +10,7 @@ import android.location.Location
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,21 +18,32 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.hikingdom.BuildConfig
 import com.example.hikingdom.R
 import com.example.hikingdom.data.local.AppDatabase
+import com.example.hikingdom.data.remote.api.RetrofitTokenInstance
+import com.example.hikingdom.data.remote.hiking.HikingRetrofitInterface
+import com.example.hikingdom.data.remote.hiking.Mountain
+import com.example.hikingdom.data.remote.hiking.MountainResponse
 import com.example.hikingdom.databinding.FragmentHikingBinding
 import com.example.hikingdom.ui.BaseFragment
+import com.example.hikingdom.ui.main.hiking.dialog.MountainAdapter
+import com.example.hikingdom.ui.main.hiking.dialog.MountainViewModel
 import com.example.hikingdom.utils.*
 import net.daum.mf.map.api.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDateTime
 
 
 class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBinding::inflate)
 //    , MapView.CurrentLocationEventListener
 {
-    lateinit var db: AppDatabase
-
     private var locationService: LocationService? = null
     private val hikingViewModel : HikingViewModel by viewModels()
 
@@ -64,10 +76,34 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         mapView = MapView(requireContext())
         mapViewContainer = binding.hikingMapview
 
-        db = AppDatabase.getInstance(requireContext())!!    // 로컬 DB
+//        db = AppDatabase.getInstance(requireContext())!!    // 로컬 DB
 
         checkPermission()
+
+        // 다이얼로그창 띄우기
+        val mountainView = LayoutInflater.from(activityContext).inflate(R.layout.dialog_mountain, null)
+        val mBuilder = AlertDialog.Builder(activityContext)
+            .setView(mountainView)
+            .setTitle("가까운 산")
+        val moutainDialog = mBuilder.show()
+
+        // 데이터 불러오기
+        val api = RetrofitTokenInstance.getInstance().create(HikingRetrofitInterface::class.java)
+        api.getNearMountains(37.4328f, 126.9965f).enqueue(object: Callback<MountainResponse> {
+            override fun onResponse(call: Call<MountainResponse>, response: Response<MountainResponse>) {
+                Log.d("user!", "${response.body()}")
+                val rv = moutainDialog.findViewById<RecyclerView>(R.id.mountain_rv)
+                val mountainAdapter = MountainAdapter(activityContext, response.body()!!.result)
+                rv.adapter = mountainAdapter
+                rv.layoutManager = LinearLayoutManager(activityContext)
+            }
+            override fun onFailure(call: Call<MountainResponse>, t: Throwable) {
+                Log.d("user!", "fail")
+            }
+        })
+
     }
+
 
     companion object {
         fun newInstance(): HikingFragment = HikingFragment()
@@ -426,7 +462,7 @@ class HikingFragment(): BaseFragment<FragmentHikingBinding>(FragmentHikingBindin
         val polyline = MapPolyline()
         polyline.lineColor = POLYLINE_COLOR_CODE  // @color/blue 에 해당하는 rgb color
 
-        val existingLocationList = db.userLocationDao().getUserLocations()
+        val existingLocationList = db?.userLocationDao()?.getUserLocations()
 
         if(!existingLocationList.isNullOrEmpty()){
 

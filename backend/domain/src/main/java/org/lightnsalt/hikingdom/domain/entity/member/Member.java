@@ -1,21 +1,9 @@
 package org.lightnsalt.hikingdom.domain.entity.member;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -31,6 +19,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import org.lightnsalt.hikingdom.domain.entity.notification.MemberFcmToken;
 
 @Entity
 @Table(name = "member")
@@ -80,9 +70,13 @@ public class Member extends BaseTimeEntity {
 	@OneToOne(mappedBy = "member")
 	private MemberHikingStatistic hikingStatistic;
 
+	@OneToMany(mappedBy = "member")
+	private List<MemberFcmToken> memberFcmTokens;
+
 	@Builder
 	public Member(MemberLevelInfo level, String email, String password, String nickname, String profileUrl,
-		LocalDateTime withdrawAt, boolean isWithdraw, MemberRoleType role, MemberHikingStatistic hikingStatistic) {
+		LocalDateTime withdrawAt, boolean isWithdraw, MemberRoleType role, MemberHikingStatistic hikingStatistic,
+		List<MemberFcmToken> memberFcmTokens) {
 		this.level = level;
 		this.email = email;
 		this.password = password;
@@ -92,5 +86,10 @@ public class Member extends BaseTimeEntity {
 		this.isWithdraw = isWithdraw;
 		this.role = role;
 		this.hikingStatistic = hikingStatistic;
+		this.memberFcmTokens = memberFcmTokens;
+	}
+
+	public void updateMemberLevel(MemberLevelInfo level) {
+		this.level = level;
 	}
 }

@@ -18,6 +18,8 @@ public class TodayMeetupRes {
     private String meetupName;
     private Long mountainId;
     private String mountainName;
+    private double mountainSummitLat;
+    private double mountainSummitLng;
     private int totalMember;
     private String startAt;
 
@@ -26,6 +28,8 @@ public class TodayMeetupRes {
         this.meetupName = meetup.getName();
         this.mountainId = meetup.getMountain().getId();
         this.mountainName = meetup.getMountain().getName();
+        this.mountainSummitLat = meetup.getMountain().getTopLat();
+        this.mountainSummitLng = meetup.getMountain().getTopLng();
         this.startAt = meetup.getStartAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 //    public TodayMeetupRes(Long meetupId, String meetupName, Long mountainId, String mountainName, int totalMember, LocalDateTime startAt) {

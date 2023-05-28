@@ -1,4 +1,3 @@
-/*
 package org.lightnsalt.hikingdom.service.info;
 
 import org.junit.jupiter.api.DisplayName;
@@ -13,13 +12,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class MountainInfoRepositoryTest {
+class MountainInfoRepositoryTest {
 	@Autowired
 	private MountainInfoRepository mountainInfoRepository;
 
 	@Test
 	@DisplayName("산 데이터 생성")
-	public void MountainInfo_create() {
+	void MountainInfo_create() {
 		// given
 		final MountainInfo mountainInfo = MountainInfo.builder()
 			.name("테스트")
@@ -49,7 +48,7 @@ public class MountainInfoRepositoryTest {
 
 	@Test
 	@DisplayName("산 데이터 생성 및 확인")
-	public void MountainInfo_select() {
+	void MountainInfo_select() {
 		// given
 		final MountainInfo mountainInfo = MountainInfo.builder()
 			.name("테스트")
@@ -80,7 +79,7 @@ public class MountainInfoRepositoryTest {
 
 	@Test
 	@DisplayName("산 데이터 ID 조회")
-	public void MountainInfo_findById() {
+	void MountainInfo_findById() {
 		// given
 		final MountainInfo mountainInfo = MountainInfo.builder()
 			.name("테스트")
@@ -110,5 +109,3 @@ public class MountainInfoRepositoryTest {
 	}
 
 }
-
- */

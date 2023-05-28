@@ -9,12 +9,18 @@ public class ClubAssetRes {
 	private String mountainName;
 	private Long meetupId;
 	private String assetUrl;
-	private int row;
-	private int column;
+	private double row;
+	private double column;
 
 	public ClubAssetRes(ClubAsset clubAsset) {
-		this.mountainName = clubAsset.getMeetup().getMountain().getName();
-		this.meetupId = clubAsset.getMeetup().getId();
+		if (clubAsset.getMeetup() == null) { // 기본 에셋 변환할 때 Null Check
+			this.mountainName = null;
+			this.meetupId = null;
+		} else {
+			this.mountainName = clubAsset.getMeetup().getMountain().getName();
+			this.meetupId = clubAsset.getMeetup().getId();
+		}
+
 		this.assetUrl = clubAsset.getAsset().getAssetUrl();
 		this.row = clubAsset.getRowIndex();
 		this.column = clubAsset.getColIndex();

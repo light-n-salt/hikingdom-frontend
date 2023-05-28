@@ -7,6 +7,7 @@ import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddRes;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainDetailRes;
 import org.lightnsalt.hikingdom.service.info.dto.request.MountainAddReq;
 import org.lightnsalt.hikingdom.service.info.dto.response.MountainListRes;
+import org.lightnsalt.hikingdom.service.info.dto.response.MountainLocationRes;
 import org.springframework.data.domain.Pageable;
 
 public interface MountainInfoService {
@@ -19,5 +20,5 @@ public interface MountainInfoService {
 
 	void addMountainInfoDaily(Long mountainId);
 
-	List<MountainListRes> findMountainInfoLocation(double lat, double lng);
+	List<MountainLocationRes> findMountainInfoLocation(double lat, double lng);
 }

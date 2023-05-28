@@ -4,6 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SecurityException;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import org.lightnsalt.hikingdom.common.dto.ErrorResponseBody;
@@ -39,10 +40,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+		@NonNull FilterChain filterChain)
 		throws ServletException, IOException {
 		try {
 			String accessToken = resolveToken(request);
+
 			if (StringUtils.hasText(accessToken)) {
 				// check if access token is blacklisted (token is logged out)
 				String isLogout = redisUtil.getValue(accessToken);

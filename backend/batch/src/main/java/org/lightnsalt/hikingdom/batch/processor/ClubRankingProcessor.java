@@ -2,38 +2,39 @@ package org.lightnsalt.hikingdom.batch.processor;
 
 import java.time.LocalDate;
 
-import org.lightnsalt.hikingdom.batch.dto.ClubRankingDto;
+import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.record.ClubRanking;
-import org.lightnsalt.hikingdom.domain.entity.club.record.ClubTotalHikingStatistic;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClubRankingProcessor implements ItemProcessor<ClubRankingDto, ClubRanking> {
-	private Long ranking = 1L;
-	private ClubRanking previous = null;
+public class ClubRankingProcessor implements ItemProcessor<Club, ClubRanking> {
+	private static final LocalDate now = LocalDate.now();
+	private Long ranking = 0L;
+	private Long previousScore = null;
+	private Long sameScoreCount = 0L;
 
 	@Override
-	public ClubRanking process(ClubRankingDto clubRankingDto) {
-		ClubTotalHikingStatistic clubTotalHikingStatistic = clubRankingDto.getClubTotalHikingStatistic();
-		if (previous != null && !clubRankingDto.getScore().equals(previous.getScore())) {
-			ranking++;
+	public ClubRanking process(Club club) {
+		if (!club.getScore().equals(previousScore)) {
+			ranking += sameScoreCount + 1;
+			sameScoreCount = 0L;
+		} else {
+			sameScoreCount++;
 		}
 
 		ClubRanking clubRanking = ClubRanking.builder()
-			.club(clubRankingDto.getClub())
+			.club(club)
 			.ranking(ranking)
-			.score(clubRankingDto.getScore())
-			.setDate(LocalDate.now())
-			.totalHikingCount(clubTotalHikingStatistic.getTotalHikingCount())
-			.totalMountainCount(clubTotalHikingStatistic.getTotalMountainCount())
-			.totalDuration(clubTotalHikingStatistic.getTotalDuration())
-			.totalDistance(clubTotalHikingStatistic.getTotalDistance())
-			.totalAlt(clubTotalHikingStatistic.getTotalAlt())
-			.participationRate(clubTotalHikingStatistic.getParticipationRate())
+			.score(club.getScore())
+			.setDate(now)
+			.totalMemberCount(club.getTotalMemberCount())
+			.totalMeetupCount(club.getTotalMeetupCount())
+			.totalMountainCount(club.getTotalMountainCount())
+			.totalAssetCount(club.getTotalAssetCount())
 			.build();
 
-		previous = clubRanking;
+		previousScore = club.getScore();
 		return clubRanking;
 	}
 }

@@ -32,7 +32,7 @@ public class MountainInfo {
 	@Column(length = 20, nullable = false)
 	private String name;
 
-	@Column(nullable = false)
+	@Column(length = 1024, nullable = false)
 	private String description;
 
 	@Column(length = 200, nullable = false)
@@ -55,6 +55,9 @@ public class MountainInfo {
 
 	@Column(name = "peaks", length = 128)
 	private String peaks;
+
+	@Column(name = "check_peak", length = 50)
+	private String checkPeak;
 
 	@OneToMany(mappedBy = "mountain")
 	@ToString.Exclude

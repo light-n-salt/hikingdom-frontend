@@ -1,64 +1,57 @@
 package com.example.hikingdom.ui.login
 
+import android.util.Log
 import android.view.View
-import com.example.hikingdom.data.remote.auth.Auth
+import android.webkit.WebViewClient
+import androidx.activity.OnBackPressedCallback
+import com.example.hikingdom.ApplicationClass
+import com.example.hikingdom.config.WebInterface
+import com.example.hikingdom.data.remote.api.RetrofitTokenInstance
+import com.example.hikingdom.data.remote.auth.AuthRetrofitInterface
+import com.example.hikingdom.data.remote.auth.UserResponse
 import com.example.hikingdom.databinding.ActivityLoginBinding
 
 import com.example.hikingdom.ui.BaseActivity
+import com.example.hikingdom.ui.main.MainActivity
+import com.example.hikingdom.utils.getRefreshToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate), LoginView, View.OnClickListener {
+class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate), LoginView {
 
     override fun initAfterBinding() {
-//        binding.loginSignUpTv.setOnClickListener(this)
-//        binding.loginSignInBtn.setOnClickListener(this)
-    }
+        webViewSetting()
 
-    override fun onClick(v: View?) {
-        if(v == null) return
-
-        when(v) {
-//            binding.loginSignUpTv -> startNextActivity(SignUpActivity::class.java)
-//            binding.loginSignInBtn -> login()
-        }
-    }
-
-    private fun login() {
-//        if (binding.loginIdEt.text.toString().isEmpty() || binding.loginDirectInputEt.text.toString().isEmpty()) {
-//            Toast.makeText(this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
-//            return
+// 예시
+//        val api = RetrofitTokenInstance.getInstance().create(AuthRetrofitInterface::class.java)
+//        binding.button3.setOnClickListener{
+//            api.getUserInfo().enqueue(object: Callback<UserResponse> {
+//                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+//                    Log.d("user!", "${response.body()}")
+//                }
+//                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+//                    Log.d("user!", "fail")
+//                }
+//            })
 //        }
-//
-//        if (binding.loginPasswordEt.text.toString().isEmpty()) {
-//            Toast.makeText(this, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        val email = binding.loginIdEt.text.toString() + "@" + binding.loginDirectInputEt.text.toString()
-//        val password = binding.loginPasswordEt.text.toString()
-//        val user = User(email, password, "")
-//
-//        AuthService.login(this, user)
     }
 
-    override fun onLoginLoading() {
-//        binding.loginLoadingPb.visibility = View.VISIBLE
+    // 로그인 성공 시, 동작시킬 함수
+    override fun onLoginSuccess() {
+        startActivityWithClear(MainActivity::class.java)
     }
 
-    override fun onLoginSuccess(auth: Auth) {
-//        binding.loginLoadingPb.visibility = View.GONE
-//
-//        saveJwt(auth.jwt)
-//        startActivityWithClear(MainActivity::class.java)
-    }
+    // WebView 셋팅
+    fun webViewSetting(){
+        var refreshToken = getRefreshToken()
+        Log.d("refresh", "$refreshToken")
 
-    override fun onLoginFailure(code: Int, message: String) {
-//        binding.loginLoadingPb.visibility = View.GONE
-//
-//        when(code) {
-//            2015, 2019, 3014 -> {
-//                binding.loginErrorTv.visibility = View.VISIBLE
-//                binding.loginErrorTv.text= message
-//            }
-//        }
+        val webView = binding.loginWebview
+        webView.webViewClient = WebViewClient()
+        webView.settings.javaScriptEnabled = true
+        webView.settings.domStorageEnabled = true
+        webView.addJavascriptInterface(WebInterface(this), "Kotlin")
+        webView.loadUrl(ApplicationClass.INDEX_WEB_URL)
     }
 }

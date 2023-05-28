@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
+import org.lightnsalt.hikingdom.service.info.dto.response.MountainLocationRes;
 import org.springframework.data.domain.Pageable;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
@@ -90,7 +91,7 @@ public class MountainInfoController {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.WRONG_DATA_SCOPE), HttpStatus.BAD_REQUEST);
 		}
 
-		List<MountainListRes> result = mountainInfoService.findMountainInfoLocation(lat, lng);
+		List<MountainLocationRes> result = mountainInfoService.findMountainInfoLocation(lat, lng);
 		return new ResponseEntity<>(BaseResponseBody.of("가까운 산 검색에 성공했습니다", result), HttpStatus.OK);
 	}
 
