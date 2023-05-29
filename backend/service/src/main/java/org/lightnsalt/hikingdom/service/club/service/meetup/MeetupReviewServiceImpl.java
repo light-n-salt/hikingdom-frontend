@@ -37,7 +37,7 @@ public class MeetupReviewServiceImpl implements MeetupReviewService {
 
 	@Transactional
 	@Override
-	public Long saveMeetupReview(String email, Long clubId, Long meetupId, MeetupReviewReq meetupReviewReq) {
+	public Long addMeetupReview(String email, Long clubId, Long meetupId, MeetupReviewReq meetupReviewReq) {
 		final Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED));
 		final Club club = clubRepository.findById(clubId)

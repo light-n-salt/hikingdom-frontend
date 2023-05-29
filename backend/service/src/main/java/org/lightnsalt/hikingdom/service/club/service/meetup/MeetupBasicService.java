@@ -8,7 +8,7 @@ import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupDetailRes
 import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMonthlyRes;
 
 public interface MeetupBasicService {
-	Long saveMeetup(String email, Long clubId, MeetupAddReq req);
+	Long addMeetup(String email, Long clubId, MeetupAddReq req);
 
 	void removeMeetup(String email, Long clubId, Long meetupId);
 

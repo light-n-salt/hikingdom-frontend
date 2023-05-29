@@ -107,7 +107,7 @@ public class MemberEmailServiceImpl implements MemberEmailService {
 
 	@Transactional
 	boolean setTemporaryPassword(String tempPassword, Long memberId) {
-		return memberRepository.setPasswordById(passwordEncoder.encode(tempPassword), memberId) > 0;
+		return memberRepository.updatePasswordById(passwordEncoder.encode(tempPassword), memberId) > 0;
 	}
 
 	private String createFindPasswordEmail(String password) {

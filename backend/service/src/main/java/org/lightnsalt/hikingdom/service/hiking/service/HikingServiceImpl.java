@@ -3,6 +3,7 @@ package org.lightnsalt.hikingdom.service.hiking.service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -148,22 +149,32 @@ public class HikingServiceImpl implements HikingService {
 					boolean isNewMountain = !clubAssetRepository.existsByClubIdAndAssetId(club.getId(),
 						assetInfo.getId());
 
+					// asset 좌표 계산
+					final int totalCount = (int)clubAssetRepository.countByClubId(meetup.getClub().getId());
+
+					final ClubAsset lastAsset = totalCount == 0 ? null :
+						clubAssetRepository.findAllByClubIdOrderByCreatedAt(meetup.getClub().getId())
+							.get(totalCount - 1);
+					Map<String, Double> coordinate = calcAssetCoordinate(totalCount, lastAsset);
+
 					clubAssetRepository.save(ClubAsset.builder()
 						.club(club)
+						.rowIndex(coordinate.get("row"))
+						.colIndex(coordinate.get("col"))
+						.curNumber(coordinate.get("curNumber").intValue())
+						.curCount(coordinate.get("curCount").intValue())
 						.asset(assetInfo)
 						.meetup(meetup)
 						.build());
 
 					clubRepository.updateClubMountainCountAndAssetCountAndScore(club.getId(),
-						isNewMountain ? club.getTotalMountainCount() + 1 :
-							club.getTotalMountainCount(), club.getTotalAssetCount() + 1,
-						club.getScore() + assetInfo.getScore(), LocalDateTime.now());
+						isNewMountain ? club.getTotalMountainCount() + 1 : club.getTotalMountainCount(),
+						club.getTotalAssetCount() + 1, club.getScore() + assetInfo.getScore(), LocalDateTime.now());
 
 					// 비동기 알림
-					eventPublisher.publishEvent(new CreateClubAssetNotificationEvent(
-						clubMemberRepository.findByClubId(club.getId()),
-						assetInfo
-					));
+					eventPublisher.publishEvent(
+						new CreateClubAssetNotificationEvent(clubMemberRepository.findByClubId(club.getId()), assetInfo,
+							club.getId()));
 				} else {
 					// 이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우 PASS
 					log.info("이미 완등한 사용자가 한 명 이상이여서 에셋이 이미 발급된 경우");
@@ -246,6 +257,68 @@ public class HikingServiceImpl implements HikingService {
 			member.updateMemberLevel(memberLevelInfo);
 		}
 		return savedMemberHiking.getId();
+	}
+
+	private Map<String, Double> calcAssetCoordinate(int count, ClubAsset lastAsset) {
+		log.info("total number of assets : {}", count);
+		// lastAssetSide
+		// 규칙
+		// 1 -> 5, 2 -> 5, 3 -> 5
+		// 4 -> 6, 5 -> 6
+		// 6 -> 7, 7 -> 7
+		// ...
+		// maxNumber = lastAssetSide == 1 ? 5 : (lastAssetSide - 1) / 2 + 4
+		// [1, 0],[0, 1],[-1, 0],[0, -1] -> lastAssetSide % 4 + 1
+
+		// 계산
+		double row = 0D;
+		double col = 0D;
+		double curSideNumber = 1;
+		double curCount = 1;
+		int index = 0;
+
+		// 필요한 변수
+		int lastAssetSide = lastAsset == null ? 1 : lastAsset.getCurNumber();
+		int lastCount = lastAsset == null ? 0 : lastAsset.getCurCount();
+		double preRow = lastAsset == null ? -2.5 : lastAsset.getRowIndex();
+		double preCol = lastAsset == null ? -2.5 : lastAsset.getColIndex();
+
+		int[] dr = {1, 0, -1, 0};
+		int[] dc = {0, 1, 0, -1};
+
+		// 현재 줄에서의 최대 개수 계산
+		int maxNumber = lastAssetSide % 2 == 0 ? lastAssetSide / 2 + 4 : (lastAssetSide - 1) / 2 + 4;
+		log.info("maxNumber is {}", maxNumber);
+
+		if (lastAssetSide == 1) {
+			maxNumber = 5;
+		}
+		// 아직 줄을 채우는 중이라면
+		if (lastCount < maxNumber) {
+			curSideNumber = lastAssetSide;
+			// 마저 채우기
+			index = (lastAssetSide - 1) % 4;
+			row = preRow + dr[index];
+			col = preCol + dc[index];
+			curCount = lastCount + 1;
+		}
+		// 다음 줄로 넘어가야한다면
+		else {
+			curSideNumber = lastAssetSide + 1;
+			// index++해서 방향에 변화주기
+			index = lastAssetSide % 4;
+			row = preRow + dr[index];
+			col = preCol + dc[index];
+		}
+
+		// 값 리턴
+		Map<String, Double> coordinate = new HashMap<>();
+		coordinate.put("row", row);
+		coordinate.put("col", col);
+		coordinate.put("curNumber", curSideNumber);
+		coordinate.put("curCount", curCount);
+
+		return coordinate;
 	}
 
 	public static Map<String, Object> getMapFromJsonObject(JsonObject jsonObj) {

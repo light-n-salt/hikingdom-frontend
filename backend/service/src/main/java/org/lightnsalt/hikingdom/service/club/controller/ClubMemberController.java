@@ -52,7 +52,7 @@ public class ClubMemberController {
 	}
 
 	@DeleteMapping("/members")
-	public ResponseEntity<CustomResponseBody> clubMemberWithdraw(Authentication authentication, @PathVariable Long clubId) {
+	public ResponseEntity<CustomResponseBody> clubMemberRemove(Authentication authentication, @PathVariable Long clubId) {
 		clubMemberService.withdrawClubMember(authentication.getName(), clubId);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 탈퇴에 성공했습니다"), HttpStatus.OK);
 	}

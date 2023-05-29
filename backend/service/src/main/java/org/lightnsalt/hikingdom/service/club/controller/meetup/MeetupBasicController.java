@@ -30,26 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-	/*
-		일정 기본 CRUD
-	 */
-
-	/*
-	- 컨트롤러 클래스 안에서 메서드 명을 작성 할 때는 아래와 같은 접미사를 붙인다.
-
-		orderList() – 목록 조회 유형의 서비스
-
-		orderDetails() – 단 건 상세 조회 유형의 controller 메서드
-
-		orderSave() – 등록/수정/삭제 가 동시에 일어나는 유형의 controller 메서드
-
-		orderAdd() – 등록만 하는 유형의 controller 메서드
-
-		orderModify() – 수정만 하는 유형의 controller 메서드
-
-		orderRemove() – 삭제만 하는 유형의 controller 메서드
-	* */
-
 @RestController
 @Slf4j
 @RequestMapping("/api/v1/clubs/{clubId}/meetups")
@@ -68,7 +48,7 @@ public class MeetupBasicController {
 				bindingResult.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
 		}
 
-		Long id = meetupBasicService.saveMeetup(authentication.getName(), clubId, req);
+		Long id = meetupBasicService.addMeetup(authentication.getName(), clubId, req);
 		Map<String, Long> result = new HashMap<>();
 		result.put("id", id);
 
@@ -98,7 +78,7 @@ public class MeetupBasicController {
 	}
 
 	@GetMapping("{meetupId}/detail")
-	public ResponseEntity<CustomResponseBody> meetupDetail(Authentication authentication, @PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> meetupDetails(Authentication authentication, @PathVariable Long clubId,
 		@PathVariable Long meetupId) {
 
 		MeetupDetailRes result = meetupBasicService.findMeetup(authentication.getName(), clubId, meetupId);
