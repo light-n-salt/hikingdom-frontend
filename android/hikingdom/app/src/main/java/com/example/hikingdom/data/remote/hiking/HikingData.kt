@@ -36,6 +36,7 @@ data class MeetupResponse(
 
 
 data class SocketEnterData(
+    @SerializedName("nickname") val nickname: String?,
     @SerializedName("memberId") val memberId: Long?,
     @SerializedName("meetupId") val meetupId: Long?,
 )

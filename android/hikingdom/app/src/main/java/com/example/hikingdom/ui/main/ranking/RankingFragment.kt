@@ -11,7 +11,7 @@ import com.example.hikingdom.ui.BaseFragment
 class RankingFragment(): BaseFragment<FragmentRankingBinding>(FragmentRankingBinding::inflate) {
 
     override fun initAfterBinding() {
-        webViewSetting(activityContext, binding.rankingWebview, RANKING_WEB_URL)
+        webViewSetting(binding.rankingWebview, RANKING_WEB_URL)
     }
 
     companion object {

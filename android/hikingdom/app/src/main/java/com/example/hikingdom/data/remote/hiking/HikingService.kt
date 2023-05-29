@@ -22,8 +22,12 @@ object HikingService {
 
                 if(response.isSuccessful){
                     val resp = response.body()!!
-                    Log.d("resp", resp.toString())
-                    saveHikingRecordView.onSaveHikingRecordSuccess(resp.message)
+                    if(resp.result != null && resp.result.isNotEmpty()){
+                        Log.d("resp", resp.toString())
+                        saveHikingRecordView.onSaveHikingRecordSuccess(resp.message, resp.result)
+                    }else{
+                        saveHikingRecordView.onSaveHikingRecordFailure(response.message())
+                    }
                 }else{
                     saveHikingRecordView.onSaveHikingRecordFailure(response.message())
                 }

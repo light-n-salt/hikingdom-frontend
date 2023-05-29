@@ -75,9 +75,13 @@
     <string name="select_hiking_individual">개인 등산</string>
 
     <!--  dialog mountain  -->
-    <string name="dialog_mountain_title">산 선택</string>
+    <string name="dialog_mountain_title">등산할 산 선택</string>
     <string name="dialog_agree_mountain_content">을 등산하시겠습니까?</string>
-    <string name="dialog_agree_mountain_content_2">확인 버튼을 누르면 등산이 시작됩니다!</string>
+    <string name="dialog_agree_mountain_content_2">확인 버튼을 누르면 등산 기록을 시작합니다!</string>
+    <string name="dialog_agree_mountain_caution">※주의: 하이킹덤의 위치 정보 처리는\n등산 시의 환경(야외 환경)에 특화되어 있습니다.\n실내에서는 위치 정보가 부정확하여\n서비스 이용이 어려울 수 있습니다.</string>
+
+    <!--  dialog result  -->
+    <string name="dialog_result_title">등산 기록이 저장되었습니다.\n마이페이지에서 확인해주세요.</string>
 
     <string name="location_agreement">제1조(목적)
 \n

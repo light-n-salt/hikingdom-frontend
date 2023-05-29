@@ -32,7 +32,7 @@ class ApplicationClass : Application() {
         lateinit var retrofit: Retrofit
 
 //        const val BASE_URL: String = "http://70.12.246.181:3000/"       // 로컬 테스트 주소
-        const val BASE_URL: String = BuildConfig.DEV_URL       // 웹뷰나 api 통신 시 사용할 기본 주소. 이를 이용해 한번에 PROD_URL <-> DEV_URL 전환 가능. local.properties를 참조.
+        const val BASE_URL: String = BuildConfig.PROD_URL       // 웹뷰나 api 통신 시 사용할 기본 주소. 이를 이용해 한번에 PROD_URL <-> DEV_URL 전환 가능. local.properties를 참조.
         const val INDEX_WEB_URL: String = BASE_URL                  // 인덱스페이지 WebView URL
         const val HOME_WEB_URL: String = BASE_URL + "main"          // 메인페이지 WebView URL
         const val RANKING_WEB_URL: String = BASE_URL + "rank"       // 랭킹페이지 WebView URL
