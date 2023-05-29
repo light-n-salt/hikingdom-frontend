@@ -8,8 +8,8 @@
   }
 
   &.close {
-    top: -25%;
-    right: -35%;
+    top: -5%;
+    right: -24%;
   }
 }
 
@@ -19,7 +19,7 @@
   flex-direction: column;
   align-items: center;
   width: 90%;
-  padding: 1.5rem;
+  padding: 1.5rem 0;
   gap: 1.2rem;
 }
 
@@ -33,6 +33,10 @@
   align-items: center;
   justify-content: space-evenly;
   width: 100%;
+
+  .content {
+    flex: 1;
+  }
 }
 
 .content {
@@ -40,6 +44,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  border-right: clr(gray-clr, light) solid 2px;
 }
 
 .bold {
@@ -49,11 +54,6 @@
 
 .text {
   font-size: 0.9rem;
-}
-
-.border {
-  font-size: 2rem;
-  color: clr(gray-clr, light);
 }
 
 .img {

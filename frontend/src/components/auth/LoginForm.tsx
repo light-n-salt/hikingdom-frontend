@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useContext } from 'react'
 import sytles from './LoginForm.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { login } from 'apis/services/users'
@@ -8,8 +8,10 @@ import LabelInput from 'components/common/LabelInput'
 import TextButton from 'components/common/TextButton'
 import useAuthInput from 'hooks/useAuthInput'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function LoginForm() {
+  const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -77,7 +79,7 @@ function LoginForm() {
         />
         <TextButton
           text="비밀번호 찾기"
-          color="tertiary"
+          color={theme === 'light' ? 'tertiary' : 'white'}
           onClick={() => navigate('/password')}
         />
       </div>

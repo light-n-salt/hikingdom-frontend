@@ -3,7 +3,6 @@
 .review {
   display: flex;
   border-radius: 0.3rem;
-  border-bottom: 0.01rem solid clr(white-clr, dark);
   padding: 0.4rem;
 
   > img {
@@ -12,10 +11,12 @@
 
   &.light {
     background-color: clr(white-clr, light);
+    border-bottom: 0.01rem solid clr(white-clr, dark);
   }
 
   &.dark {
-    background-color: clr(white-clr, light);
+    background-color: clr(tertiary-clr, light);
+    border-bottom: 0.01rem solid clr(tertiary-clr, dark);
   }
 }
 
@@ -47,7 +48,17 @@
 .siren {
   display: flex;
   font-size: 0.8rem;
-  > svg {
-    color: clr(red-clr);
+  cursor: pointer;
+
+  &.red {
+    > svg {
+      color: clr(red-clr);
+    }
+  }
+
+  &.gray {
+    > svg {
+      color: clr(gray-clr);
+    }
   }
 }

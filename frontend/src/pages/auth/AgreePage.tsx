@@ -8,7 +8,7 @@ function AgreePage() {
   const { theme } = useContext(ThemeContext)
   return (
     <div className={`page ${theme} p-lg ${styles.container}`}>
-      <PageHeader title="약관동의" url="/login" />
+      <PageHeader title="약관동의" url="/login" color="primary" />
       <AgreeForm />
     </div>
   )

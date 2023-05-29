@@ -36,6 +36,7 @@ export default function UserProfile({
   totalDuration,
   totalHikingCount,
   totalMountainCount,
+  unreadNotificationCount,
 }: UserProfileProps) {
   const { theme, toggleTheme } = useContext(ThemeContext)
   const navigate = useNavigate()
@@ -54,6 +55,10 @@ export default function UserProfile({
   // 신고하기 보이기
   const stranger = userNickname !== userInfo?.nickname ? styles.stranger : ''
 
+  // 안읽은 알람 표시
+  const unread = unreadNotificationCount ? styles.unread : ''
+
+  // 다크모드 전환 토글 버튼
   const themeIcon = theme === 'light' ? <FaSun /> : <FaMoon />
 
   return (
@@ -64,11 +69,11 @@ export default function UserProfile({
         </Modal>
       )}
       <div className={`${styles['alarm-siren']}`}>
-        <PageHeader color="dark" />
+        <PageHeader color="primary" />
         <div className={`${stranger} ${styles.siren}`} onClick={onClickReport}>
           <HiLightBulb /> 신고하기
         </div>
-        <div className={`${stranger} ${styles.alarm}`}>
+        <div className={`${stranger} ${styles.alarm} ${unread}`}>
           <IconButton
             size="sm"
             imgSrc={bell}
@@ -81,12 +86,12 @@ export default function UserProfile({
       </div>
       <div className={`content ${theme} ${styles.record}`}>
         <div className={`${stranger} ${styles.btns}`}>
-          {/* <IconButton
+          <IconButton
             icon={themeIcon}
             size="sm"
             color="gray"
             onClick={toggleTheme}
-          /> */}
+          />
           <IconButton
             icon={<BiEdit />}
             size="sm"
@@ -104,7 +109,7 @@ export default function UserProfile({
             />
           )}
         </div>
-        <span className={styles.email}>{email}</span>
+        <span className={`${stranger} ${styles.email}`}>{email}</span>
         <UserInfo
           totalAlt={totalAlt}
           totalDistance={totalDistance}

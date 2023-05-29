@@ -56,12 +56,7 @@ function MainPage() {
     }
   )
 
-  const assetArray = useMemo(() => {
-    if (!todayClubMt?.assets) return []
-    return getPosition(todayClubMt.assets).arr
-  }, [todayClubMt])
-
-  return mtInfoArray && clubInfoArray && todayClubMt && assetArray ? (
+  return mtInfoArray && clubInfoArray && todayClubMt ? (
     <>
       {isLoading || isError ? (
         <Loading />
@@ -102,7 +97,7 @@ function MainPage() {
                 isBold={true}
               />
             </div>
-            <ClubMountain zoom={5} assetInfo={assetArray} />
+            <ClubMountain zoom={3.5} assetInfo={todayClubMt.assets} />
           </div>
         </div>
       )}

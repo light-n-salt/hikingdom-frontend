@@ -78,7 +78,7 @@ function RankPage() {
           <Loading />
         ) : (
           <>
-            <RankList clubInfoArray={clubInfoArray} />
+            <RankList clubInfoArray={clubInfoArray} filter={filter} />
             {isFetchingNextPage && (
               <div className={styles.loading}>
                 <Loading size="sm" />

@@ -8,10 +8,16 @@ import { IoIosClose } from 'react-icons/io'
 type AssetModalProps = {
   name: string
   getCondition: string
+  checkPeak: string
   onClick: () => void
 }
 
-function AssetModal({ name, getCondition, onClick }: AssetModalProps) {
+function AssetModal({
+  name,
+  getCondition,
+  onClick,
+  checkPeak,
+}: AssetModalProps) {
   const { theme } = useContext(ThemeContext)
 
   return (
@@ -27,6 +33,9 @@ function AssetModal({ name, getCondition, onClick }: AssetModalProps) {
 
         <div className={styles.condition}>
           획득 조건 : <span className={styles.description}>{getCondition}</span>
+        </div>
+        <div className={styles.condition}>
+          인증 위치 : <span className={styles.description}>{checkPeak}</span>
         </div>
       </div>
     </div>

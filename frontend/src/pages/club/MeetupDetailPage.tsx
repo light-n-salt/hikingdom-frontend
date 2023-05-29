@@ -11,6 +11,8 @@ import MeetupAlbum from 'components/meetup/MeetupAlbum'
 import MeetupReviewList from 'components/meetup/MeetupReviewList'
 import TextSendBar from 'components/common/TextSendBar'
 import toast from 'components/common/Toast'
+import Modal from 'components/common/Modal'
+import ConfirmModal from 'components/club/ConfirmModal'
 import Loading from 'components/common/Loading'
 import { meetupInfoDetail, MeetupReview } from 'types/meetup.interface'
 
@@ -33,6 +35,7 @@ function MeetupDetailPage() {
     meetupId: string
   }
 
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false) // 삭제 모달
   const [content, setContent] = useState<string>('') // 후기 내용
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -64,12 +67,12 @@ function MeetupDetailPage() {
     {
       onSuccess: () => {
         toast.addMessage('success', '일정이 삭제되었습니다')
-
         navigate(`/club/main`)
       },
       onError: (err: any) => {
         if (err.status === 400) {
           toast.addMessage('error', '완료된 일정은 삭제할 수 없습니다')
+          setIsDeleteOpen(false)
         }
       },
     }
@@ -80,46 +83,58 @@ function MeetupDetailPage() {
       <Loading />
     </div>
   ) : (
-    <div className={`page p-md ${theme} ${styles.page}`}>
-      <PageHeader
-        title={meetup?.meetupName}
-        url={`/club/meetup`}
-        color="primary"
-        size="sm"
-      />
-
-      <MeetupDetail
-        mountain={meetup?.mountainName}
-        date={meetup?.startAt.split(' ')[0].replaceAll('-', '.').slice(-8)}
-        time={meetup?.startAt.split(' ')[1].slice(0, 5)}
-      />
-      <div className={`page ${theme} ${styles.content}`}>
-        <div className={styles.intro}>
-          <MeetupIntroduction content={meetup?.description} />
-        </div>
-        <MeetupMembers />
-        <MeetupAlbum join={meetup?.join} />
-        {reviews && <MeetupReviewList reviewInfo={reviews} />}
-      </div>
-      {meetup?.join && (
-        <TextSendBar
-          placeholder="후기를 입력해주세요"
-          content={content}
-          setContent={setContent}
-          onClick={() => onClickUpdateReview.mutate()}
-        />
-      )}
-      <div className={styles.btn}>
-        {userInfo?.memberId === meetup.meetupHostId ? (
-          <Button
-            text="삭제"
-            color="red"
-            size="xs"
-            onClick={() => onClickDeleteMeetup.mutate()}
+    <>
+      {isDeleteOpen && (
+        <Modal onClick={() => setIsDeleteOpen(false)}>
+          <ConfirmModal
+            title="일정을 삭제하시겠습니까?"
+            buttonText="일정 삭제"
+            onClickDelete={() => onClickDeleteMeetup.mutate()}
+            onClickCloseModal={() => setIsDeleteOpen(false)}
           />
-        ) : null}
+        </Modal>
+      )}
+      <div className={`page p-md ${theme} ${styles.page}`}>
+        <PageHeader
+          title={meetup?.meetupName}
+          url={`/club/meetup`}
+          color="primary"
+          size="sm"
+        />
+
+        <MeetupDetail
+          mountain={meetup?.mountainName}
+          date={meetup?.startAt.split(' ')[0].replaceAll('-', '.').slice(-8)}
+          time={meetup?.startAt.split(' ')[1].slice(0, 5)}
+        />
+        <div className={`page ${theme} ${styles.content}`}>
+          <div className={styles.intro}>
+            <MeetupIntroduction content={meetup?.description} />
+          </div>
+          <MeetupMembers />
+          <MeetupAlbum join={meetup?.join} />
+          {reviews && <MeetupReviewList reviewInfo={reviews} />}
+        </div>
+        {meetup?.join && (
+          <TextSendBar
+            placeholder="후기를 입력해주세요"
+            content={content}
+            setContent={setContent}
+            onClick={() => onClickUpdateReview.mutate()}
+          />
+        )}
+        <div className={styles.btn}>
+          {userInfo?.memberId === meetup.meetupHostId ? (
+            <Button
+              text="삭제"
+              color="red"
+              size="xs"
+              onClick={() => setIsDeleteOpen(true)}
+            />
+          ) : null}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

@@ -1,43 +1,38 @@
 import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 
-import styles from './DeleteModal.module.scss'
+import styles from './ConfirmModal.module.scss'
 import Button from 'components/common/Button'
 
-type DeleteModalProps = {
+type ConfirmModalProps = {
   title: string
-  content1?: string
-  content2?: string
+  content?: string
   buttonText: string
   onClickDelete: () => void
   onClickCloseModal: () => void
 }
 
-function DeleteModal({
+function ConfirmModal({
   title,
-  content1,
-  content2,
+  content,
   buttonText,
   onClickDelete,
   onClickCloseModal,
-}: DeleteModalProps) {
+}: ConfirmModalProps) {
   return (
-    <div className={styles.modal}>
-      <div className={styles.content}>
-        <h2>{title}</h2>
-        {content1 && <span className={styles.text}>{content1}</span>}
-        {content2 && <span className={styles.text}>{content2}</span>}
-      </div>
-      <div className={styles.button}>
+    <div className={styles.container}>
+      <p className={styles.title}>{title}</p>
+      {content && <p className={styles.content}>{content}</p>}
+      <div className={styles.buttons}>
         <Button
           text={buttonText}
-          size="lg"
+          size="md"
           color="primary"
           onClick={onClickDelete}
         />
         <Button
           text="취소"
-          size="lg"
+          size="md"
           color="secondary"
           onClick={onClickCloseModal}
         />
@@ -46,4 +41,4 @@ function DeleteModal({
   )
 }
 
-export default DeleteModal
+export default ConfirmModal
