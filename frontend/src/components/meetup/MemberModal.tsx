@@ -1,19 +1,33 @@
 import React from 'react'
+import Loading from 'components/common/Loading'
 import MemberList from 'components/club/MemberList'
-import { ClubMember } from 'types/club.interface'
+import { useMembersDetailQuery } from 'apis/services/meetup'
 
 type MemberModalProps = {
-  memberList: ClubMember[]
+  clubId: number | undefined
+  meetupId: string
 }
 
-function MemberModal({ memberList }: MemberModalProps) {
+function MemberModal({ clubId, meetupId }: MemberModalProps) {
+  const {
+    isLoading,
+    isError,
+    data: memberList,
+  } = useMembersDetailQuery(clubId, Number(meetupId))
+
+  if (isLoading || isError) {
+    return <Loading />
+  }
+
   return (
     <div>
-      <MemberList
-        title="참여 멤버"
-        length={memberList.length}
-        memberList={memberList}
-      />
+      {memberList && (
+        <MemberList
+          title="참여 멤버"
+          length={memberList.length}
+          memberList={memberList}
+        />
+      )}
     </div>
   )
 }

@@ -29,7 +29,7 @@ root.render(
         </ThemeProvider>
       </RecoilRoot>
     </BrowserRouter>
-    <ReactQueryDevtools initialIsOpen={false} />
+    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
   </QueryClientProvider>
   // </React.StrictMode>
 )

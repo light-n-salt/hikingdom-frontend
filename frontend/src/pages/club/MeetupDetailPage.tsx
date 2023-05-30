@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './MeetupDetailPage.module.scss'
+import apiRequest from 'apis/axios'
 
 import Button from 'components/common/Button'
 import PageHeader from 'components/common/PageHeader'
@@ -12,15 +13,13 @@ import MeetupReviewList from 'components/meetup/MeetupReviewList'
 import TextSendBar from 'components/common/TextSendBar'
 import toast from 'components/common/Toast'
 import Loading from 'components/common/Loading'
-import { meetupInfoDetail, MeetupReview } from 'types/meetup.interface'
 
 import {
-  getMeetupDetail,
-  updateReview,
-  getReviews,
+  useMeetupDetailQuery,
+  useMeetupReviewsQuery,
   deleteMeetup,
 } from 'apis/services/meetup'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { useParams, useNavigate } from 'react-router-dom'
 import useUserQuery from 'hooks/useUserQuery'
@@ -32,23 +31,18 @@ function MeetupDetailPage() {
   const { meetupId } = useParams() as {
     meetupId: string
   }
-
   const [content, setContent] = useState<string>('') // 후기 내용
   const queryClient = useQueryClient()
   const navigate = useNavigate()
-  // 모임 정보
-  const { data: meetup } = useQuery<meetupInfoDetail>(['meetup'], () =>
-    getMeetupDetail(clubId || 0, parseInt(meetupId))
-  )
 
-  // 후기 조회
-  const { data: reviews } = useQuery<MeetupReview[]>(['reviews'], () =>
-    getReviews(clubId || 0, parseInt(meetupId))
-  )
+  const { data: meetup } = useMeetupDetailQuery(clubId || 0, parseInt(meetupId))
+  const { data: reviews } = useMeetupReviewsQuery(clubId, parseInt(meetupId))
 
-  // 후기 등록
-  const onClickUpdateReview = useMutation(
-    () => updateReview(clubId || 0, parseInt(meetupId), content),
+  const { mutate: writeReview } = useMutation(
+    () =>
+      apiRequest.post(`/clubs/${clubId}/meetups/${meetupId}/reviews`, {
+        content,
+      }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['reviews'])
@@ -106,7 +100,7 @@ function MeetupDetailPage() {
           placeholder="후기를 입력해주세요"
           content={content}
           setContent={setContent}
-          onClick={() => onClickUpdateReview.mutate()}
+          onClick={() => writeReview()}
         />
       )}
       <div className={styles.btn}>
