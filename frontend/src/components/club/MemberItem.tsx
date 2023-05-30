@@ -7,7 +7,6 @@ import LEVEL_TO_IMG from 'constants/levels'
 import { ClubMember } from 'types/club.interface'
 
 import { ThemeContext } from 'styles/ThemeProvider'
-import thousandSeparator from 'utils/thousandSeparator'
 import host from 'assets/images/host.png'
 
 type MemberItemProps = {
@@ -46,9 +45,9 @@ function MemberItem({
       <div className={styles.flexbox}>
         <Info
           title="거리(km)"
-          content={`${thousandSeparator(
+          content={`${Number(
             (memberInfo.totalDistance / 1000).toFixed()
-          )}`}
+          ).toLocaleString()}`}
         />
         {onClickJoin && onClickDelete ? (
           <div className={styles.button}>
@@ -68,7 +67,9 @@ function MemberItem({
         ) : (
           <Info
             title="시간(h)"
-            content={`${(memberInfo.totalDuration / 60).toFixed()}`}
+            content={`${Number(
+              (memberInfo.totalDuration / 60).toFixed()
+            ).toLocaleString()}`}
           />
         )}
       </div>

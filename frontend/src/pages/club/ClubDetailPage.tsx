@@ -7,7 +7,6 @@ import { postJoinClub } from 'apis/services/clubs'
 import { ClubDetailInfo } from 'types/club.interface'
 import useUserQuery from 'hooks/useUserQuery'
 import { useQuery } from '@tanstack/react-query'
-import { getPosition } from 'utils/getPosition'
 
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'

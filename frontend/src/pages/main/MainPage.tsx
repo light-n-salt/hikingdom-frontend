@@ -2,10 +2,9 @@ import React, { useMemo } from 'react'
 import styles from './MainPage.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { getTodayMountains } from 'apis/services/mountains'
-import { getRanking, getTodayClubMt } from 'apis/services/clubs'
+import { getTodayClubMt, useclubRankTop3Query } from 'apis/services/clubs'
 import { MtInfo } from 'types/mt.interface'
 import { TodayClubMt } from 'types/club.interface'
-import { ClubInfo } from 'types/club.interface'
 import { useQuery } from '@tanstack/react-query'
 import cloud from 'assets/images/cloud.png'
 import trophy from 'assets/images/trophy.png'
@@ -16,15 +15,6 @@ import RankList from 'components/common/RankList'
 import Loading from 'components/common/Loading'
 import ClubMountain from 'components/club/ClubMountain'
 import { untilMidnight } from 'utils/untilMidnight'
-import { getPosition } from 'utils/getPosition'
-
-type InfiniteClubInfo = {
-  content: ClubInfo[]
-  hasNext: boolean
-  hasPrevious: boolean
-  numberOfElements: number
-  pageSize: number
-}
 
 function MainPage() {
   const navigate = useNavigate()
@@ -42,10 +32,12 @@ function MainPage() {
     staleTime: queryTime,
   })
 
-  const { data: clubInfoArray } = useQuery<InfiniteClubInfo>(
-    ['clubRankTop3'],
-    () => getRanking('', null, 3)
-  )
+  const {
+    isClubRankTop3Loading,
+    isClubRankTop3Error,
+    clubRankTop3,
+    isSuccess,
+  } = useclubRankTop3Query()
 
   const { data: todayClubMt } = useQuery<TodayClubMt>(
     ['todayClubMountain'],
@@ -56,7 +48,7 @@ function MainPage() {
     }
   )
 
-  return mtInfoArray && clubInfoArray && todayClubMt ? (
+  return mtInfoArray && clubRankTop3 && todayClubMt ? (
     <>
       {isLoading || isError ? (
         <Loading />
@@ -80,7 +72,7 @@ function MainPage() {
               <IconText imgSrc={trophy} text="TOP3" size="md" isBold={true} />
             </div>
             <div className={styles.scroll}>
-              <RankList clubInfoArray={clubInfoArray.content} size="sm" />
+              <RankList clubInfoArray={clubRankTop3.content} size="sm" />
             </div>
           </div>
           <div

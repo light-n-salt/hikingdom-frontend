@@ -5,7 +5,6 @@ export interface ClubSimpleInfo {
   clubName: string
 }
 
-// 소모임 랭킹 조회
 // 소모임 검색
 // 소모임 가입 신청 목록 조회
 export interface ClubInfo {
@@ -17,6 +16,18 @@ export interface ClubInfo {
   totalMeetupCount: number
   totalAssetCount: number
   ranking: number
+}
+
+// 소모임 랭킹 조회
+export interface InfinitePage {
+  hasNext: boolean
+  hasPrevious: boolean
+  numberOfElements: number
+  pageSize: number
+}
+
+export interface InfiniteClubInfo extends InfinitePage {
+  content: ClubInfo[]
 }
 
 // 에셋 정보

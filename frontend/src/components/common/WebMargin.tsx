@@ -3,7 +3,6 @@ import styles from './WebMargin.module.scss'
 import { Outlet } from 'react-router-dom'
 import useIsMobile from 'hooks/useIsMobile'
 import ClubMountain from 'components/club/ClubMountain'
-import { getPosition } from 'utils/getPosition'
 import { assetInfo } from 'recoil/assetInfo'
 
 // 프로젝트의 동작환경을 판단하여

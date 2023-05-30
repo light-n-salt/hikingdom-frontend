@@ -1,17 +1,36 @@
 import apiRequest from 'apis/axios'
+import { untilMidnight } from 'utils/untilMidnight'
+import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query'
+import { ClubSimpleInfo, InfiniteClubInfo } from 'types/club.interface'
+import toast from 'components/common/Toast'
+import { AxiosResponse } from 'axios'
 
 // 소모임 정보 조회
-export function getClubSimpleInfo(clubId: number) {
-  return apiRequest.get(`clubs/${clubId}`).then((res) => res.data.result)
+export function useClubSimpleInfoQuery(clubId: number) {
+  const { isLoading, isError, data, isSuccess } = useQuery<ClubSimpleInfo>(
+    ['user', 'clubInfo'],
+    () => apiRequest.get(`clubs/${clubId}`).then((res) => res.data.result),
+    {
+      cacheTime: untilMidnight(),
+      staleTime: untilMidnight(),
+      enabled: !!clubId,
+    }
+  )
+  return {
+    isLoading,
+    isError,
+    data,
+    isSuccess,
+  }
 }
 
 // 소모임 랭킹 조회
-export function getRanking(
+const getRanking = async (
   sort = '',
   clubId: number | null = null,
   size: number | null = null
-) {
-  return apiRequest
+) => {
+  return await apiRequest
     .get(`/clubs/ranking`, {
       params: {
         sort,
@@ -22,7 +41,53 @@ export function getRanking(
     .then((res) => res.data.result)
 }
 
-// 소모임 조회
+export function useclubRankTop3Query() {
+  const {
+    isLoading: isClubRankTop3Loading,
+    isError: isClubRankTop3Error,
+    data: clubRankTop3,
+    isSuccess,
+  } = useQuery<InfiniteClubInfo>(['clubRankTop3'], () =>
+    getRanking('', null, 3)
+  )
+  return {
+    isClubRankTop3Loading,
+    isClubRankTop3Error,
+    clubRankTop3,
+    isSuccess,
+  }
+}
+
+export function useInfiniteClubInfoQuery(filter: string) {
+  const {
+    isLoading,
+    isError,
+    data,
+    isSuccess,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<InfiniteClubInfo>({
+    queryKey: ['rank', filter],
+    queryFn: ({ pageParam = null }) => getRanking(filter, pageParam),
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNext ? lastPage.content.slice(-1)[0].clubId : undefined
+    },
+    cacheTime: untilMidnight(),
+    staleTime: untilMidnight(),
+  })
+  return {
+    isLoading,
+    isError,
+    data,
+    isSuccess,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  }
+}
+
+// 소모임 조회  >>>  SearchClubPage
 export function getClubs(query = '', word = '', clubId: number | null = null) {
   return apiRequest.get(`/clubs`, {
     params: {
@@ -34,21 +99,63 @@ export function getClubs(query = '', word = '', clubId: number | null = null) {
 }
 
 // 소모임 이름 중복 확인
-export function checkClubName(name: string) {
-  return apiRequest.get(`/clubs/check-duplicate/${name}`)
+export function useCheckClubNameQuery(name: string, isClicked: boolean) {
+  const { isLoading, isError, data, isSuccess } = useQuery(
+    ['duplicate', name],
+    () =>
+      apiRequest
+        .get(`/clubs/check-duplicate/${name}`)
+        .then((res) => res.data.result),
+    {
+      onSuccess: () => {
+        toast.addMessage('success', '중복확인 되었습니다')
+      },
+      onError: (err: AxiosResponse) => {
+        toast.addMessage('error', err.data.message)
+      },
+      cacheTime: 0,
+      staleTime: 0,
+      enabled: !!isClicked,
+    }
+  )
+  return {
+    isLoading,
+    isError,
+    data,
+    isSuccess,
+  }
 }
 
 // 주소 조회
-export function getLocationCode(
+// export function getLocationCode(
+//   query: 'sido' | 'gugun',
+//   word: string | null = null
+// ) {
+//   return apiRequest.get(`/info/location`, {
+//     params: {
+//       query,
+//       word,
+//     },
+//   })
+// }
+
+export function useGetLocationCodeQuery(
   query: 'sido' | 'gugun',
   word: string | null = null
 ) {
-  return apiRequest.get(`/info/location`, {
-    params: {
-      query,
-      word,
-    },
-  })
+  const { isLoading, isError, data, isSuccess } = useQuery(
+    ['checkLocation', query, word],
+    () =>
+      apiRequest
+        .get(`/info/location`, { params: { query, word } })
+        .then((res) => res.data.result)
+  )
+  return {
+    isLoading,
+    isError,
+    data,
+    isSuccess,
+  }
 }
 
 // 소모임 월별 일정 조회

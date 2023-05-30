@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styles from './ClubMemberPage.module.scss'
-import { ClubDetailInfo, ClubMemberList, ClubSimpleInfo } from 'types/club.interface'
+import { ClubDetailInfo, ClubMemberList } from 'types/club.interface'
 import {
   getClubMember,
   updateClubMember,
   deleteClubMember,
   deleteClub,
   getClubInfo,
-  getClubSimpleInfo,
+  useClubSimpleInfoQuery,
 } from 'apis/services/clubs'
 import Toast from 'components/common/Toast'
 import Loading from 'components/common/Loading'
@@ -38,13 +38,12 @@ function ClubMemberPage() {
     }
   )
 
-  const { data: clubSimpleInfo } = useQuery<ClubSimpleInfo>(
-    ['user', 'clubInfo'],
-    () => getClubSimpleInfo(clubId || 0),
-    {
-      enabled: !!clubId,
-    }
-  )
+  const {
+    isLoading: isClubSimpleInfoLoading,
+    isError: isClubSimpleInfoError,
+    data: clubSimpleInfo,
+    isSuccess,
+  } = useClubSimpleInfoQuery(clubId || 0)
 
   useEffect(() => {
     if (!clubId) return
@@ -74,13 +73,15 @@ function ClubMemberPage() {
 
   function onClickDeleteClub() {
     if (!clubId) return
-    deleteClub(clubId).then(() => {
-      Toast.addMessage('success', `${clubInfo?.clubName}에서 탈퇴하셨습니다`)
-      navigate('/club/none')
-    }).catch(() => {
-      Toast.addMessage('error', `클럽 호스트는 탈퇴하실 수 없습니다`)
-      setIsOpen(false)
-    })
+    deleteClub(clubId)
+      .then(() => {
+        Toast.addMessage('success', `${clubInfo?.clubName}에서 탈퇴하셨습니다`)
+        navigate('/club/none')
+      })
+      .catch(() => {
+        Toast.addMessage('error', `클럽 호스트는 탈퇴하실 수 없습니다`)
+        setIsOpen(false)
+      })
   }
 
   return clubMemberList.member[0] && clubSimpleInfo ? (

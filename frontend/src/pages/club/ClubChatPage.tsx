@@ -5,7 +5,11 @@ import PageHeader from 'components/common/PageHeader'
 import ChatList from 'components/club/ChatList'
 import Loading from 'components/common/Loading'
 import { Chats, Chat, ChatMember } from 'types/chat.interface'
-import { getChats, getMembers, getClubSimpleInfo } from 'apis/services/clubs'
+import {
+  getChats,
+  getMembers,
+  useClubSimpleInfoQuery,
+} from 'apis/services/clubs'
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
 import sockjs from 'sockjs-client'
@@ -29,13 +33,12 @@ function ClubChatPage() {
   const { data: userInfo } = useUserQuery() // 유저 정보
 
   // 모임정보
-  const { data: clubInfo } = useQuery(
-    ['clubInfo'],
-    () => getClubSimpleInfo(Number(userInfo?.clubId)),
-    {
-      enabled: !!userInfo,
-    }
-  )
+  const {
+    isLoading: isClubSimpleInfoLoading,
+    isError: isClubSimpleInfoError,
+    data: clubSimpleInfo,
+    isSuccess,
+  } = useClubSimpleInfoQuery(Number(userInfo?.clubId) || 0)
 
   // 소켓 통신
   const [stomp, setStomp] = useState<any>() // 타입 수정 필요
@@ -168,7 +171,7 @@ function ClubChatPage() {
 
   return (
     <div className={`page p-sm ${theme} mobile `}>
-      <PageHeader title={clubInfo?.clubName} url={`/club/main`} />
+      <PageHeader title={clubSimpleInfo?.clubName} url={`/club/main`} />
       {!members || !chatList ? (
         <div className={styles.content}>
           <Loading />

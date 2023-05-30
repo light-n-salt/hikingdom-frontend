@@ -1,7 +1,5 @@
 import { atom } from 'recoil'
 import { recoilPersist } from 'recoil-persist'
-import { User } from 'types/user.interface'
-import { ClubSimpleInfo } from 'types/club.interface'
 
 const { persistAtom } = recoilPersist({
   key: 'recoil-persist', // this key is using to store data in local storage

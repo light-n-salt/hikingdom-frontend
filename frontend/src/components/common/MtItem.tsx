@@ -5,7 +5,6 @@ import marker from 'assets/images/marker.png'
 import hotAirBalloon from 'assets/images/hot_air_balloon.png'
 import IconText from 'components/common/IconText'
 import { MtInfo } from 'types/mt.interface'
-import thousandSeparator from 'utils/thousandSeparator'
 
 type MtItemProps = {
   mtInfo: MtInfo // 산 정보
@@ -24,7 +23,7 @@ function MtItem({ mtInfo, size = 'lg' }: MtItemProps) {
       <div className={styles.title}>{mtInfo.name}</div>
       <div className={styles.flexbox}>
         <IconText imgSrc={hotAirBalloon} text="높이" />
-        {thousandSeparator(mtInfo.maxAlt)} m
+        {mtInfo.maxAlt.toLocaleString()} m
       </div>
       <div className={styles.flexbox}>
         <IconText imgSrc={marker} text="위치" />
