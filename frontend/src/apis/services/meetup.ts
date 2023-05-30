@@ -1,5 +1,5 @@
 import apiRequest from 'apis/axios'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   MeetupMemberInfo,
@@ -11,26 +11,20 @@ import toast from 'components/common/Toast'
 
 // 일정 상세 조회
 export function useMeetupDetailQuery(clubId: number, meetupId: number) {
-  const { isLoading, isError, data } = useQuery<meetupInfoDetail>(
+  return useQuery<any, AxiosError, meetupInfoDetail>(
     ['meetup', clubId, meetupId],
-    () =>
-      apiRequest
-        .get(`/clubs/${clubId}/meetups/${meetupId}/detail`)
-        .then((res) => res.data.result)
+    () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/detail`),
+    { select: (res) => res?.data.result }
   )
-  return { isLoading, isError, data }
 }
 
 // 일정 멤버 조회
 export function useMeetupMemberQuery(clubId: number, meetupId: number) {
-  const { isLoading, isError, data } = useQuery<MeetupMemberInfo>(
+  return useQuery<any, AxiosError, MeetupMemberInfo>(
     ['meetupMembers', clubId, meetupId],
-    () =>
-      apiRequest
-        .get(`/clubs/${clubId}/meetups/${meetupId}/members`)
-        .then((res) => res.data.result)
+    () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/members`),
+    { select: (res) => res?.data.result }
   )
-  return { isLoading, isError, data }
 }
 
 // 일정 멤버 상세 조회
@@ -38,15 +32,11 @@ export function useMembersDetailQuery(
   clubId: number | undefined,
   meetupId: number
 ) {
-  const { isLoading, isError, data } = useQuery<ClubMember[]>(
+  return useQuery<any, AxiosError, ClubMember[]>(
     ['meetupMembersDetail', clubId, meetupId],
-    () =>
-      apiRequest
-        .get(`/clubs/${clubId}/meetups/${meetupId}/members/detail`)
-        .then((res) => res.data.result),
-    { enabled: !!clubId }
+    () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/members/detail`),
+    { select: (res) => res?.data.result, enabled: !!clubId }
   )
-  return { isLoading, isError, data }
 }
 
 // 일정 후기 조회
@@ -54,15 +44,11 @@ export function useMeetupReviewsQuery(
   clubId: number | undefined,
   meetupId: number
 ) {
-  const { isLoading, isError, data } = useQuery<MeetupReview[]>(
+  return useQuery<any, AxiosError, MeetupReview[]>(
     ['meetupReviews', clubId, meetupId],
-    () =>
-      apiRequest
-        .get(`/clubs/${clubId}/meetups/${meetupId}/reviews`)
-        .then((res) => res.data.result),
-    { enabled: !!clubId }
+    () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/reviews`),
+    { select: (res) => res?.data.result, enabled: !!clubId }
   )
-  return { isLoading, isError, data }
 }
 
 // 일정 참여

@@ -15,6 +15,8 @@ function MemberModal({ clubId, meetupId }: MemberModalProps) {
     data: memberList,
   } = useMembersDetailQuery(clubId, Number(meetupId))
 
+  console.log('memberList', memberList)
+
   if (isLoading || isError) {
     return <Loading />
   }

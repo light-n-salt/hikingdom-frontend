@@ -8,7 +8,6 @@ import { ClubMember } from 'types/club.interface'
 import { useParams } from 'react-router-dom'
 import {
   useMeetupMemberQuery,
-  useMembersDetailQuery,
   useJoinMeetup,
   useUnJoinMeetup,
 } from 'apis/services/meetup'
