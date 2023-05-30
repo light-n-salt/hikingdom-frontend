@@ -8,6 +8,7 @@ import ThemeProvider from 'styles/ThemeProvider'
 import { BrowserRouter } from 'react-router-dom'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AxiosInterceptor } from 'apis/AxiosInterceptor'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient({
@@ -24,9 +25,11 @@ root.render(
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <RecoilRoot>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
+        <AxiosInterceptor>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </AxiosInterceptor>
       </RecoilRoot>
     </BrowserRouter>
     <ReactQueryDevtools initialIsOpen={false} />
