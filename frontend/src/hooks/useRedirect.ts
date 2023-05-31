@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 
 // 인자값이 하나라도 NaN일 때 404로 redirect
 // 모두 number일 때 number로 형변환된 인자값을 객체 형식으로 반환
+// 인자가 number 형식으로 들어올 시 float은 절대 아닐 것이라고 간주함
+
 function useRedirect(...args: (string | number)[]) {
   const navigate = useNavigate()
   const parsedValues = args.map((arg) => {
