@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './MeetupDetailPage.module.scss'
-
 import Button from 'components/common/Button'
 import PageHeader from 'components/common/PageHeader'
 import MeetupDetail from 'components/meetup/MeetupDetail'
@@ -14,8 +13,6 @@ import toast from 'components/common/Toast'
 import Modal from 'components/common/Modal'
 import ConfirmModal from 'components/club/ConfirmModal'
 import Loading from 'components/common/Loading'
-import { MeetupInfoDetail, MeetupReview } from 'types/meetup.interface'
-
 import {
   useMeetupDetailQuery,
   updateReview,
@@ -23,34 +20,37 @@ import {
   deleteMeetup,
 } from 'apis/services/meetup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-
 import { useParams, useNavigate } from 'react-router-dom'
 import useUserQuery from 'hooks/useUserQuery'
+import useRedirect from 'hooks/useRedirect'
 
 function MeetupDetailPage() {
   const { theme } = useContext(ThemeContext)
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const { data: userInfo } = useUserQuery()
+
   const { meetupId, clubId } = useParams() as {
     meetupId: string
     clubId: string
   }
+  const { arg1: parsedClubId, arg2: parsedMeetupId } = useRedirect(
+    clubId,
+    meetupId
+  )
+
   const [isDeleteOpen, setIsDeleteOpen] = useState(false) // 삭제 모달
   const [content, setContent] = useState<string>('') // 후기 내용
-  const queryClient = useQueryClient()
-  const navigate = useNavigate()
-
-  const parsedclubId = parseInt(clubId)
-  const parsedMeetupId = parseInt(meetupId)
 
   // 모임 정보
-  const { data: meetup } = useMeetupDetailQuery(clubId, parsedMeetupId)
+  const { data: meetup } = useMeetupDetailQuery(parsedClubId, parsedMeetupId)
 
   // 후기 조회
-  const { data: reviews } = useMeetupReviewsQuery(clubId, parsedMeetupId)
+  const { data: reviews } = useMeetupReviewsQuery(parsedClubId, parsedMeetupId)
 
   // 후기 등록
   const onClickUpdateReview = useMutation(
-    () => updateReview(clubId, parseInt(meetupId), content),
+    () => updateReview(parsedClubId, parseInt(meetupId), content),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['reviews'])
@@ -62,7 +62,7 @@ function MeetupDetailPage() {
 
   // 일정 삭제
   const onClickDeleteMeetup = useMutation(
-    () => deleteMeetup(clubId || 0, parseInt(meetupId)),
+    () => deleteMeetup(parsedClubId, parsedMeetupId),
     {
       onSuccess: () => {
         toast.addMessage('success', '일정이 삭제되었습니다')
