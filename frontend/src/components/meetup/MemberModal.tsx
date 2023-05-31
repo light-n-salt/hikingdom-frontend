@@ -4,8 +4,8 @@ import MemberList from 'components/club/MemberList'
 import { useMembersDetailQuery } from 'apis/services/meetup'
 
 type MemberModalProps = {
-  clubId: number | undefined
-  meetupId: string
+  clubId: number | string
+  meetupId: number | string
 }
 
 function MemberModal({ clubId, meetupId }: MemberModalProps) {
@@ -15,15 +15,11 @@ function MemberModal({ clubId, meetupId }: MemberModalProps) {
     data: memberList,
   } = useMembersDetailQuery(clubId, Number(meetupId))
 
-  console.log('memberList', memberList)
-
-  if (isLoading || isError) {
-    return <Loading />
-  }
-
   return (
     <div>
-      {memberList && (
+      {isLoading || isError ? (
+        <Loading />
+      ) : (
         <MemberList
           title="참여 멤버"
           length={memberList.length}

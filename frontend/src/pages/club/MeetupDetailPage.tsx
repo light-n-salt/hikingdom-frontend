@@ -22,21 +22,19 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import useUserQuery from 'hooks/useUserQuery'
 
 function MeetupDetailPage() {
   const { theme } = useContext(ThemeContext)
-  const { data: userInfo } = useUserQuery()
-  const clubId = userInfo?.clubId
-  const { meetupId } = useParams() as {
+  const { meetupId, clubId } = useParams() as {
     meetupId: string
+    clubId: string
   }
   const [content, setContent] = useState<string>('') // 후기 내용
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
-  const { data: meetup } = useMeetupDetailQuery(clubId || 0, parseInt(meetupId))
-  const { data: reviews } = useMeetupReviewsQuery(clubId, parseInt(meetupId))
+  const { data: meetup } = useMeetupDetailQuery(clubId, meetupId)
+  const { data: reviews } = useMeetupReviewsQuery(clubId, meetupId)
 
   const { mutate: writeReview } = useMutation(
     () =>
@@ -69,7 +67,7 @@ function MeetupDetailPage() {
     }
   )
 
-  return !userInfo || !meetup ? (
+  return !meetup ? (
     <div>
       <Loading />
     </div>
@@ -103,7 +101,7 @@ function MeetupDetailPage() {
           onClick={() => writeReview()}
         />
       )}
-      <div className={styles.btn}>
+      {/* <div className={styles.btn}>
         {userInfo?.memberId === meetup.meetupHostId ? (
           <Button
             text="삭제"
@@ -112,7 +110,7 @@ function MeetupDetailPage() {
             onClick={() => onClickDeleteMeetup.mutate()}
           />
         ) : null}
-      </div>
+      </div> */}
     </div>
   )
 }

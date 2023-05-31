@@ -68,14 +68,16 @@ function App() {
           <Route path="/club/create" element={<ClubCreatePage />} />
           <Route path="/club/:clubId/detail" element={<ClubDetailPage />} />
           <Route path="/club/none" element={<ClubNoneExistPage />} />
-          {/* 내 모임 */}
-          <Route path="/club/chat" element={<ClubChatPage />} />
-          <Route path="/club/meetup/create" element={<CreateMeetupPage />} />
+          <Route path="/club/:clubId/chat" element={<ClubChatPage />} />
           <Route
-            path="/club/meetup/:meetupId/detail"
+            path="/club/:clubId/meetup/create"
+            element={<CreateMeetupPage />}
+          />
+          <Route
+            path="/club/:clubId/meetup/:meetupId/detail"
             element={<MeetupDetailPage />}
           />
-          <Route path="/club" element={<ClubHeaderPage />}>
+          <Route path="/club:clubId/" element={<ClubHeaderPage />}>
             <Route path="main" element={<ClubMainPage />} />
             <Route path="meetup" element={<ClubMeetupPage />} />
             <Route path="member" element={<ClubMemberPage />} />
