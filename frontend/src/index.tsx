@@ -14,8 +14,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // focus시 refetch 방지
-      refetchOnWindowFocus: false,
+      retry: 0, // 재시도 횟수
+      retryDelay: 1000, // 재시도 간격
+      refetchOnWindowFocus: false, // focus시 refetch 방지
     },
   },
 })

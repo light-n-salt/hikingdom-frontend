@@ -1,12 +1,10 @@
 import { atom } from 'recoil'
 import { recoilPersist } from 'recoil-persist'
-import { User } from 'types/user.interface'
-import { ClubSimpleInfo } from 'types/club.interface'
 import SecureLS from 'secure-ls'
 
 const ls = new SecureLS({
   encodingType: 'aes',
-  encryptionSecret: 'my-secret-key-1',
+  encryptionSecret: process.env.REACT_APP_SECURE_LS_KEY || 'my-secret-key-1',
 })
 
 const { persistAtom } = recoilPersist({
