@@ -25,7 +25,7 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
 
-  const totalMemeber = clubInfo.totalMember.toString() + '명'
+  const totalMemeber = clubInfo.totalMember.toString()
 
   // 랭킹 아이콘
   let rankingIcon = null

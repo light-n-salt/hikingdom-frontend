@@ -77,7 +77,7 @@ function App() {
             path="/club/:clubId/meetup/:meetupId/detail"
             element={<MeetupDetailPage />}
           />
-          <Route path="/club:clubId/" element={<ClubHeaderPage />}>
+          <Route path="/club/:clubId/" element={<ClubHeaderPage />}>
             <Route path="main" element={<ClubMainPage />} />
             <Route path="meetup" element={<ClubMeetupPage />} />
             <Route path="member" element={<ClubMemberPage />} />

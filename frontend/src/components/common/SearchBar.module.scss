@@ -18,9 +18,11 @@
 }
 
 .input {
+  color: clr(tertiary-clr);
   padding: 0.1rem 0.7rem;
   border-left: 2px solid clr(primary-clr);
   font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .input::placeholder {

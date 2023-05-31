@@ -7,53 +7,49 @@ import {
 } from 'react-icons/io5'
 import Loading from './Loading'
 import { NavLink } from 'react-router-dom'
-import useUserQuery from 'hooks/useUserQuery'
+import { User } from 'types/user.interface'
 
-function NavigationBar() {
-  const { data: userInfo, isLoading, isError } = useUserQuery()
+type NavigationBalProps = {
+  userInfo: User
+}
 
+function NavigationBar({ userInfo }: NavigationBalProps) {
   return (
-    <>
-      {isError || isLoading ? (
-        <Loading />
-      ) : (
-        <nav className={styles.nav}>
-          <NavLink
-            to="/main"
-            className={({ isActive }) =>
-              isActive ? styles.active : styles.inactive
-            }
-          >
-            <IoHomeOutline />
-          </NavLink>
-          <NavLink
-            to="/rank"
-            className={({ isActive }) =>
-              isActive ? styles.active : styles.inactive
-            }
-          >
-            {' '}
-            <IoPodiumOutline />
-          </NavLink>
-          <NavLink
-            to={userInfo?.clubId ? `/club/main` : '/club/none'}
-            className={({ isActive }) =>
-              isActive ? styles.active : styles.inactive
-            }
-          >
-            <IoPeopleOutline />
-          </NavLink>
-          <NavLink
-            to={`/profile/${userInfo.nickname}`}
-            className={({ isActive }) =>
-              isActive ? styles.active : styles.inactive
-            }
-          >
-            <img src={userInfo.profileUrl} />
-          </NavLink>
-        </nav>
-      )}
-    </>
+    <nav className={styles.nav}>
+      <NavLink
+        to="/main"
+        className={({ isActive }) =>
+          isActive ? styles.active : styles.inactive
+        }
+      >
+        <IoHomeOutline />
+      </NavLink>
+      <NavLink
+        to="/rank"
+        className={({ isActive }) =>
+          isActive ? styles.active : styles.inactive
+        }
+      >
+        {' '}
+        <IoPodiumOutline />
+      </NavLink>
+      <NavLink
+        to={userInfo?.clubId ? `/club/main` : '/club/none'}
+        className={({ isActive }) =>
+          isActive ? styles.active : styles.inactive
+        }
+      >
+        <IoPeopleOutline />
+      </NavLink>
+      <NavLink
+        to={`/profile/${userInfo.nickname}`}
+        className={({ isActive }) =>
+          isActive ? styles.active : styles.inactive
+        }
+      >
+        <img src={userInfo.profileUrl} />
+      </NavLink>
+    </nav>
   )
 }
 

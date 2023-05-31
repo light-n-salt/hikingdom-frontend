@@ -11,7 +11,6 @@ import { assetInfo } from 'recoil/assetInfo'
 // 모바일 환경일 경우, width:100%
 function WebMargin() {
   const isMobile = useIsMobile() // 모바일 여부 판단 커스텀 훅
-  const assetArray = getPosition(assetInfo).arr
 
   return (
     <>
@@ -23,7 +22,7 @@ function WebMargin() {
       ) : (
         <div className={styles.background}>
           <div className={styles.mountain}>
-            <ClubMountain zoom={3} assetInfo={assetArray} />
+            <ClubMountain zoom={4} assetInfo={assetInfo} />
           </div>
           <div className={styles.mobile}>
             <Outlet />

@@ -1,6 +1,7 @@
 @use 'src/styles/colors' as *;
 
 .page {
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   width: 100%;

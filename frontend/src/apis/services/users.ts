@@ -1,4 +1,10 @@
-import apiRequest from 'apis/axios'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import apiRequest from 'apis/AxiosInterceptor'
+import { useNavigate } from 'react-router-dom'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { accessTokenState, refreshTokenState } from 'recoil/atoms'
+import toast from 'components/common/Toast'
+import { AxiosResponse } from 'axios'
 
 // 닉네임 중복 체크
 export function checkNickname(nickname: string) {
@@ -76,6 +82,37 @@ export function signup(
 }
 
 // 로그인
+export function useLogin(email: string, password: string) {
+  const setAccessToken = useSetRecoilState(accessTokenState)
+  const setRefreshToken = useSetRecoilState(refreshTokenState)
+  const navigate = useNavigate()
+  const fcmToken = sessionStorage.getItem('fcmToken') || ''
+
+  const { isLoading, isError, mutate } = useMutation(
+    () => apiRequest.post(`/members/auth/login`, { email, password, fcmToken }),
+    {
+      onSuccess: (res) => {
+        const accessToken = res.data.result.accessToken
+        const refreshToekn = res.data.result.refreshToken
+        setAccessToken(accessToken)
+        setRefreshToken(refreshToekn)
+        // @ts-expect-error
+        if (window.Kotlin) {
+          // @ts-expect-error
+          window.Kotlin.saveToken(accessToken, refreshToekn)
+          // @ts-expect-error
+          window.Kotlin.login()
+        }
+        navigate('/main')
+      },
+      onError: (err: AxiosResponse) => {
+        toast.addMessage('error', err.data.message)
+      },
+    }
+  )
+  return { isLoading, isError, mutate }
+}
+
 export function login(email: string, password: string) {
   const fcmToken = sessionStorage.getItem('fcmToken') || ''
 

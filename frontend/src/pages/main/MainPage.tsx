@@ -17,7 +17,6 @@ import Loading from 'components/common/Loading'
 import ClubMountain from 'components/club/ClubMountain'
 import { untilMidnight } from 'utils/untilMidnight'
 import { getPosition } from 'utils/getPosition'
-import { assetInfo } from 'recoil/assetInfo'
 
 type InfiniteClubInfo = {
   content: ClubInfo[]
@@ -56,9 +55,8 @@ function MainPage() {
       staleTime: queryTime,
     }
   )
-  const assetArray = getPosition(assetInfo).arr
 
-  return mtInfoArray && clubInfoArray && todayClubMt && assetArray ? (
+  return mtInfoArray && clubInfoArray && todayClubMt ? (
     <>
       {isLoading || isError ? (
         <Loading />
@@ -99,7 +97,7 @@ function MainPage() {
                 isBold={true}
               />
             </div>
-            <ClubMountain zoom={5} assetInfo={assetArray} />
+            <ClubMountain zoom={3.5} assetInfo={todayClubMt.assets} />
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import apiRequest from 'apis/axios'
+import apiRequest from 'apis/AxiosInterceptor'
 import { AxiosError, AxiosResponse } from 'axios'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
@@ -10,10 +10,7 @@ import { ClubMember } from 'types/club.interface'
 import toast from 'components/common/Toast'
 
 // 일정 상세 조회
-export function useMeetupDetailQuery(
-  clubId: number | string,
-  meetupId: number | string
-) {
+export function useMeetupDetailQuery(clubId: number, meetupId: number) {
   return useQuery<any, AxiosError, MeetupInfoDetail>(
     ['meetup', clubId, meetupId],
     () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/detail`),
@@ -22,10 +19,7 @@ export function useMeetupDetailQuery(
 }
 
 // 일정 멤버 조회
-export function useMeetupMemberQuery(
-  clubId: number | string,
-  meetupId: number | string
-) {
+export function useMeetupMemberQuery(clubId: number, meetupId: number) {
   return useQuery<any, AxiosError, MeetupMemberInfo>(
     ['meetupMembers', clubId, meetupId],
     () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/members`),
@@ -34,10 +28,7 @@ export function useMeetupMemberQuery(
 }
 
 // 일정 멤버 상세 조회
-export function useMembersDetailQuery(
-  clubId: number | string,
-  meetupId: number | string
-) {
+export function useMembersDetailQuery(clubId: number, meetupId: number) {
   return useQuery<any, AxiosError, ClubMember[]>(
     ['meetupMembersDetail', clubId, meetupId],
     () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/members/detail`),
@@ -46,10 +37,7 @@ export function useMembersDetailQuery(
 }
 
 // 일정 후기 조회
-export function useMeetupReviewsQuery(
-  clubId: number | string,
-  meetupId: number | string
-) {
+export function useMeetupReviewsQuery(clubId: number, meetupId: number) {
   return useQuery<any, AxiosError, MeetupReview[]>(
     ['meetupReviews', clubId, meetupId],
     () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/reviews`),
@@ -58,10 +46,7 @@ export function useMeetupReviewsQuery(
 }
 
 // 일정 참여
-export function useJoinMeetup(
-  clubId: number | string,
-  meetupId: number | string
-) {
+export function useJoinMeetup(clubId: number, meetupId: number) {
   const queryClient = useQueryClient()
   return useMutation(
     () => apiRequest.post(`/clubs/${clubId}/meetups/${meetupId}/join`),
@@ -79,10 +64,7 @@ export function useJoinMeetup(
 }
 
 // 일정 참여 취소
-export function useUnJoinMeetup(
-  clubId: number | string,
-  meetupId: number | string
-) {
+export function useUnJoinMeetup(clubId: number, meetupId: number) {
   const queryClient = useQueryClient()
   return useMutation(
     () => apiRequest.delete(`/clubs/${clubId}/meetups/${meetupId}/join`),
@@ -101,8 +83,8 @@ export function useUnJoinMeetup(
 
 // 일정 사진 조회 : Todo
 export function getMeetupAlbum(
-  clubId: number | string,
-  meetupId: number | string,
+  clubId: number,
+  meetupId: number,
   photoId: number | null = null,
   size: number | null = null
 ) {
@@ -118,8 +100,8 @@ export function getMeetupAlbum(
 
 // 일정 사진 등록 : Todo
 export function updateMeetupAlbum(
-  clubId: number | string,
-  meetupId: number | string,
+  clubId: number,
+  meetupId: number,
   formData: FormData
 ) {
   return apiRequest.post(
@@ -135,8 +117,8 @@ export function updateMeetupAlbum(
 
 // 일정 후기 등록 : Todo
 export function updateReview(
-  clubId: number | string,
-  meetupId: number | string,
+  clubId: number,
+  meetupId: number,
   content: string
 ) {
   return apiRequest.post(`/clubs/${clubId}/meetups/${meetupId}/reviews`, {
@@ -145,17 +127,14 @@ export function updateReview(
 }
 
 // 일정 삭제 : Todo
-export function deleteMeetup(
-  clubId: number | string,
-  meetupId: number | string
-) {
+export function deleteMeetup(clubId: number, meetupId: number) {
   return apiRequest.delete(`/clubs/${clubId}/meetups/${meetupId}`)
 }
 
 // 일정 후기 삭제 : Todo
 export function deleteReview(
-  clubId: number | string,
-  meetupId: number | string,
+  clubId: number,
+  meetupId: number,
   reviewId: number
 ) {
   return apiRequest.delete(

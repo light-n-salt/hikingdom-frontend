@@ -1,15 +1,17 @@
-import React, { useRef } from 'react'
+import React, { useRef, useContext } from 'react'
 import sytles from './LoginForm.module.scss'
 import { useNavigate } from 'react-router-dom'
-import { login } from 'apis/services/users'
+import { login, useLogin } from 'apis/services/users'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 import LabelInput from 'components/common/LabelInput'
 import TextButton from 'components/common/TextButton'
 import useAuthInput from 'hooks/useAuthInput'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function LoginForm() {
+  const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -26,21 +28,17 @@ function LoginForm() {
     condition: condition,
   } = useAuthInput({ type: 'password' }) // 사용자 인증 input 커스텀 훅
 
+  const { mutate: ulogin } = useLogin(email, password)
+
   // 로그인 api 요청
   function onClickLogin() {
-    queryClient.invalidateQueries(['user'])
-    // 이메일 형식이 맞고, 비밀번호가 입력된 경우에만 요청을 보냄
-    if (!isEmailPass || !password) {
-      toast.addMessage('error', `이메일과 비밀번호를 정확하게 입력해주세요`)
-      return
-    }
-    login(email, password)
-      .then(() => {
-        navigate('/main')
-      })
-      .catch((err) => {
-        toast.addMessage('error', err.data.message)
-      })
+    // queryClient.invalidateQueries(['user'])
+    // // 이메일 형식이 맞고, 비밀번호가 입력된 경우에만 요청을 보냄
+    // if (!isEmailPass || !password) {
+    //   toast.addMessage('error', `이메일과 비밀번호를 정확하게 입력해주세요`)
+    //   return
+    // }
+    ulogin()
   }
 
   return (
@@ -77,7 +75,7 @@ function LoginForm() {
         />
         <TextButton
           text="비밀번호 찾기"
-          color="tertiary"
+          color={theme === 'light' ? 'tertiary' : 'white'}
           onClick={() => navigate('/password')}
         />
       </div>

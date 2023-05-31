@@ -86,8 +86,15 @@ function CreateMeetupForm() {
       toast.addMessage('error', '모든 항목을 정확하게 기입해주세요')
       return
     }
-    if (new Date(date) < new Date()) {
-      toast.addMessage('error', '과거 날짜에는 일정을 생성할 수 없습니다')
+    const [year, month, day] = date
+      .split('-')
+      .map((string: string) => parseInt(string))
+    const [hours, minutes] = time
+      .split(':')
+      .map((string: string) => parseInt(string))
+    if (new Date(year, month - 1, day, hours, minutes) < new Date()) {
+      toast.addMessage('error', '과거 시간에는 일정을 생성할 수 없습니다')
+      return
     }
     const startAt = date + ' ' + time
     createMeetup(clubId, name, mountainId, startAt, description).then((res) => {

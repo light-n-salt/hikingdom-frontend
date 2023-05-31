@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubDetailPage.module.scss'
@@ -16,7 +16,6 @@ import PageHeader from 'components/common/PageHeader'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 import ClubMountain from 'components/club/ClubMountain'
-import { assetInfo } from 'recoil/assetInfo'
 
 function ClubDetailPage() {
   const { theme } = useContext(ThemeContext)
@@ -35,8 +34,6 @@ function ClubDetailPage() {
       .then(() => toast.addMessage('success', '가입신청이 완료되었습니다'))
       .catch((err) => toast.addMessage('error', `${err.data.message}`))
   }
-
-  const assetArray = getPosition(assetInfo).arr
 
   useEffect(() => {
     if (clubId === userInfo?.clubId) {
@@ -66,7 +63,7 @@ function ClubDetailPage() {
       <div className={styles.intro}>
         <MeetupIntroduction content={clubInfo.description} />
       </div>
-      <ClubMountain zoom={3} assetInfo={assetArray} />
+      <ClubMountain zoom={2} assetInfo={clubInfo.assets} />
     </div>
   ) : (
     <Loading />

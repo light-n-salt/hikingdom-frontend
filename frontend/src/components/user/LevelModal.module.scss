@@ -5,18 +5,18 @@
   align-items: center;
   justify-content: center;
   padding: 2rem 0;
-  gap: 1.5rem;
+  gap: 1.2rem;
 
   .level {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1.1fr 1fr;
     align-items: center;
 
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 700;
 
     > img {
-      width: 2rem;
+      width: 1.4rem;
     }
   }
 }

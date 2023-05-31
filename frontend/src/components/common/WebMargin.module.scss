@@ -14,15 +14,18 @@
 
 .mountain {
   position: absolute;
-  top: 10%;
-  left: 5%;
-  aspect-ratio: 1 /1;
-  width: 50%;
+  bottom: 2rem;
+  left: 2rem;
+  aspect-ratio: 4 / 3;
+  width: 60%;
+  height: 70%;
 }
 
 .mobile {
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  right: 15%;
+  right: 10%;
   width: 400px;
   min-width: 400px;
   height: 100%;

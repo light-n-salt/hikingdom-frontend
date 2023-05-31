@@ -4,8 +4,8 @@ import MemberList from 'components/club/MemberList'
 import { useMembersDetailQuery } from 'apis/services/meetup'
 
 type MemberModalProps = {
-  clubId: number | string
-  meetupId: number | string
+  clubId: number
+  meetupId: number
 }
 
 function MemberModal({ clubId, meetupId }: MemberModalProps) {

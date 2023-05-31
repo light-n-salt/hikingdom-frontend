@@ -7,6 +7,7 @@ export interface User {
   memberId?: number
   clubId?: number | undefined
   level?: number | undefined
+  unreadNotificationCount?: number | undefined
 }
 
 // 회원 프로필 조회 - 회원 등산 기록
@@ -60,10 +61,12 @@ export interface UserHikingDetail {
 
 // 전체 알림 조회
 export interface UserAlarm {
-  notificationId: number
+  category: string
   title: string
   body: string
   sendAt: string
+  clubId: number
+  meetupId?: number  
+  notificationId: number
   isRead: boolean
-  url: string
 }

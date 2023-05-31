@@ -18,32 +18,35 @@ function MeetupMembers() {
     clubId: string
   }
 
+  const parsedclubId = Number(clubId)
+  const parsedMeetupId = Number(meetupId)
+
   // 일정 멤버 조회
   const {
     isLoading: isMeetupMembersLoading,
     isError: isMeetupMembersError,
     data: meetupMembers,
-  } = useMeetupMemberQuery(clubId, Number(meetupId))
+  } = useMeetupMemberQuery(parsedclubId, parsedMeetupId)
 
   // 일정 참여
   const {
     isLoading: isJoinLoading,
     isError: isJoinError,
     mutate: joinMeetup,
-  } = useJoinMeetup(clubId, Number(meetupId))
+  } = useJoinMeetup(parsedclubId, parsedMeetupId)
 
   // 일정 참여 취소
   const {
     isLoading: isUnjoinLoading,
     isError: isUnjoinError,
     mutate: unJoinMeetup,
-  } = useUnJoinMeetup(clubId, Number(meetupId))
+  } = useUnJoinMeetup(parsedclubId, parsedMeetupId)
 
   return (
     <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
-          <MemberModal clubId={clubId} meetupId={meetupId} />
+          <MemberModal clubId={parsedclubId} meetupId={parsedMeetupId} />
         </Modal>
       )}
       <div className={styles.meetup}>

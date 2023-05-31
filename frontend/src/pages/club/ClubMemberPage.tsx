@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styles from './ClubMemberPage.module.scss'
-import { ClubDetailInfo, ClubMemberList } from 'types/club.interface'
+import { ClubDetailInfo, ClubMemberList, ClubSimpleInfo } from 'types/club.interface'
 import {
   getClubMember,
   updateClubMember,
   deleteClubMember,
   deleteClub,
   getClubInfo,
+  getClubSimpleInfo,
 } from 'apis/services/clubs'
 import Toast from 'components/common/Toast'
 import Loading from 'components/common/Loading'
@@ -14,7 +15,7 @@ import MemberList from 'components/club/MemberList'
 import useUserQuery from 'hooks/useUserQuery'
 import TextButton from 'components/common/TextButton'
 import Modal from 'components/common/Modal'
-import DeleteModal from 'components/club/DeleteModal'
+import ConfirmModal from 'components/club/ConfirmModal'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
@@ -32,6 +33,14 @@ function ClubMemberPage() {
   const { data: clubInfo } = useQuery<ClubDetailInfo>(
     ['ClubDetailInfo', clubId],
     () => getClubInfo(clubId || 0),
+    {
+      enabled: !!clubId,
+    }
+  )
+
+  const { data: clubSimpleInfo } = useQuery<ClubSimpleInfo>(
+    ['user', 'clubInfo'],
+    () => getClubSimpleInfo(clubId || 0),
     {
       enabled: !!clubId,
     }
@@ -68,17 +77,19 @@ function ClubMemberPage() {
     deleteClub(clubId).then(() => {
       Toast.addMessage('success', `${clubInfo?.clubName}에서 탈퇴하셨습니다`)
       navigate('/club/none')
+    }).catch(() => {
+      Toast.addMessage('error', `클럽 호스트는 탈퇴하실 수 없습니다`)
+      setIsOpen(false)
     })
   }
 
-  return clubMemberList.member[0] ? (
+  return clubMemberList.member[0] && clubSimpleInfo ? (
     <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
-          <DeleteModal
+          <ConfirmModal
             title="모임을 탈퇴하시겠습니까?"
-            content1={`주최한 일정이 존재하면, \n삭제 또는 완료해야 탈퇴가능합니다`}
-            content2="탈퇴한 모임은 다시 가입을 신청해야 합니다"
+            content={`주최한 일정이 존재하면, \n삭제 또는 완료해야 탈퇴가능합니다`}
             buttonText="모임 탈퇴"
             onClickDelete={onClickDeleteClub}
             onClickCloseModal={() => setIsOpen(false)}
@@ -93,12 +104,14 @@ function ClubMemberPage() {
             memberList={clubMemberList.request}
             onClickJoin={onClickJoin}
             onClickDelete={onClickDelete}
+            hostId={clubSimpleInfo.hostId}
           />
         )}
         <MemberList
           title="모임 멤버"
           length={clubMemberList.member.length}
           memberList={clubMemberList.member}
+          hostId={clubSimpleInfo.hostId}
         />
         <div className={styles.button}>
           <TextButton
