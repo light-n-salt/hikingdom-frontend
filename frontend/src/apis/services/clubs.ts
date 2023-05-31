@@ -1,4 +1,4 @@
-import apiRequest from 'apis/axios'
+import apiRequest from 'apis/AxiosInterceptor'
 
 // 소모임 정보 조회
 export function getClubSimpleInfo(clubId: number) {

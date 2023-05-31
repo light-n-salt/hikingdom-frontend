@@ -1,4 +1,4 @@
-import apiRequest from 'apis/axios'
+import apiRequest from 'apis/AxiosInterceptor'
 
 // GET Request
 export function getMountains(
