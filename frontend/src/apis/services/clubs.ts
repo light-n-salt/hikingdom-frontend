@@ -1,4 +1,4 @@
-import apiRequest from 'apis/axios'
+import apiRequest from 'apis/AxiosInterceptor'
 import { untilMidnight } from 'utils/untilMidnight'
 import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { ClubSimpleInfo, InfiniteClubInfo } from 'types/club.interface'
