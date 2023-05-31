@@ -3,88 +3,52 @@ import { untilMidnight } from 'utils/untilMidnight'
 import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { ClubSimpleInfo, InfiniteClubInfo } from 'types/club.interface'
 import toast from 'components/common/Toast'
-import { AxiosResponse } from 'axios'
+import { AxiosResponse, AxiosError } from 'axios'
 
 // 소모임 정보 조회
 export function useClubSimpleInfoQuery(clubId: number) {
-  const { isLoading, isError, data, isSuccess } = useQuery<ClubSimpleInfo>(
+  return useQuery<any, AxiosError, ClubSimpleInfo>(
     ['user', 'clubInfo'],
-    () => apiRequest.get(`clubs/${clubId}`).then((res) => res.data.result),
+    () => apiRequest.get(`clubs/${clubId}`),
     {
+      select: (res) => res.data.result,
       cacheTime: untilMidnight(),
       staleTime: untilMidnight(),
       enabled: !!clubId,
     }
   )
-  return {
-    isLoading,
-    isError,
-    data,
-    isSuccess,
-  }
 }
 
 // 소모임 랭킹 조회
-const getRanking = async (
-  sort = '',
-  clubId: number | null = null,
-  size: number | null = null
-) => {
-  return await apiRequest
-    .get(`/clubs/ranking`, {
-      params: {
-        sort,
-        clubId,
-        size,
-      },
-    })
-    .then((res) => res.data.result)
-}
-
 export function useclubRankTop3Query() {
-  const {
-    isLoading: isClubRankTop3Loading,
-    isError: isClubRankTop3Error,
-    data: clubRankTop3,
-    isSuccess,
-  } = useQuery<InfiniteClubInfo>(['clubRankTop3'], () =>
-    getRanking('', null, 3)
+  return useQuery<any, AxiosError, InfiniteClubInfo>(
+    ['clubRankTop3'],
+    () =>
+      apiRequest.get(`/clubs/ranking`, {
+        params: { sort: '', clubId: null, size: 3 },
+      }),
+    {
+      select: (res) => res.data.result,
+    }
   )
-  return {
-    isClubRankTop3Loading,
-    isClubRankTop3Error,
-    clubRankTop3,
-    isSuccess,
-  }
 }
 
+// useInfiniteQuery 적용
 export function useInfiniteClubInfoQuery(filter: string) {
-  const {
-    isLoading,
-    isError,
-    data,
-    isSuccess,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery<InfiniteClubInfo>({
+  return useInfiniteQuery<any, AxiosError, InfiniteClubInfo>({
     queryKey: ['rank', filter],
-    queryFn: ({ pageParam = null }) => getRanking(filter, pageParam),
+    queryFn: ({ pageParam = null }) =>
+      apiRequest
+        .get(`/clubs/ranking`, {
+          params: { sort: filter, pageParam },
+        })
+        .then((res) => res.data.result),
     getNextPageParam: (lastPage) => {
       return lastPage.hasNext ? lastPage.content.slice(-1)[0].clubId : undefined
     },
     cacheTime: untilMidnight(),
     staleTime: untilMidnight(),
   })
-  return {
-    isLoading,
-    isError,
-    data,
-    isSuccess,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  }
 }
 
 // 소모임 조회  >>>  SearchClubPage

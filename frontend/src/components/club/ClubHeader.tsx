@@ -27,7 +27,7 @@ function ClubHeader() {
           <IconButton
             imgSrc={Chatting}
             size="sm"
-            onClick={() => navigate(`/club/chat`)}
+            onClick={() => navigate(`/club/${clubId}/chat`)}
           />
         </div>
       </div>

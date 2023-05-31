@@ -33,9 +33,9 @@ function MainPage() {
   })
 
   const {
-    isClubRankTop3Loading,
-    isClubRankTop3Error,
-    clubRankTop3,
+    isLoading: isClubRankTop3Loading,
+    isError: isClubRankTop3Error,
+    data: clubRankTop3,
     isSuccess,
   } = useclubRankTop3Query()
 
