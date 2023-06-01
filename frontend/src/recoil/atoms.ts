@@ -29,6 +29,7 @@ const themeState = atom<'light' | 'dark'>({
 const accessTokenState = atom<string>({
   key: 'AccessToken',
   default: '',
+  effects_UNSTABLE: [encryptPersistAtom],
 })
 
 const refreshTokenState = atom<string>({
