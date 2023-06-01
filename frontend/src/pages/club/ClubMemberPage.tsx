@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styles from './ClubMemberPage.module.scss'
-import { ClubDetailInfo, ClubMemberList } from 'types/club.interface'
+import { ClubMemberList } from 'types/club.interface'
 import {
   getClubMember,
   updateClubMember,
   deleteClubMember,
   deleteClub,
-  getClubInfo,
+  useClubInfoQuery,
   useClubSimpleInfoQuery,
 } from 'apis/services/clubs'
 import Toast from 'components/common/Toast'
@@ -16,7 +16,6 @@ import useUserQuery from 'hooks/useUserQuery'
 import TextButton from 'components/common/TextButton'
 import Modal from 'components/common/Modal'
 import ConfirmModal from 'components/club/ConfirmModal'
-import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
 function ClubMemberPage() {
@@ -30,19 +29,18 @@ function ClubMemberPage() {
   const { data: userInfo } = useUserQuery()
   const clubId = userInfo?.clubId
 
-  const { data: clubInfo } = useQuery<ClubDetailInfo>(
-    ['ClubDetailInfo', clubId],
-    () => getClubInfo(clubId || 0),
-    {
-      enabled: !!clubId,
-    }
-  )
+  const {
+    isLoading,
+    isError,
+    data: clubInfo,
+    isSuccess,
+  } = useClubInfoQuery(clubId || 0)
 
   const {
     isLoading: isClubSimpleInfoLoading,
     isError: isClubSimpleInfoError,
     data: clubSimpleInfo,
-    isSuccess,
+    isSuccess: isClubSimpleInfoSuccess,
   } = useClubSimpleInfoQuery(clubId || 0)
 
   useEffect(() => {

@@ -1,3 +1,5 @@
+import { InfinitePage } from './common.interface'
+
 // 소모임 정보 조회
 export interface ClubSimpleInfo {
   hostId: number
@@ -19,13 +21,6 @@ export interface ClubInfo {
 }
 
 // 소모임 랭킹 조회
-export interface InfinitePage {
-  hasNext: boolean
-  hasPrevious: boolean
-  numberOfElements: number
-  pageSize: number
-}
-
 export interface InfiniteClubInfo extends InfinitePage {
   content: ClubInfo[]
 }
@@ -87,11 +82,15 @@ export interface Album {
   profileUrl: string
 }
 
+export interface InfiniteAlbumInfo extends InfinitePage {
+  content: Album[]
+}
+
 // 지역 코드 조회
 export interface SearchCode {
   dongCode: string
-  sidoName: string
-  sigunguName: string
+  sidoName?: string
+  gugunName?: string
 }
 
 // 소모임 생성

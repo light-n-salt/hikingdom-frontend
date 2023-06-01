@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styles from './MainPage.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { getTodayMountains } from 'apis/services/mountains'
-import { getTodayClubMt, useclubRankTop3Query } from 'apis/services/clubs'
+import { useTodayClubMtQuery, useclubRankTop3Query } from 'apis/services/clubs'
 import { MtInfo } from 'types/mt.interface'
 import { TodayClubMt } from 'types/club.interface'
 import { useQuery } from '@tanstack/react-query'
@@ -36,17 +36,15 @@ function MainPage() {
     isLoading: isClubRankTop3Loading,
     isError: isClubRankTop3Error,
     data: clubRankTop3,
-    isSuccess,
+    isSuccess: isClubRankTop3Success,
   } = useclubRankTop3Query()
 
-  const { data: todayClubMt } = useQuery<TodayClubMt>(
-    ['todayClubMountain'],
-    getTodayClubMt,
-    {
-      cacheTime: queryTime,
-      staleTime: queryTime,
-    }
-  )
+  const {
+    isLoading: isTodayClubMtLoading,
+    isError: isTodayClubMtError,
+    data: todayClubMt,
+    isSuccess: isTodayClubMtSuccess,
+  } = useTodayClubMtQuery()
 
   return mtInfoArray && clubRankTop3 && todayClubMt ? (
     <>

@@ -4,11 +4,12 @@ import styles from './ClubChatPage.module.scss'
 import PageHeader from 'components/common/PageHeader'
 import ChatList from 'components/club/ChatList'
 import Loading from 'components/common/Loading'
-import { Chats, Chat, ChatMember } from 'types/chat.interface'
+import { Chats, Chat, ChatMember, InfiniteChat } from 'types/chat.interface'
 import {
   getChats,
   getMembers,
   useClubSimpleInfoQuery,
+  useChatsQuery,
 } from 'apis/services/clubs'
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
@@ -21,13 +22,13 @@ import { accessTokenState } from 'recoil/atoms'
 
 // import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
-type InfiniteChat = {
-  content: Chats[]
-  hasNext: boolean
-  hasPrevious: boolean
-  numberOfElements: number
-  pageSize: number
-}
+// type InfiniteChat = {
+//   content: Chats[]
+//   hasNext: boolean
+//   hasPrevious: boolean
+//   numberOfElements: number
+//   pageSize: number
+// }
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
@@ -80,6 +81,14 @@ function ClubChatPage() {
     },
     cacheTime: 0,
   })
+
+  // const {
+  //   data: chats,
+  //   isError,
+  //   isLoading,
+  //   fetchNextPage,
+  //   hasNextPage,
+  // } =
 
   // 멤버 데이터
   const { data: memberInfo } = useQuery(
