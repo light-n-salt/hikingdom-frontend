@@ -15,18 +15,20 @@ function MemberModal({ clubId, meetupId }: MemberModalProps) {
     data: memberList,
   } = useMembersDetailQuery(clubId, Number(meetupId))
 
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (isError) {
+    return <div>Todo: 에러컴포넌트적용</div>
+  }
+
   return (
-    <div>
-      {isLoading || isError ? (
-        <Loading />
-      ) : (
-        <MemberList
-          title="참여 멤버"
-          length={memberList.length}
-          memberList={memberList}
-        />
-      )}
-    </div>
+    <MemberList
+      title="참여 멤버"
+      length={memberList.length}
+      memberList={memberList}
+    />
   )
 }
 

@@ -4,87 +4,91 @@ import Image from 'components/common/Image'
 import Button from 'components/common/Button'
 import Modal from 'components/common/Modal'
 import MemberModal from './MemberModal'
-import { useParams } from 'react-router-dom'
 import {
   useMeetupMemberQuery,
   useJoinMeetup,
   useUnJoinMeetup,
 } from 'apis/services/meetup'
+import Loading from 'components/common/Loading'
 
-function MeetupMembers() {
+type MeetupMembersProps = {
+  clubId: number
+  meetupId: number
+}
+
+function MeetupMembers({ clubId, meetupId }: MeetupMembersProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const { meetupId, clubId } = useParams() as {
-    meetupId: string
-    clubId: string
-  }
-
-  const parsedclubId = Number(clubId)
-  const parsedMeetupId = Number(meetupId)
 
   // 일정 멤버 조회
   const {
     isLoading: isMeetupMembersLoading,
     isError: isMeetupMembersError,
     data: meetupMembers,
-  } = useMeetupMemberQuery(parsedclubId, parsedMeetupId)
+  } = useMeetupMemberQuery(clubId, meetupId)
 
   // 일정 참여
   const {
     isLoading: isJoinLoading,
     isError: isJoinError,
     mutate: joinMeetup,
-  } = useJoinMeetup(parsedclubId, parsedMeetupId)
+  } = useJoinMeetup(clubId, meetupId)
 
   // 일정 참여 취소
   const {
     isLoading: isUnjoinLoading,
     isError: isUnjoinError,
     mutate: unJoinMeetup,
-  } = useUnJoinMeetup(parsedclubId, parsedMeetupId)
+  } = useUnJoinMeetup(clubId, meetupId)
+
+  if (isMeetupMembersLoading || isJoinLoading || isUnjoinLoading) {
+    return <Loading />
+  }
+
+  if (isMeetupMembersError || isJoinError || isUnjoinError) {
+    return <div>Todo: 에러컴포넌트적용</div>
+  }
 
   return (
-    <>
+    <div className={styles.meetup}>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
-          <MemberModal clubId={parsedclubId} meetupId={parsedMeetupId} />
+          <MemberModal clubId={clubId} meetupId={meetupId} />
         </Modal>
       )}
-      <div className={styles.meetup}>
-        <div className={styles.titles}>
-          <span className={styles.title}>
-            참여 멤버 ({meetupMembers?.totalMember}명)
-          </span>
-          {meetupMembers?.isJoin ? (
-            <Button
-              text="참여취소"
-              color="secondary"
-              size="xs"
-              onClick={() => unJoinMeetup()}
-            />
-          ) : (
-            <Button
-              text="참여"
-              color="primary"
-              size="xs"
-              onClick={() => joinMeetup()}
-            />
-          )}
-        </div>
-        <div className={styles.members}>
-          {meetupMembers?.memberInfo.slice(0, 6).map((member) => (
-            <Image
-              key={member.memberId}
-              imgUrl={member.profileUrl}
-              size="sm"
-              isSquare={true}
-            />
-          ))}
-          <div className={styles.more} onClick={() => setIsOpen(true)}>
-            +
-          </div>
+      <div className={styles.titles}>
+        <span className={styles.title}>
+          참여 멤버 ({meetupMembers?.totalMember}명)
+        </span>
+        {meetupMembers?.isJoin ? (
+          <Button
+            text="참여취소"
+            color="secondary"
+            size="xs"
+            onClick={() => unJoinMeetup()}
+          />
+        ) : (
+          <Button
+            text="참여"
+            color="primary"
+            size="xs"
+            onClick={() => joinMeetup()}
+          />
+        )}
+      </div>
+      <div className={styles.members}>
+        {meetupMembers?.memberInfo.slice(0, 6).map((member) => (
+          <Image
+            key={member.memberId}
+            imgUrl={member.profileUrl}
+            size="sm"
+            isSquare={true}
+          />
+        ))}
+        <div className={styles.more} onClick={() => setIsOpen(true)}>
+          +
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
