@@ -16,8 +16,8 @@ import {
   TodayClubMt,
   ClubDetailInfo,
   InfiniteAlbumInfo,
+  ClubMemberList,
 } from 'types/club.interface'
-import { MeetupInfoList } from 'types/meetup.interface'
 import { InfiniteChat } from 'types/chat.interface'
 import toast from 'components/common/Toast'
 
@@ -141,7 +141,7 @@ export function getClubs(query = '', word = '', clubId: number | null = null) {
   })
 }
 
-// 소모임 생성  >>>> Todo : Check Test
+// 소모임 생성
 export function useCreateClub(
   name: string,
   description: string,
@@ -283,40 +283,87 @@ export function useDateMeetupsQuery(clubId: number, date: string) {
   )
 }
 
-// 일정 생성  >>> Todo
-export function createMeetup(
-  clubId: number | string,
-  name: string,
-  mountainId: number | string,
-  startAt: string,
-  description: string
-) {
-  return apiRequest.post(`/clubs/${clubId}/meetups`, {
-    name,
-    mountainId,
-    startAt,
-    description,
-  })
+// 일정 생성
+export function useCreateMeetup(clubId: number) {
+  const navigate = useNavigate()
+
+  return useMutation(
+    (data: {
+      name: string
+      mountainId: number | string
+      startAt: string
+      description: string
+    }) => apiRequest.post(`/clubs/${clubId}/meetups`, data),
+    {
+      onSuccess: (res: AxiosResponse) => {
+        toast.addMessage('success', '일정을 생성했습니다')
+        navigate(`/club/${res.data.result.id}/main`)
+      },
+      onError: (err: AxiosResponse) => {
+        toast.addMessage('error', err.data.message)
+      },
+    }
+  )
 }
 
 // 소모임 멤버 조회
-export function getClubMember(clubId: number) {
-  return apiRequest.get(`/clubs/${clubId}/members`)
+export function useClubMemberQuery(clubId: number) {
+  return useQuery<any, AxiosError, ClubMemberList>(
+    ['clubMembers'],
+    () => apiRequest.get(`/clubs/${clubId}/members`),
+    {
+      select: (res) => res.data.result,
+    }
+  )
 }
 
 // 소모임 탈퇴
-export function deleteClub(clubId: number) {
-  return apiRequest.delete(`/clubs/${clubId}/members`)
+export function useDeleteClub(clubId: number) {
+  const navigate = useNavigate()
+
+  return useMutation(() => apiRequest.delete(`/clubs/${clubId}/members`), {
+    onSuccess: (res: AxiosResponse) => {
+      toast.addMessage('success', res.data.message)
+      navigate('/club/none')
+    },
+    onError: () => {
+      toast.addMessage('error', `클럽 호스트는 탈퇴하실 수 없습니다`)
+    },
+  })
 }
 
 // 소모임 가입 수락
-export function updateClubMember(clubId: number, memberId: number) {
-  return apiRequest.post(`/clubs/${clubId}/admin/requests/${memberId}`)
+export function useAddClubMember(clubId: number, memberId: number) {
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => apiRequest.post(`/clubs/${clubId}/admin/requests/${memberId}`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['clubMembers'])
+      },
+      onError: (err: AxiosResponse) => {
+        toast.addMessage('error', `${err.data.message}`)
+      },
+    }
+  )
 }
 
 // 소모임 가입 거절
-export function deleteClubMember(clubId: number, memberId: number) {
-  return apiRequest.delete(`/clubs/${clubId}/admin/requests/${memberId}`)
+export function useRemoveClubMember(clubId: number, memberId: number) {
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => apiRequest.delete(`/clubs/${clubId}/admin/requests/${memberId}`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['clubMembers'])
+      },
+      onError: (err: AxiosResponse) => {
+        toast.addMessage('error', `${err.data.message}`)
+      },
+    }
+  )
 }
 
 // 소모임 앨범 조회

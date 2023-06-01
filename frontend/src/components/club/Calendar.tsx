@@ -34,6 +34,9 @@ function Calendar({
 }: CalendarProps) {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
+  const clubId = useParams() as {
+    clubId: string
+  }
 
   // 오늘 날짜 기반으로, 현재 달력이 바라보는 날짜 설정
   const [currentDate, setCurrentDate] = useState(today)
@@ -127,7 +130,9 @@ function Calendar({
           text="일정생성"
           color="primary"
           size="sm"
-          onClick={() => navigate(`/club/meetup/create`)}
+          onClick={() =>
+            navigate(`/club/${parseInt(clubId.clubId)}/meetup/create`)
+          }
         />
       </div>
     </div>
