@@ -14,6 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      staleTime: 1000, // 1초, 동일 페이지 렌더링 시 중복 요청 방지
       retry: 0, // 재시도 횟수
       retryDelay: 1000, // 재시도 간격
       refetchOnWindowFocus: false, // focus시 refetch 방지

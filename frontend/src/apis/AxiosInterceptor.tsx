@@ -51,11 +51,7 @@ function AxiosInterceptor({ children }: Props) {
       const originalRequest = error.config!
 
       // 만료된 JWT access 토큰이 감지되면 자동으로 새로운 JWT access 토큰 발급 시도
-      if (
-        error.response?.status === 401 &&
-        (error.response?.data?.code === 'C004' ||
-          error.response?.data?.code === 'C006')
-      ) {
+      if (error.response?.data?.code === 'C006') {
         try {
           const response: AxiosResponse = await axios.post(
             `${process.env.REACT_APP_API_BASE_URL}/members/auth/refresh-token`,
@@ -80,6 +76,8 @@ function AxiosInterceptor({ children }: Props) {
           navigate('/login')
           return Promise.reject(error)
         }
+      } else if (error.response?.status === 404) {
+        navigate('/404')
       } else if (error.response?.status && error.response?.status >= 500) {
         toast.addMessage('error', `서버와의 통신 오류가 발생했습니다`)
       }

@@ -7,13 +7,13 @@ import {
 } from 'react-icons/io5'
 import Loading from './Loading'
 import { NavLink } from 'react-router-dom'
-import { User } from 'types/user.interface'
+import { UserInfo } from 'types/user.interface'
 
-type NavigationBalProps = {
-  userInfo: User
+type NavigationBarProps = {
+  userInfo: UserInfo
 }
 
-function NavigationBar({ userInfo }: NavigationBalProps) {
+function NavigationBar({ userInfo }: NavigationBarProps) {
   return (
     <nav className={styles.nav}>
       <NavLink
