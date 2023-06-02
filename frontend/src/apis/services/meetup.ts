@@ -170,7 +170,7 @@ export function useDeleteMeetup(clubId: number, meetupId: number) {
       onSuccess: () => {
         // queryClient.invalidateQueries([]) Todo: 쿼리키 적용
         toast.addMessage('success', '일정이 삭제되었습니다')
-        navigate(`/club/main`)
+        navigate(`/club/${clubId}/main`)
       },
       onError: (err: any) => {
         if (err.status === 400) {

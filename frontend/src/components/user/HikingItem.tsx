@@ -20,7 +20,6 @@ import Modal from 'components/common/Modal'
 import { HikingSimple } from 'types/user.interface'
 import { convertToKm } from 'utils/convertToKm'
 import { convertToTime } from 'utils/convertToTime'
-import useUserQuery from 'hooks/useUserQuery'
 
 function HikingItem({ hiking }: { hiking: HikingSimple }) {
   const { theme } = useContext(ThemeContext)

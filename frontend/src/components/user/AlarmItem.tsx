@@ -30,7 +30,7 @@ function AlarmItem({ alarm }: { alarm: Alarm }) {
     if (userInfo?.clubId === alarm.clubId) {
       alarm.category === 'NEW_ASSET'
         ? navigate('/club/main')
-        : navigate(`/club/meetup/${alarm.meetupId}/detail`)
+        : navigate(`/club/${alarm.clubId}/meetup/${alarm.meetupId}/detail`)
     } else {
       Toast.addMessage('error', '탈퇴한 클럽의 일정입니다.')
     }

@@ -130,14 +130,24 @@ export function useUnJoinClub(clubId: number) {
   })
 }
 
-// 소모임 조회  >>>  SearchClubPage  - Todo
-export function getClubs(query = '', word = '', clubId: number | null = null) {
-  return apiRequest.get(`/clubs`, {
-    params: {
-      query,
-      word,
-      clubId,
+// 소모임 조회
+export function useInfiniteClubsQuery(query = '', word = '') {
+  return useInfiniteQuery<any, AxiosError, InfiniteClubInfo>({
+    queryKey: ['clubs', { query, word }],
+    queryFn: ({ pageParam = null }) =>
+      apiRequest
+        .get('/clubs', {
+          params: {
+            query,
+            word,
+            clubId: pageParam,
+          },
+        })
+        .then((res) => res.data.result),
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNext ? lastPage.content.slice(-1)[0].clubId : undefined
     },
+    enabled: true,
   })
 }
 
