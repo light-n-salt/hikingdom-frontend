@@ -14,7 +14,7 @@ services:
   dev-backend-discovery:
     container_name: dev-backend-discovery
     build:
-      context: ./backend/discovery
+      context: ./backend/discovery-server
       dockerfile: Dockerfile
       args:
         SERVER_MODE: dev
@@ -91,7 +91,7 @@ services:
   dev-backend-gateway:
     container_name: dev-backend-gateway
     build:
-      context: ./backend/gateway
+      context: ./backend/gateway-server
       dockerfile: Dockerfile
       args:
         SERVER_MODE: dev

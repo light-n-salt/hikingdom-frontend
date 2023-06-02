@@ -7,13 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class JwtAuthToken extends AbstractAuthenticationToken {
 
-	private String jwtAuthToken;
 	private Object principal; // currently logged-in user
-	private Object credentials;
+	private final Object credentials; // JWT token
 
 	public JwtAuthToken(String jwtAuthToken) {
 		super(null);
-		this.jwtAuthToken = jwtAuthToken;
+		this.credentials = jwtAuthToken;
 		this.setAuthenticated(false);
 	}
 
@@ -34,7 +33,8 @@ public class JwtAuthToken extends AbstractAuthenticationToken {
 		return this.principal;
 	}
 
-	public String getJwtAuthToken() {
-		return this.jwtAuthToken;
+	@Override
+	public void eraseCredentials() {
+		super.eraseCredentials();
 	}
 }

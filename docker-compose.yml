@@ -12,7 +12,7 @@ services:
   main-backend-discovery:
     container_name: main-backend-discovery
     build:
-      context: ./backend/discovery
+      context: ./backend/discovery-server
       dockerfile: Dockerfile
       args:
         SERVER_MODE: main
@@ -89,7 +89,7 @@ services:
   main-backend-gateway:
     container_name: main-backend-gateway
     build:
-      context: ./backend/gateway
+      context: ./backend/gateway-server
       dockerfile: Dockerfile
       args:
         SERVER_MODE: main
