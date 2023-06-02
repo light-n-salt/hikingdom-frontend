@@ -91,7 +91,7 @@ services:
   dev-backend-gateway:
     container_name: dev-backend-gateway
     build:
-      context: ./backend/gateway
+      context: ./backend/gateway-server
       dockerfile: Dockerfile
       args:
         SERVER_MODE: dev

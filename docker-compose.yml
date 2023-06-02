@@ -89,7 +89,7 @@ services:
   main-backend-gateway:
     container_name: main-backend-gateway
     build:
-      context: ./backend/gateway
+      context: ./backend/gateway-server
       dockerfile: Dockerfile
       args:
         SERVER_MODE: main

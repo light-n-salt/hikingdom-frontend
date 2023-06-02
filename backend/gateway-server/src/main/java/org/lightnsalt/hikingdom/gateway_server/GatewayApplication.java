@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.gateway;
+package org.lightnsalt.hikingdom.gateway_server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
