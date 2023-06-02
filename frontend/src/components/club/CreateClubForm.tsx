@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './CreateClubForm.module.scss'
 import { useNavigate } from 'react-router-dom'
-import { checkClubName, getLocationCode, createClub } from 'apis/services/clubs'
+import {
+  useCreateClub,
+  useCheckClubNameQuery,
+  useSidoCodeQuery,
+  useGuGunCodeQuery,
+} from 'apis/services/clubs'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 import PageHeader from 'components/common/PageHeader'
@@ -10,12 +15,6 @@ import LabelTextArea from 'components/common/LabelTextArea'
 import SelectBox from 'components/common/SelectBox'
 import Label from 'components/common/Label'
 import { useQueryClient } from '@tanstack/react-query'
-
-type locationCode = {
-  dongCode: string
-  sidoName?: string
-  gugunName?: string
-}
 
 type Option = {
   value: string
@@ -27,6 +26,7 @@ function CreateClubForm() {
   const client = useQueryClient()
 
   const [name, setName] = useState('')
+  const [isClickduplicate, setIsClickduplicate] = useState(false)
   const [isNamePass, setIsNamePass] = useState(false)
   const [description, setDescription] = useState('')
   const [sidoOptions, setSidoOptions] = useState<Option[]>([])
@@ -38,26 +38,45 @@ function CreateClubForm() {
   const gugunRef = useRef<HTMLDivElement>(null)
 
   // 첫 마운트 시 시도 코드 가져오기
+  const {
+    isLoading: isSidoCodeLoading,
+    isError: isSidoCodeError,
+    data: sidoInfo,
+    isSuccess: isSidoCodeSuccess,
+  } = useSidoCodeQuery()
+
   useEffect(() => {
-    getLocationCode('sido').then((res) => {
-      // 받은 location 배열 정보를 Dropdown 컴포넌트에 option으로 내려줄 수 있도록 가공해서 저장
-      const sidoInfo: locationCode[] = res.data.result
+    if (isSidoCodeSuccess) {
       const options: Option[] = []
-      sidoInfo.map(({ dongCode, sidoName = '' }) => {
-        options.push({
-          value: dongCode,
-          label: sidoName,
-        })
-      })
+      sidoInfo.map(
+        ({
+          dongCode,
+          sidoName = '',
+        }: {
+          dongCode: string
+          sidoName?: string
+        }) => {
+          options.push({
+            value: dongCode,
+            label: sidoName,
+          })
+        }
+      )
       setSidoOptions(options)
-    })
-  }, [])
+    }
+  }, [sidoInfo])
 
   // 시도 선택에 따른 구군 코드 업데이트
+  const {
+    isLoading: isGuGunCodeLoading,
+    isError: isGuGunCodeError,
+    data: gugunInfo,
+    isSuccess: isGuGunCodeSuccess,
+  } = useGuGunCodeQuery(sidoCode)
+
   useEffect(() => {
-    getLocationCode('gugun', sidoCode).then((res) => {
+    if (isGuGunCodeSuccess) {
       // 받은 location 배열 정보를 Dropdown 컴포넌트에 option으로 내려줄 수 있도록 가공해서 저장
-      const gugunInfo: locationCode[] = res.data.result
       const options: Option[] = []
       gugunInfo.map(({ dongCode, gugunName = '' }) => {
         options.push({
@@ -66,8 +85,8 @@ function CreateClubForm() {
         })
       })
       setGugunOptions(options)
-    })
-  }, [sidoCode])
+    }
+  }, [gugunInfo])
 
   // input태그 변화에 따른 모임이름(name) 업데이트하는 함수
   function onChangeSetName(event: React.ChangeEvent<HTMLInputElement>) {
@@ -79,6 +98,7 @@ function CreateClubForm() {
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) {
     setDescription(event.target.value)
+    setIsNamePass(false)
   }
 
   // 클릭 시, 모임이름 중복 체크 api 요청
@@ -86,16 +106,36 @@ function CreateClubForm() {
     if (!name.trim()) {
       toast.addMessage('error', '모임 이름을 입력해주세요')
       return
+    } else {
+      setIsClickduplicate(true)
     }
-    checkClubName(name)
-      .then(() => {
-        toast.addMessage('success', '중복확인 되었습니다')
-        setIsNamePass(true)
-      })
-      .catch((err) => {
-        toast.addMessage('error', err.data.message)
-      })
   }
+
+  const {
+    isLoading: isCheckClubNameLoading,
+    isError: isCheckClubNameError,
+    data: checkClubName,
+    isSuccess: isCheckClubNameSuccess,
+    error: checkClubNameError,
+  } = useCheckClubNameQuery(name, isClickduplicate)
+
+  useEffect(() => {
+    if (isCheckClubNameSuccess) {
+      setIsNamePass(true)
+      setIsClickduplicate(false)
+      toast.addMessage('success', '중복확인 되었습니다')
+    }
+    if (isCheckClubNameError) {
+      setIsClickduplicate(false)
+      toast.addMessage('error', checkClubNameError.data.message)
+    }
+  }, [isCheckClubNameSuccess, isCheckClubNameError])
+
+  const {
+    isLoading: isCreateClubLoading,
+    isError: isCreateClubError,
+    mutate: createClub,
+  } = useCreateClub(name, description, gugunCode)
 
   // 클릭 시, 모임 생성 api 요청
   function onClickCreateClub() {
@@ -103,12 +143,7 @@ function CreateClubForm() {
       toast.addMessage('error', '입력 정보를 확인해주세요')
       return
     }
-    createClub(name, description, gugunCode).then((res) => {
-      toast.addMessage('success', '모임을 생성했습니다')
-      client.invalidateQueries(['user'])
-      const clubId = res.data.result.clubId
-      navigate(`/club/main`)
-    })
+    createClub()
   }
 
   return (
@@ -120,14 +155,12 @@ function CreateClubForm() {
           value={name}
           isPass={isNamePass}
           onChange={onChangeSetName}
-          disabled={isNamePass ? true : false}
         />
         <Button
           text="중복"
           color={name.trim() ? 'primary' : 'gray'}
           size="md"
           onClick={onClickCheckName}
-          disabled={isNamePass ? true : false}
         />
       </div>
       <LabelTextArea

@@ -8,8 +8,7 @@ type MemberListProps = {
   length: number
   memberList: ClubMember[]
   hostId?: number
-  onClickJoin?: (params: number) => void
-  onClickDelete?: (params: number) => void
+  isRequest?: boolean
 }
 
 function MemberList({
@@ -17,8 +16,7 @@ function MemberList({
   length,
   memberList,
   hostId,
-  onClickJoin,
-  onClickDelete,
+  isRequest = false,
 }: MemberListProps) {
   return (
     <div className={styles.container}>
@@ -30,9 +28,8 @@ function MemberList({
         <MemberItem
           key={memberInfo.memberId}
           memberInfo={memberInfo}
-          onClickJoin={onClickJoin}
-          onClickDelete={onClickDelete}
           hostId={hostId}
+          isRequest={isRequest}
         />
       ))}
     </div>

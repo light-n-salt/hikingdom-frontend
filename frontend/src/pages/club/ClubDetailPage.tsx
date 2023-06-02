@@ -2,12 +2,9 @@ import React, { useContext, useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubDetailPage.module.scss'
-import { getClubInfo } from 'apis/services/clubs'
-import { postJoinClub } from 'apis/services/clubs'
-import { ClubDetailInfo } from 'types/club.interface'
+import { useClubInfoQuery } from 'apis/services/clubs'
+import { useJoinClub } from 'apis/services/clubs'
 import useUserQuery from 'hooks/useUserQuery'
-import { useQuery } from '@tanstack/react-query'
-import { getPosition } from 'utils/getPosition'
 
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
@@ -24,20 +21,22 @@ function ClubDetailPage() {
   const clubId = Number(useParams<string>().clubId)
   const { data: userInfo } = useUserQuery()
 
-  const { data: clubInfo } = useQuery<ClubDetailInfo>(
-    ['ClubDetailInfo', { clubId: clubId }],
-    () => getClubInfo(clubId)
-  )
+  const {
+    isLoading,
+    isError,
+    data: clubInfo,
+    isSuccess,
+  } = useClubInfoQuery(clubId || 0)
 
-  function onClickJoinClub() {
-    postJoinClub(clubId)
-      .then(() => toast.addMessage('success', '가입신청이 완료되었습니다'))
-      .catch((err) => toast.addMessage('error', `${err.data.message}`))
-  }
+  const {
+    isLoading: isJoinClubLoading,
+    isError: isJoinClubError,
+    mutate: joinClub,
+  } = useJoinClub(clubId)
 
   useEffect(() => {
     if (clubId === userInfo?.clubId) {
-      navigate('/club/main')
+      navigate(`/club/${clubId}/main`)
     }
   }, [userInfo])
 
@@ -50,7 +49,7 @@ function ClubDetailPage() {
             text="가입 신청"
             size="sm"
             color="primary"
-            onClick={onClickJoinClub}
+            onClick={() => joinClub()}
           />
         )}
       </div>

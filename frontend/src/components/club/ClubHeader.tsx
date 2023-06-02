@@ -1,13 +1,10 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styles from './ClubHeader.module.scss'
-import { useQuery } from '@tanstack/react-query'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { getClubSimpleInfo } from 'apis/services/clubs'
+import { useClubSimpleInfoQuery } from 'apis/services/clubs'
 import Chatting from 'assets/images/airplane.png'
 import IconButton from 'components/common/IconButton'
 import useUserQuery from 'hooks/useUserQuery'
-import { untilMidnight } from 'utils/untilMidnight'
-import { ClubSimpleInfo } from 'types/club.interface'
 
 function ClubHeader() {
   const navigate = useNavigate()
@@ -15,29 +12,22 @@ function ClubHeader() {
   const { data: userInfo } = useUserQuery()
   const clubId = userInfo?.clubId
 
-  const queryTime = useMemo(() => {
-    return untilMidnight()
-  }, [])
+  const {
+    isLoading,
+    isError,
+    data: clubSimpleInfo,
+    isSuccess,
+  } = useClubSimpleInfoQuery(clubId || 0)
 
-  const { data: clubInfo } = useQuery<ClubSimpleInfo>(
-    ['user', 'clubInfo'],
-    () => getClubSimpleInfo(clubId || 0),
-    {
-      cacheTime: queryTime,
-      staleTime: queryTime,
-      enabled: !!clubId,
-    }
-  )
-
-  return clubInfo ? (
+  return clubSimpleInfo ? (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{clubInfo.clubName}</h1>
+        <h1 className={styles.title}>{clubSimpleInfo.clubName}</h1>
         <div className={styles.chat}>
           <IconButton
             imgSrc={Chatting}
             size="sm"
-            onClick={() => navigate(`/club/chat`)}
+            onClick={() => navigate(`/club/${clubId}/chat`)}
           />
         </div>
       </div>

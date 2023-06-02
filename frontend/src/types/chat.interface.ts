@@ -1,3 +1,5 @@
+import { InfinitePage } from './common.interface'
+
 // 소모임 채팅 내용 조회 - 채팅 내용
 export interface Chat {
   chatId: string
@@ -18,4 +20,8 @@ export interface Chats {
   status: string
   members: ChatMember[]
   chats: Chat[]
+}
+
+export interface InfiniteChat extends InfinitePage {
+  content: Chats[]
 }

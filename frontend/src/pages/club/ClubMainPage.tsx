@@ -1,9 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubMainPage.module.scss'
-import { getClubInfo } from 'apis/services/clubs'
-import { useQuery } from '@tanstack/react-query'
-import { ClubDetailInfo } from 'types/club.interface'
+import { useClubInfoQuery } from 'apis/services/clubs'
 import Loading from 'components/common/Loading'
 import SearchClubMt from 'components/club/SearchClubMt'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
@@ -16,13 +14,12 @@ function ClubMainPage() {
   const { data: userInfo } = useUserQuery()
   const clubId = userInfo?.clubId
 
-  const { data: clubInfo } = useQuery<ClubDetailInfo>(
-    ['ClubDetailInfo', clubId],
-    () => getClubInfo(clubId || 0),
-    {
-      enabled: !!clubId,
-    }
-  )
+  const {
+    isLoading,
+    isError,
+    data: clubInfo,
+    isSuccess,
+  } = useClubInfoQuery(clubId || 0)
 
   return clubInfo ? (
     <>

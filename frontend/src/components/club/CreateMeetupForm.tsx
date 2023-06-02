@@ -1,20 +1,13 @@
-import React, { useContext, useState } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
-import LabelInput from 'components/common/LabelInput'
-import yellowLabel from 'assets/images/yellow_label.png'
-import mail from 'assets/images/mail.png'
-import calendar from 'assets/images/calendar.png'
-import mountain from 'assets/images/mountain.png'
-import LabelTextArea from 'components/common/LabelTextArea'
-import Dropdown from 'components/common/Dropdown'
-import LabelInputSelect from 'components/common/LabelInputSelect'
-import { getMountains } from 'apis/services/mountains'
-import { createMeetup } from 'apis/services/clubs'
+import React, { useState } from 'react'
 import styles from './CreateMeetupForm.module.scss'
-import Button from 'components/common/Button'
-import { useNavigate, useParams } from 'react-router-dom'
+import { getMountains } from 'apis/services/mountains'
+import { useCreateMeetup } from 'apis/services/clubs'
 import { MtInfo } from 'types/mt.interface'
 import toast from 'components/common/Toast'
+import Button from 'components/common/Button'
+import LabelInput from 'components/common/LabelInput'
+import LabelTextArea from 'components/common/LabelTextArea'
+import LabelInputSelect from 'components/common/LabelInputSelect'
 import useUserQuery from 'hooks/useUserQuery'
 
 type Option = {
@@ -26,7 +19,6 @@ function CreateMeetupForm() {
   const { data: userInfo } = useUserQuery()
   const clubId = userInfo?.clubId
 
-  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [mountain, setMountain] = useState('')
   const [mountainOptions, setMountainOptions] = useState<Option[]>([])
@@ -73,6 +65,8 @@ function CreateMeetupForm() {
     setDescription(event.target.value)
   }
 
+  const { mutate: createMeetup } = useCreateMeetup(clubId || 0)
+
   // 클릭 시, 모임을 생성하는 함수
   function onClickCreateMeetup() {
     if (
@@ -89,18 +83,19 @@ function CreateMeetupForm() {
     const [year, month, day] = date
       .split('-')
       .map((string: string) => parseInt(string))
+
     const [hours, minutes] = time
       .split(':')
       .map((string: string) => parseInt(string))
+
     if (new Date(year, month - 1, day, hours, minutes) < new Date()) {
       toast.addMessage('error', '과거 시간에는 일정을 생성할 수 없습니다')
       return
     }
     const startAt = date + ' ' + time
-    createMeetup(clubId, name, mountainId, startAt, description).then((res) => {
-      const meetupId = res.data.result.id
-      navigate(`/club/meetup/${meetupId}/detail`)
-    })
+
+    // mutate 함수에 인자 전달
+    createMeetup({ name, mountainId, startAt, description })
   }
 
   return (

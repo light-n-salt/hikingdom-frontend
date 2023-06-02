@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import styles from './RankItem.module.scss'
 import { FaMountain } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import { useUnJoinClub } from 'apis/services/clubs'
 import Button from 'components/common/Button'
 import IconText from 'components/common/IconText'
 import marker from 'assets/images/marker.png'
@@ -18,10 +19,10 @@ import { ClubInfo } from 'types/club.interface'
 type RankItemProps = {
   clubInfo: ClubInfo // 소모임 정보
   size: 'sm' | 'lg' // 크기
-  onClickDeleteClub?: (clubId: number, clubName: string) => void // 삭제버튼 여부
+  isDeleteButton?: boolean
 }
 
-function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
+function RankItem({ clubInfo, size, isDeleteButton = false }: RankItemProps) {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
 
@@ -41,10 +42,16 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
       break
   }
 
+  const {
+    isLoading: isUnJoinClubLoading,
+    isError: isUnJoinClubError,
+    mutate: unJoinClub,
+  } = useUnJoinClub(clubInfo.clubId)
+
   // 소모임 신청 취소 함수
   function onClickCancle(e: React.TouchEvent | React.MouseEvent) {
     e.stopPropagation()
-    onClickDeleteClub && onClickDeleteClub(clubInfo.clubId, clubInfo.clubName)
+    unJoinClub()
   }
 
   return (
@@ -58,7 +65,7 @@ function RankItem({ clubInfo, size, onClickDeleteClub }: RankItemProps) {
             ? clubInfo.clubName.slice(0, 9) + '...'
             : clubInfo.clubName}
         </h3>
-        {onClickDeleteClub && (
+        {isDeleteButton && (
           <Button
             text="신청 취소"
             size="sm"

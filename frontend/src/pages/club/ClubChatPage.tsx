@@ -4,24 +4,31 @@ import styles from './ClubChatPage.module.scss'
 import PageHeader from 'components/common/PageHeader'
 import ChatList from 'components/club/ChatList'
 import Loading from 'components/common/Loading'
-import { Chats, Chat, ChatMember } from 'types/chat.interface'
-import { getChats, getMembers, getClubSimpleInfo } from 'apis/services/clubs'
+import { Chats, Chat, ChatMember, InfiniteChat } from 'types/chat.interface'
+import {
+  getChats,
+  getMembers,
+  useClubSimpleInfoQuery,
+  useChatsQuery,
+} from 'apis/services/clubs'
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
 import sockjs from 'sockjs-client'
 import { Stomp } from '@stomp/stompjs'
 import TextSendBar from 'components/common/TextSendBar'
 import useScroll from 'hooks/useScroll'
+import { useRecoilValue } from 'recoil'
+import { accessTokenState } from 'recoil/atoms'
 
 // import useInfiniteScroll from 'hooks/useInfiniteScroll'
 
-type InfiniteChat = {
-  content: Chats[]
-  hasNext: boolean
-  hasPrevious: boolean
-  numberOfElements: number
-  pageSize: number
-}
+// type InfiniteChat = {
+//   content: Chats[]
+//   hasNext: boolean
+//   hasPrevious: boolean
+//   numberOfElements: number
+//   pageSize: number
+// }
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
@@ -29,17 +36,16 @@ function ClubChatPage() {
   const { data: userInfo } = useUserQuery() // 유저 정보
 
   // 모임정보
-  const { data: clubInfo } = useQuery(
-    ['clubInfo'],
-    () => getClubSimpleInfo(Number(userInfo?.clubId)),
-    {
-      enabled: !!userInfo,
-    }
-  )
+  const {
+    isLoading: isClubSimpleInfoLoading,
+    isError: isClubSimpleInfoError,
+    data: clubSimpleInfo,
+    isSuccess,
+  } = useClubSimpleInfoQuery(userInfo?.clubId || 0)
 
   // 소켓 통신
   const [stomp, setStomp] = useState<any>() // 타입 수정 필요
-
+  const accessToken = useRecoilValue(accessTokenState)
   // 채팅 & 멤버 데이터
   const [members, setMembers] = useState<{ [key: number]: ChatMember } | null>(
     null
@@ -76,6 +82,14 @@ function ClubChatPage() {
     cacheTime: 0,
   })
 
+  // const {
+  //   data: chats,
+  //   isError,
+  //   isLoading,
+  //   fetchNextPage,
+  //   hasNextPage,
+  // } =
+
   // 멤버 데이터
   const { data: memberInfo } = useQuery(
     ['members'],
@@ -90,7 +104,7 @@ function ClubChatPage() {
 
   // mount시 통신 연결
   useEffect(() => {
-    if (!userInfo) return
+    if (!userInfo || !accessToken) return
     connection()
     return () => {
       // unmount시 연결 해제
@@ -98,7 +112,7 @@ function ClubChatPage() {
         stomp.disconnect()
       }
     }
-  }, [userInfo])
+  }, [userInfo, accessToken])
 
   // 소켓 연결 & 구독 함수
   const connection = () => {
@@ -109,7 +123,7 @@ function ClubChatPage() {
     // 서버 연결
     stomp.connect(
       {
-        token: localStorage.getItem('accessToken'),
+        token: accessToken,
       },
       () => {
         // 특정 URI 구독
@@ -168,7 +182,7 @@ function ClubChatPage() {
 
   return (
     <div className={`page p-sm ${theme} mobile `}>
-      <PageHeader title={clubInfo?.clubName} url={`/club/main`} />
+      <PageHeader title={clubSimpleInfo?.clubName} url={`/club/main`} />
       {!members || !chatList ? (
         <div className={styles.content}>
           <Loading />
