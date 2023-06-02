@@ -39,7 +39,7 @@ export interface MeetupReview {
 }
 
 // 상세 일정 조회
-export interface meetupInfoDetail extends MeetupInfo {
+export interface MeetupInfoDetail extends MeetupInfo {
   join: boolean
   memberInfo: MeetupMember[]
   photoInfo: Album[]
