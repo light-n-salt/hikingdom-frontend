@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import styles from './CreateMeetupForm.module.scss'
-import { getMountains } from 'apis/services/mountains'
+import { useInfiniteMountainsQuery } from 'apis/services/mountains'
 import { useCreateMeetup } from 'apis/services/clubs'
-import { MtInfo } from 'types/mt.interface'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 import LabelInput from 'components/common/LabelInput'
 import LabelTextArea from 'components/common/LabelTextArea'
 import LabelInputSelect from 'components/common/LabelInputSelect'
 import useUserQuery from 'hooks/useUserQuery'
+import useDebounce from 'hooks/useDebounce'
 
 type Option = {
   value: string
@@ -20,37 +20,43 @@ function CreateMeetupForm() {
   const clubId = userInfo?.clubId
 
   const [name, setName] = useState('')
-  const [mountain, setMountain] = useState('')
-  const [mountainOptions, setMountainOptions] = useState<Option[]>([])
   const [mountainId, setMountainId] = useState('')
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [description, setDescription] = useState('')
+  const [query, setQuery] = useState('')
 
   // input태그 변화에 따른 일정이름(name) 업데이트하는 함수
   function onChangeSetName(event: React.ChangeEvent<HTMLInputElement>) {
     setName(event.target.value)
   }
 
+  const { refetch: getMountains, data } = useInfiniteMountainsQuery(query)
+
   // input태그 변화에 따른 산 목록(mountainOptions)을 업데이트 하는 함수
   function onChangeSetMountain(event: React.ChangeEvent<HTMLInputElement>) {
-    setMountain(event.target.value)
-    getMountains(event.target.value).then((res) => {
-      const mountainInfoArray: MtInfo[] = res.data.result.content
-      const options: Option[] = []
-      mountainInfoArray.map(({ mountainId, name }) => {
+    setQuery(event.target.value)
+    getMountains()
+  }
+
+  const mountainOptions = useMemo(() => {
+    if (!data) return []
+    const options: Option[] = []
+    data.pages.flatMap((page) => {
+      page.content.map((element: any) => {
         options.push({
-          value: mountainId.toString(),
-          label: name,
+          value: String(element.mountainId),
+          label: element.name,
         })
       })
-      setMountainOptions(options)
     })
-  }
+    return options
+  }, [data])
 
   // input태그 변화에 따른 일정날짜(date) 업데이트하는 함수
   function onChangeSetDate(event: React.ChangeEvent<HTMLInputElement>) {
     setDate(event.target.value)
+    setQuery(event.target.value)
   }
 
   // input태그 변화에 따른 일정시각(time) 업데이트하는 함수
@@ -104,10 +110,10 @@ function CreateMeetupForm() {
       <LabelInputSelect
         label="산 선택"
         placeholder="산을 검색해주세요"
-        value={mountain}
+        value={query}
         onChange={onChangeSetMountain}
         options={mountainOptions}
-        setInputValue={setMountain}
+        setInputValue={setQuery}
         setOption={setMountainId}
       />
       <LabelInput

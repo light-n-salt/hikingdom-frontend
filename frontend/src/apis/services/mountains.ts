@@ -1,57 +1,53 @@
 import apiRequest from 'apis/AxiosInterceptor'
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { MtInfo } from 'types/mt.interface'
+import { MtInfo, MtInfoDetail } from 'types/mt.interface'
+import { untilMidnight } from 'utils/untilMidnight'
 
-export function getMountains(
-  word: string,
-  mountainId: number | null = null,
-  query = 'name'
-) {
-  const params = {
-    word,
-    mountainId,
-    query,
-  }
-  return apiRequest.get(`/info/mountains`, {
-    params,
+// 산 조회
+export function useInfiniteMountainsQuery(word: string, query = 'name') {
+  return useInfiniteQuery<any, AxiosError>({
+    queryKey: ['mountains', { query, word }],
+    queryFn: ({ pageParam = null }) =>
+      apiRequest
+        .get(`/info/mountains`, {
+          params: {
+            word,
+            mountainId: pageParam,
+            query,
+          },
+        })
+        .then((res) => res.data.result),
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNext
+        ? lastPage.content.slice(-1)[0].mountainId
+        : undefined
+    },
   })
 }
 
-// 산 조회
-export function useMountainsQuery(
-  word: string,
-  mountainId: number | null = null,
-  query = 'name'
-) {
-  const params = {
-    word,
-    mountainId,
-    query,
-  }
+// 오늘의 산 조회
+export function useTodayMountainsQuery() {
   return useQuery<any, AxiosError, MtInfo[]>(
-    ['mountains'],
-    () =>
-      apiRequest.get(`/info/mountains`, {
-        params,
-      }),
-    { select: (res) => res?.data.result }
+    ['todayMountains'],
+    () => apiRequest.get(`/info/today/mountain`),
+    {
+      select: (res) => res.data.result,
+      cacheTime: untilMidnight(),
+      staleTime: untilMidnight(),
+    }
   )
 }
 
-export function getTodayMountains() {
-  return apiRequest
-    .get(`/info/today/mountain`)
-    .then((res) => {
-      return res.data.result
-    })
-    .catch(() => {
-      return []
-    })
-}
-
-export function getMountainInfo(mountainId: number) {
-  return apiRequest
-    .get(`/info/mountains/${mountainId}`)
-    .then((res) => res.data.result)
+// 산 상세 정보 조회
+export function useMountainInfoQuery(mountainId: number) {
+  return useQuery<any, AxiosError, MtInfoDetail>(
+    ['mountainInfo', { mountainId }],
+    () => apiRequest.get(`/info/mountains/${mountainId}`),
+    {
+      select: (res) => res.data.result,
+      cacheTime: untilMidnight(),
+      staleTime: untilMidnight(),
+    }
+  )
 }
