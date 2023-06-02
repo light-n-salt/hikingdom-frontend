@@ -31,18 +31,6 @@ function AlbumModal({ setIsOpen, clubId, meetupId }: AlbumModalProps) {
   }
 
   // 사진 업로드하기
-  // const { mutate } = useMutation(
-  //   (formData: FormData) =>
-  //     updateMeetupAlbum(Number(clubId), Number(meetupId), formData),
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries(['meetupPhotos'])
-  //       toast.addMessage('success', '사진이 추가되었습니다')
-  //       setIsOpen()
-  //     },
-  //   }
-  // )
-
   const { mutateAsync: postPhoto } = usePostMeetupPhoto(clubId, meetupId)
 
   const onClickPostPhoto = () => {
