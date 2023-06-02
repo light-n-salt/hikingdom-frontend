@@ -35,7 +35,7 @@ function SearchClubPage() {
     isLoading,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteClubsQuery(filter, query)
+  } = useInfiniteClubsQuery(filter, debouncedQuery)
 
   // 입력값이랑, filter 값이 달라질 때마다 호출
   useEffect(() => {
