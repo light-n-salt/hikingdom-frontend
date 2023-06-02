@@ -1,7 +1,8 @@
 import React from 'react'
+
 import styles from './WaitingListModal.module.scss'
 
-import { useClubRequestQuery, useUnJoinClub } from 'apis/services/clubs'
+import { useClubRequestQuery } from 'apis/services/clubs'
 import RankList from 'components/common/RankList'
 
 function WaitingListModal() {

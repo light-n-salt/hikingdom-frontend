@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+
 import styles from './ClubMemberPage.module.scss'
+
 import {
   useDeleteClub,
   useClubSimpleInfoQuery,
   useClubMemberQuery,
 } from 'apis/services/clubs'
-import Loading from 'components/common/Loading'
-import MemberList from 'components/club/MemberList'
-import useUserQuery from 'hooks/useUserQuery'
-import TextButton from 'components/common/TextButton'
-import Modal from 'components/common/Modal'
 import ConfirmModal from 'components/club/ConfirmModal'
-import { useNavigate } from 'react-router-dom'
+import MemberList from 'components/club/MemberList'
+import Loading from 'components/common/Loading'
+import Modal from 'components/common/Modal'
+import TextButton from 'components/common/TextButton'
+import useUserQuery from 'hooks/useUserQuery'
 
 function ClubMemberPage() {
   const [isOpen, setIsOpen] = useState(false)

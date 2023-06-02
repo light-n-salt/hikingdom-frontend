@@ -1,12 +1,15 @@
 import React, { useEffect, useMemo, useRef } from 'react'
+
 import styles from './SearchMtPage.module.scss'
+
 import { useLocation, useNavigate } from 'react-router-dom'
+
 import { useInfiniteMountainsQuery } from 'apis/services/mountains'
-import MtList from 'components/common/MtList'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
+import MtList from 'components/common/MtList'
 import useDebounce from 'hooks/useDebounce'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
-import ErrorMessage from 'components/common/ErrorMessage'
 
 function SearchMtPage() {
   const navigate = useNavigate()

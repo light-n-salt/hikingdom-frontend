@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useMemo } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { ThemeContext } from 'styles/ThemeProvider'
-import styles from './ClubDetailPage.module.scss'
-import { useClubInfoQuery } from 'apis/services/clubs'
-import { useJoinClub } from 'apis/services/clubs'
-import useUserQuery from 'hooks/useUserQuery'
+import React, { useContext, useEffect } from 'react'
 
-import toast from 'components/common/Toast'
+import styles from './ClubDetailPage.module.scss'
+
+import { useNavigate, useParams } from 'react-router-dom'
+
+import { useClubInfoQuery, useJoinClub } from 'apis/services/clubs'
+import ClubMountain from 'components/club/ClubMountain'
+import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import Button from 'components/common/Button'
 import Loading from 'components/common/Loading'
 import PageHeader from 'components/common/PageHeader'
-import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
-import ClubMountain from 'components/club/ClubMountain'
+import useUserQuery from 'hooks/useUserQuery'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function ClubDetailPage() {
   const { theme } = useContext(ThemeContext)

@@ -1,24 +1,26 @@
-import apiRequest from 'apis/AxiosInterceptor'
-import { AxiosError, AxiosResponse } from 'axios'
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  useInfiniteQuery,
-} from '@tanstack/react-query'
+import { ClubMember } from 'types/club.interface'
+import { AxiosDataResponse, AxiosDataError } from 'types/common.interface'
 import {
   MeetupMemberInfo,
   MeetupInfoDetail,
   MeetupReview,
   InfiniteAlbumInfo,
 } from 'types/meetup.interface'
-import { ClubMember } from 'types/club.interface'
-import toast from 'components/common/Toast'
+
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+} from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
+
+import apiRequest from 'apis/AxiosInterceptor'
+import toast from 'components/common/Toast'
 
 // 일정 상세 조회
 export function useMeetupDetailQuery(clubId: number, meetupId: number) {
-  return useQuery<any, AxiosError, MeetupInfoDetail>(
+  return useQuery<AxiosDataResponse, AxiosDataError, MeetupInfoDetail>(
     ['meetup', clubId, meetupId],
     () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/detail`),
     { select: (res) => res?.data.result }
@@ -27,7 +29,7 @@ export function useMeetupDetailQuery(clubId: number, meetupId: number) {
 
 // 일정 멤버 조회
 export function useMeetupMemberQuery(clubId: number, meetupId: number) {
-  return useQuery<any, AxiosError, MeetupMemberInfo>(
+  return useQuery<AxiosDataResponse, AxiosDataError, MeetupMemberInfo>(
     ['meetupMembers', clubId, meetupId],
     () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/members`),
     { select: (res) => res?.data.result, enabled: !!clubId }
@@ -36,7 +38,7 @@ export function useMeetupMemberQuery(clubId: number, meetupId: number) {
 
 // 일정 멤버 상세 조회
 export function useMembersDetailQuery(clubId: number, meetupId: number) {
-  return useQuery<any, AxiosError, ClubMember[]>(
+  return useQuery<AxiosDataResponse, AxiosDataError, ClubMember[]>(
     ['meetupMembersDetail', clubId, meetupId],
     () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/members/detail`),
     { select: (res) => res?.data.result, enabled: !!clubId }
@@ -46,7 +48,7 @@ export function useMembersDetailQuery(clubId: number, meetupId: number) {
 // 일정 참여
 export function useJoinMeetup(clubId: number, meetupId: number) {
   const queryClient = useQueryClient()
-  return useMutation(
+  return useMutation<AxiosDataResponse, AxiosDataError>(
     () => apiRequest.post(`/clubs/${clubId}/meetups/${meetupId}/join`),
     {
       onSuccess: () => {
@@ -54,7 +56,7 @@ export function useJoinMeetup(clubId: number, meetupId: number) {
         queryClient.invalidateQueries(['meetup'])
         toast.addMessage('success', '일정에 참여했습니다')
       },
-      onError: (err: AxiosResponse) => {
+      onError: (err) => {
         toast.addMessage('error', err.data.message)
       },
     }
@@ -64,7 +66,7 @@ export function useJoinMeetup(clubId: number, meetupId: number) {
 // 일정 참여 취소
 export function useUnJoinMeetup(clubId: number, meetupId: number) {
   const queryClient = useQueryClient()
-  return useMutation(
+  return useMutation<AxiosDataResponse, AxiosDataError>(
     () => apiRequest.delete(`/clubs/${clubId}/meetups/${meetupId}/join`),
     {
       onSuccess: () => {
@@ -72,7 +74,7 @@ export function useUnJoinMeetup(clubId: number, meetupId: number) {
         queryClient.invalidateQueries(['meetup'])
         toast.addMessage('success', '일정 참여를 취소했습니다')
       },
-      onError: (err: AxiosResponse) => {
+      onError: (err) => {
         toast.addMessage('error', err.data.message)
       },
     }
@@ -101,7 +103,7 @@ export function useInfiniteMeetupAlbumQuery(
   meetupId: number,
   size: number | null = 5
 ) {
-  return useInfiniteQuery<any, AxiosError, InfiniteAlbumInfo>({
+  return useInfiniteQuery<InfiniteAlbumInfo, AxiosDataError>({
     queryKey: ['meetupAlbum', clubId, meetupId],
     queryFn: ({ pageParam = null }) =>
       apiRequest
@@ -120,8 +122,8 @@ export function useInfiniteMeetupAlbumQuery(
 // 일정 사진 등록
 export function usePostMeetupPhoto(clubId: number, meetupId: number) {
   const queryClient = useQueryClient()
-  return useMutation(
-    (formData: FormData) =>
+  return useMutation<AxiosDataResponse, AxiosDataError, { formData: FormData }>(
+    ({ formData }) =>
       apiRequest.post(`/clubs/${clubId}/meetups/${meetupId}/photos`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -138,7 +140,7 @@ export function usePostMeetupPhoto(clubId: number, meetupId: number) {
 
 // 일정 후기 조회
 export function useMeetupReviewsQuery(clubId: number, meetupId: number) {
-  return useQuery<any, AxiosError, MeetupReview[]>(
+  return useQuery<AxiosDataResponse, AxiosDataError, MeetupReview[]>(
     ['meetupReviews', clubId, meetupId],
     () => apiRequest.get(`/clubs/${clubId}/meetups/${meetupId}/reviews`),
     { select: (res) => res?.data.result, enabled: !!clubId }
@@ -152,7 +154,7 @@ export function usePostReview(
   content: string
 ) {
   const queryClient = useQueryClient()
-  return useMutation(
+  return useMutation<AxiosDataResponse, AxiosDataError>(
     () =>
       apiRequest.post(`/clubs/${clubId}/meetups/${meetupId}/reviews`, {
         content,
@@ -173,7 +175,7 @@ export function useDeleteReview(
   reviewId: number
 ) {
   const queryClient = useQueryClient()
-  return useMutation(
+  return useMutation<AxiosDataResponse, AxiosDataError>(
     () =>
       apiRequest.delete(
         `/clubs/${clubId}/meetups/${meetupId}/reviews/${reviewId}`
@@ -191,7 +193,7 @@ export function useDeleteReview(
 export function useDeleteMeetup(clubId: number, meetupId: number) {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  return useMutation(
+  return useMutation<AxiosDataResponse, AxiosDataError>(
     () => apiRequest.delete(`/clubs/${clubId}/meetups/${meetupId}`),
     {
       onSuccess: () => {
@@ -199,7 +201,7 @@ export function useDeleteMeetup(clubId: number, meetupId: number) {
         toast.addMessage('success', '일정이 삭제되었습니다')
         navigate(`/club/${clubId}/main`)
       },
-      onError: (err: any) => {
+      onError: (err) => {
         if (err.status === 400) {
           toast.addMessage('error', '완료된 일정은 삭제할 수 없습니다')
         }

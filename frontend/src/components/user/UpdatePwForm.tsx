@@ -1,20 +1,15 @@
 import React, { useContext } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+
 import styles from './UpdatePwForm.module.scss'
-import { useNavigate } from 'react-router-dom'
-import { AxiosError } from 'axios'
-import { useMutation } from '@tanstack/react-query'
 
-import LabelInput from 'components/common/LabelInput'
-import Button from 'components/common/Button'
-import toast from 'components/common/Toast'
-
-import useAuthInput from 'hooks/useAuthInput'
-import useCheckPw from 'hooks/useCheckPw'
 
 import { useUpdatePw } from 'apis/services/users'
-
-import useUserQuery from 'hooks/useUserQuery'
+import Button from 'components/common/Button'
+import LabelInput from 'components/common/LabelInput'
+import toast from 'components/common/Toast'
+import useAuthInput from 'hooks/useAuthInput'
+import useCheckPw from 'hooks/useCheckPw'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function UpdatePwForm() {
   const { theme } = useContext(ThemeContext)

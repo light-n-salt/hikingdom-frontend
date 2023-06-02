@@ -1,6 +1,7 @@
 import React from 'react'
-import styles from './MeetupReviewList.module.scss'
+
 import MeetupReviewItem from './MeetupReviewItem'
+import styles from './MeetupReviewList.module.scss'
 import { MeetupReview } from 'types/meetup.interface'
 
 type MeetupReviewsProps = {

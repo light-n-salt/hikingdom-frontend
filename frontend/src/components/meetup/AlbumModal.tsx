@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react'
+
 import styles from './AlbumModal.module.scss'
+
 import { usePostMeetupPhoto } from 'apis/services/meetup'
-import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
+import toast from 'components/common/Toast'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB 이하 사진만 업로드
 
@@ -57,7 +59,7 @@ function AlbumModal({ setIsOpen, clubId, meetupId }: AlbumModalProps) {
       }
     }
 
-    postPhoto(formData).then(() => {
+    postPhoto({ formData }).then(() => {
       setIsOpen()
     })
   }

@@ -1,15 +1,16 @@
 import React, { useContext } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+
 import styles from './MemberItem.module.scss'
-import { ThemeContext } from 'styles/ThemeProvider'
-
 import { ClubMember } from 'types/club.interface'
-import { useAddClubMember, useRemoveClubMember } from 'apis/services/clubs'
 
+import { useNavigate, useParams } from 'react-router-dom'
+
+import { useAddClubMember, useRemoveClubMember } from 'apis/services/clubs'
 import host from 'assets/images/host.png'
-import Image from 'components/common/Image'
 import Button from 'components/common/Button'
+import Image from 'components/common/Image'
 import LEVEL_TO_IMG from 'constants/levels'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 type MemberItemProps = {
   memberInfo: ClubMember

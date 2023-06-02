@@ -1,17 +1,19 @@
 import React, { useContext, useState, useRef, useEffect } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+
 import styles from './UpdateProfileImgForm.module.scss'
-import { useNavigate } from 'react-router'
-import Image from 'components/common/Image'
-import Button from 'components/common/Button'
-import IconButton from 'components/common/IconButton'
-import toast from 'components/common/Toast'
-import Loading from 'components/common/Loading'
+
+import { useQueryClient } from '@tanstack/react-query'
 import { TbCameraPlus } from 'react-icons/tb'
+import { useNavigate } from 'react-router'
 
 import { useUpdateProfileImg, useUserInfoQuery } from 'apis/services/users'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import Button from 'components/common/Button'
 import ErrorMessage from 'components/common/ErrorMessage'
+import IconButton from 'components/common/IconButton'
+import Image from 'components/common/Image'
+import Loading from 'components/common/Loading'
+import toast from 'components/common/Toast'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function UpdateProfileImgForm() {
   const { theme } = useContext(ThemeContext)

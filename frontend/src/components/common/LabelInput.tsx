@@ -1,5 +1,7 @@
 import React from 'react'
+
 import styles from './LabelInput.module.scss'
+
 import Label from 'components/common/Label'
 
 type LabelInputProps = {

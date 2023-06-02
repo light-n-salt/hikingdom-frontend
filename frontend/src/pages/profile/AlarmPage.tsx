@@ -1,17 +1,14 @@
 import React, { useContext, useMemo, useRef } from 'react'
-import styles from './AlarmPage.module.scss'
-import { ThemeContext } from 'styles/ThemeProvider'
-import { Alarm } from 'types/user.interface'
 
+import styles from './AlarmPage.module.scss'
+
+import { useInfiniteAlarmQuery } from 'apis/services/users'
+import ErrorMessage from 'components/common/ErrorMessage'
+import Loading from 'components/common/Loading'
 import PageHeader from 'components/common/PageHeader'
 import AlarmList from 'components/user/AlarmList'
-
-import useUserQuery from 'hooks/useUserQuery'
-import { useQuery } from '@tanstack/react-query'
-import { useInfiniteAlarmQuery } from 'apis/services/users'
-import Loading from 'components/common/Loading'
-import ErrorMessage from 'components/common/ErrorMessage'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function AlarmPage() {
   const { theme } = useContext(ThemeContext)

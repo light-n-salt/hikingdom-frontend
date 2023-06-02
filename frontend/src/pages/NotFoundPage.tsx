@@ -1,10 +1,13 @@
 import React, { useContext } from 'react'
+
 import styles from './NotFoundPage.module.scss'
+
 import { useNavigate } from 'react-router-dom'
-import Button from 'components/common/Button'
-import { ThemeContext } from 'styles/ThemeProvider'
+
 import { ReactComponent as Cloud } from 'assets/svgs/cloud.svg'
 import { ReactComponent as Mountain } from 'assets/svgs/lake_mountain.svg'
+import Button from 'components/common/Button'
+import { ThemeContext } from 'styles/ThemeProvider'
 function NotFoundPage() {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()

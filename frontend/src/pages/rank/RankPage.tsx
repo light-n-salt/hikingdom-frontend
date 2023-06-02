@@ -1,13 +1,15 @@
 import React, { useContext, useRef, useState, useMemo } from 'react'
+
 import styles from './RankPage.module.scss'
+import { InfiniteClubInfo } from 'types/club.interface'
+
+import { useInfiniteClubInfoQuery } from 'apis/services/clubs'
 import Dropdown from 'components/common/Dropdown'
+import Loading from 'components/common/Loading'
 import RankList from 'components/common/RankList'
 import RankHeader from 'components/rank/RankHeader'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import { ThemeContext } from 'styles/ThemeProvider'
-import { InfiniteClubInfo } from 'types/club.interface'
-import Loading from 'components/common/Loading'
-import { useInfiniteClubInfoQuery } from 'apis/services/clubs'
 
 // 드롭다운 SelectBox에 넘길 옵션 배열
 const filterOptions = [

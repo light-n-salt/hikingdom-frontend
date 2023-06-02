@@ -1,10 +1,13 @@
 import React from 'react'
+
 import styles from './MtItem.module.scss'
-import { useNavigate } from 'react-router-dom'
-import marker from 'assets/images/marker.png'
-import hotAirBalloon from 'assets/images/hot_air_balloon.png'
-import IconText from 'components/common/IconText'
 import { MtInfo } from 'types/mt.interface'
+
+import { useNavigate } from 'react-router-dom'
+
+import hotAirBalloon from 'assets/images/hot_air_balloon.png'
+import marker from 'assets/images/marker.png'
+import IconText from 'components/common/IconText'
 
 type MtItemProps = {
   mtInfo: MtInfo // 산 정보

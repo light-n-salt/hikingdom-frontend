@@ -1,32 +1,29 @@
 import React, { useContext, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { ThemeContext } from 'styles/ThemeProvider'
+
 import styles from './UserProfile.module.scss'
 
-import IconButton from 'components/common/IconButton'
-import Image from 'components/common/Image'
-import UserInfo from 'components/user/UserInfo'
-
-import Modal from 'components/common/Modal'
-import toast from 'components/common/Toast'
-import LevelModal from 'components/user/LevelModal'
-
-import bell from 'assets/images/bell.png'
-import LEVEL_TO_IMG from 'constants/levels'
 import { BiEdit } from 'react-icons/bi'
 import { FaMoon, FaSun } from 'react-icons/fa'
 import { HiLightBulb } from 'react-icons/hi'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import {
   useProfileQuery,
   useReport,
   useUserInfoQuery,
 } from 'apis/services/users'
-import PageHeader from 'components/common/PageHeader'
-import useUserQuery from 'hooks/useUserQuery'
-import ErrorMessage from 'components/common/ErrorMessage'
-import Loading from 'components/common/Loading'
+import bell from 'assets/images/bell.png'
 import ConfirmModal from 'components/club/ConfirmModal'
+import ErrorMessage from 'components/common/ErrorMessage'
+import IconButton from 'components/common/IconButton'
+import Image from 'components/common/Image'
+import Loading from 'components/common/Loading'
+import Modal from 'components/common/Modal'
+import PageHeader from 'components/common/PageHeader'
+import LevelModal from 'components/user/LevelModal'
+import UserInfo from 'components/user/UserInfo'
+import LEVEL_TO_IMG from 'constants/levels'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 export default function UserProfile() {
   const navigate = useNavigate()
@@ -85,7 +82,7 @@ export default function UserProfile() {
             content={`'${profile.nickname}'님을 정말 신고하시겠습니까?`}
             buttonText="신고"
             onClickDelete={() =>
-              reportUser({ type: 'MEMBER', id: profile.memberId })
+              reportUser({ type: 'MEMBER', id: profile.nickname })
             }
             onClickCloseModal={() => setIsConfirmModal(false)}
           />

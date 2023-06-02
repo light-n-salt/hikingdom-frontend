@@ -1,12 +1,15 @@
 import React, { useContext } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+
 import styles from './AlarmItem.module.scss'
-import { useNavigate } from 'react-router'
 import { Alarm } from 'types/user.interface'
-import useUserQuery from 'hooks/useUserQuery'
+
 
 import { GoPrimitiveDot } from 'react-icons/go'
+import { useNavigate } from 'react-router'
+
 import Toast from 'components/common/Toast'
+import useUserQuery from 'hooks/useUserQuery'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function AlarmItem({ alarm }: { alarm: Alarm }) {
   const { theme } = useContext(ThemeContext)

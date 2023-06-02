@@ -1,14 +1,19 @@
 import React, { useContext } from 'react'
+
 import styles from './MeetupItem.module.scss'
-import clock from 'assets/images/clock.png'
-import person from 'assets/images/person.png'
-import mountain from 'assets/images/mountain.png'
-import calendar from 'assets/images/calendar.png'
-import IconText from 'components/common/IconText'
-import { ThemeContext } from 'styles/ThemeProvider'
 import { MeetupInfo } from 'types/meetup.interface'
+
 import { useNavigate } from 'react-router'
 import { useParams } from 'react-router-dom'
+
+import calendar from 'assets/images/calendar.png'
+import clock from 'assets/images/clock.png'
+import mountain from 'assets/images/mountain.png'
+import person from 'assets/images/person.png'
+import IconText from 'components/common/IconText'
+import { ThemeContext } from 'styles/ThemeProvider'
+
+
 
 type MeetupItemProps = {
   meetupInfo: MeetupInfo

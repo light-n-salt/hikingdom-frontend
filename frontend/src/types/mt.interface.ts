@@ -1,3 +1,5 @@
+import { InfinitePage } from './common.interface'
+
 // 산 검색
 // 오늘의 산
 export interface MtInfo {
@@ -6,6 +8,10 @@ export interface MtInfo {
   maxAlt: number
   address: string
   imgUrl: string
+}
+
+export interface InfiniteMtInfo extends InfinitePage {
+  content: MtInfo[]
 }
 
 export interface MtAssetInfo {

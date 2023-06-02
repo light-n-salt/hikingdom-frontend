@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react'
+
 import styles from './ClubMeetupPage.module.scss'
+import { MeetupInfo } from 'types/meetup.interface'
+
+import { format } from 'date-fns'
+
+import { useDateMeetupsQuery, useMonthMeetupsQuery } from 'apis/services/clubs'
 import Calendar from 'components/club/Calendar'
 import MeetupList from 'components/club/MeetupList'
-import { useDateMeetupsQuery, useMonthMeetupsQuery } from 'apis/services/clubs'
-import { MeetupInfo } from 'types/meetup.interface'
-import { format } from 'date-fns'
 import useUserQuery from 'hooks/useUserQuery'
 
 function ClubMeetupPage() {
   const { data: userInfo } = useUserQuery()
   const clubId = userInfo?.clubId
 
-  const [monthMeetups, setMonthMeetups] = useState([])
+  const [monthMeetups, setMonthMeetups] = useState<number[]>([])
   const [dateMeetups, setDateMeetups] = useState<MeetupInfo[]>([])
 
   // 오늘 계산
@@ -30,7 +33,7 @@ function ClubMeetupPage() {
   // month 변화시 월별 일정 조회 refetch 동작
   useEffect(() => {
     getMonthMeetups().then((res) => {
-      setMonthMeetups(res.data.startAt)
+      setMonthMeetups(res.data!.startAt)
     })
   }, [month])
 
@@ -45,7 +48,7 @@ function ClubMeetupPage() {
   // date 변화시 일별 일정 조회 refetch 동작
   useEffect(() => {
     getDateMeetups().then((res) => {
-      setDateMeetups(res.data)
+      setDateMeetups(res.data!)
     })
   }, [date])
 

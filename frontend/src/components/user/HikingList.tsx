@@ -1,11 +1,9 @@
-import React, { useRef, useMemo } from 'react'
-import styles from './HikingList.module.scss'
+import React from 'react'
+
 import HikingItem from './HikingItem'
-import Loading from 'components/common/Loading'
-import { useParams } from 'react-router-dom'
+import styles from './HikingList.module.scss'
 import { HikingSimple } from 'types/user.interface'
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
-import { useInfiniteQuery } from '@tanstack/react-query'
+
 
 type HikingListProps = {
   records: HikingSimple[]

@@ -1,7 +1,11 @@
 import { AxiosError } from 'axios'
 
+export interface AxiosDataResponse extends AxiosError {
+  data: any
+}
+
 export interface AxiosDataError extends AxiosError {
-  data?: any
+  data: any
 }
 
 export interface Message {

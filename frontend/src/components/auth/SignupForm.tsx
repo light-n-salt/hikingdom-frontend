@@ -1,19 +1,21 @@
 import React, { useState, useRef } from 'react'
+
 import styles from './SignupForm.module.scss'
+
 import { useNavigate } from 'react-router-dom'
+
 import {
   useCheckEmail,
   useConfirmEmail,
   useCheckNicknameQuery,
   useSignUp,
 } from 'apis/services/users'
-import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 import LabelInput from 'components/common/LabelInput'
-import useCheckPw from 'hooks/useCheckPw'
-import useAuthInput from 'hooks/useAuthInput'
 import Loading from 'components/common/Loading'
-import { AxiosResponse } from 'axios'
+import toast from 'components/common/Toast'
+import useAuthInput from 'hooks/useAuthInput'
+import useCheckPw from 'hooks/useCheckPw'
 
 function SignupForm() {
   const navigate = useNavigate()
