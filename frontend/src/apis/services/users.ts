@@ -191,7 +191,6 @@ export function useUserInfoQuery() {
 
 // 유저 프로필 정보 조회
 export function useProfileQuery(nickname: string) {
-  const navigate = useNavigate()
   return useQuery<AxiosResponse, AxiosDataError, UserProfile>(
     ['profile', nickname],
     () => apiRequest.get(`/members/${nickname}`, { params: { size: 0 } }),
@@ -336,15 +335,21 @@ export function useReport() {
   return useMutation<
     AxiosResponse,
     AxiosDataError,
-    { type: 'ALBUM' | 'REVIEW' | 'MEMBER'; id: number }
-  >(({ type, id }) => apiRequest.post(`/reports`, { type, id }), {
-    onSuccess: (res) => {
-      toast.addMessage('success', res.data!.message)
+    { type: 'ALBUM' | 'REVIEW' | 'MEMBER'; id: number | string }
+  >(
+    ({ type, id }) => {
+      console.log(type, id)
+      return apiRequest.post(`/reports`, { type, id })
     },
-    onError: (err) => {
-      toast.addMessage('error', err.data.message)
-    },
-  })
+    {
+      onSuccess: (res) => {
+        toast.addMessage('success', res.data!.message)
+      },
+      onError: (err) => {
+        toast.addMessage('error', err.data.message)
+      },
+    }
+  )
 }
 
 export function report(

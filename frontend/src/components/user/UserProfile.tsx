@@ -1,14 +1,13 @@
 import React, { useContext, useState } from 'react'
+import styles from './UserProfile.module.scss'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ThemeContext } from 'styles/ThemeProvider'
-import styles from './UserProfile.module.scss'
 
 import IconButton from 'components/common/IconButton'
 import Image from 'components/common/Image'
 import UserInfo from 'components/user/UserInfo'
 
 import Modal from 'components/common/Modal'
-import toast from 'components/common/Toast'
 import LevelModal from 'components/user/LevelModal'
 
 import bell from 'assets/images/bell.png'
@@ -23,7 +22,6 @@ import {
   useUserInfoQuery,
 } from 'apis/services/users'
 import PageHeader from 'components/common/PageHeader'
-import useUserQuery from 'hooks/useUserQuery'
 import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import ConfirmModal from 'components/club/ConfirmModal'
@@ -73,24 +71,6 @@ export default function UserProfile() {
 
   return (
     <>
-      {isLevelModal && (
-        <Modal onClick={() => setIsLevelModal(false)}>
-          <LevelModal />
-        </Modal>
-      )}
-      {isConfirmModal && (
-        <Modal onClick={() => setIsConfirmModal(false)}>
-          <ConfirmModal
-            title="신고하기"
-            content={`'${profile.nickname}'님을 정말 신고하시겠습니까?`}
-            buttonText="신고"
-            onClickDelete={() =>
-              reportUser({ type: 'MEMBER', id: profile.memberId })
-            }
-            onClickCloseModal={() => setIsConfirmModal(false)}
-          />
-        </Modal>
-      )}
       <div className={styles.profile}>
         <div className={`${styles['alarm-siren']}`}>
           <PageHeader color="primary" />
@@ -146,6 +126,26 @@ export default function UserProfile() {
           />
         </div>
       </div>
+      {/* 모달창 */}
+      {isLevelModal && (
+        <Modal onClick={() => setIsLevelModal(false)}>
+          <LevelModal />
+        </Modal>
+      )}
+      {isConfirmModal && (
+        <Modal onClick={() => setIsConfirmModal(false)}>
+          <ConfirmModal
+            title="신고하기"
+            content={`'${profile.nickname}'님을 정말 신고하시겠습니까?`}
+            buttonText="신고"
+            onClickDelete={() => {
+              reportUser({ type: 'MEMBER', id: profile.nickname })
+              setIsConfirmModal(false)
+            }}
+            onClickCloseModal={() => setIsConfirmModal(false)}
+          />
+        </Modal>
+      )}
     </>
   )
 }
