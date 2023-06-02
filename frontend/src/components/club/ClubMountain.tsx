@@ -4,7 +4,7 @@ import { useFrame } from '@react-three/fiber'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 
 type ClubMountainprops = {
   zoom: number
@@ -81,6 +81,10 @@ function AssetMesh({
   const animationTime = 1.5 // 애니메이션 진행 시간 (초)
   let elapsedTime = 0 // 경과한 시간 (초)
 
+  const clubId = useParams() as {
+    clubId: string
+  }
+
   useEffect(() => {
     if (check && !prevCheck) {
       setIsAnimating(true)
@@ -104,7 +108,7 @@ function AssetMesh({
 
   const handleOnClick = () => {
     if (check && meetupId) {
-      navigate(`/club/meetup/${meetupId}/detail`)
+      navigate(`/club/${parseInt(clubId.clubId)}/meetup/${meetupId}/detail`)
     }
   }
 
