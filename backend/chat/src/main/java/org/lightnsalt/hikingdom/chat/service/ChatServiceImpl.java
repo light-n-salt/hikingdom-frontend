@@ -38,7 +38,7 @@ public class ChatServiceImpl implements ChatService {
 	private final ClubMemberRepository clubMemberRepository;
 
 	@Override
-	public MessageRes saveMessage(ChatReq chatReq) {
+	public MessageRes addChat(ChatReq chatReq) {
 		if (!clubRepository.existsById(chatReq.getClubId()))
 			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
 
@@ -56,7 +56,7 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public MessageRes findPrevChatInfo(Long clubId, String chatId, Integer size) {
+	public MessageRes findPrevChat(Long clubId, String chatId, Integer size) {
 		if (!clubRepository.existsById(clubId))
 			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
 
@@ -80,19 +80,19 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public MessageRes convertMemberResToMessageRes(List<MemberInfoRes> memberInfoResList) {
-		Map<Long, MemberInfoRes> members = memberInfoResList.stream()
+	public MessageRes findMember(Long clubId) {
+		if (!clubRepository.existsById(clubId))
+			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
+
+		Map<Long, MemberInfoRes> members = clubMemberRepository.findByClubId(clubId).stream()
 			.collect(Collectors.toMap(MemberInfoRes::getMemberId, Function.identity()));
 
 		return new MemberListMessageRes(members);
 	}
 
 	@Override
-	public MessageRes findClubMemberInfo(Long clubId) {
-		if (!clubRepository.existsById(clubId))
-			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
-
-		Map<Long, MemberInfoRes> members = clubMemberRepository.findByClubId(clubId).stream()
+	public MessageRes convertMemberResToMessageRes(List<MemberInfoRes> memberInfoResList) {
+		Map<Long, MemberInfoRes> members = memberInfoResList.stream()
 			.collect(Collectors.toMap(MemberInfoRes::getMemberId, Function.identity()));
 
 		return new MemberListMessageRes(members);

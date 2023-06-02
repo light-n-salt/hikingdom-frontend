@@ -41,7 +41,7 @@ public class ChatInfoController {
 	@GetMapping("/clubs/{clubId}/members")
 	public ResponseEntity<CustomResponseBody> memberList(@PathVariable Long clubId) {
 		log.info("clubId {} ", clubId);
-		MessageRes message = chatService.findClubMemberInfo(clubId);
+		MessageRes message = chatService.findMember(clubId);
 		log.info("get members : {} ", message);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 회원 조회에 성공했습니다", message), HttpStatus.OK);
 	}
@@ -55,11 +55,11 @@ public class ChatInfoController {
 	 * @return 과거 채팅 메시지 목록
 	 */
 	@GetMapping("/clubs/{clubId}/chats")
-	public ResponseEntity<CustomResponseBody> prevChats(@PathVariable Long clubId,
+	public ResponseEntity<CustomResponseBody> prevChatList(@PathVariable Long clubId,
 		@RequestParam(required = false) String chatId,
 		@RequestParam(required = false, defaultValue = "20") Integer size) {
 		log.info("clubId {} ", clubId);
-		MessageRes message = chatService.findPrevChatInfo(clubId, chatId, size);
+		MessageRes message = chatService.findPrevChat(clubId, chatId, size);
 		log.info("prev chats  : {} ", message);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 채팅방 과거 메시지 조회에 성공했습니다", message), HttpStatus.OK);
 	}

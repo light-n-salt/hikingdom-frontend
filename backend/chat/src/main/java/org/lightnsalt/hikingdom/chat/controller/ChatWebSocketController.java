@@ -28,10 +28,10 @@ public class ChatWebSocketController {
 	 * @param chatReq 저장할 채팅 메시지
 	 */
 	@MessageMapping("/clubs/{clubId}")
-	public void messageSave(@DestinationVariable Long clubId, ChatReq chatReq) {
+	public void chatSave(@DestinationVariable Long clubId, ChatReq chatReq) {
 		log.info("clubId {} ", clubId);
 		log.info("chatReq {} ", chatReq);
-		MessageRes message = chatService.saveMessage(chatReq);
+		MessageRes message = chatService.addChat(chatReq);
 		log.info("send chat : {} ", message);
 		template.convertAndSend("/sub/clubs/" + clubId, message);
 	}
