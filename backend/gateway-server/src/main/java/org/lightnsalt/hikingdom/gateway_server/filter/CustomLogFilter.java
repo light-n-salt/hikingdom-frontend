@@ -1,4 +1,4 @@
-package org.lightnsalt.hikingdom.gateway.filter;
+package org.lightnsalt.hikingdom.gateway_server.filter;
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.GatewayFilterFactory;
