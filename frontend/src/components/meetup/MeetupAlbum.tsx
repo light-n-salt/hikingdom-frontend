@@ -5,52 +5,26 @@ import Button from 'components/common/Button'
 import Modal from 'components/common/Modal'
 import PhotoModal from 'components/common/PhotoModal'
 import AlbumModal from 'components/meetup/AlbumModal'
+import Loading from 'components/common/Loading'
+import ErrorMessage from 'components/common/ErrorMessage'
 import { Album } from 'types/club.interface'
-import { getMeetupAlbum } from 'apis/services/meetup'
-
+import { useInfiniteMeetupAlbumQuery } from 'apis/services/meetup'
 import useInfiniteVerticalScroll from 'hooks/useInfiniteVerticalScroll'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import useUserQuery from 'hooks/useUserQuery'
 
-type MeetupAlbum = {
+type MeetupAlbumProps = {
   join: boolean
   meetupId: number
   clubId: number
 }
 
-type InfiniteAlbumInfo = {
-  content: Album[]
-  hasNext: boolean
-  hasPrevious: boolean
-  numberOfElements: number
-  pageSize: number
-}
-
-function MeetupAlbum({ join, meetupId, clubId }: MeetupAlbum) {
-  const { data: userInfo } = useUserQuery()
+function MeetupAlbum({ join, meetupId, clubId }: MeetupAlbumProps) {
   const [isOpen, setIsOpen] = useState(false) // 선택한 사진 모달 on/off
   const [photo, setPhoto] = useState<Album>() // 선택한 사진
   const [isAlbumOpen, setIsAlbumOpen] = useState(false) // 사진 업데이트 모달
   const infiniteRef = useRef<HTMLDivElement>(null)
 
-  const { data, fetchNextPage, hasNextPage } =
-    useInfiniteQuery<InfiniteAlbumInfo>({
-      queryKey: ['meetupPhotos', clubId, meetupId],
-      queryFn: ({ pageParam = null }) => {
-        return getMeetupAlbum(
-          Number(userInfo?.clubId),
-          Number(meetupId),
-          pageParam,
-          5
-        )
-      },
-      getNextPageParam: (lastPage) => {
-        return lastPage.hasNext
-          ? lastPage.content.slice(-1)[0].photoId
-          : undefined
-      },
-      enabled: !!userInfo,
-    })
+  const { isLoading, isError, data, fetchNextPage, hasNextPage } =
+    useInfiniteMeetupAlbumQuery(clubId, meetupId)
 
   const photoInfo = useMemo(() => {
     if (!data) return []
@@ -70,6 +44,14 @@ function MeetupAlbum({ join, meetupId, clubId }: MeetupAlbum) {
       setPhoto(selectedPhoto)
       setIsOpen(true)
     }
+  }
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (isError) {
+    return <ErrorMessage message="사진 조회에 실패했습니다" />
   }
 
   return (

@@ -1,4 +1,5 @@
 import { Album } from './club.interface'
+import { InfinitePage } from './common.interface'
 
 // 일정 전체 조회
 export interface MeetupInfoList {
@@ -14,6 +15,11 @@ export interface MeetupInfo {
   mountainName: string
   startAt: string
   totalMember: number
+}
+
+// 일정 사진 조회
+export interface InfiniteAlbumInfo extends InfinitePage {
+  content: Album[]
 }
 
 // 일정 멤버
