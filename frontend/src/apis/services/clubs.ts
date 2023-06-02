@@ -264,7 +264,7 @@ export function useChatMembersQuery(clubId: number, enabled: boolean) {
 // 소모임 월별 일정 조회
 export function useMonthMeetupsQuery(clubId: number, month: string) {
   return useQuery<any, AxiosError>(
-    ['monthMeetups', month],
+    ['meetups', 'month', month],
     () => apiRequest.get(`/clubs/${clubId}/meetups/month/${month}`),
     {
       select: (res) => res.data.result,
@@ -276,7 +276,7 @@ export function useMonthMeetupsQuery(clubId: number, month: string) {
 // 소모임 일별 일정 조회
 export function useDateMeetupsQuery(clubId: number, date: string) {
   return useQuery<any, AxiosError>(
-    ['dateMeetups', date],
+    ['meetups', 'date', date],
     () => apiRequest.get(`/clubs/${clubId}/meetups/date/${date}`),
     {
       select: (res) => res.data.result,

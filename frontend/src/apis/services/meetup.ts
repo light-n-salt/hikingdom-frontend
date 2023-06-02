@@ -1,10 +1,16 @@
 import apiRequest from 'apis/AxiosInterceptor'
 import { AxiosError, AxiosResponse } from 'axios'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+} from '@tanstack/react-query'
 import {
   MeetupMemberInfo,
   MeetupInfoDetail,
   MeetupReview,
+  InfiniteAlbumInfo,
 } from 'types/meetup.interface'
 import { ClubMember } from 'types/club.interface'
 import toast from 'components/common/Toast'
@@ -90,6 +96,27 @@ export function getMeetupAlbum(
     .then((res) => res.data.result)
 }
 
+export function useInfiniteMeetupAlbumQuery(
+  clubId: number,
+  meetupId: number,
+  size: number | null = 5
+) {
+  return useInfiniteQuery<any, AxiosError, InfiniteAlbumInfo>({
+    queryKey: ['meetupAlbum', clubId, meetupId],
+    queryFn: ({ pageParam = null }) =>
+      apiRequest
+        .get(`/clubs/${clubId}/meetups/${meetupId}/photos`, {
+          params: { photoId: pageParam, size },
+        })
+        .then((res) => res.data.result),
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNext
+        ? lastPage.content.slice(-1)[0].photoId
+        : undefined
+    },
+  })
+}
+
 // 일정 사진 등록
 export function usePostMeetupPhoto(clubId: number, meetupId: number) {
   const queryClient = useQueryClient()
@@ -102,7 +129,7 @@ export function usePostMeetupPhoto(clubId: number, meetupId: number) {
       }),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['meetupPhotos', clubId, meetupId])
+        queryClient.invalidateQueries(['meetupAlbum', clubId, meetupId])
         toast.addMessage('success', '사진이 추가되었습니다')
       },
     }
@@ -168,7 +195,7 @@ export function useDeleteMeetup(clubId: number, meetupId: number) {
     () => apiRequest.delete(`/clubs/${clubId}/meetups/${meetupId}`),
     {
       onSuccess: () => {
-        // queryClient.invalidateQueries([]) Todo: 쿼리키 적용
+        queryClient.invalidateQueries(['meetups'])
         toast.addMessage('success', '일정이 삭제되었습니다')
         navigate(`/club/${clubId}/main`)
       },
