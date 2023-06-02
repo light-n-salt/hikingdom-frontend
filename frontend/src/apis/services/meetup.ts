@@ -1,4 +1,4 @@
-import apiRequest from 'apis/axios'
+import apiRequest from 'apis/AxiosInterceptor'
 
 // 일정 상세 조회
 export function getMeetupDetail(clubId: number, meetupId: number) {
