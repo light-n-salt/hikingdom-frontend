@@ -1,6 +1,6 @@
 package org.lightnsalt.hikingdom.chat.controller;
 
-import org.lightnsalt.hikingdom.chat.dto.response.MemberRes;
+import org.lightnsalt.hikingdom.chat.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.MessageRes;
 import org.lightnsalt.hikingdom.chat.service.ChatService;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
@@ -73,7 +73,7 @@ public class ChatInfoController {
 	 */
 	@PostMapping("/clubs/{clubId}/member-update")
 	public ResponseEntity<CustomResponseBody> memberUpdate(@PathVariable Long clubId,
-		@RequestBody List<MemberRes> members) {
+		@RequestBody List<MemberInfoRes> members) {
 		log.info("clubId {} ", clubId);
 		log.info("members {} ", members);
 

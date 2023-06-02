@@ -10,7 +10,7 @@ import org.lightnsalt.hikingdom.chat.dto.CustomPage;
 import org.lightnsalt.hikingdom.chat.dto.request.ChatReq;
 import org.lightnsalt.hikingdom.chat.dto.response.ChatRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.ChatListMessageRes;
-import org.lightnsalt.hikingdom.chat.dto.response.MemberRes;
+import org.lightnsalt.hikingdom.chat.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.ChatMessageRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.MemberListMessageRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.MessageRes;
@@ -80,9 +80,9 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public MessageRes convertMemberResToMessageRes(List<MemberRes> memberResList) {
-		Map<Long, MemberRes> members = memberResList.stream()
-			.collect(Collectors.toMap(MemberRes::getMemberId, Function.identity()));
+	public MessageRes convertMemberResToMessageRes(List<MemberInfoRes> memberInfoResList) {
+		Map<Long, MemberInfoRes> members = memberInfoResList.stream()
+			.collect(Collectors.toMap(MemberInfoRes::getMemberId, Function.identity()));
 
 		return new MemberListMessageRes(members);
 	}
@@ -92,8 +92,8 @@ public class ChatServiceImpl implements ChatService {
 		if (!clubRepository.existsById(clubId))
 			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
 
-		Map<Long, MemberRes> members = clubMemberRepository.findByClubId(clubId).stream()
-			.collect(Collectors.toMap(MemberRes::getMemberId, Function.identity()));
+		Map<Long, MemberInfoRes> members = clubMemberRepository.findByClubId(clubId).stream()
+			.collect(Collectors.toMap(MemberInfoRes::getMemberId, Function.identity()));
 
 		return new MemberListMessageRes(members);
 	}
