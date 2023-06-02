@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.chat.dto.CustomPage;
 import org.lightnsalt.hikingdom.chat.dto.request.ChatReq;
-import org.lightnsalt.hikingdom.chat.dto.response.ChatRes;
+import org.lightnsalt.hikingdom.chat.dto.response.ChatInfoRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.ChatListMessageRes;
 import org.lightnsalt.hikingdom.chat.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.ChatMessageRes;
@@ -50,9 +50,9 @@ public class ChatServiceImpl implements ChatService {
 			.build();
 
 		Chat savedChat = chatRepository.save(chat);
-		ChatRes chatRes = new ChatRes(savedChat);
+		ChatInfoRes chatInfoRes = new ChatInfoRes(savedChat);
 
-		return new ChatMessageRes(chatRes);
+		return new ChatMessageRes(chatInfoRes);
 	}
 
 	@Override
@@ -72,8 +72,8 @@ public class ChatServiceImpl implements ChatService {
 				pageable);
 		}
 
-		CustomPage<ChatRes> chats = new CustomPage<>(
-			chatPage.getContent().stream().map(ChatRes::new).collect(Collectors.toList()),
+		CustomPage<ChatInfoRes> chats = new CustomPage<>(
+			chatPage.getContent().stream().map(ChatInfoRes::new).collect(Collectors.toList()),
 			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), chatPage.hasNext());
 
 		return new ChatListMessageRes(chats);
