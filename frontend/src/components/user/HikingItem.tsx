@@ -1,7 +1,7 @@
 import React, { useContext, MouseEvent, useState } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import { useNavigate } from 'react-router-dom'
-import styles from './PastMeetupItem.module.scss'
+import styles from './HikingItem.module.scss'
 
 import IconText from 'components/common/IconText'
 
@@ -14,19 +14,18 @@ import time from 'assets/images/hourglass.png'
 import distance from 'assets/images/shoe.png'
 import height from 'assets/images/hot_air_balloon.png'
 
-import TrackingInfo from './TrackingInfo'
+import TrackingInfo from './HikingDetail'
 import Modal from 'components/common/Modal'
 
-import { UserHiking } from 'types/user.interface'
+import { HikingSimple } from 'types/user.interface'
 import { convertToKm } from 'utils/convertToKm'
 import { convertToTime } from 'utils/convertToTime'
 import useUserQuery from 'hooks/useUserQuery'
 
-export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
+function HikingItem({ hiking }: { hiking: HikingSimple }) {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
-  const { data: userInfo } = useUserQuery()
 
   // 일정 상세보기로 이동하는 함수
   const onClickOpenModal = () => {
@@ -98,3 +97,5 @@ export default function PastMeetupItem({ hiking }: { hiking: UserHiking }) {
     </>
   )
 }
+
+export default HikingItem

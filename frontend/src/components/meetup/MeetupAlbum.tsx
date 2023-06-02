@@ -1,6 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react'
 import styles from './MeetupAlbum.module.scss'
-import { useParams } from 'react-router-dom'
 
 import Button from 'components/common/Button'
 import Modal from 'components/common/Modal'
@@ -12,10 +11,11 @@ import { getMeetupAlbum } from 'apis/services/meetup'
 import useInfiniteVerticalScroll from 'hooks/useInfiniteVerticalScroll'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
-import { displayValue } from '@tanstack/react-query-devtools/build/lib/utils'
 
 type MeetupAlbum = {
   join: boolean
+  meetupId: number
+  clubId: number
 }
 
 type InfiniteAlbumInfo = {
@@ -26,11 +26,7 @@ type InfiniteAlbumInfo = {
   pageSize: number
 }
 
-function MeetupAlbum({ join }: MeetupAlbum) {
-  const { meetupId } = useParams() as {
-    meetupId: string
-  }
-
+function MeetupAlbum({ join, meetupId, clubId }: MeetupAlbum) {
   const { data: userInfo } = useUserQuery()
   const [isOpen, setIsOpen] = useState(false) // 선택한 사진 모달 on/off
   const [photo, setPhoto] = useState<Album>() // 선택한 사진
@@ -39,7 +35,7 @@ function MeetupAlbum({ join }: MeetupAlbum) {
 
   const { data, fetchNextPage, hasNextPage } =
     useInfiniteQuery<InfiniteAlbumInfo>({
-      queryKey: ['meetupPhotos'],
+      queryKey: ['meetupPhotos', clubId, meetupId],
       queryFn: ({ pageParam = null }) => {
         return getMeetupAlbum(
           Number(userInfo?.clubId),
@@ -82,7 +78,8 @@ function MeetupAlbum({ join }: MeetupAlbum) {
       {isAlbumOpen && (
         <Modal onClick={() => setIsAlbumOpen(false)}>
           <AlbumModal
-            clubId={userInfo?.clubId}
+            clubId={clubId}
+            meetupId={meetupId}
             setIsOpen={() => setIsAlbumOpen(false)}
           />
         </Modal>

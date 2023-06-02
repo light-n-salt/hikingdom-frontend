@@ -1,23 +1,20 @@
 import React, { useState, useRef } from 'react'
 import styles from './AlbumModal.module.scss'
-import { updateMeetupAlbum } from 'apis/services/meetup'
-import { useParams } from 'react-router-dom'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { usePostMeetupPhoto } from 'apis/services/meetup'
 import toast from 'components/common/Toast'
 import Button from 'components/common/Button'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB 이하 사진만 업로드
 
 type AlbumModalProps = {
-  clubId: number | undefined
+  clubId: number
+  meetupId: number
   setIsOpen: () => void
 }
 
-function AlbumModal({ setIsOpen, clubId }: AlbumModalProps) {
-  const { meetupId } = useParams() as { meetupId: string }
+function AlbumModal({ setIsOpen, clubId, meetupId }: AlbumModalProps) {
   const [files, setFiles] = useState<string[] | undefined>()
   const albumRef = useRef<HTMLInputElement>(null)
-  const queryClient = useQueryClient()
 
   // 선택한 사진 모달에 띄우기
   const onChange = () => {
@@ -34,19 +31,9 @@ function AlbumModal({ setIsOpen, clubId }: AlbumModalProps) {
   }
 
   // 사진 업로드하기
-  const { mutate } = useMutation(
-    (formData: FormData) =>
-      updateMeetupAlbum(Number(clubId), Number(meetupId), formData),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['meetupPhotos'])
-        toast.addMessage('success', '사진이 추가되었습니다')
-        setIsOpen()
-      },
-    }
-  )
+  const { mutateAsync: postPhoto } = usePostMeetupPhoto(clubId, meetupId)
 
-  const updateFiles = () => {
+  const onClickPostPhoto = () => {
     if (!albumRef.current?.files) return
 
     const fileList = albumRef.current.files
@@ -70,7 +57,9 @@ function AlbumModal({ setIsOpen, clubId }: AlbumModalProps) {
       }
     }
 
-    mutate(formData)
+    postPhoto(formData).then(() => {
+      setIsOpen()
+    })
   }
   return (
     <div className={styles.modal}>
@@ -93,7 +82,7 @@ function AlbumModal({ setIsOpen, clubId }: AlbumModalProps) {
             text="사진 올리기"
             color="secondary"
             size="sm"
-            onClick={updateFiles}
+            onClick={onClickPostPhoto}
           />
         )}
       </div>

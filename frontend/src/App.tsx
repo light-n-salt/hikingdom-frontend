@@ -33,9 +33,9 @@ import CreateMeetupPage from 'pages/club/CreateMeetupPage'
 import MeetupDetailPage from 'pages/club/MeetupDetailPage'
 // MyPage
 import ProfilePage from 'pages/profile/ProfilePage'
-import ProfileUpdatePage from 'pages/profile/ProfileUpdatePage'
+import UpdateProfilePage from 'pages/profile/UpdateProfilePage'
 import AlarmPage from 'pages/profile/AlarmPage'
-import TrackingRecordPage from 'pages/profile/TrackingRecordPage'
+import HikingDetailPage from 'pages/profile/HikingDetailPage'
 
 import NotFoundPage from 'pages/NotFoundPage'
 import PrivateRoute from 'pages/PrivateRoute'
@@ -68,7 +68,6 @@ function App() {
           <Route path="/club/create" element={<ClubCreatePage />} />
           <Route path="/club/:clubId/detail" element={<ClubDetailPage />} />
           <Route path="/club/none" element={<ClubNoneExistPage />} />
-          {/* 내 모임 */}
           <Route path="/club/:clubId/chat" element={<ClubChatPage />} />
           <Route
             path="/club/:clubId/meetup/create"
@@ -86,10 +85,10 @@ function App() {
           </Route>
           {/* 마이페이지 */}
           <Route path="/profile/:nickname" element={<ProfilePage />} />
-          <Route path="/profile/update" element={<ProfileUpdatePage />} />
+          <Route path="/profile/update" element={<UpdateProfilePage />} />
           <Route
             path="/profile/:nickname/tracking/:hikingRecordId"
-            element={<TrackingRecordPage />}
+            element={<HikingDetailPage />}
           />
           <Route path="/alarm" element={<AlarmPage />} />
           <Route path="*" element={<NotFoundPage />} />
