@@ -147,7 +147,7 @@ export function useInfiniteClubsQuery(query = '', word = '') {
     getNextPageParam: (lastPage) => {
       return lastPage.hasNext ? lastPage.content.slice(-1)[0].clubId : undefined
     },
-    enabled: true,
+    enabled: false,
   })
 }
 
