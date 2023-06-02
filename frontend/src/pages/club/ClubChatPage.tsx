@@ -1,17 +1,15 @@
-import React, { useContext, useState, useEffect, useRef, useMemo } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ThemeContext } from 'styles/ThemeProvider'
 import styles from './ClubChatPage.module.scss'
 import PageHeader from 'components/common/PageHeader'
 import ChatList from 'components/club/ChatList'
 import Loading from 'components/common/Loading'
-import { Chats, Chat, ChatMember, InfiniteChat } from 'types/chat.interface'
+import { Chat, ChatMember } from 'types/chat.interface'
 import {
-  getChats,
-  getMembers,
   useClubSimpleInfoQuery,
   useChatsQuery,
+  useChatMembersQuery,
 } from 'apis/services/clubs'
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import useUserQuery from 'hooks/useUserQuery'
 import sockjs from 'sockjs-client'
 import { Stomp } from '@stomp/stompjs'
@@ -21,14 +19,6 @@ import { useRecoilValue } from 'recoil'
 import { accessTokenState } from 'recoil/atoms'
 
 // import useInfiniteScroll from 'hooks/useInfiniteScroll'
-
-// type InfiniteChat = {
-//   content: Chats[]
-//   hasNext: boolean
-//   hasPrevious: boolean
-//   numberOfElements: number
-//   pageSize: number
-// }
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
@@ -55,52 +45,36 @@ function ClubChatPage() {
   // 멤버 정보 업데이트시 ChatItem 업데이트
   const [trigger, setTrigger] = useState<number>(0)
 
-  // 채팅 데이터
+  // 이전 채팅 내용 불러오기
   const {
     data: chats,
     isError,
     isLoading,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery<any>({
-    queryKey: ['chats'],
-    queryFn: ({ pageParam = null }) => {
-      return getChats(Number(userInfo?.clubId), pageParam)
-    },
-    getNextPageParam: (lastPage) => {
-      return lastPage.chats.hasNext
-        ? lastPage.chats.content.slice(-1)[0].chatId
-        : undefined
-    },
-    enabled: !!userInfo && !!members,
-    onSuccess: (res) => {
+    isSuccess: isChatsSuccess,
+  } = useChatsQuery(userInfo?.clubId || 0, !!userInfo && !!members)
+
+  useEffect(() => {
+    if (isChatsSuccess) {
       setChatList((chatList) => [
         ...chatList,
-        ...res.pages.slice(-1)[0].chats.content,
+        ...chats.pages.slice(-1)[0].chats.content,
       ])
-    },
-    cacheTime: 0,
-  })
-
-  // const {
-  //   data: chats,
-  //   isError,
-  //   isLoading,
-  //   fetchNextPage,
-  //   hasNextPage,
-  // } =
-
-  // 멤버 데이터
-  const { data: memberInfo } = useQuery(
-    ['members'],
-    () => getMembers(Number(userInfo?.clubId)),
-    {
-      onSuccess: (res) => {
-        setMembers(res.members)
-      },
-      enabled: !!userInfo,
     }
+  }, [chats])
+
+  // 채팅 멤버 불러오기기
+  const { data: memberInfo, isSuccess: isMemberSuccess } = useChatMembersQuery(
+    userInfo?.clubId || 0,
+    !!userInfo
   )
+
+  useEffect(() => {
+    if (isMemberSuccess) {
+      setMembers(memberInfo.members)
+    }
+  }, [isMemberSuccess])
 
   // mount시 통신 연결
   useEffect(() => {
