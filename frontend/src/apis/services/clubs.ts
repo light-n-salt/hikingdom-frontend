@@ -248,7 +248,7 @@ export function useChatsQuery(clubId: number, enabled: boolean) {
           baseURL: 'https://hikingdom.kr/chat',
           params: { clubId: pageParam, size: 50 },
         })
-        .then((res) => res.data.result),
+        .then((res) => res.data.result.chats),
     getNextPageParam: (lastPage) => {
       return lastPage.hasNext ? lastPage.content.slice(-1)[0].chatId : undefined
     },
