@@ -1,6 +1,8 @@
-import { getUserInfo } from 'apis/services/users'
-import { useQuery } from '@tanstack/react-query'
 import { UserInfo } from 'types/user.interface'
+
+import { useQuery } from '@tanstack/react-query'
+
+import { getUserInfo } from 'apis/services/users'
 
 function useUserQuery() {
   return useQuery<UserInfo>(['user'], () => getUserInfo())

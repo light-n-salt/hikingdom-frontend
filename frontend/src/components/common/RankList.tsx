@@ -1,7 +1,9 @@
 import React from 'react'
+
 import styles from './RankList.module.scss'
-import RankItem from 'components/common/RankItem'
 import { ClubInfo } from 'types/club.interface'
+
+import RankItem from 'components/common/RankItem'
 
 type RankListProps = {
   clubInfoArray: ClubInfo[] // 소모임 정보 배열

@@ -1,19 +1,19 @@
 import React, { useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ThemeContext } from 'styles/ThemeProvider'
+
 import styles from './UpdateNicknameForm.module.scss'
 
-import LabelInput from 'components/common/LabelInput'
-import Button from 'components/common/Button'
-import toast from 'components/common/Toast'
-import useAuthInput from 'hooks/useAuthInput'
+import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
+
 
 import { useUpdateNickname, useUserInfoQuery } from 'apis/services/users'
-
-import useUserQuery from 'hooks/useUserQuery'
-import Loading from 'components/common/Loading'
+import Button from 'components/common/Button'
 import ErrorMessage from 'components/common/ErrorMessage'
+import LabelInput from 'components/common/LabelInput'
+import Loading from 'components/common/Loading'
+import toast from 'components/common/Toast'
+import useAuthInput from 'hooks/useAuthInput'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function UpdateNicknameForm() {
   const navigate = useNavigate()

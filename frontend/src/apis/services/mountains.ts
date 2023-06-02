@@ -1,12 +1,14 @@
-import apiRequest from 'apis/AxiosInterceptor'
+import { AxiosDataResponse, AxiosDataError } from 'types/common.interface'
+import { InfiniteMtInfo, MtInfo, MtInfoDetail } from 'types/mt.interface'
+
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
-import { MtInfo, MtInfoDetail } from 'types/mt.interface'
+
+import apiRequest from 'apis/AxiosInterceptor'
 import { untilMidnight } from 'utils/untilMidnight'
 
 // 산 조회
 export function useInfiniteMountainsQuery(word: string, query = 'name') {
-  return useInfiniteQuery<any, AxiosError>({
+  return useInfiniteQuery<InfiniteMtInfo, AxiosDataError>({
     queryKey: ['mountains', { query, word }],
     queryFn: ({ pageParam = null }) =>
       apiRequest
@@ -28,7 +30,7 @@ export function useInfiniteMountainsQuery(word: string, query = 'name') {
 
 // 오늘의 산 조회
 export function useTodayMountainsQuery() {
-  return useQuery<any, AxiosError, MtInfo[]>(
+  return useQuery<AxiosDataResponse, AxiosDataError, MtInfo[]>(
     ['todayMountains'],
     () => apiRequest.get(`/info/today/mountain`),
     {
@@ -41,7 +43,7 @@ export function useTodayMountainsQuery() {
 
 // 산 상세 정보 조회
 export function useMountainInfoQuery(mountainId: number) {
-  return useQuery<any, AxiosError, MtInfoDetail>(
+  return useQuery<AxiosDataResponse, AxiosDataError, MtInfoDetail>(
     ['mountainInfo', { mountainId }],
     () => apiRequest.get(`/info/mountains/${mountainId}`),
     {

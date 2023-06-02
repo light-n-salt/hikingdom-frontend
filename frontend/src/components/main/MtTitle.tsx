@@ -1,17 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+import React, { useContext, useState } from 'react'
+
+import Asset from './Asset'
+import AssetModal from './AssetModal'
 import styles from './MtTitle.module.scss'
-import { convertToHour } from 'utils/convertToTime'
+import { MtAssetInfo } from 'types/mt.interface'
+
+import { Canvas } from '@react-three/fiber'
+import * as THREE from 'three'
 
 import Loading from 'components/common/Loading'
 import Modal from 'components/common/Modal'
-import AssetModal from './AssetModal'
+import { ThemeContext } from 'styles/ThemeProvider'
+import { convertToHour } from 'utils/convertToTime'
 
-import { MtAssetInfo } from 'types/mt.interface'
 
-import * as THREE from 'three'
-import { Canvas } from '@react-three/fiber'
-import Asset from './Asset'
+
 
 type MtTitleProps = {
   name: string

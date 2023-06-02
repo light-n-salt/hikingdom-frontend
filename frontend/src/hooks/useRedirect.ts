@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+
+import { useNavigate } from 'react-router-dom'
 
 // 인자값이 하나라도 NaN일 때 404로 redirect
 // 모두 number일 때 number로 형변환된 인자값을 객체 형식으로 반환

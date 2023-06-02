@@ -1,7 +1,8 @@
 import React from 'react'
-import Loading from 'components/common/Loading'
-import MemberList from 'components/club/MemberList'
+
 import { useMembersDetailQuery } from 'apis/services/meetup'
+import MemberList from 'components/club/MemberList'
+import Loading from 'components/common/Loading'
 
 type MemberModalProps = {
   clubId: number

@@ -1,12 +1,14 @@
-import React, { useContext, useState } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+import React, { useContext } from 'react'
+
 import styles from './ClubMainPage.module.scss'
+
 import { useClubInfoQuery } from 'apis/services/clubs'
-import Loading from 'components/common/Loading'
-import SearchClubMt from 'components/club/SearchClubMt'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
+import SearchClubMt from 'components/club/SearchClubMt'
+import Loading from 'components/common/Loading'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 import useUserQuery from 'hooks/useUserQuery'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function ClubMainPage() {
   const { theme } = useContext(ThemeContext)

@@ -1,14 +1,16 @@
 import React, { useContext, useMemo, useRef } from 'react'
+
 import styles from './ProfilePage.module.scss'
+
 import { useParams } from 'react-router-dom'
-import { useInfiniteQuery } from '@tanstack/react-query'
+
 import { useInfiniteHikingQuery } from 'apis/services/users'
-import Loading from 'components/common/Loading'
-import UserProfile from 'components/user/UserProfile'
-import HikingList from 'components/user/HikingList'
-import { ThemeContext } from 'styles/ThemeProvider'
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import ErrorMessage from 'components/common/ErrorMessage'
+import Loading from 'components/common/Loading'
+import HikingList from 'components/user/HikingList'
+import UserProfile from 'components/user/UserProfile'
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function ProfilePage() {
   const { theme } = useContext(ThemeContext)

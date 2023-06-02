@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { useParams } from 'react-router'
+
 import HikingDetail from 'components/user/HikingDetail'
 
 function HikingDetailPage() {

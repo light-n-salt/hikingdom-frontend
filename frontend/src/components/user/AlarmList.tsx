@@ -1,7 +1,9 @@
 import React from 'react'
-import AlarmItem from 'components/user/AlarmItem'
+
 import styles from './AlarmList.module.scss'
 import { Alarm } from 'types/user.interface'
+
+import AlarmItem from 'components/user/AlarmItem'
 
 function AlarmList({ alarmList }: { alarmList: Alarm[] }) {
   return (

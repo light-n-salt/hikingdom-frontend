@@ -1,4 +1,3 @@
-import exp from 'constants'
 import { InfinitePage } from './common.interface'
 
 // 로그인 - 토큰 정보

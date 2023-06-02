@@ -1,6 +1,7 @@
 import React from 'react'
-import styles from './MemberList.module.scss'
+
 import MemberItem from './MemberItem'
+import styles from './MemberList.module.scss'
 import { ClubMember } from 'types/club.interface'
 
 type MemberListProps = {

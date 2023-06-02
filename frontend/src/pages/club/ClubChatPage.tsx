@@ -1,24 +1,25 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
+
 import styles from './ClubChatPage.module.scss'
-import PageHeader from 'components/common/PageHeader'
-import ChatList from 'components/club/ChatList'
-import Loading from 'components/common/Loading'
 import { Chat, ChatMember } from 'types/chat.interface'
+
+import { Stomp } from '@stomp/stompjs'
+import { useRecoilValue } from 'recoil'
+import sockjs from 'sockjs-client'
+
 import {
   useClubSimpleInfoQuery,
   useChatsQuery,
   useChatMembersQuery,
 } from 'apis/services/clubs'
-import useUserQuery from 'hooks/useUserQuery'
-import sockjs from 'sockjs-client'
-import { Stomp } from '@stomp/stompjs'
+import ChatList from 'components/club/ChatList'
+import Loading from 'components/common/Loading'
+import PageHeader from 'components/common/PageHeader'
 import TextSendBar from 'components/common/TextSendBar'
 import useScroll from 'hooks/useScroll'
-import { useRecoilValue } from 'recoil'
+import useUserQuery from 'hooks/useUserQuery'
 import { accessTokenState } from 'recoil/atoms'
-
-// import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import { ThemeContext } from 'styles/ThemeProvider'
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
@@ -59,7 +60,7 @@ function ClubChatPage() {
     if (isChatsSuccess) {
       setChatList((chatList) => [
         ...chatList,
-        ...chats.pages.slice(-1)[0].chats.content,
+        ...chats.pages.slice(-1)[0].content,
       ])
     }
   }, [chats])
@@ -72,7 +73,7 @@ function ClubChatPage() {
 
   useEffect(() => {
     if (isMemberSuccess) {
-      setMembers(memberInfo.members)
+      setMembers(memberInfo)
     }
   }, [isMemberSuccess])
 

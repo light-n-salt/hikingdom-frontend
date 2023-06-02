@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react'
-import styles from './Asset.module.scss'
-import * as THREE from 'three'
+
 import { useLoader, useFrame } from '@react-three/fiber'
+import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { useSpring, animated } from '@react-spring/three'
 
 interface AssetProps {
   onClick: () => void // 닫는 함수

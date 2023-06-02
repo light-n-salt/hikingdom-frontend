@@ -1,45 +1,44 @@
 import './App.scss'
-import React, { useEffect } from 'react'
+import React from 'react'
+
 import { Routes, Route } from 'react-router-dom'
+
+// Common
 import WebMargin from 'components/common/WebMargin'
 // Auth
-import IndexPage from 'pages/auth/IndexPage'
-import LoginPage from 'pages/auth/LoginPage'
 import AgreePage from 'pages/auth/AgreePage'
 import FindPwPage from 'pages/auth/FindPwPage'
-import SignupPage from 'pages/auth/SignupPage'
+import IndexPage from 'pages/auth/IndexPage'
+import LoginPage from 'pages/auth/LoginPage'
 import PolicyPage from 'pages/auth/PolicyPage'
-// Main
-import SearchLayout from 'pages/main/SearchLayout'
-import MainPage from 'pages/main/MainPage'
-import SearchMtPage from 'pages/main/SearchMtPage'
-import MtDetailPage from 'pages/main/MtDetailPage'
-// Rank
-import RankPage from 'pages/rank/RankPage'
+import SignupPage from 'pages/auth/SignupPage'
 // Club
-import SearchClubPage from 'pages/club/SearchClubPage'
-import ClubDetailPage from 'pages/club/ClubDetailPage'
-import ClubCreatePage from 'pages/club/ClubCreatePage'
+import ClubAlbumPage from 'pages/club/ClubAlbumPage'
 import ClubChatPage from 'pages/club/ClubChatPage'
-import ClubNoneExistPage from 'pages/club/ClubNoneExistPage'
-// Club - main
+import ClubCreatePage from 'pages/club/ClubCreatePage'
+import ClubDetailPage from 'pages/club/ClubDetailPage'
 import ClubHeaderPage from 'pages/club/ClubHeaderPage'
 import ClubMainPage from 'pages/club/ClubMainPage'
 import ClubMeetupPage from 'pages/club/ClubMeetupPage'
 import ClubMemberPage from 'pages/club/ClubMemberPage'
-import ClubAlbumPage from 'pages/club/ClubAlbumPage'
-// Club - Meetup
+import ClubNoneExistPage from 'pages/club/ClubNoneExistPage'
 import CreateMeetupPage from 'pages/club/CreateMeetupPage'
 import MeetupDetailPage from 'pages/club/MeetupDetailPage'
+import SearchClubPage from 'pages/club/SearchClubPage'
+// Main
+import MainPage from 'pages/main/MainPage'
+import MtDetailPage from 'pages/main/MtDetailPage'
+import SearchLayout from 'pages/main/SearchLayout'
+import SearchMtPage from 'pages/main/SearchMtPage'
 // MyPage
-import ProfilePage from 'pages/profile/ProfilePage'
-import UpdateProfilePage from 'pages/profile/UpdateProfilePage'
-import AlarmPage from 'pages/profile/AlarmPage'
-import HikingDetailPage from 'pages/profile/HikingDetailPage'
-
 import NotFoundPage from 'pages/NotFoundPage'
 import PrivateRoute from 'pages/PrivateRoute'
-import sendRefreshToken from 'utils/sendRefreshToken'
+import AlarmPage from 'pages/profile/AlarmPage'
+import HikingDetailPage from 'pages/profile/HikingDetailPage'
+import ProfilePage from 'pages/profile/ProfilePage'
+import UpdateProfilePage from 'pages/profile/UpdateProfilePage'
+// Rank
+import RankPage from 'pages/rank/RankPage'
 
 function App() {
   return (

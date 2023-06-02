@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
+
 import { useRecoilState } from 'recoil'
+
 import { themeState } from 'recoil/atoms'
 
 interface Props {

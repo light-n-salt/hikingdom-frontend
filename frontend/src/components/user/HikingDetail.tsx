@@ -1,18 +1,20 @@
-import React, { useEffect, useMemo } from 'react'
-import { useParams } from 'react-router'
+import React, { useEffect } from 'react'
 
 import styles from './HikingDetail.module.scss'
 
+import { AiOutlineClockCircle } from 'react-icons/ai'
+import { BiCalendarAlt } from 'react-icons/bi'
+import { useParams } from 'react-router'
+
+
+import { useHikingDetailQuery } from 'apis/services/users'
+import IconText from 'components/common/IconText'
+import Loading from 'components/common/Loading'
 import { convertToKm } from 'utils/convertToKm'
 import { convertToTime } from 'utils/convertToTime'
-import { useHikingDetailQuery } from 'apis/services/users'
-import { useQuery } from '@tanstack/react-query'
-import { untilMidnight } from 'utils/untilMidnight'
 
-import Loading from 'components/common/Loading'
-import IconText from 'components/common/IconText'
-import { BiCalendarAlt } from 'react-icons/bi'
-import { AiOutlineClockCircle } from 'react-icons/ai'
+
+
 
 type HikingDetailProps = {
   hikingRecordId: number

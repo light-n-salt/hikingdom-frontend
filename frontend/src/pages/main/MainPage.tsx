@@ -1,17 +1,20 @@
 import React from 'react'
+
 import styles from './MainPage.module.scss'
+
 import { useNavigate } from 'react-router-dom'
-import { useTodayMountainsQuery } from 'apis/services/mountains'
+
 import { useTodayClubMtQuery, useclubRankTop3Query } from 'apis/services/clubs'
+import { useTodayMountainsQuery } from 'apis/services/mountains'
 import cloud from 'assets/images/cloud.png'
-import trophy from 'assets/images/trophy.png'
 import mountain from 'assets/images/mountain.png'
-import MtList from 'components/common/MtList'
-import IconText from 'components/common/IconText'
-import RankList from 'components/common/RankList'
-import Loading from 'components/common/Loading'
+import trophy from 'assets/images/trophy.png'
 import ClubMountain from 'components/club/ClubMountain'
 import ErrorMessage from 'components/common/ErrorMessage'
+import IconText from 'components/common/IconText'
+import Loading from 'components/common/Loading'
+import MtList from 'components/common/MtList'
+import RankList from 'components/common/RankList'
 
 function MainPage() {
   const navigate = useNavigate()

@@ -1,10 +1,10 @@
-import * as THREE from 'three'
 import React, { useRef, useState, useEffect } from 'react'
-import { useFrame } from '@react-three/fiber'
-import { Canvas, useLoader } from '@react-three/fiber'
+
 import { OrbitControls } from '@react-three/drei'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { useFrame , Canvas, useLoader } from '@react-three/fiber'
 import { useNavigate, useParams } from 'react-router'
+import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 type ClubMountainprops = {
   zoom: number

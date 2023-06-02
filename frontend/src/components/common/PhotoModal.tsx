@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
-import styles from './PhotoModal.module.scss'
-import toast from 'components/common/Toast'
 
+import IconText from './IconText'
+import Modal from './Modal'
+import styles from './PhotoModal.module.scss'
 import { Album } from 'types/club.interface'
+
+import { useQueryClient } from '@tanstack/react-query'
+import { AiOutlineClockCircle } from 'react-icons/ai'
+import { BiCalendarAlt } from 'react-icons/bi'
 import { HiTrash, HiLightBulb } from 'react-icons/hi'
 
-import { report } from 'apis/services/users'
-import { useQueryClient } from '@tanstack/react-query'
 import { useDeleteAlbum } from 'apis/services/clubs'
-
-import useUserQuery from 'hooks/useUserQuery'
-import Modal from './Modal'
-import IconText from './IconText'
-import Image from 'components/common/Image'
+import { report } from 'apis/services/users'
 import ConfirmModal from 'components/club/ConfirmModal'
-import { BiCalendarAlt } from 'react-icons/bi'
-import { AiOutlineClockCircle } from 'react-icons/ai'
+import Image from 'components/common/Image'
+import toast from 'components/common/Toast'
+import useUserQuery from 'hooks/useUserQuery'
 
 type PhotoModalProps = {
   photo: Album

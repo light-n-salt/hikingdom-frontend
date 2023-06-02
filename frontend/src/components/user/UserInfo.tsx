@@ -1,14 +1,13 @@
 import React, { useContext } from 'react'
+
 import styles from './UserInfo.module.scss'
-import { ThemeContext } from 'styles/ThemeProvider'
-
-import mountain from 'assets/images/mountain.png'
-import time from 'assets/images/hourglass.png'
-import distance from 'assets/images/shoe.png'
-import height from 'assets/images/hot_air_balloon.png'
-
 import { UserRecord } from 'types/user.interface'
 
+import height from 'assets/images/hot_air_balloon.png'
+import time from 'assets/images/hourglass.png'
+import mountain from 'assets/images/mountain.png'
+import distance from 'assets/images/shoe.png'
+import { ThemeContext } from 'styles/ThemeProvider'
 import { convertToKm } from 'utils/convertToKm'
 import { convertToTime } from 'utils/convertToTime'
 

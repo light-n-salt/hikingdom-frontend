@@ -1,15 +1,16 @@
 import React from 'react'
+
 import styles from './PrivateRoute.module.scss'
+
 import { Navigate, Outlet } from 'react-router-dom'
-import useIsMobile from 'hooks/useIsMobile'
-import NavigationBar from 'components/common/NavigationBar'
-import useUserQuery from 'hooks/useUserQuery'
-import Loading from 'components/common/Loading'
 import { useRecoilValue } from 'recoil'
-import { refreshTokenState } from 'recoil/atoms'
+
 import { useUserInfoQuery } from 'apis/services/users'
-import toast from 'components/common/Toast'
 import ErrorMessage from 'components/common/ErrorMessage'
+import Loading from 'components/common/Loading'
+import NavigationBar from 'components/common/NavigationBar'
+import useIsMobile from 'hooks/useIsMobile'
+import { refreshTokenState } from 'recoil/atoms'
 
 /*
 사용자 로그인 여부에 따라 로그인페이지로 라우팅하는 컴포넌트 

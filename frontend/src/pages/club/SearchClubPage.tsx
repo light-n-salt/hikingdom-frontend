@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
+
 import styles from './SearchClubPage.module.scss'
+import { InfiniteClubInfo } from 'types/club.interface'
+
 import { useInfiniteClubsQuery } from 'apis/services/clubs'
-import RankList from 'components/common/RankList'
 import InputDropdown from 'components/common/InputDropdown'
+import Loading from 'components/common/Loading'
+import RankList from 'components/common/RankList'
 import useDebounce from 'hooks/useDebounce'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import { ThemeContext } from 'styles/ThemeProvider'
-import { InfiniteClubInfo } from 'types/club.interface'
-import Loading from 'components/common/Loading'
 
 // 서치바의 드롭다운  SelectBox에 넘길 옵션 배열
 const filterOptions = [

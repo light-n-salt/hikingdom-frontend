@@ -1,23 +1,21 @@
 import React, { useContext, MouseEvent, useState } from 'react'
-import { ThemeContext } from 'styles/ThemeProvider'
-import { useNavigate } from 'react-router-dom'
+
 import styles from './HikingItem.module.scss'
-
-import IconText from 'components/common/IconText'
-
-import { BiCalendarAlt } from 'react-icons/bi'
-import { AiOutlineClockCircle } from 'react-icons/ai'
-import { FiChevronRight } from 'react-icons/fi'
-
-import mountain from 'assets/images/mountain.png'
-import time from 'assets/images/hourglass.png'
-import distance from 'assets/images/shoe.png'
-import height from 'assets/images/hot_air_balloon.png'
-
-import TrackingInfo from './HikingDetail'
-import Modal from 'components/common/Modal'
-
 import { HikingSimple } from 'types/user.interface'
+
+import { AiOutlineClockCircle } from 'react-icons/ai'
+import { BiCalendarAlt } from 'react-icons/bi'
+import { FiChevronRight } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
+
+import height from 'assets/images/hot_air_balloon.png'
+import time from 'assets/images/hourglass.png'
+import mountain from 'assets/images/mountain.png'
+import distance from 'assets/images/shoe.png'
+import IconText from 'components/common/IconText'
+import Modal from 'components/common/Modal'
+import HikingDetail from 'components/user/HikingDetail'
+import { ThemeContext } from 'styles/ThemeProvider'
 import { convertToKm } from 'utils/convertToKm'
 import { convertToTime } from 'utils/convertToTime'
 
@@ -41,7 +39,7 @@ function HikingItem({ hiking }: { hiking: HikingSimple }) {
     <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
-          <TrackingInfo hikingRecordId={hiking.hikingRecordId} />
+          <HikingDetail hikingRecordId={hiking.hikingRecordId} />
         </Modal>
       )}
       <div
