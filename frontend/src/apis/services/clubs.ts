@@ -18,7 +18,7 @@ import {
   InfiniteAlbumInfo,
   ClubMemberList,
 } from 'types/club.interface'
-import { InfiniteChat } from 'types/chat.interface'
+// import { InfiniteChat, ChatMember } from 'types/chat.interface'
 import toast from 'components/common/Toast'
 
 // 오늘의 소모임 산 조회 (Main)
@@ -215,32 +215,15 @@ export function useGuGunCodeQuery(word: string) {
   )
 }
 
-// 소모임 채팅 조회   >>>> Todo
-export function getChats(
-  clubId: number,
-  chatId: string | null = null,
-  size: number | null = 50
-) {
-  return apiRequest
-    .get(`/clubs/${clubId}/chats`, {
-      baseURL: 'https://hikingdom.kr/chat',
-      params: { chatId, size },
-    })
-    .then((res) => res.data.result)
-}
-
-export function useChatsQuery(
-  clubId: number,
-  chatId: string | null = null,
-  size: number | null = 50
-) {
-  return useInfiniteQuery<any, AxiosError, InfiniteChat>({
+// 소모임 채팅 조회
+export function useChatsQuery(clubId: number, enabled: boolean) {
+  return useInfiniteQuery<any, AxiosError>({
     queryKey: ['chats'],
     queryFn: ({ pageParam = null }) =>
       apiRequest
         .get(`/clubs/${clubId}/chats`, {
           baseURL: 'https://hikingdom.kr/chat',
-          params: { clubId: pageParam },
+          params: { clubId: pageParam, size: 50 },
         })
         .then((res) => res.data.result),
     getNextPageParam: (lastPage) => {
@@ -248,15 +231,24 @@ export function useChatsQuery(
         ? lastPage.chats.content.slice(-1)[0].chatId
         : undefined
     },
+    enabled: enabled,
     cacheTime: 0,
   })
 }
 
-// 소모임 채팅 멤버 조회   >>>> Todo
-export function getMembers(clubId: number) {
-  return apiRequest
-    .get(`/clubs/${clubId}/members`, { baseURL: 'https://hikingdom.kr/chat' })
-    .then((res) => res.data.result)
+// 소모임 채팅 멤버 조회
+export function useChatMembersQuery(clubId: number, enabled: boolean) {
+  return useQuery<any, AxiosError>(
+    ['chatsMembers'],
+    () =>
+      apiRequest.get(`/clubs/${clubId}/members`, {
+        baseURL: 'https://hikingdom.kr/chat',
+      }),
+    {
+      select: (res) => res.data.result,
+      enabled: enabled,
+    }
+  )
 }
 
 // 소모임 월별 일정 조회
