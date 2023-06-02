@@ -25,6 +25,7 @@ import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
 import org.lightnsalt.hikingdom.service.club.repository.record.ClubRankingRepository;
 import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordRes;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
+import org.lightnsalt.hikingdom.service.member.client.ChatServiceClient;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberLogoutReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
@@ -40,7 +41,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -67,7 +67,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	private final MemberFcmTokenRepository memberFcmTokenRepository;
 	private final NotificationRepository notificationRepository;
 
-	private final RestTemplate restTemplate;
+	private final ChatServiceClient chatServiceClient;
 
 	@Override
 	public MemberDetailRes findMemberInfo(String email) {
@@ -287,7 +287,6 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	}
 
 	private void sendMemberUpdateAlert(Long clubId, List<MemberInfoRes> members) {
-		restTemplate.postForEntity("https://hikingdom.kr/chat/clubs/" + clubId + "/member-update",
-			members, MemberInfoRes.class);
+		chatServiceClient.sendMemberUpdate(clubId, members);
 	}
 }

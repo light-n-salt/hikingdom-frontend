@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.service.club.dto.response;
 
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupMember;
+import org.lightnsalt.hikingdom.domain.entity.member.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,12 @@ public class MemberInfoRes {
 		this.nickname = meetupMember.getMember().getNickname();
 		this.profileUrl = meetupMember.getMember().getProfileUrl();
 		this.level = meetupMember.getMember().getLevel().getId();
+	}
+
+	public MemberInfoRes(Member member) {
+		this.memberId = member.getId();
+		this.nickname = member.getNickname();
+		this.profileUrl = member.getProfileUrl();
+		this.level = member.getLevel().getId();
 	}
 }
