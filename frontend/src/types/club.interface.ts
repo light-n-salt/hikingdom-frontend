@@ -28,8 +28,8 @@ export interface InfiniteClubInfo extends InfinitePage {
 // 에셋 정보
 // 소모임 산 조회
 export interface AssetInfo {
-  mountainName?: string | undefined
-  meetupId?: number | undefined
+  mountainName?: string
+  meetupId?: number
   assetUrl: string
   row?: number
   column?: number

@@ -6,7 +6,9 @@ import { NavLink, useNavigate } from 'react-router-dom'
 
 import { useClubSimpleInfoQuery } from 'apis/services/clubs'
 import Chatting from 'assets/images/airplane.png'
+import ErrorMessage from 'components/common/ErrorMessage'
 import IconButton from 'components/common/IconButton'
+import Loading from 'components/common/Loading'
 import useUserQuery from 'hooks/useUserQuery'
 
 function ClubHeader() {
@@ -19,8 +21,15 @@ function ClubHeader() {
     isLoading,
     isError,
     data: clubSimpleInfo,
-    isSuccess,
   } = useClubSimpleInfoQuery(clubId || 0)
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (isError) {
+    return <ErrorMessage />
+  }
 
   return clubSimpleInfo ? (
     <div className={styles.container}>

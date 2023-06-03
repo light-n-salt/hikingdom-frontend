@@ -8,6 +8,7 @@ import { useClubInfoQuery, useJoinClub } from 'apis/services/clubs'
 import ClubMountain from 'components/club/ClubMountain'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import Button from 'components/common/Button'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import PageHeader from 'components/common/PageHeader'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
@@ -21,18 +22,9 @@ function ClubDetailPage() {
   const clubId = Number(useParams<string>().clubId)
   const { data: userInfo } = useUserQuery()
 
-  const {
-    isLoading,
-    isError,
-    data: clubInfo,
-    isSuccess,
-  } = useClubInfoQuery(clubId || 0)
+  const { isLoading, isError, data: clubInfo } = useClubInfoQuery(clubId || 0)
 
-  const {
-    isLoading: isJoinClubLoading,
-    isError: isJoinClubError,
-    mutate: joinClub,
-  } = useJoinClub(clubId)
+  const { isLoading: isJoinClubLoading, mutate: joinClub } = useJoinClub(clubId)
 
   useEffect(() => {
     if (clubId === userInfo?.clubId) {
@@ -40,11 +32,19 @@ function ClubDetailPage() {
     }
   }, [userInfo])
 
-  return clubInfo && userInfo ? (
+  if (isLoading || isJoinClubLoading) {
+    return <Loading />
+  }
+
+  if (isError) {
+    return <ErrorMessage />
+  }
+
+  return (
     <div className={`page-gradation upside p-sm ${theme} ${styles.page}`}>
       <PageHeader title={clubInfo.clubName} color="primary" />
       <div className={styles.button}>
-        {!userInfo.clubId && (
+        {userInfo?.clubId && (
           <Button
             text="가입 신청"
             size="sm"
@@ -64,8 +64,6 @@ function ClubDetailPage() {
       </div>
       <ClubMountain zoom={2} assetInfo={clubInfo.assets} />
     </div>
-  ) : (
-    <Loading />
   )
 }
 

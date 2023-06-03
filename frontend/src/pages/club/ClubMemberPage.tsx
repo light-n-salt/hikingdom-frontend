@@ -9,6 +9,7 @@ import {
 } from 'apis/services/clubs'
 import ConfirmModal from 'components/club/ConfirmModal'
 import MemberList from 'components/club/MemberList'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import Modal from 'components/common/Modal'
 import TextButton from 'components/common/TextButton'
@@ -45,7 +46,15 @@ function ClubMemberPage() {
     })
   }
 
-  return isSuccess && clubSimpleInfo ? (
+  if (isLoading || isClubSimpleInfoLoading) {
+    return <Loading />
+  }
+
+  if (isError || isClubSimpleInfoError) {
+    return <ErrorMessage />
+  }
+
+  return (
     <>
       {isOpen && (
         <Modal onClick={() => setIsOpen(false)}>
@@ -84,8 +93,6 @@ function ClubMemberPage() {
         </div>
       </div>
     </>
-  ) : (
-    <Loading />
   )
 }
 

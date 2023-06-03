@@ -13,8 +13,8 @@ export interface UserInfo {
   profileUrl: string
   memberId: number
   level: number
-  clubId?: number | undefined
-  unreadNotificationCount?: number | undefined
+  clubId?: number
+  unreadNotificationCount?: number
 }
 
 // 회원 프로필 조회 - 회원 등산 기록
