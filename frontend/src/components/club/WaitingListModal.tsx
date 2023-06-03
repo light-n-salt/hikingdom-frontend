@@ -8,12 +8,7 @@ import Loading from 'components/common/Loading'
 import RankList from 'components/common/RankList'
 
 function WaitingListModal() {
-  const {
-    isLoading,
-    isError,
-    data: clubInfoArray,
-    isSuccess: isClubRequestSuccess,
-  } = useClubRequestQuery()
+  const { isLoading, isError, data: clubInfoArray } = useClubRequestQuery()
 
   if (isLoading) {
     return <Loading />
@@ -26,7 +21,7 @@ function WaitingListModal() {
   return (
     <div className={styles.list}>
       <h2>가입 대기 중 모임</h2>
-      {isClubRequestSuccess ? (
+      {clubInfoArray[0] ? (
         <RankList
           clubInfoArray={clubInfoArray}
           size="lg"
