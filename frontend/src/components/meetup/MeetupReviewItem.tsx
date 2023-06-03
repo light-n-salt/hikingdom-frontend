@@ -9,6 +9,7 @@ import { HiTrash, HiLightBulb } from 'react-icons/hi'
 import { useDeleteReview } from 'apis/services/meetup'
 import { report } from 'apis/services/users'
 import ConfirmModal from 'components/club/ConfirmModal'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Image from 'components/common/Image'
 import Loading from 'components/common/Loading'
 import Modal from 'components/common/Modal'
@@ -54,7 +55,7 @@ function MeetupReviewItem({ review, clubId, meetupId }: ReviewProps) {
   }
 
   if (isDeleteReviewError) {
-    return <div>Todo: 에러컴포넌트적용</div>
+    return <ErrorMessage />
   }
 
   return (

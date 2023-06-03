@@ -44,7 +44,7 @@ function MainPage() {
   }
 
   if (isTodayMtError || isClubRankTop3Error || isTodayClubMtError) {
-    return <ErrorMessage message="정보를 불러올 수 없습니다." />
+    return <ErrorMessage />
   }
 
   return (

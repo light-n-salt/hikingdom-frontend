@@ -12,6 +12,7 @@ import {
 } from 'apis/services/meetup'
 import ConfirmModal from 'components/club/ConfirmModal'
 import Button from 'components/common/Button'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import Modal from 'components/common/Modal'
 import PageHeader from 'components/common/PageHeader'
@@ -95,7 +96,7 @@ function MeetupDetailPage() {
     isPostReviewError ||
     isDeleteMeetupError
   ) {
-    return <div>Todo 에러컴포넌트적용</div>
+    return <ErrorMessage />
   }
 
   return (
