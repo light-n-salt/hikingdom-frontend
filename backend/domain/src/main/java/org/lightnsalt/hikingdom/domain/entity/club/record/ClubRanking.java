@@ -50,36 +50,28 @@ public class ClubRanking {
 	@Column(nullable = false)
 	private LocalDate setDate;
 
-	@Column(name = "total_hiking_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
-	private Long totalHikingCount;
+	@Column(name = "total_member_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 1")
+	private Long totalMemberCount;
+
+	@Column(name = "total_meetup_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
+	private Long totalMeetupCount;
 
 	@Column(name = "total_mountain_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
 	private Long totalMountainCount;
 
-	@Column(name = "total_duration", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
-	private Long totalDuration; // in seconds
-
-	@Column(name = "total_distance", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
-	private Long totalDistance; // in metres
-
-	@Column(name = "total_alt", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
-	private Long totalAlt; // in metres
-
-	@Column(name = "participation_rate", nullable = false, columnDefinition = "DOUBLE DEFAULT 0")
-	private double participationRate; // in %
+	@Column(name = "total_asset_count", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT 0")
+	private Long totalAssetCount;
 
 	@Builder
-	public ClubRanking(Club club, Long ranking, Long score, LocalDate setDate, Long totalHikingCount,
-		Long totalMountainCount, Long totalDuration, Long totalDistance, Long totalAlt, double participationRate) {
+	public ClubRanking(Club club, Long ranking, Long score, LocalDate setDate, Long totalMemberCount,
+		Long totalMeetupCount, Long totalMountainCount, Long totalAssetCount) {
 		this.club = club;
 		this.ranking = ranking;
 		this.score = score;
 		this.setDate = setDate;
-		this.totalHikingCount = totalHikingCount;
+		this.totalMemberCount = totalMemberCount;
+		this.totalMeetupCount = totalMeetupCount;
 		this.totalMountainCount = totalMountainCount;
-		this.totalDuration = totalDuration;
-		this.totalDistance = totalDistance;
-		this.totalAlt = totalAlt;
-		this.participationRate = participationRate;
+		this.totalAssetCount = totalAssetCount;
 	}
 }

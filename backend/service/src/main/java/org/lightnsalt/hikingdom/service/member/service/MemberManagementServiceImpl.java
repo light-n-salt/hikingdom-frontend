@@ -1,6 +1,7 @@
 package org.lightnsalt.hikingdom.service.member.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupRepository;
 import org.lightnsalt.hikingdom.service.club.repository.record.ClubRankingRepository;
 import org.lightnsalt.hikingdom.service.hiking.dto.response.HikingRecordRes;
 import org.lightnsalt.hikingdom.service.hiking.repository.MemberHikingRepository;
+import org.lightnsalt.hikingdom.service.member.client.ChatServiceClient;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberChangePasswordReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberLogoutReq;
 import org.lightnsalt.hikingdom.service.member.dto.request.MemberNicknameReq;
@@ -34,11 +36,11 @@ import org.lightnsalt.hikingdom.service.member.dto.response.MemberRequestClubRes
 import org.lightnsalt.hikingdom.service.member.repository.MemberFcmTokenRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberHikingStatisticRepository;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
+import org.lightnsalt.hikingdom.service.notification.repository.NotificationRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -63,8 +65,9 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 	private final MeetupMemberRepository meetupMemberRepository;
 	private final MemberRepository memberRepository;
 	private final MemberFcmTokenRepository memberFcmTokenRepository;
+	private final NotificationRepository notificationRepository;
 
-	private final RestTemplate restTemplate;
+	private final ChatServiceClient chatServiceClient;
 
 	@Override
 	public MemberDetailRes findMemberInfo(String email) {
@@ -125,7 +128,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		// fcm token 삭제
 		memberFcmTokenRepository.deleteAllByMemberId(member.getId());
 
-		memberRepository.updateMemberWithdraw(member.getId(), true, now);
+		memberRepository.updateIsWithdrawAndWithdrawAtById(true, now, member.getId());
 	}
 
 	@Transactional
@@ -141,7 +144,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		if (memberLogoutReq != null && memberLogoutReq.getFcmToken() != null) {
 			memberFcmTokenRepository.deleteByMemberIdAndBody(member.getId(), memberLogoutReq.getFcmToken());
 		}
-		
+
 		// redis에서 refresh token 삭제
 		if (redisUtil.getValue("RT" + email) != null) {
 			redisUtil.deleteValue("RT" + email);
@@ -168,7 +171,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.MEMBER_UNAUTHORIZED);
 		}
 
-		memberRepository.setPasswordById(passwordEncoder.encode(memberChangePasswordReq.getNewPassword()),
+		memberRepository.updatePasswordById(passwordEncoder.encode(memberChangePasswordReq.getNewPassword()),
 			member.getId());
 	}
 
@@ -188,7 +191,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
 		}
 
-		memberRepository.setNicknameById(newNickname, member.getId());
+		memberRepository.updateNicknameById(newNickname, member.getId());
 
 		// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
 		final ClubMember clubMember = clubMemberRepository.findByMemberId(member.getId())
@@ -210,7 +213,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 		try {
 			String url = s3FileUtil.upload(photo, "members/" + memberId + "/profiles");
-			memberRepository.setProfileUrlById(url, memberId);
+			memberRepository.updateProfileUrlById(url, memberId);
 
 			// 소모임 회원 목록 변경된 것 채팅 서비스로 전달
 			final ClubMember clubMember = clubMemberRepository.findByMemberId(memberId)
@@ -230,7 +233,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 	@Transactional
 	@Override
-	public MemberProfileRes findProfile(String nickname, Pageable pageable) {
+	public MemberProfileRes findProfile(String email, String nickname, Pageable pageable) {
 		// 회원정보 가져오기
 		final Member member = memberRepository.findByNickname(nickname)
 			.orElseThrow(() -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
@@ -245,8 +248,14 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 			.map(HikingRecordRes::new)
 			.collect(Collectors.toList());
 
+		// 본인일 경우, 안 읽은 알림 개수 리턴
+		Integer unreadNotificationCount = null;
+		if (email.equals(member.getEmail())) {
+			unreadNotificationCount = notificationRepository.countAllByMemberIdAndIsRead(member.getId(), false);
+		}
+
 		// dto에 담아 리턴
-		return new MemberProfileRes(member, memberHikingStatistic, hikingRecordResList);
+		return new MemberProfileRes(member, memberHikingStatistic, hikingRecordResList, unreadNotificationCount);
 	}
 
 	@Transactional
@@ -263,21 +272,21 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
 		// dto에 담아 리턴
 		return clubMemberList.stream().map(clubJoinRequest -> {
-			int ranking = 0;
+			Long ranking = 0L;
 			if (clubJoinRequest.getClub() != null) {
-				var clubRanking = clubRankingRepository.findTop1ByClubIdOrderBySetDate(
-					clubJoinRequest.getClub().getId());
+				var clubRanking = clubRankingRepository.findByClubIdAndSetDate(clubJoinRequest.getClub().getId(),
+					LocalDate.now());
 				if (clubRanking != null) {
-					ranking = Math.toIntExact(clubRanking.getRanking());
+					ranking = clubRanking.getRanking();
 				}
 			}
+
 			assert clubJoinRequest.getClub() != null;
 			return new MemberRequestClubRes(clubJoinRequest.getClub(), ranking);
 		}).collect(Collectors.toList());
 	}
 
 	private void sendMemberUpdateAlert(Long clubId, List<MemberInfoRes> members) {
-		restTemplate.postForEntity("https://hikingdom.kr/chat/clubs/" + clubId + "/member-update",
-			members, MemberInfoRes.class);
+		chatServiceClient.sendMemberUpdate(clubId, members);
 	}
 }

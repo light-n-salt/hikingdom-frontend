@@ -2,8 +2,8 @@ package org.lightnsalt.hikingdom.batch.job.info;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.lightnsalt.hikingdom.batch.dto.ClubRankingDto;
 import org.lightnsalt.hikingdom.batch.processor.ClubRankingProcessor;
+import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.record.ClubRanking;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -36,16 +36,10 @@ public class ClubRankingJobConfig {
 	 */
 	@Bean
 	@StepScope
-	public JpaPagingItemReader<ClubRankingDto> clubTotalHikingStatisticReader() {
-		JpaPagingItemReader<ClubRankingDto> reader = new JpaPagingItemReader<>();
+	public JpaPagingItemReader<Club> clubReader() {
+		JpaPagingItemReader<Club> reader = new JpaPagingItemReader<>();
 		reader.setEntityManagerFactory(entityManagerFactory);
-		reader.setQueryString("SELECT new org.lightnsalt.hikingdom.batch.dto.ClubRankingDto("
-			+ "c AS club, ct AS clubTotalHikingStatistic, "
-			+ "(ct.totalAlt * ct.totalMountainCount) AS score) "
-			+ "FROM ClubTotalHikingStatistic ct "
-			+ "JOIN Club c ON ct.club.id = c.id "
-			+ "WHERE c.isDeleted = false "
-			+ "ORDER BY score DESC");
+		reader.setQueryString("SELECT c FROM Club c ORDER BY c.score DESC");
 		reader.setPageSize(Integer.MAX_VALUE); // read all items at once
 		reader.setSaveState(false);
 		return reader;
@@ -63,8 +57,8 @@ public class ClubRankingJobConfig {
 	@JobScope
 	public Step clubRankingStep() {
 		return stepBuilderFactory.get("clubRankingStep")
-			.<ClubRankingDto, ClubRanking>chunk(Integer.MAX_VALUE)
-			.reader(clubTotalHikingStatisticReader())
+			.<Club, ClubRanking>chunk(Integer.MAX_VALUE)
+			.reader(clubReader())
 			.processor(clubRankingProcessor)
 			.writer(clubRankingWriter())
 			.allowStartIfComplete(true)

@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 
 import org.lightnsalt.hikingdom.chat.dto.CustomPage;
 import org.lightnsalt.hikingdom.chat.dto.request.ChatReq;
-import org.lightnsalt.hikingdom.chat.dto.response.ChatRes;
+import org.lightnsalt.hikingdom.chat.dto.response.ChatInfoRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.ChatListMessageRes;
-import org.lightnsalt.hikingdom.chat.dto.response.MemberRes;
+import org.lightnsalt.hikingdom.chat.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.ChatMessageRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.MemberListMessageRes;
 import org.lightnsalt.hikingdom.chat.dto.response.message.MessageRes;
@@ -38,7 +38,7 @@ public class ChatServiceImpl implements ChatService {
 	private final ClubMemberRepository clubMemberRepository;
 
 	@Override
-	public MessageRes saveMessage(ChatReq chatReq) {
+	public MessageRes addChat(ChatReq chatReq) {
 		if (!clubRepository.existsById(chatReq.getClubId()))
 			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
 
@@ -50,13 +50,13 @@ public class ChatServiceImpl implements ChatService {
 			.build();
 
 		Chat savedChat = chatRepository.save(chat);
-		ChatRes chatRes = new ChatRes(savedChat);
+		ChatInfoRes chatInfoRes = new ChatInfoRes(savedChat);
 
-		return new ChatMessageRes(chatRes);
+		return new ChatMessageRes(chatInfoRes);
 	}
 
 	@Override
-	public MessageRes findPrevChatInfo(Long clubId, String chatId, Integer size) {
+	public MessageRes findPrevChat(Long clubId, String chatId, Integer size) {
 		if (!clubRepository.existsById(clubId))
 			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
 
@@ -72,28 +72,28 @@ public class ChatServiceImpl implements ChatService {
 				pageable);
 		}
 
-		CustomPage<ChatRes> chats = new CustomPage<>(
-			chatPage.getContent().stream().map(ChatRes::new).collect(Collectors.toList()),
+		CustomPage<ChatInfoRes> chats = new CustomPage<>(
+			chatPage.getContent().stream().map(ChatInfoRes::new).collect(Collectors.toList()),
 			chatPage.getNumber(), chatPage.getSize(), chatPage.getTotalElements(), chatPage.hasNext());
 
 		return new ChatListMessageRes(chats);
 	}
 
 	@Override
-	public MessageRes convertMemberResToMessageRes(List<MemberRes> memberResList) {
-		Map<Long, MemberRes> members = memberResList.stream()
-			.collect(Collectors.toMap(MemberRes::getMemberId, Function.identity()));
+	public MessageRes findMember(Long clubId) {
+		if (!clubRepository.existsById(clubId))
+			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
+
+		Map<Long, MemberInfoRes> members = clubMemberRepository.findByClubId(clubId).stream()
+			.collect(Collectors.toMap(MemberInfoRes::getMemberId, Function.identity()));
 
 		return new MemberListMessageRes(members);
 	}
 
 	@Override
-	public MessageRes findClubMemberInfo(Long clubId) {
-		if (!clubRepository.existsById(clubId))
-			throw new GlobalException(ErrorCode.CLUB_NOT_FOUND);
-
-		Map<Long, MemberRes> members = clubMemberRepository.findByClubId(clubId).stream()
-			.collect(Collectors.toMap(MemberRes::getMemberId, Function.identity()));
+	public MessageRes convertMemberResToMessageRes(List<MemberInfoRes> memberInfoResList) {
+		Map<Long, MemberInfoRes> members = memberInfoResList.stream()
+			.collect(Collectors.toMap(MemberInfoRes::getMemberId, Function.identity()));
 
 		return new MemberListMessageRes(members);
 	}

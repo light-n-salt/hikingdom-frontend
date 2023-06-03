@@ -3,28 +3,32 @@ package org.lightnsalt.hikingdom.service.club.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
+import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubAsset;
-import org.lightnsalt.hikingdom.service.club.repository.ClubAssetRepository;
+import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
+import org.lightnsalt.hikingdom.domain.entity.club.record.ClubTotalHikingStatistic;
+import org.lightnsalt.hikingdom.domain.entity.info.AssetInfo;
+import org.lightnsalt.hikingdom.domain.entity.info.BaseAddressInfo;
+import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.club.dto.request.ClubInfoReq;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubDetailRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSearchRes;
 import org.lightnsalt.hikingdom.service.club.dto.response.ClubSimpleDetailRes;
-import org.lightnsalt.hikingdom.domain.entity.club.Club;
-import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
-import org.lightnsalt.hikingdom.domain.entity.club.record.ClubTotalHikingStatistic;
+import org.lightnsalt.hikingdom.service.club.repository.ClubAssetRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
-import org.lightnsalt.hikingdom.service.club.repository.record.ClubTotalHikingStatisticRepository;
-import org.lightnsalt.hikingdom.domain.entity.info.BaseAddressInfo;
-import org.lightnsalt.hikingdom.service.info.repository.BaseAddressInfoRepository;
-import org.lightnsalt.hikingdom.domain.entity.member.Member;
-import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubSearchRepositoryCustom;
+import org.lightnsalt.hikingdom.service.club.repository.record.ClubTotalHikingStatisticRepository;
+import org.lightnsalt.hikingdom.service.info.repository.BaseAddressInfoRepository;
+import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -50,6 +54,14 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 	private final ClubTotalHikingStatisticRepository clubTotalHikingStatisticRepository;
 	private final BaseAddressInfoRepository baseAddressInfoRepository;
 	private final MemberRepository memberRepository;
+	@Value("${values.asset.defaultAsset}")
+	private String defaultAssetUrl;
+	private AssetInfo defaultAsset;
+
+	@PostConstruct
+	private void postConstruct() {
+		defaultAsset = new AssetInfo(null, "기본 에셋", defaultAssetUrl, "기본 에셋", 0);
+	}
 
 	@Transactional
 	@Override
@@ -171,7 +183,18 @@ public class ClubBasicServiceImpl implements ClubBasicService {
 		final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(club.getId(), member.getId())
 			.orElse(null);
 
-		final List<ClubAsset> clubAssetList = clubAssetRepository.findAllByClubId(club.getId());
+		List<ClubAsset> clubAssetList = clubAssetRepository.findAllByClubId(club.getId());
+
+		// 기본 땅 에셋 추가하기
+		ClubAsset defaultClubAsset = ClubAsset.builder()
+			.club(club)
+			.asset(defaultAsset)
+			.meetup(null)
+			.rowIndex(0)
+			.colIndex(0)
+			.build();
+		clubAssetList.add(0, defaultClubAsset);
+		log.info(String.valueOf(defaultClubAsset));
 
 		return new ClubDetailRes(clubMember != null, club, clubAssetList);
 	}

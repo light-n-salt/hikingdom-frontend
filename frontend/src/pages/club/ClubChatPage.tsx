@@ -13,6 +13,7 @@ import {
   useChatMembersQuery,
 } from 'apis/services/clubs'
 import ChatList from 'components/club/ChatList'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import PageHeader from 'components/common/PageHeader'
 import TextSendBar from 'components/common/TextSendBar'
@@ -152,9 +153,9 @@ function ClubChatPage() {
     return <Loading />
   }
 
-  // if (isClubSimpleInfoError || isChatError) {
-  //   return <ErrorMessage />
-  // }
+  if (isClubSimpleInfoError || isChatError) {
+    return <ErrorMessage />
+  }
 
   return (
     <div className={`page p-sm ${theme} mobile `}>

@@ -14,14 +14,8 @@ function AlarmPage() {
   const { theme } = useContext(ThemeContext)
   const infiniteRef = useRef<HTMLDivElement>(null)
 
-  const {
-    data,
-    isLoading,
-    isError,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteAlarmQuery()
+  const { data, isLoading, isError, fetchNextPage, hasNextPage } =
+    useInfiniteAlarmQuery()
 
   const alarmList = useMemo(() => {
     return data ? data.pages.flatMap((page) => page.content) : []
@@ -38,7 +32,7 @@ function AlarmPage() {
   }
 
   if (isError) {
-    return <ErrorMessage message="등산기록을 불러오는데 실패했습니다" />
+    return <ErrorMessage />
   }
 
   return (

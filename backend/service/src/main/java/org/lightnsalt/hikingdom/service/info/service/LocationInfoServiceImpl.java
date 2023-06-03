@@ -23,7 +23,7 @@ public class LocationInfoServiceImpl implements LocationInfoService {
 	private final BaseAddressInfoRepositoryCustom baseAddressInfoRepositoryCustom;
 
 	@Override
-	public List<BaseAddressInfoRes> findBaseAddressInfoList(String query, String word) {
+	public List<BaseAddressInfoRes> findLocationInfoList(String query, String word) {
 		if (!(query.equals("sido") && word.equals("0000000000") ||
 			query.equals("gugun") && word.matches(SIDO_PATTERN))) {
 			log.error("LocationInfoService:findSidoList: Invalid Query {}, Word {}", query, word);

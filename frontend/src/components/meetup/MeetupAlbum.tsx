@@ -52,7 +52,7 @@ function MeetupAlbum({ join, meetupId, clubId }: MeetupAlbumProps) {
   }
 
   if (isError) {
-    return <ErrorMessage message="사진 조회에 실패했습니다" />
+    return <ErrorMessage />
   }
 
   return (
