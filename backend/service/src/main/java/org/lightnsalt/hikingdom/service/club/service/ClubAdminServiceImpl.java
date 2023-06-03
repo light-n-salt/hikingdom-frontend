@@ -8,15 +8,15 @@ import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.common.enumType.JoinRequestStatusType;
 import org.lightnsalt.hikingdom.domain.entity.club.Club;
 import org.lightnsalt.hikingdom.domain.entity.club.ClubMember;
+import org.lightnsalt.hikingdom.domain.entity.member.Member;
 import org.lightnsalt.hikingdom.service.club.repository.ClubJoinRequestRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.ClubRepository;
-import org.lightnsalt.hikingdom.domain.entity.member.Member;
+import org.lightnsalt.hikingdom.service.member.client.ChatServiceClient;
 import org.lightnsalt.hikingdom.service.member.dto.response.MemberInfoRes;
 import org.lightnsalt.hikingdom.service.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	private final ClubJoinRequestRepository clubJoinRequestRepository;
 	private final MemberRepository memberRepository;
 
-	private final RestTemplate restTemplate;
+	private final ChatServiceClient chatServiceClient;
 
 	@Transactional
 	@Override
@@ -109,7 +109,6 @@ public class ClubAdminServiceImpl implements ClubAdminService {
 	}
 
 	private void sendMemberUpdateAlert(Long clubId, List<MemberInfoRes> members) {
-		restTemplate.postForEntity("https://hikingdom.kr/chat/clubs/" + clubId + "/member-update",
-			members, MemberInfoRes.class);
+		chatServiceClient.sendMemberUpdate(clubId, members);
 	}
 }

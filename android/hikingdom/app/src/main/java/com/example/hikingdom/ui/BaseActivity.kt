@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.example.hikingdom.ApplicationClass
+import com.example.hikingdom.data.local.AppDatabase
 
 // Base Acitivity: ActivityBinding::inflate을 전달받아 ViewBinding 생성
 abstract class BaseActivity<VB: ViewBinding>(private val inflate: (LayoutInflater) -> VB): AppCompatActivity(){
@@ -21,6 +22,8 @@ abstract class BaseActivity<VB: ViewBinding>(private val inflate: (LayoutInflate
 
     private var imm : InputMethodManager? = null // 키보드 동작을 제어하는 매니저 클래스
     private var isDouble = false // 뒤로가기 두번 연속으로 눌러서 종료
+
+    var db: AppDatabase? = null // 데이터베이스
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,8 @@ abstract class BaseActivity<VB: ViewBinding>(private val inflate: (LayoutInflate
 
         // 리액트 웹뷰 디버깅
         WebView.setWebContentsDebuggingEnabled(true)
+
+        db = AppDatabase.getInstance(this) // 데이터베이스
 
         // 상속받는 클래스에서 정의하는 abstract func
         initAfterBinding()

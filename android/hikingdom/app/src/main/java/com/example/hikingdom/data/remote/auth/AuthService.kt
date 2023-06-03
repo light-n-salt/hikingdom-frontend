@@ -5,7 +5,6 @@ import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.ApplicationClass.Companion.retrofit
 import com.example.hikingdom.data.entities.User
 import com.example.hikingdom.ui.login.LoginView
-import com.example.hikingdom.ui.siginup.SignUpView
 import com.example.hikingdom.ui.splash.SplashView
 import retrofit2.Call
 import retrofit2.Callback

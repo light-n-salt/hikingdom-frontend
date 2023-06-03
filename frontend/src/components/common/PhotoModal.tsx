@@ -5,7 +5,6 @@ import Modal from './Modal'
 import styles from './PhotoModal.module.scss'
 import { Album } from 'types/club.interface'
 
-import { useQueryClient } from '@tanstack/react-query'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import { BiCalendarAlt } from 'react-icons/bi'
 import { HiTrash, HiLightBulb } from 'react-icons/hi'
@@ -25,7 +24,6 @@ type PhotoModalProps = {
 function PhotoModal({ photo, setState }: PhotoModalProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isSirenOpen, setIsSirenOpen] = useState(false)
-  const queryClient = useQueryClient()
   const { data: userInfo } = useUserQuery()
 
   const { mutateAsync: deleteAlbum } = useDeleteAlbum(

@@ -2,9 +2,6 @@ import React, { useContext } from 'react'
 
 import styles from './UpdateNicknameForm.module.scss'
 
-import { useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
-
 import { useUpdateNickname, useUserInfoQuery } from 'apis/services/users'
 import Button from 'components/common/Button'
 import ErrorMessage from 'components/common/ErrorMessage'
@@ -15,9 +12,7 @@ import useAuthInput from 'hooks/useAuthInput'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 function UpdateNicknameForm() {
-  const navigate = useNavigate()
   const { theme } = useContext(ThemeContext)
-  const queryClient = useQueryClient()
 
   // 유저 정보
   const { data: userInfo, isLoading, isError } = useUserInfoQuery()

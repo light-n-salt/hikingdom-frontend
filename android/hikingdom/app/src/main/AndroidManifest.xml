@@ -9,6 +9,17 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />      <!-- 네트워크와 GPS를 이용 -> 더 정확한 위치 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />    <!--네트워크(와이파이, 3G, 4G 등)만을 이용해서 단말기 위치를 식별-->
 
+    <!--네트워크 상태 퍼미션-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- 카메라 퍼미션 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA2" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <!-- 5.0 버전 파일업로드 퍼미션 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- 외부 저장소 사용 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name="com.example.hikingdom.ApplicationClass"
         android:allowBackup="true"
@@ -35,13 +46,9 @@
         </activity>
 
         <activity
-            android:name="com.example.hikingdom.ui.siginup.SignUpActivity"
-            android:exported="true"/>
-
-        <activity
             android:name="com.example.hikingdom.ui.main.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing"/><!--MainActivity 내의 Fragment에서 검색 시 하단바가 키보드 위에 올라오지 않도록, 키보드가 레이아웃에 영향을 주지 않게 처리 -->
+            android:windowSoftInputMode="adjustResize"/><!--MainActivity 내의 Fragment에서 검색 시 하단바가 키보드 위에 올라오지 않도록, 키보드가 레이아웃에 영향을 주지 않게 처리 -->
 
         <service
             android:name=".ui.main.hiking.LocationService"

@@ -13,6 +13,7 @@ import {
   useChatMembersQuery,
 } from 'apis/services/clubs'
 import ChatList from 'components/club/ChatList'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import PageHeader from 'components/common/PageHeader'
 import TextSendBar from 'components/common/TextSendBar'
@@ -31,7 +32,6 @@ function ClubChatPage() {
     isLoading: isClubSimpleInfoLoading,
     isError: isClubSimpleInfoError,
     data: clubSimpleInfo,
-    isSuccess,
   } = useClubSimpleInfoQuery(userInfo?.clubId || 0)
 
   // 소켓 통신
@@ -49,8 +49,8 @@ function ClubChatPage() {
   // 이전 채팅 내용 불러오기
   const {
     data: chats,
-    isError,
-    isLoading,
+    isError: isChatError,
+    isLoading: isChatLoading,
     fetchNextPage,
     hasNextPage,
     isSuccess: isChatsSuccess,
@@ -140,12 +140,6 @@ function ClubChatPage() {
         content: message,
       })
     )
-    // if (infiniteRef.current) {
-    //   infiniteRef.current.scrollTo({
-    //     top: infiniteRef.current.scrollHeight,
-    //     behavior: 'smooth',
-    //   })
-    // }
     setMessage('')
   }
 
@@ -154,6 +148,14 @@ function ClubChatPage() {
     loadMore: fetchNextPage,
     isEnd: !hasNextPage,
   })
+
+  if (isClubSimpleInfoLoading || isChatLoading) {
+    return <Loading />
+  }
+
+  if (isClubSimpleInfoError || isChatError) {
+    return <ErrorMessage />
+  }
 
   return (
     <div className={`page p-sm ${theme} mobile `}>

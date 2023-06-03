@@ -24,22 +24,22 @@ public class ClubRankingServiceImpl implements ClubRankingService {
 	@Transactional
 	@Override
 	public CustomSlice<ClubSearchRes> findRankingList(String sort, Long clubId, Pageable pageable) {
-		if (!sort.matches("^(|participation|distance|time)")) {
+		if (!sort.matches("^(|mountain|asset|member)")) {
 			log.error("ClubRankingService:findRankingList: Invalid Sort {}", sort);
 			throw new GlobalException(ErrorCode.INVALID_INPUT_VALUE);
 		}
 
 		final Slice<ClubSearchRes> result;
 		switch (sort) {
-			case "participation":
-				result = clubRankingRepositoryCustom.sortClubRankingByParticipationRate(LocalDate.now(), clubId,
+			case "mountain":
+				result = clubRankingRepositoryCustom.sortClubRankingByMountainCount(LocalDate.now(), clubId,
 					pageable);
 				break;
-			case "distance":
-				result = clubRankingRepositoryCustom.sortClubRankingByTotalDistance(LocalDate.now(), clubId, pageable);
+			case "asset":
+				result = clubRankingRepositoryCustom.sortClubRankingByAssetCount(LocalDate.now(), clubId, pageable);
 				break;
-			case "time":
-				result = clubRankingRepositoryCustom.sortClubRankingByTotalDuration(LocalDate.now(), clubId, pageable);
+			case "member":
+				result = clubRankingRepositoryCustom.sortClubRankingByMemberCount(LocalDate.now(), clubId, pageable);
 				break;
 			default:
 				result = clubRankingRepositoryCustom.sortClubRankingByRanking(LocalDate.now(), clubId, pageable);

@@ -30,9 +30,13 @@ public class MemberLevelInfo {
 	@Column(name = "description", nullable = false, length = 50)
 	private String description;
 
+	@Column(name = "level_condition", nullable = false)
+	private int levelCondition;
+
 	@Builder
-	public MemberLevelInfo(String name, String description) {
+	public MemberLevelInfo(String name, String description, int levelCondition) {
 		this.name = name;
 		this.description = description;
+		this.levelCondition = levelCondition;
 	}
 }

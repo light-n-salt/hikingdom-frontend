@@ -1,0 +1,6 @@
+projectKey=hikingdom
+serverUrl=http://localhost:9000
+serverVersion=10.0.0.68432
+dashboardUrl=http://localhost:9000/dashboard?id=hikingdom
+ceTaskId=AYiAXjnWdflHQrr7ZGwM
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYiAXjnWdflHQrr7ZGwM

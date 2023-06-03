@@ -3,7 +3,7 @@ package org.lightnsalt.hikingdom.service.club.controller;
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomSlice;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.service.club.service.ClubPhotoService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

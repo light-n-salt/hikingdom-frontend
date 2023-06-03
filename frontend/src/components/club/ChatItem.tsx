@@ -73,7 +73,7 @@ function ChatItem({ chat, members, isContinued }: ChatItemProps) {
           </div>
         )}
         <div className={styles.content}>
-          <div className={`${styles.chatContent} ${styles[`${theme}`]}`}>
+          <div className={`${styles.chatContent} ${styles[theme]}`}>
             {chat.content}
           </div>
           <div className={styles.time}>{chat.sendAt.split(' ')[1]}</div>
