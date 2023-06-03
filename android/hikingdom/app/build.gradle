@@ -6,6 +6,7 @@ plugins {
     id 'com.google.gms.google-services' // fcm
 }
 
+
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def KAKAOMAP_NATIVE_APP_KEY = properties.getProperty('KAKAOMAP_NATIVE_APP_KEY')
@@ -16,8 +17,8 @@ android {
         applicationId "com.lns.hikingdom"
         minSdk 27
         targetSdk 31
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -108,4 +109,18 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
 //    implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx' //FCM-push
+
+    // recycler view
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+
+    // socketio
+    implementation ('io.socket:socket.io-client:2.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+
+    // image loading & transformations
+    implementation 'io.coil-kt:coil:1.4.0'
+
+    // 당겨서 새로고침
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

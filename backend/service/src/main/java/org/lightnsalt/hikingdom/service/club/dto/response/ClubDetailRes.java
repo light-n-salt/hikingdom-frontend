@@ -15,21 +15,20 @@ public class ClubDetailRes {
 	private String clubName;
 	@JsonProperty("isJoin")
 	private boolean isJoin;
-	private double participationRate;
-	private int totalDuration;
-	private Long totalDistance;
-	private Long totalAlt;
+	private Long totalMember;
+	private Long totalAssetCount;
+	private Long totalMeetupCount;
+	private Long totalMountainCount;
 	private String description;
 	private List<ClubAssetRes> assets;
 
 	public ClubDetailRes(boolean isJoin, Club club, List<ClubAsset> assets) {
 		this.clubName = club.getName();
 		this.isJoin = isJoin;
-		this.participationRate = club.getHikingStatistic().getParticipationRate();
-		this.totalDuration = Math.round(
-			Math.floorDiv(club.getHikingStatistic().getTotalDuration(), 60)); // seconds to minutes
-		this.totalDistance = club.getHikingStatistic().getTotalDistance();
-		this.totalAlt = club.getHikingStatistic().getTotalAlt();
+		this.totalMember = club.getTotalMemberCount();
+		this.totalAssetCount = club.getTotalAssetCount();
+		this.totalMeetupCount = club.getTotalMeetupCount();
+		this.totalMountainCount = club.getTotalMountainCount();
 		this.description = club.getDescription();
 		this.assets = assets.stream().map(ClubAssetRes::new).collect(Collectors.toList());
 	}

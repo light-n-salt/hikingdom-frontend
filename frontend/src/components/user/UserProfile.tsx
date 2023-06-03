@@ -70,24 +70,6 @@ export default function UserProfile() {
 
   return (
     <>
-      {isLevelModal && (
-        <Modal onClick={() => setIsLevelModal(false)}>
-          <LevelModal />
-        </Modal>
-      )}
-      {isConfirmModal && (
-        <Modal onClick={() => setIsConfirmModal(false)}>
-          <ConfirmModal
-            title="신고하기"
-            content={`'${profile.nickname}'님을 정말 신고하시겠습니까?`}
-            buttonText="신고"
-            onClickDelete={() =>
-              reportUser({ type: 'MEMBER', id: profile.nickname })
-            }
-            onClickCloseModal={() => setIsConfirmModal(false)}
-          />
-        </Modal>
-      )}
       <div className={styles.profile}>
         <div className={`${styles['alarm-siren']}`}>
           <PageHeader color="primary" />
@@ -143,6 +125,26 @@ export default function UserProfile() {
           />
         </div>
       </div>
+      {/* 모달창 */}
+      {isLevelModal && (
+        <Modal onClick={() => setIsLevelModal(false)}>
+          <LevelModal />
+        </Modal>
+      )}
+      {isConfirmModal && (
+        <Modal onClick={() => setIsConfirmModal(false)}>
+          <ConfirmModal
+            title="신고하기"
+            content={`'${profile.nickname}'님을 정말 신고하시겠습니까?`}
+            buttonText="신고"
+            onClickDelete={() => {
+              reportUser({ type: 'MEMBER', id: profile.nickname })
+              setIsConfirmModal(false)
+            }}
+            onClickCloseModal={() => setIsConfirmModal(false)}
+          />
+        </Modal>
+      )}
     </>
   )
 }

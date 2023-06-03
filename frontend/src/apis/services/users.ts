@@ -88,7 +88,7 @@ export function useSignUp(
         checkPassword,
       }),
     {
-      onSuccess: (res) => {
+      onSuccess: () => {
         toast.addMessage('success', '회원가입에 성공했습니다')
         navigate('/login')
       },
@@ -194,7 +194,6 @@ export function useUserInfoQuery() {
 
 // 유저 프로필 정보 조회
 export function useProfileQuery(nickname: string) {
-  const navigate = useNavigate()
   return useQuery<AxiosDataResponse, AxiosDataError, UserProfile>(
     ['profile', nickname],
     () => apiRequest.get(`/members/${nickname}`, { params: { size: 0 } }),
@@ -340,14 +339,20 @@ export function useReport() {
     AxiosDataResponse,
     AxiosDataError,
     { type: 'ALBUM' | 'REVIEW' | 'MEMBER'; id: number | string }
-  >(({ type, id }) => apiRequest.post(`/reports`, { type, id }), {
-    onSuccess: (res) => {
-      toast.addMessage('success', res.data.message)
+  >(
+    ({ type, id }) => {
+      console.log(type, id)
+      return apiRequest.post(`/reports`, { type, id })
     },
-    onError: (err) => {
-      toast.addMessage('error', err.data.message)
-    },
-  })
+    {
+      onSuccess: (res) => {
+        toast.addMessage('success', res.data.message)
+      },
+      onError: (err) => {
+        toast.addMessage('error', err.data.message)
+      },
+    }
+  )
 }
 
 export function report(

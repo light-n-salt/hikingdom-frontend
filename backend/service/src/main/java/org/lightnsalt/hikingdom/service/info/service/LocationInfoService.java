@@ -5,5 +5,5 @@ import java.util.List;
 import org.lightnsalt.hikingdom.service.info.dto.response.BaseAddressInfoRes;
 
 public interface LocationInfoService {
-	List<BaseAddressInfoRes> findBaseAddressInfoList(String query, String word);
+	List<BaseAddressInfoRes> findLocationInfoList(String query, String word);
 }

@@ -11,7 +11,9 @@ import android.os.*
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import com.example.hikingdom.ApplicationClass
 import com.example.hikingdom.ApplicationClass.Companion.TAG
 import com.example.hikingdom.R
@@ -43,18 +45,29 @@ class LocationService : Service(), SaveHikingRecordView {
 
     var isHikingStarted = MutableLiveData<Boolean>()
 
-    private lateinit var startAt: LocalDateTime
+    private var startAt : LocalDateTime? = null
 
     private lateinit var locationHandler: Handler
     private lateinit var locationLooper: Looper
-    private lateinit var timerHandler: Handler
-    private lateinit var timerLooper: Looper
+
+    var isMeetup = false
+    var meetupId: Long? = null
+    private var mountainId: Long = 0
+
+//    private var viewModel = HikingViewModel()
+    var isHikingFinished = MutableLiveData<Boolean>()
+    var hikingRecordId = MutableLiveData<Long>()
+
+    var isSummit = false
+    var summitLocation: Location? = null
 
     init {
         duration.value = 0
         totalDistance.value = 0
         locations.value = ArrayList()
         isHikingStarted.value = false
+        isHikingFinished.value = false
+        hikingRecordId.value = 0
     }
 
     /*
@@ -77,7 +90,6 @@ class LocationService : Service(), SaveHikingRecordView {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand 진입")
-
         if (intent?.action != null
             && intent.action.equals(ACTION_STOP, ignoreCase = true)) {
             Log.d(TAG, "foreground service 종료")
@@ -96,20 +108,47 @@ class LocationService : Service(), SaveHikingRecordView {
             // 로컬 DB에 지금까지 저장된 위치 데이터 불러오기
             val storedUserLocations = db?.userLocationDao().getUserLocations()
             Log.d("storedUserLocations", storedUserLocations.toString())
-            // storedUserLocations를 post api로 서버에 전달, success 시 모든 userLocation 데이터 삭제
-            var gpsRoute = ArrayList<GpsRoute>()
-            for (storedUserLocation in storedUserLocations){
-                gpsRoute.add(GpsRoute(storedUserLocation.latitude, storedUserLocation.longitude, storedUserLocation.altitude))
+            if(storedUserLocations.isNotEmpty()){
+                if(startAt != null){
+                    // storedUserLocations를 post api로 서버에 전달, success 시 모든 userLocation 데이터 삭제
+                    var gpsRoute = ArrayList<GpsRoute>()
+                    for (storedUserLocation in storedUserLocations){
+                        gpsRoute.add(GpsRoute(storedUserLocation.latitude, storedUserLocation.longitude, storedUserLocation.altitude))
+                    }
+                    val maxAlt = storedUserLocations.maxByOrNull { it.altitude }?.altitude
+                    val minAlt = storedUserLocations.minByOrNull { it.altitude }?.altitude
+                    val totalAlt = maxAlt!! - minAlt!!
+                    var saveHikingRecordReq = SaveHikingRecordReq(isMeetup, mountainId, meetupId, ApplicationClass().localDateTimeToString(startAt!!),
+                        totalDistance.value!!, totalAlt, duration.value!!, isSummit, gpsRoute)
+                    Log.d("saveHikingRecordReq", saveHikingRecordReq.toString())
+
+                    // 트래킹 정보 저장 API 호출 지점
+                    HikingService.saveHikingRecord(this, saveHikingRecordReq)
+                } else{
+                    Log.d("startAt is null","등산 정보 저장 실패")
+                    Toast.makeText(this,"등산 정보 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+            } else{
+                Log.d("storedUserLocations is empty","저장된 경로 정보 없음")
+                Toast.makeText(this,"저장된 경로 정보가 없습니다!", Toast.LENGTH_SHORT).show()
             }
-            val maxAlt = storedUserLocations.maxByOrNull { it.altitude }?.altitude
-            val minAlt = storedUserLocations.minByOrNull { it.altitude }?.altitude
-            val totalAlt = maxAlt!! - minAlt!!
-            var saveHikingRecordReq = SaveHikingRecordReq(false, 2, null, ApplicationClass().localDateTimeToString(startAt),
-                totalDistance.value!!, totalAlt, duration.value!!, getIsSummit(), gpsRoute)
-            Log.d("saveHikingRecordReq", saveHikingRecordReq.toString())
-            HikingService.saveHikingRecord(this, saveHikingRecordReq)
+
+
         }else{
             Log.d(TAG, "foreground service 시작")
+            // 트래킹 정보 저장 API 호출 시 필요한 데이터들을 intent로 전달받음
+            if(intent != null){
+                isMeetup = intent?.getBooleanExtra("isMeetup", false)
+                if(isMeetup){
+                    meetupId =  intent?.getLongExtra(("meetupId"), 0)
+                }
+                mountainId = intent?.getLongExtra("mountainId", 0)
+
+                summitLocation = Location("gps")
+                summitLocation?.latitude = intent?.getDoubleExtra("summitLat", 0.0)
+                summitLocation?.longitude = intent?.getDoubleExtra("summitLng", 0.0)
+                Log.d("summitLocation", summitLocation.toString())
+            }
 
             db?.userLocationDao().deleteAllUserLocations()  // 룸db에 저장되어 있는 내용 전부 삭제
 
@@ -217,11 +256,15 @@ class LocationService : Service(), SaveHikingRecordView {
         saveIsLocationServiceRunning(false)
     }
 
-    override fun onSaveHikingRecordSuccess(message: String) {
+    override fun onSaveHikingRecordSuccess(message: String, savedHikingRecordId: String) {
         db?.userLocationDao().deleteAllUserLocations()  // 나중에 지우기 (api 호출 onSuccess에서 처리해줘야함)
-        saveIsSummit(false) // sharedPreference에 isSummit 여부 초기화
         Log.d("clearedUserLocations", db?.userLocationDao().getUserLocations().toString())
         Log.d("saveHikingRecordSuccess", message)
+        Toast.makeText(this, "경로 데이터가 기록되었습니다!", Toast.LENGTH_SHORT).show()
+
+        hikingRecordId.value = savedHikingRecordId.toLong()
+//        hikingRecordId.value = savedHikingRecordId
+        isHikingFinished.value = true
     }
 
     override fun onSaveHikingRecordFailure(message: String) {

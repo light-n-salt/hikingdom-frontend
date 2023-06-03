@@ -62,4 +62,14 @@ public class MemberHikingStatistic {
 		this.totalDistance = totalDistance;
 		this.totalAlt = totalAlt;
 	}
+
+	public void updateMemberHikingStatistic(Member member, Long totalHikingCount, Long totalMountainCount, Long totalDuration,
+											Long totalDistance, double totalAlt) {
+		this.member = member;
+		this.totalHikingCount = totalHikingCount;
+		this.totalMountainCount = totalMountainCount;
+		this.totalDuration = totalDuration;
+		this.totalDistance = totalDistance;
+		this.totalAlt = totalAlt;
+	}
 }
