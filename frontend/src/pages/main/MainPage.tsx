@@ -29,14 +29,12 @@ function MainPage() {
     isLoading: isClubRankTop3Loading,
     isError: isClubRankTop3Error,
     data: clubRankTop3,
-    isSuccess: isClubRankTop3Success,
   } = useclubRankTop3Query()
 
   const {
     isLoading: isTodayClubMtLoading,
     isError: isTodayClubMtError,
     data: todayClubMt,
-    isSuccess: isTodayClubMtSuccess,
   } = useTodayClubMtQuery()
 
   if (isTodayMtLoading || isClubRankTop3Loading || isTodayClubMtLoading) {

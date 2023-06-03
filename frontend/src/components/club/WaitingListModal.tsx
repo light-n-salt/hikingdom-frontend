@@ -3,15 +3,25 @@ import React from 'react'
 import styles from './WaitingListModal.module.scss'
 
 import { useClubRequestQuery } from 'apis/services/clubs'
+import ErrorMessage from 'components/common/ErrorMessage'
+import Loading from 'components/common/Loading'
 import RankList from 'components/common/RankList'
 
 function WaitingListModal() {
   const {
-    isLoading: isClubRequestLoading,
-    isError: isClubRequestError,
+    isLoading,
+    isError,
     data: clubInfoArray,
     isSuccess: isClubRequestSuccess,
   } = useClubRequestQuery()
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (isError) {
+    return <ErrorMessage />
+  }
 
   return (
     <div className={styles.list}>

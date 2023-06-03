@@ -5,6 +5,7 @@ import styles from './ClubMainPage.module.scss'
 import { useClubInfoQuery } from 'apis/services/clubs'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import SearchClubMt from 'components/club/SearchClubMt'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 import useUserQuery from 'hooks/useUserQuery'
@@ -16,14 +17,17 @@ function ClubMainPage() {
   const { data: userInfo } = useUserQuery()
   const clubId = userInfo?.clubId
 
-  const {
-    isLoading,
-    isError,
-    data: clubInfo,
-    isSuccess,
-  } = useClubInfoQuery(clubId || 0)
+  const { isLoading, isError, data: clubInfo } = useClubInfoQuery(clubId || 0)
 
-  return clubInfo ? (
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (isError) {
+    return <ErrorMessage />
+  }
+
+  return (
     <>
       <div className={`page-gradation upside p-md ${theme} ${styles.page}`}>
         <ClubRecordInfo
@@ -38,8 +42,6 @@ function ClubMainPage() {
         <SearchClubMt assetInfo={clubInfo.assets} />
       </div>
     </>
-  ) : (
-    <Loading />
   )
 }
 

@@ -6,15 +6,11 @@ import { AiOutlineClockCircle } from 'react-icons/ai'
 import { BiCalendarAlt } from 'react-icons/bi'
 import { useParams } from 'react-router'
 
-
 import { useHikingDetailQuery } from 'apis/services/users'
 import IconText from 'components/common/IconText'
 import Loading from 'components/common/Loading'
 import { convertToKm } from 'utils/convertToKm'
 import { convertToTime } from 'utils/convertToTime'
-
-
-
 
 type HikingDetailProps = {
   hikingRecordId: number
@@ -43,9 +39,9 @@ function HikingDetail({
     let totalLng = 0
 
     route.forEach((path) => {
-      linePath.push(new kakao.maps.LatLng(path.lat, path.lng)),
-        (totalLat += path.lat),
-        (totalLng += path.lng)
+      linePath.push(new kakao.maps.LatLng(path.lat, path.lng))
+      totalLat += path.lat
+      totalLng += path.lng
     })
 
     const startImageSrc =

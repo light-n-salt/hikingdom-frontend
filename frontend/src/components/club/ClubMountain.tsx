@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 
 import { OrbitControls } from '@react-three/drei'
-import { useFrame , Canvas, useLoader } from '@react-three/fiber'
+import { useFrame, Canvas, useLoader } from '@react-three/fiber'
 import { useNavigate, useParams } from 'react-router'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
@@ -33,9 +33,9 @@ function ClubMountain({ zoom, assetInfo }: ClubMountainprops) {
       {/* 일광과 같이, 아주 먼 거리의 광원에서 평행으로 진행하는 빛 */}
 
       <group>
-        {assetInfo.map((info, index) => (
+        {assetInfo.map((info) => (
           <AssetMesh
-            key={index}
+            key={`${info.row}-${info.column}`}
             position={new THREE.Vector3(info.row, 0, info.column)}
             url={info.assetUrl}
             meetupId={info.meetupId ? info.meetupId : null}
