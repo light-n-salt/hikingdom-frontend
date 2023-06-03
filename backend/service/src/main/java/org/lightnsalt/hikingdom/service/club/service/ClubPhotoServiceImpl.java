@@ -4,7 +4,7 @@ import org.lightnsalt.hikingdom.common.dto.CustomSlice;
 import org.lightnsalt.hikingdom.common.error.ErrorCode;
 import org.lightnsalt.hikingdom.common.error.GlobalException;
 import org.lightnsalt.hikingdom.domain.entity.club.meetup.MeetupAlbum;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupAlbumRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupAlbumRes;
 import org.lightnsalt.hikingdom.service.club.repository.ClubMemberRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupAlbumRepository;
 import org.lightnsalt.hikingdom.service.club.repository.meetup.MeetupAlbumRepositoryCustom;
@@ -38,7 +38,7 @@ public class ClubPhotoServiceImpl implements ClubPhotoService {
 
 		Slice<MeetupAlbum> list = meetupRepositoryCustom.findPhotosByClubId(photoId, clubId, pageable);
 		return new CustomSlice<>(
-			list.map(meetupAlbum -> new MeetupAlbumRes(meetupAlbum, meetupAlbum.getMember().getId().equals(memberId))));
+			list.map(meetupAlbum -> new MeetupAlbumRes(meetupAlbum, memberId)));
 	}
 
 	@Transactional

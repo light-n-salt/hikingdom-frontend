@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -28,13 +29,14 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+		String jwtAuthToken = authentication.getCredentials().toString();
 		Claims claims = Jwts.parserBuilder()
 			.setSigningKey(secretKey)
 			.build()
-			.parseClaimsJws(((JwtAuthToken)authentication).getJwtAuthToken())
+			.parseClaimsJws(jwtAuthToken)
 			.getBody();
 
-		return new JwtAuthToken(claims.getSubject(), "", createGrantedAuthorities(claims));
+		return new JwtAuthToken(claims.getSubject(), jwtAuthToken, createGrantedAuthorities(claims));
 	}
 
 	@Override
@@ -43,12 +45,12 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	private Collection<? extends GrantedAuthority> createGrantedAuthorities(Claims claims) {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") // JWT token 생성 시, roles를 String(Enum) 배열로 정의하기 때문에 형변환 에러 발생하지 않음
 		List<String> roles = (List<String>)claims.get("roles");
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
 		for (String role : roles) {
-			grantedAuthorities.add(() -> role);
+			grantedAuthorities.add(new SimpleGrantedAuthority(role));
 		}
 
 		return grantedAuthorities;

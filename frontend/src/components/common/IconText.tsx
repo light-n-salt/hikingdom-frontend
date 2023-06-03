@@ -27,7 +27,7 @@ function IconText({
       className={`${styles.container} ${styles[size]} ${textStyle} ${flexStyle}`}
     >
       {imgSrc && <img src={imgSrc} />}
-      {icon && icon}
+      {icon}
       {text}
     </div>
   )

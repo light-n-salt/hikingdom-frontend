@@ -45,7 +45,7 @@ public class MemberManagementController {
 	private final MemberManagementService memberManagementService;
 
 	@GetMapping
-	public ResponseEntity<CustomResponseBody> memberInfoDetail(Authentication authentication) {
+	public ResponseEntity<CustomResponseBody> memberInfoDetails(Authentication authentication) {
 		MemberDetailRes memberDetailRes = memberManagementService.findMemberInfo(authentication.getName());
 		return new ResponseEntity<>(BaseResponseBody.of("회원 정보 조회에 성공했습니다", memberDetailRes), HttpStatus.OK);
 	}
@@ -58,7 +58,7 @@ public class MemberManagementController {
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<CustomResponseBody> logout(@RequestHeader("Authorization") String bearerToken,
+	public ResponseEntity<CustomResponseBody> memberLogout(@RequestHeader("Authorization") String bearerToken,
 		@RequestBody(required = false) MemberLogoutReq memberLogoutReq) {
 		memberManagementService.logout(bearerToken, memberLogoutReq);
 
@@ -103,16 +103,14 @@ public class MemberManagementController {
 	}
 
 	@GetMapping("{nickname}")
-	public ResponseEntity<CustomResponseBody> profileDetail(@PathVariable String nickname,
-		@PageableDefault(value = 3) Pageable pageable) {
-
-		MemberProfileRes result = memberManagementService.findProfile(nickname, pageable);
+	public ResponseEntity<CustomResponseBody> profileDetails(Authentication authentication,
+		@PathVariable String nickname, @PageableDefault(value = 3) Pageable pageable) {
+		MemberProfileRes result = memberManagementService.findProfile(authentication.getName(), nickname, pageable);
 		return new ResponseEntity<>(BaseResponseBody.of("회원 프로필 조회에 성공했습니다", result), HttpStatus.OK);
 	}
 
 	@GetMapping("/clubs/my-requests")
 	public ResponseEntity<CustomResponseBody> requestClubList(Authentication authentication) {
-
 		List<MemberRequestClubRes> result = memberManagementService.findRequestClub(authentication.getName());
 		return new ResponseEntity<>(BaseResponseBody.of("가입 대기중인 모임 조회에 성공했습니다", result), HttpStatus.OK);
 	}

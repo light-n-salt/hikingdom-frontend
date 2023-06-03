@@ -42,7 +42,8 @@ public class MemberSignUpController {
 	private final MemberEmailService memberEmailService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<CustomResponseBody> signup(@RequestBody @Valid MemberSignUpReq memberSignUpReq, BindingResult bindingResult) {
+	public ResponseEntity<CustomResponseBody> memberSignup(@RequestBody @Valid MemberSignUpReq memberSignUpReq,
+		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,
 				bindingResult.getAllErrors().get(0).getDefaultMessage()),
@@ -77,7 +78,8 @@ public class MemberSignUpController {
 	}
 
 	@DeleteMapping("/email-valid")
-	public ResponseEntity<CustomResponseBody> emailConfirm(@RequestBody @Valid MemberEmailAuthenticationReq memberEmailAuthenticationReq,
+	public ResponseEntity<CustomResponseBody> emailConfirm(
+		@RequestBody @Valid MemberEmailAuthenticationReq memberEmailAuthenticationReq,
 		BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(ErrorResponseBody.of(ErrorCode.INVALID_INPUT_VALUE,

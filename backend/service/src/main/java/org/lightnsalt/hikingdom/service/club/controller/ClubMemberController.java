@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.lightnsalt.hikingdom.common.dto.BaseResponseBody;
 import org.lightnsalt.hikingdom.common.dto.CustomResponseBody;
-import org.lightnsalt.hikingdom.service.club.dto.response.MeetupMemberDetailListRes;
+import org.lightnsalt.hikingdom.service.club.dto.response.meetup.MeetupMemberDetailListRes;
 import org.lightnsalt.hikingdom.service.club.service.ClubMemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +52,7 @@ public class ClubMemberController {
 	}
 
 	@DeleteMapping("/members")
-	public ResponseEntity<CustomResponseBody> clubMemberWithdraw(Authentication authentication, @PathVariable Long clubId) {
+	public ResponseEntity<CustomResponseBody> clubMemberRemove(Authentication authentication, @PathVariable Long clubId) {
 		clubMemberService.withdrawClubMember(authentication.getName(), clubId);
 		return new ResponseEntity<>(BaseResponseBody.of("소모임 탈퇴에 성공했습니다"), HttpStatus.OK);
 	}

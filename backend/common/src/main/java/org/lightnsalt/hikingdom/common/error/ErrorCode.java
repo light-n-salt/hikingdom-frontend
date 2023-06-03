@@ -51,6 +51,9 @@ public enum ErrorCode {
 	MEETUP_MEMBER_UNAUTHORIZED(401, "MU003", "일정에 가입된 회원이 아닙니다"),
 	MEETUP_HOST_UNAUTHORIZED(401, "MU004", "일정 운영진이 아닙니다"),
 	MEETUP_ALREADY_DONE(400, "MU005", "이미 지나간 일정입니다"),
+	MEETUP_NOT_JOINED(400, "MU006", "참여한 일정이 아닙니다"),
+	MEETUP_START_AT_INVALID(400, "MU007", "이미 지나간 날짜에 일정을 생성할 수 없습니다"),
+	MEETUP_IS_HOST(400, "MU008", "자신이 생성한 일정은 참여 취소할 수 없습니다"),
 
 	// meetup photo related error codes
 	FAIL_TO_SAVE_PHOTO(500, "MP001", "사진 저장에 실패했습니다"),
@@ -61,12 +64,30 @@ public enum ErrorCode {
 
 	// hiking record related error codes
 	HIKING_RECORD_NOT_FOUND(404, "H001", "존재하지 않는 등산 기록입니다"),
+	HIKING_LOCATION_SHARE_INVALID(404, "H002", "올바르지 않은 등산 위치 공유 요청입니다"),
 
 	// chat related error codes
 	CHAT_NOT_FOUND(404, "CH001", "존재하지 않는 채팅 기록입니다"),
 
 	// notification related error codes
-	NOTIFICATION_NOT_FOUND(404, "N001", "알림이 존재하지 않습니다");
+	NOTIFICATION_NOT_FOUND(404, "N001", "알림이 존재하지 않습니다"),
+
+	// member hiking statistic related error codes
+	MEMBER_HIKING_STATISTIC_NOT_FOUND(404, "HS001", "등산 통계가 존재하지 않습니다"),
+
+	// member level info related error codes
+	MEMBER_LEVEL_INFO_NOT_FOUND(404, "L001", "레벨 정보가 존재하지 않습니다"),
+
+	// club member related error codes
+	MEMBER_HAS_NO_CLUBS(404, "CM001", "사용자가 속한 소모임이 없습니다"),
+
+	// asset related error codes
+	ASSET_NOT_FOUND(404, "A001", "Asset이 존재하지 않습니다"),
+
+	// report related error codes
+	ALREADY_REPORTED(400, "R001", "이미 신고되었습니다"),
+	SAME_REPORTER_AND_REPORTED(400, "R002", "본인을 신고할 수 없습니다");
+
 	private final int status;
 	private final String code;
 	private final String message;

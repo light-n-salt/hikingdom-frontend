@@ -10,4 +10,12 @@ import org.springframework.data.repository.query.Param;
 public interface ClubAssetRepository extends JpaRepository<ClubAsset, Long> {
 	@Query("SELECT c from ClubAsset c WHERE c.club.id = :clubId")
 	List<ClubAsset> findAllByClubId(@Param("clubId") Long clubId);
+
+	ClubAsset findByMeetupId(Long meetupId);
+
+	boolean existsByClubIdAndAssetId(Long clubId, Long assetId);
+
+	List<ClubAsset> findAllByClubIdOrderByCreatedAt(Long id);
+
+	int countByClubId(Long id);
 }

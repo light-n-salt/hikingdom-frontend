@@ -24,8 +24,8 @@ function AlbumModal({ setIsOpen, clubId, meetupId }: AlbumModalProps) {
     const urlList = []
 
     if (fileList) {
-      for (let i = 0; i < fileList.length; i++) {
-        const imgUrl = URL.createObjectURL(fileList[i])
+      for (const file of Array.from(fileList)) {
+        const imgUrl = URL.createObjectURL(file)
         urlList.push(imgUrl)
       }
       setFiles(urlList)
@@ -49,13 +49,13 @@ function AlbumModal({ setIsOpen, clubId, meetupId }: AlbumModalProps) {
 
     // 선택한 사진이 있을 때
     if (fileList.length) {
-      for (let i = 0; i < fileList.length; i++) {
+      for (const file of Array.from(fileList)) {
         // 용량 초과시 return
-        if (fileList[i].size > MAX_FILE_SIZE) {
-          toast.addMessage('error', '사진은 10MB이하로 올릴 수 있습니다')
+        if (file.size > MAX_FILE_SIZE) {
+          toast.addMessage('error', '사진은 10MB 이하로 올릴 수 있습니다')
           return
         }
-        formData.append('photos', fileList[i])
+        formData.append('photos', file)
       }
     }
 
@@ -67,8 +67,8 @@ function AlbumModal({ setIsOpen, clubId, meetupId }: AlbumModalProps) {
     <div className={styles.modal}>
       {!!files && (
         <div className={styles.files}>
-          {files.map((file, id) => (
-            <img key={id} src={file} className={styles.img} />
+          {files.map((file) => (
+            <img key={file} src={file} className={styles.img} />
           ))}
         </div>
       )}

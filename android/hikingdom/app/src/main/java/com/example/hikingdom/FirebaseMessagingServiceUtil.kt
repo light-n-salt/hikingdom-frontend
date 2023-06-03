@@ -42,7 +42,7 @@ class FirebaseMessagingServiceUtil: FirebaseMessagingService() {
         val channelId = "hikingdom_channel"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_hiking)
+            .setSmallIcon(R.mipmap.ic_launcher_hikingdom_round)
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)
