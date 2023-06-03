@@ -2,9 +2,7 @@ import React, { useContext, useState, useRef, useEffect } from 'react'
 
 import styles from './UpdateProfileImgForm.module.scss'
 
-import { useQueryClient } from '@tanstack/react-query'
 import { TbCameraPlus } from 'react-icons/tb'
-import { useNavigate } from 'react-router'
 
 import { useUpdateProfileImg, useUserInfoQuery } from 'apis/services/users'
 import Button from 'components/common/Button'
@@ -19,8 +17,6 @@ function UpdateProfileImgForm() {
   const { theme } = useContext(ThemeContext)
   const [imgUrl, setImgUrl] = useState('')
   const imgRef = useRef<HTMLInputElement>(null)
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
 
   // 유저 정보
   const { data: userInfo, isLoading, isError } = useUserInfoQuery()

@@ -81,7 +81,7 @@ export function useUnJoinMeetup(clubId: number, meetupId: number) {
   )
 }
 
-// 일정 사진 조회 : Todo
+// 일정 사진 조회
 export function getMeetupAlbum(
   clubId: number,
   meetupId: number,
