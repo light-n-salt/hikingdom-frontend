@@ -9,6 +9,7 @@ import {
   useUnJoinMeetup,
 } from 'apis/services/meetup'
 import Button from 'components/common/Button'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Image from 'components/common/Image'
 import Loading from 'components/common/Loading'
 import Modal from 'components/common/Modal'
@@ -47,7 +48,7 @@ function MeetupMembers({ clubId, meetupId }: MeetupMembersProps) {
   }
 
   if (isMeetupMembersError || isJoinError || isUnjoinError) {
-    return <div>Todo: 에러컴포넌트적용</div>
+    return <ErrorMessage />
   }
 
   return (

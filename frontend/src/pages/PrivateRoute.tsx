@@ -32,7 +32,7 @@ export default function PrivateRoute() {
   }
 
   if (isError) {
-    return <ErrorMessage message="사용자 정보를 불러오지 못했습니다" />
+    return <ErrorMessage />
   }
 
   return (

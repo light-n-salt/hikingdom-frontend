@@ -68,7 +68,7 @@ function SearchMtPage() {
   }
 
   if (isError) {
-    return <ErrorMessage message="정보 조회에 실패했습니다" />
+    return <ErrorMessage />
   }
 
   return (

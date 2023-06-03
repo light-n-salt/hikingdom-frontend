@@ -2,6 +2,7 @@ import React from 'react'
 
 import { useMembersDetailQuery } from 'apis/services/meetup'
 import MemberList from 'components/club/MemberList'
+import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 
 type MemberModalProps = {
@@ -21,7 +22,7 @@ function MemberModal({ clubId, meetupId }: MemberModalProps) {
   }
 
   if (isError) {
-    return <div>Todo: 에러컴포넌트적용</div>
+    return <ErrorMessage />
   }
 
   return (

@@ -38,7 +38,7 @@ function AlarmPage() {
   }
 
   if (isError) {
-    return <ErrorMessage message="등산기록을 불러오는데 실패했습니다" />
+    return <ErrorMessage />
   }
 
   return (
