@@ -135,7 +135,7 @@ function CreateClubForm() {
   }
 
   if (isSidoCodeError || isGuGunCodeError) {
-    return <ErrorMessage message="지역 정보를 불러오는데 실패했습니다" />
+    return <ErrorMessage />
   }
 
   return (

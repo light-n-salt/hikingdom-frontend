@@ -60,7 +60,7 @@ function ClubMeetupPage() {
 
   if (monthLoading || dateLoading) return <Loading />
 
-  if (monthError || dateError) return <ErrorMessage message="" />
+  if (monthError || dateError) return <ErrorMessage />
 
   return (
     <div className={`page p-md ${styles.container}`}>
