@@ -25,6 +25,8 @@ export function useInfiniteMountainsQuery(word: string, query = 'name') {
         ? lastPage.content.slice(-1)[0].mountainId
         : undefined
     },
+    staleTime: 0,
+    cacheTime: 0,
   })
 }
 

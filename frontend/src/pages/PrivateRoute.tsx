@@ -19,13 +19,12 @@ import { refreshTokenState } from 'recoil/atoms'
 export default function PrivateRoute() {
   const { data: userInfo, isLoading, isError } = useUserInfoQuery() // userInfo를 해당 컴포넌트에서 불러온다.
 
-  // 로그인 여부 체크
-  const refreshToken = useRecoilValue(refreshTokenState)
+  const isMobile = useIsMobile() // 모바일 여부 체크
+  const refreshToken = useRecoilValue(refreshTokenState) // 로그인 여부 체크
+
   if (!refreshToken) {
     return <Navigate to="/login" />
   }
-
-  const isMobile = useIsMobile() // 모바일 여부 판단 커스텀 훅
 
   if (isLoading) {
     return <Loading />

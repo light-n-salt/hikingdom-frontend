@@ -35,10 +35,7 @@ function MeetupDetailPage() {
     clubId: string
   }
 
-  const { arg1: parsedClubId, arg2: parsedMeetupId } = useRedirect(
-    clubId,
-    meetupId
-  )
+  const [parsedClubId, parsedMeetupId] = useRedirect(clubId, meetupId)
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false) // 삭제 모달
   const [content, setContent] = useState<string>('') // 후기 내용

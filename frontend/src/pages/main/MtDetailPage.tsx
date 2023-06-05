@@ -19,7 +19,7 @@ function MtDetailPage() {
     mountainId: string
   }
 
-  const { arg1: parsedMountainId } = useRedirect(mountainId)
+  const [parsedMountainId] = useRedirect(mountainId)
 
   const { isLoading, isError, data } = useMountainInfoQuery(parsedMountainId)
 

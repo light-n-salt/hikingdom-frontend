@@ -8,6 +8,11 @@ export interface AxiosDataError extends AxiosError {
   data: any
 }
 
+export interface Option {
+  value: string
+  label: string
+}
+
 export interface Message {
   message: string
 }
