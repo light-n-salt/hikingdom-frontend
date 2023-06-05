@@ -10,7 +10,6 @@ import {
 } from 'react-icons/io5'
 import { NavLink } from 'react-router-dom'
 
-
 type NavigationBarProps = {
   userInfo: UserInfo
 }
@@ -36,7 +35,7 @@ function NavigationBar({ userInfo }: NavigationBarProps) {
         <IoPodiumOutline />
       </NavLink>
       <NavLink
-        to={userInfo?.clubId ? `/club/main` : '/club/none'}
+        to={userInfo?.clubId ? `/club/${userInfo?.clubId}/main` : '/club/none'}
         className={({ isActive }) =>
           isActive ? styles.active : styles.inactive
         }

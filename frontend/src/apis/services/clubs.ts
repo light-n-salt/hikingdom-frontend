@@ -171,7 +171,6 @@ export function useCreateClub(
   dongCode: string
 ) {
   const navigate = useNavigate()
-
   return useMutation<AxiosDataResponse, AxiosDataError>(
     () =>
       apiRequest.post(`/clubs`, {
@@ -181,9 +180,8 @@ export function useCreateClub(
       }),
     {
       onSuccess: (res) => {
-        // 클럽 생성 성공 후에 처리할 로직을 구현합니다.
         toast.addMessage('success', '모임을 생성했습니다')
-        navigate(`/club/${res.data.result.clubId}/main`)
+        navigate(`/club/${res.data.result.clubId}/main`) // 생성된 클럽으로 이동
       },
       onError: (err) => {
         toast.addMessage('error', err.data.message)
@@ -193,20 +191,19 @@ export function useCreateClub(
 }
 
 // 소모임 이름 중복 확인
-export function useCheckClubNameQuery(name: string, isClicked: boolean) {
+export function useCheckClubNameQuery(name: string) {
   return useQuery<AxiosDataResponse, AxiosDataError>(
     ['duplicate', name],
     () => apiRequest.get(`/clubs/check-duplicate/${name}`),
     {
       select: (res) => res.data.result,
-      cacheTime: 0,
+      cacheTime: 0, // 동일 컴포넌트 내에서 여러번 요청
       staleTime: 0,
-      enabled: !!isClicked,
+      enabled: false,
     }
   )
 }
 
-// 주소 조회
 // 시도 검색
 export function useSidoCodeQuery() {
   return useQuery<AxiosDataResponse, AxiosDataError, SearchCode[]>(
@@ -275,7 +272,7 @@ export function useChatMembersQuery(clubId: number, enabled: boolean) {
 // 소모임 월별 일정 조회
 export function useMonthMeetupsQuery(clubId: number, month: string) {
   return useQuery<AxiosDataResponse, AxiosDataError, MeetupInfoList>(
-    ['meetups', 'month', month],
+    ['meetups', 'month'],
     () => apiRequest.get(`/clubs/${clubId}/meetups/month/${month}`),
     {
       select: (res) => res.data.result,
@@ -287,7 +284,7 @@ export function useMonthMeetupsQuery(clubId: number, month: string) {
 // 소모임 일별 일정 조회
 export function useDateMeetupsQuery(clubId: number, date: string) {
   return useQuery<AxiosDataResponse, AxiosDataError, MeetupInfo[]>(
-    ['meetups', 'date', date],
+    ['meetups', 'date'],
     () => apiRequest.get(`/clubs/${clubId}/meetups/date/${date}`),
     {
       select: (res) => res.data.result,
