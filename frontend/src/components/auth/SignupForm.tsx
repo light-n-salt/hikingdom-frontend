@@ -2,8 +2,6 @@ import React, { useState, useRef } from 'react'
 
 import styles from './SignupForm.module.scss'
 
-import { useNavigate } from 'react-router-dom'
-
 import {
   useCheckEmail,
   useConfirmEmail,
@@ -18,8 +16,6 @@ import useAuthInput from 'hooks/useAuthInput'
 import useCheckPw from 'hooks/useCheckPw'
 
 function SignupForm() {
-  const navigate = useNavigate()
-
   // 사용자 인증 input 커스텀 훅
   const {
     value: email,

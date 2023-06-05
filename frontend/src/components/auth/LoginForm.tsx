@@ -2,7 +2,6 @@ import React, { useRef, useContext } from 'react'
 
 import sytles from './LoginForm.module.scss'
 
-import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
 import { useLogin } from 'apis/services/users'
@@ -18,7 +17,6 @@ function LoginForm() {
   const navigate = useNavigate()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
-  const queryClient = useQueryClient()
   const {
     value: email,
     onChange: changeEmail,

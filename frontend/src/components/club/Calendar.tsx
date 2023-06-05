@@ -87,8 +87,12 @@ function Calendar({ meetups, onChangeMonth, onClickDate }: CalendarProps) {
         ? styles.meetup
         : ''
     // 요일에 따른 color 클래스
-    const colorClass =
-      day === 0 ? styles.sunday : day === 6 ? styles.saturday : ''
+    let colorClass = ''
+    if (day === 0) {
+      colorClass = styles.sunday
+    } else if (day === 6) {
+      colorClass = styles.saturday
+    }
     // 월에 따른 background-clor 클래스
     const bgColorClass = !isSameMonth(currentDate, fullDate) ? styles.gray : ''
     // 월에 따른 onClick 함수 다르게 할당

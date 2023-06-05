@@ -56,12 +56,12 @@ export interface Gps {
   lng: number
 }
 
-export interface gpsRoute {
+export interface GpsRoute {
   gpsRoute: Gps[]
 }
 
 export interface HikingDetail {
-  gpsRoute: gpsRoute // 오류 아니고 백엔드로부터 이렇게 받음
+  gpsRoute: GpsRoute // 오류 아니고 백엔드로부터 이렇게 받음
   mountainName: string
   startAt: string
   totalDistance: number

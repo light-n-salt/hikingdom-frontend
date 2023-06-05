@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { useRecoilState } from 'recoil'
 
@@ -16,11 +16,11 @@ export const ThemeContext = React.createContext({
 export default function ThemeProvider({ children }: Props) {
   const [theme, setTheme] = useRecoilState(themeState)
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme((theme) => {
       return theme === 'light' ? 'dark' : 'light'
     })
-  }
+  }, [])
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

@@ -5,20 +5,20 @@ const REG_EXP = {
     condition: 'hiking@example.com',
   },
   nickname: {
-    pattern: /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{2,16}$/,
+    pattern: /^[ㄱ-ㅎ가-힣a-zA-Z0-9]{2,16}$/,
     condition: '2~16자 한글, 영어, 숫자 조합',
   },
   password: {
     pattern:
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&~()])[A-Za-z\d$@$!%*#?&~()]{8,16}$/,
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&~()])[A-Za-z\d$@!%*#?&~()]{8,16}$/,
     condition: '8~16자, 영어, 숫자, 특수문자 포함',
   },
   code: {
-    pattern: /^[0-9]{6}$/,
+    pattern: /^[\d]{6}$/,
     condition: '6자리 숫자',
   },
   name: {
-    pattern: /[ㄱ-ㅎ|가-힣|\w+|a-z|A-Z|0-9|]{1,20}/,
+    pattern: /[ㄱ-ㅎ가-힣\w+a-zA-Z0-9]{1,20}/,
     condition: '20자 이내',
   },
 }

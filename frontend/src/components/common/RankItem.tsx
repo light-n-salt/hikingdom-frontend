@@ -45,16 +45,26 @@ function RankItem({ clubInfo, size, isDeleteButton = false }: RankItemProps) {
       break
   }
 
-  const {
-    isLoading: isUnJoinClubLoading,
-    isError: isUnJoinClubError,
-    mutate: unJoinClub,
-  } = useUnJoinClub(clubInfo.clubId)
+  const { mutate: unJoinClub } = useUnJoinClub(clubInfo.clubId)
 
   // 소모임 신청 취소 함수
   function onClickCancle(e: React.TouchEvent | React.MouseEvent) {
     e.stopPropagation()
     unJoinClub()
+  }
+
+  let content
+
+  if (rankingIcon) {
+    content = <img className={styles.medal} src={rankingIcon} />
+  } else if (clubInfo.ranking) {
+    content = <div className={styles.rank}>{clubInfo.ranking}</div>
+  } else {
+    content = (
+      <div className={styles.rank}>
+        <FaMountain />
+      </div>
+    )
   }
 
   return (
@@ -89,15 +99,7 @@ function RankItem({ clubInfo, size, isDeleteButton = false }: RankItemProps) {
         <IconText imgSrc={marker} text={clubInfo.location} />
       </div>
       {/* 랭킹 아이콘 */}
-      {rankingIcon ? (
-        <img className={styles.medal} src={rankingIcon} />
-      ) : clubInfo.ranking ? (
-        <div className={styles.rank}>{clubInfo.ranking}</div>
-      ) : (
-        <div className={styles.rank}>
-          <FaMountain />
-        </div>
-      )}
+      {content}
     </div>
   )
 }
