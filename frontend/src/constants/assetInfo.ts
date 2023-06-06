@@ -1,4 +1,6 @@
-export const assetInfo = [
+// 기본으로 띄울 Three.js 이미지 정보
+
+export const BASIC_MOUNTAIN = [
   {
     mountainName: '',
     meetupId: 0,

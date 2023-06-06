@@ -5,9 +5,9 @@ import { Chat, ChatMember } from 'types/chat.interface'
 
 import { useNavigate } from 'react-router-dom'
 
+import { useUserInfoQuery } from 'apis/services/users'
 import Image from 'components/common/Image'
 import LEVEL_TO_IMG from 'constants/levels'
-import useUserQuery from 'hooks/useUserQuery'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 type ChatItemProps = {
@@ -24,7 +24,7 @@ type User = {
 
 function ChatItem({ chat, members, isContinued }: ChatItemProps) {
   const { theme } = useContext(ThemeContext)
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
   const [user, setUser] = useState<User>()
   const navigate = useNavigate()
 

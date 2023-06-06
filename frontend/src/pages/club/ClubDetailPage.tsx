@@ -5,6 +5,7 @@ import styles from './ClubDetailPage.module.scss'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { useClubInfoQuery, useJoinClub } from 'apis/services/clubs'
+import { useUserInfoQuery } from 'apis/services/users'
 import ClubMountain from 'components/club/ClubMountain'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import Button from 'components/common/Button'
@@ -12,7 +13,6 @@ import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import PageHeader from 'components/common/PageHeader'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
-import useUserQuery from 'hooks/useUserQuery'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 function ClubDetailPage() {
@@ -20,7 +20,7 @@ function ClubDetailPage() {
   const navigate = useNavigate()
 
   const clubId = Number(useParams<string>().clubId)
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
 
   const { isLoading, isError, data: clubInfo } = useClubInfoQuery(clubId || 0)
 

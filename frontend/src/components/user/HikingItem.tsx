@@ -16,8 +16,8 @@ import IconText from 'components/common/IconText'
 import Modal from 'components/common/Modal'
 import HikingDetail from 'components/user/HikingDetail'
 import { ThemeContext } from 'styles/ThemeProvider'
-import { convertToKm } from 'utils/convertToKm'
-import { convertToTime } from 'utils/convertToTime'
+import { convertMeterToKm } from 'utils/convertMeterToKm'
+import { convertMinutesToHHMM } from 'utils/convertMinutesToHHMM'
 
 function HikingItem({ hiking }: { hiking: HikingSimple }) {
   const { theme } = useContext(ThemeContext)
@@ -80,12 +80,12 @@ function HikingItem({ hiking }: { hiking: HikingSimple }) {
         <div className={styles.flexbox}>
           <IconText
             imgSrc={time}
-            text={convertToTime(hiking.totalDuration)}
+            text={convertMinutesToHHMM(hiking.totalDuration)}
             size="sm"
           />
           <IconText
             imgSrc={distance}
-            text={convertToKm(hiking.totalDistance) + 'km'}
+            text={convertMeterToKm(hiking.totalDistance) + 'km'}
             size="sm"
           />
           <IconText imgSrc={height} text={`${hiking.maxAlt} m`} size="sm" />

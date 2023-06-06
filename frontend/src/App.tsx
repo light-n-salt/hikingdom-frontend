@@ -90,8 +90,8 @@ function App() {
             element={<HikingDetailPage />}
           />
           <Route path="/alarm" element={<AlarmPage />} />
-          <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   )

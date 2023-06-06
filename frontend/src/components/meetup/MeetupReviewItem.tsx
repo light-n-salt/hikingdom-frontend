@@ -7,14 +7,13 @@ import { useMutation } from '@tanstack/react-query'
 import { HiTrash, HiLightBulb } from 'react-icons/hi'
 
 import { useDeleteReview } from 'apis/services/meetup'
-import { report } from 'apis/services/users'
+import { report, useUserInfoQuery } from 'apis/services/users'
 import ConfirmModal from 'components/club/ConfirmModal'
 import ErrorMessage from 'components/common/ErrorMessage'
 import Image from 'components/common/Image'
 import Loading from 'components/common/Loading'
 import Modal from 'components/common/Modal'
 import toast from 'components/common/Toast'
-import useUserQuery from 'hooks/useUserQuery'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 type ReviewProps = {
@@ -25,7 +24,7 @@ type ReviewProps = {
 
 function MeetupReviewItem({ review, clubId, meetupId }: ReviewProps) {
   const { theme } = useContext(ThemeContext)
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isSirenOpen, setIsSirenOpen] = useState(false)
 

@@ -3,12 +3,11 @@ import React, { useContext } from 'react'
 import styles from './AlarmItem.module.scss'
 import { Alarm } from 'types/user.interface'
 
-
 import { GoPrimitiveDot } from 'react-icons/go'
 import { useNavigate } from 'react-router'
 
+import { useUserInfoQuery } from 'apis/services/users'
 import Toast from 'components/common/Toast'
-import useUserQuery from 'hooks/useUserQuery'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 function AlarmItem({ alarm }: { alarm: Alarm }) {
@@ -16,7 +15,7 @@ function AlarmItem({ alarm }: { alarm: Alarm }) {
   const navigate = useNavigate()
 
   // clubId 확인
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
 
   // read, unread 구분
   const alarmStyle = alarm.isRead ? styles.read : styles.unread

@@ -22,6 +22,7 @@ export default function PrivateRoute() {
   const isMobile = useIsMobile() // 모바일 여부 체크
   const refreshToken = useRecoilValue(refreshTokenState) // 로그인 여부 체크
 
+  // 로그인하지 않았을 때, 라우팅
   if (!refreshToken) {
     return <Navigate to="/login" />
   }

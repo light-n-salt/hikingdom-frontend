@@ -7,32 +7,30 @@ import {
   useClubSimpleInfoQuery,
   useClubMemberQuery,
 } from 'apis/services/clubs'
+import { useUserInfoQuery } from 'apis/services/users'
 import ConfirmModal from 'components/club/ConfirmModal'
 import MemberList from 'components/club/MemberList'
 import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import Modal from 'components/common/Modal'
 import TextButton from 'components/common/TextButton'
-import useUserQuery from 'hooks/useUserQuery'
 
 function ClubMemberPage() {
   const [isOpen, setIsOpen] = useState(false)
 
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
   const clubId = userInfo?.clubId
 
   const {
     isLoading: isClubSimpleInfoLoading,
     isError: isClubSimpleInfoError,
     data: clubSimpleInfo,
-    isSuccess: isClubSimpleInfoSuccess,
   } = useClubSimpleInfoQuery(clubId || 0)
 
   const {
     isLoading,
     isError,
     data: clubMemberList,
-    isSuccess,
   } = useClubMemberQuery(clubId || 0)
 
   // 모임 탈퇴 mutation 호출

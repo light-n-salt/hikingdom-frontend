@@ -66,13 +66,7 @@ type AssetMeshProps = {
 }
 
 // Mesh 생성 함수
-function AssetMesh({
-  position,
-  url,
-  meetupId,
-  check,
-  ...props
-}: AssetMeshProps) {
+function AssetMesh({ position, url, meetupId, check }: AssetMeshProps) {
   const navigate = useNavigate()
   const gltf = useLoader(GLTFLoader, url)
   const meshRef = useRef<THREE.Mesh>(null)

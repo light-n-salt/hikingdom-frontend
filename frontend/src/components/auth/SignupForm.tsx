@@ -16,7 +16,7 @@ import useAuthInput from 'hooks/useAuthInput'
 import useCheckPw from 'hooks/useCheckPw'
 
 function SignupForm() {
-  // 사용자 인증 input 커스텀 훅
+  // 정규식 체크 기능을 가진 사용자 인증 커스텀 훅
   const {
     value: email,
     onChange: changeEmail,
@@ -47,7 +47,7 @@ function SignupForm() {
     isPass: isCheckPwPass,
   } = useCheckPw({ password })
 
-  // ref
+  // useRef
   const passwordRef = useRef<HTMLInputElement>(null)
   const checkPasswordRef = useRef<HTMLInputElement>(null)
 
@@ -57,46 +57,50 @@ function SignupForm() {
   const [isAuthStatus, setIsAuthStatus] = useState(1) // 이메일 인증 여부 판단
   const [isDupStatus, setIsDupStatus] = useState(1) // 닉네임 중복 여부 판단
 
-  // 이메일 인증코드 요청
+  // 이메일 인증코드 요청 리액트 쿼리 커스텀 훅
   const { mutate: checkEmail, isLoading: checkEmailLoading } =
     useCheckEmail(email)
 
-  function onClickCheckEmail(event: any) {
+  function onClickCheckEmail(
+    event: React.TouchEvent<Element> | React.MouseEvent<Element, MouseEvent>
+  ) {
     event.preventDefault()
     checkEmail()
   }
 
-  // 이메일 인증코드 확인
+  // 이메일 인증코드 확인 리액트 쿼리 커스텀 훅
   const { mutateAsync: confrimEmail } = useConfirmEmail(email, code)
 
-  function onClickConfirmEmail(event: any) {
+  function onClickConfirmEmail(
+    event: React.TouchEvent<Element> | React.MouseEvent<Element, MouseEvent>
+  ) {
     event.preventDefault()
     confrimEmail()
-      .then((res) => {
+      .then(() => {
         setIsAuthStatus(0)
       })
-      .catch((err) => {
+      .catch(() => {
         setIsAuthStatus(2)
       })
   }
 
-  // 닉네임 중복 확인
+  // 닉네임 중복 확인 리액트 쿼리 커스텀 훅
   const { refetch: checkNickname } = useCheckNicknameQuery(nickname)
 
-  function onClickCheckNickname(event: any) {
+  function onClickCheckNickname(
+    event: React.TouchEvent<Element> | React.MouseEvent<Element, MouseEvent>
+  ) {
     event.preventDefault()
     checkNickname({ throwOnError: true })
-      .then((res) => {
+      .then(() => {
         setIsDupStatus(0)
-        toast.addMessage('success', res.data!.message)
       })
-      .catch((err) => {
+      .catch(() => {
         setIsDupStatus(2)
-        toast.addMessage('error', err.data.message)
       })
   }
 
-  // 회원가입 api 요청
+  // 회원가입 리액트 쿼리 커스텀 훅
   const { mutate: signUp } = useSignUp(email, nickname, password, checkPassword)
 
   function onClickSignUp() {
@@ -108,11 +112,6 @@ function SignupForm() {
 
   return (
     <div className={styles.container}>
-      {checkEmailLoading && (
-        <div className={styles.loading}>
-          <Loading type="circle" />
-        </div>
-      )}
       <form className={styles.form}>
         <div className={styles.flex}>
           <LabelInput
@@ -198,6 +197,12 @@ function SignupForm() {
         />
       </form>
       <Button text="회원가입" color="primary" onClick={onClickSignUp} />
+      {/* 이메일 인증 시, 로그인 모달 */}
+      {checkEmailLoading && (
+        <div className={styles.loading}>
+          <Loading type="circle" />
+        </div>
+      )}
     </div>
   )
 }

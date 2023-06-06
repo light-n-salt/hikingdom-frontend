@@ -2,7 +2,6 @@ import React from 'react'
 
 import styles from './MeetupDetail.module.scss'
 
-
 import calendar from 'assets/images/calendar.png'
 import clock from 'assets/images/clock.png'
 import mount from 'assets/images/mountain.png'

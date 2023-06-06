@@ -10,11 +10,10 @@ import { BiCalendarAlt } from 'react-icons/bi'
 import { HiTrash, HiLightBulb } from 'react-icons/hi'
 
 import { useDeleteAlbum } from 'apis/services/clubs'
-import { report } from 'apis/services/users'
+import { report, useUserInfoQuery } from 'apis/services/users'
 import ConfirmModal from 'components/club/ConfirmModal'
 import Image from 'components/common/Image'
 import toast from 'components/common/Toast'
-import useUserQuery from 'hooks/useUserQuery'
 
 type PhotoModalProps = {
   photo: Album
@@ -24,7 +23,7 @@ type PhotoModalProps = {
 function PhotoModal({ photo, setState }: PhotoModalProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isSirenOpen, setIsSirenOpen] = useState(false)
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
 
   const { mutateAsync: deleteAlbum } = useDeleteAlbum(
     Number(userInfo?.clubId),

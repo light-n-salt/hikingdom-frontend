@@ -1,8 +1,4 @@
-import {
-  AxiosDataResponse,
-  AxiosDataError,
-  Message,
-} from 'types/common.interface'
+import { AxiosDataResponse, AxiosDataError } from 'types/common.interface'
 import {
   HikingDetail,
   InfiniteHikingInfo,
@@ -61,11 +57,16 @@ export function useConfirmEmail(email: string, authCode: string) {
 
 // 닉네임 중복 체크
 export function useCheckNicknameQuery(nickname: string) {
-  return useQuery<AxiosDataResponse, AxiosDataError, Message>(
+  return useQuery<AxiosDataResponse, AxiosDataError>(
     ['checkNickname'],
     () => apiRequest.get(`/members/auth/nickname-check/${nickname}`),
     {
-      select: (res) => res.data,
+      onSuccess: (res) => {
+        toast.addMessage('success', res.data.message)
+      },
+      onError: (err) => {
+        toast.addMessage('error', err.data.message)
+      },
       enabled: false,
     }
   )
@@ -161,7 +162,10 @@ export function useLogout() {
     () => apiRequest.post(`/members/logout`),
     {
       onSettled: () => {
-        queryClient.invalidateQueries(['user'])
+        queryClient.invalidateQueries({
+          queryKey: ['user'],
+          refetchType: 'none',
+        })
         setAccessToken('')
         setRefreshToken('')
         // @ts-expect-error
@@ -179,17 +183,34 @@ export function useLogout() {
 
 // 내 정보 조회
 export function useUserInfoQuery() {
-  return useQuery<AxiosDataResponse, AxiosDataError, UserInfo>(['user'], () =>
-    apiRequest.get(`/members`).then((res) => {
-      const userInfo = res.data.result
-      // @ts-expect-error
-      if (window.Kotlin) {
+  const queryClient = useQueryClient()
+  const query = useQuery<AxiosDataResponse, AxiosDataError, UserInfo>(
+    ['user'],
+    () => apiRequest.get(`/members`),
+    {
+      onSuccess: (res) => {
+        // Kotlin으로 사용자 정보 전송
         // @ts-expect-error
-        window.Kotlin.saveUserInfo(JSON.stringify(userInfo))
-      }
-      return res.data.result
-    })
+        if (window.Kotlin) {
+          // @ts-expect-error
+          window.Kotlin.saveUserInfo(JSON.stringify(res))
+        }
+        // 회원의 clubId가 null일 경우, 해당 쿼리 키를 stale하게 바꿔준다.
+        if (!res.clubId) {
+          queryClient.invalidateQueries({
+            queryKey: ['user'],
+            refetchType: 'none',
+          })
+        }
+      },
+      onError: (err) => {
+        toast.addMessage('error', err.data.message)
+      },
+      select: (res) => res.data.result,
+      staleTime: Infinity,
+    }
   )
+  return query
 }
 
 // 유저 프로필 정보 조회
@@ -373,7 +394,10 @@ export function useWithdraw() {
     () => apiRequest.delete(`/members/withdraw`),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['user'])
+        queryClient.invalidateQueries({
+          queryKey: ['user'],
+          refetchType: 'none',
+        })
         setAccessToken('')
         setRefreshToken('')
         // @ts-expect-error
@@ -390,17 +414,4 @@ export function useWithdraw() {
       },
     }
   )
-}
-
-// 삭제 예정
-export function getUserInfo() {
-  return apiRequest.get(`/members`).then((res) => {
-    const userInfo = res.data.result
-    // @ts-expect-error
-    if (window.Kotlin) {
-      // @ts-expect-error
-      window.Kotlin.saveUserInfo(JSON.stringify(userInfo))
-    }
-    return res.data.result
-  })
 }

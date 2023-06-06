@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useContext } from 'react'
+import React, { useState, useMemo, useEffect, useContext, memo } from 'react'
 
 import styles from './Calendar.module.scss'
 
@@ -147,4 +147,4 @@ function Calendar({ meetups, onChangeMonth, onClickDate }: CalendarProps) {
   )
 }
 
-export default React.memo(Calendar)
+export default memo(Calendar)

@@ -2,7 +2,6 @@ import React from 'react'
 
 import styles from './MtContent.module.scss'
 
-
 import addressImg from 'assets/images/marker.png'
 import descriptionImg from 'assets/images/message.png'
 import peaksImg from 'assets/images/mountain.png'

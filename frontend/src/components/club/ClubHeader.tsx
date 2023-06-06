@@ -5,16 +5,16 @@ import styles from './ClubHeader.module.scss'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 import { useClubSimpleInfoQuery } from 'apis/services/clubs'
+import { useUserInfoQuery } from 'apis/services/users'
 import Chatting from 'assets/images/airplane.png'
 import ErrorMessage from 'components/common/ErrorMessage'
 import IconButton from 'components/common/IconButton'
 import Loading from 'components/common/Loading'
-import useUserQuery from 'hooks/useUserQuery'
 
 function ClubHeader() {
   const navigate = useNavigate()
 
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
   const clubId = userInfo?.clubId
 
   const {

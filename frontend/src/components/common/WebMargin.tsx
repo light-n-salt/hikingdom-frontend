@@ -5,8 +5,8 @@ import styles from './WebMargin.module.scss'
 import { Outlet } from 'react-router-dom'
 
 import ClubMountain from 'components/club/ClubMountain'
+import { BASIC_MOUNTAIN } from 'constants/assetInfo'
 import useIsMobile from 'hooks/useIsMobile'
-import { assetInfo } from 'recoil/assetInfo'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 // 프로젝트의 동작환경을 판단하여
@@ -26,7 +26,7 @@ function WebMargin() {
       ) : (
         <div className={styles.background}>
           <div className={styles.mountain}>
-            <ClubMountain zoom={4} assetInfo={assetInfo} />
+            <ClubMountain zoom={4} assetInfo={BASIC_MOUNTAIN} />
           </div>
           <div className={`${theme} ${styles.mobile}`}>
             <Outlet />

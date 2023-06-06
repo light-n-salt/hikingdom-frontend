@@ -3,18 +3,18 @@ import React, { useContext } from 'react'
 import styles from './ClubMainPage.module.scss'
 
 import { useClubInfoQuery } from 'apis/services/clubs'
+import { useUserInfoQuery } from 'apis/services/users'
 import ClubRecordInfo from 'components/club/ClubRecordInfo'
 import SearchClubMt from 'components/club/SearchClubMt'
 import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
-import useUserQuery from 'hooks/useUserQuery'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 function ClubMainPage() {
   const { theme } = useContext(ThemeContext)
 
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
   const clubId = userInfo?.clubId
 
   const { isLoading, isError, data: clubInfo } = useClubInfoQuery(clubId || 0)

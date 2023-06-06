@@ -8,7 +8,7 @@ export interface ChatMember {
   level: number
 }
 
-// 채팅 내역
+// 채팅 내역 (무한 스크롤)
 export interface Chat {
   chatId: string
   memberId: number
@@ -20,7 +20,7 @@ export interface InfiniteChat extends InfinitePage {
   content: Chat[]
 }
 
-// 소모임 채팅 내용 조회 - 채팅
+// 소모임 채팅(웹소켓)
 export interface Chats {
   status: string
   members: ChatMember[]

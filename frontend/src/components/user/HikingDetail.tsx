@@ -9,8 +9,8 @@ import { useParams } from 'react-router'
 import { useHikingDetailQuery } from 'apis/services/users'
 import IconText from 'components/common/IconText'
 import Loading from 'components/common/Loading'
-import { convertToKm } from 'utils/convertToKm'
-import { convertToTime } from 'utils/convertToTime'
+import { convertMinutesToKorean } from 'utils/converMinutesToKorean'
+import { convertMeterToKm } from 'utils/convertMeterToKm'
 
 type HikingDetailProps = {
   hikingRecordId: number
@@ -120,16 +120,19 @@ function HikingDetail({
         {/* 거리 */}
         <Info
           title="거리"
-          content={convertToKm(detailRecord.totalDistance) + 'km'}
+          content={convertMeterToKm(detailRecord.totalDistance) + 'km'}
         />
 
         {/* 높이 */}
-        <Info title="높이" content={convertToKm(detailRecord.maxAlt) + 'km'} />
+        <Info
+          title="높이"
+          content={convertMeterToKm(detailRecord.maxAlt) + 'km'}
+        />
 
         {/* 시간 */}
         <Info
           title="시간"
-          content={convertToTime(detailRecord.totalDuration)}
+          content={convertMinutesToKorean(detailRecord.totalDuration)}
         />
       </div>
     </div>

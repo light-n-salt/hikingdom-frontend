@@ -11,10 +11,7 @@ import * as THREE from 'three'
 import Loading from 'components/common/Loading'
 import Modal from 'components/common/Modal'
 import { ThemeContext } from 'styles/ThemeProvider'
-import { convertToHour } from 'utils/convertToTime'
-
-
-
+import { convertMinutesToKorean } from 'utils/converMinutesToKorean'
 
 type MtTitleProps = {
   name: string
@@ -81,7 +78,9 @@ function MtTitle({
         {/* 왕복시간 */}
         <div className={styles.content}>
           <span className={styles.text}>왕복</span>
-          <span className={styles.bold}>약 {convertToHour(timeDuration)}</span>
+          <span className={styles.bold}>
+            약 {convertMinutesToKorean(timeDuration)}
+          </span>
         </div>
         <div className={styles.content}></div>
       </div>

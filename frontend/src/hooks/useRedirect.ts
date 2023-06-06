@@ -25,7 +25,6 @@ function useRedirect(...args: (string | number)[]) {
     navigate('/404')
   }
 
-  console.log(!!NaN)
   // 숫자로 변환된 args 배열을 반환
   return parsedArgs
 }

@@ -330,12 +330,14 @@ export function useClubMemberQuery(clubId: number) {
 
 // 소모임 탈퇴
 export function useDeleteClub(clubId: number) {
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
 
   return useMutation<AxiosDataResponse, AxiosDataError>(
     () => apiRequest.delete(`/clubs/${clubId}/members`),
     {
       onSuccess: (res) => {
+        queryClient.invalidateQueries(['user'])
         toast.addMessage('success', res.data.message)
         navigate('/club/none')
       },

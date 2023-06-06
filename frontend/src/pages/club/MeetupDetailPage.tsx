@@ -10,6 +10,7 @@ import {
   useDeleteMeetup,
   usePostReview,
 } from 'apis/services/meetup'
+import { useUserInfoQuery } from 'apis/services/users'
 import ConfirmModal from 'components/club/ConfirmModal'
 import Button from 'components/common/Button'
 import ErrorMessage from 'components/common/ErrorMessage'
@@ -23,12 +24,11 @@ import MeetupIntroduction from 'components/meetup/MeetupIntroduction'
 import MeetupMembers from 'components/meetup/MeetupMembers'
 import MeetupReviewList from 'components/meetup/MeetupReviewList'
 import useRedirect from 'hooks/useRedirect'
-import useUserQuery from 'hooks/useUserQuery'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 function MeetupDetailPage() {
   const { theme } = useContext(ThemeContext)
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
 
   const { meetupId, clubId } = useParams() as {
     meetupId: string

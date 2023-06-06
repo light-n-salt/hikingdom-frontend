@@ -3,17 +3,17 @@ import React, { useContext, useRef, useMemo } from 'react'
 import styles from './ClubAlbumPage.module.scss'
 
 import { useClubAlbum } from 'apis/services/clubs'
+import { useUserInfoQuery } from 'apis/services/users'
 import AlbumList from 'components/club/AlbumList'
 import Loading from 'components/common/Loading'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
-import useUserQuery from 'hooks/useUserQuery'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 function ClubAlbumPage() {
   const { theme } = useContext(ThemeContext)
   const infiniteRef = useRef<HTMLDivElement>(null)
 
-  const { data: userInfo } = useUserQuery()
+  const { data: userInfo } = useUserInfoQuery()
   const clubId = userInfo?.clubId
 
   const { data, isLoading, fetchNextPage, hasNextPage } = useClubAlbum(

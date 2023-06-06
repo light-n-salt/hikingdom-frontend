@@ -29,7 +29,6 @@ function RankPage() {
     isLoading,
     isError,
     data,
-    isSuccess,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,

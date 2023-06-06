@@ -12,20 +12,20 @@ import {
   useChatsQuery,
   useChatMembersQuery,
 } from 'apis/services/clubs'
+import { useUserInfoQuery } from 'apis/services/users'
 import ChatList from 'components/club/ChatList'
 import ErrorMessage from 'components/common/ErrorMessage'
 import Loading from 'components/common/Loading'
 import PageHeader from 'components/common/PageHeader'
 import TextSendBar from 'components/common/TextSendBar'
 import useScroll from 'hooks/useScroll'
-import useUserQuery from 'hooks/useUserQuery'
 import { accessTokenState } from 'recoil/atoms'
 import { ThemeContext } from 'styles/ThemeProvider'
 
 function ClubChatPage() {
   const { theme } = useContext(ThemeContext)
   const infiniteRef = useRef<HTMLDivElement>(null)
-  const { data: userInfo } = useUserQuery() // 유저 정보
+  const { data: userInfo } = useUserInfoQuery() // 유저 정보
 
   // 모임정보
   const {
@@ -116,7 +116,6 @@ function ClubChatPage() {
             console.log('멤버 데이터 업데이트', data.members)
             setMembers(data.members)
             setTrigger((trigger) => trigger + 1)
-            return
           }
         })
       }
