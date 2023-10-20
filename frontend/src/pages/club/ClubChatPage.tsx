@@ -35,7 +35,7 @@ function ClubChatPage() {
   } = useClubSimpleInfoQuery(userInfo?.clubId || 0)
 
   // 소켓 통신
-  const [stomp, setStomp] = useState<any>() // 타입 수정 필요
+  const [stomp, setStomp] = useState<any>()
   const accessToken = useRecoilValue(accessTokenState)
   // 채팅 & 멤버 데이터
   const [members, setMembers] = useState<{ [key: number]: ChatMember } | null>(
